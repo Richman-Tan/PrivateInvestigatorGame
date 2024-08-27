@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import nz.ac.auckland.se206.App;
 
-public class Suspect1RoomController {
+public class Suspect2RoomController {
 
   @FXML private Button btnRight;
 
@@ -22,7 +22,7 @@ public class Suspect1RoomController {
    * @throws IOException
    */
   @FXML
-  private void onRight() throws IOException {
+  private void onLeft() throws IOException {
     App.setRoot("room");
   }
 }

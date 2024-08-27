@@ -86,8 +86,25 @@ public class RoomController {
     context.handleGuessClick();
   }
 
+  /**
+   * Handles the left button click event.
+   *
+   * @param event
+   * @throws IOException
+   */
   @FXML
   private void onLeft(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
+  }
+
+  /**
+   * Handles the right button click event.
+   *
+   * @param event
+   * @throws IOException
+   */
+  @FXML
+  private void onRight(ActionEvent event) throws IOException {
+    App.setRoot("suspect2room");
   }
 }
