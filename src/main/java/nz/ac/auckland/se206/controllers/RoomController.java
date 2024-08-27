@@ -107,4 +107,15 @@ public class RoomController {
   private void onRight(ActionEvent event) throws IOException {
     App.setRoot("suspect2room");
   }
+
+  /**
+   * Handles the down button click event.
+   *
+   * @param event
+   * @throws IOException
+   */
+  @FXML
+  private void onDown(ActionEvent event) throws IOException {
+    App.setRoot("suspect3room");
+  }
 }
