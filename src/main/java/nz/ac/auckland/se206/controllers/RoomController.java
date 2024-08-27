@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 
@@ -36,8 +37,7 @@ public class RoomController {
   public void initialize() {
     if (isFirstTimeInit) {
       TextToSpeech.speak(
-          "Chat with the three customers, and guess who is the "
-              + context.getProfessionToGuess());
+          "Chat with the three customers, and guess who is the " + context.getProfessionToGuess());
       isFirstTimeInit = false;
     }
     lblProfession.setText(context.getProfessionToGuess());
@@ -84,5 +84,10 @@ public class RoomController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
+  }
+
+  @FXML
+  private void onLeft(ActionEvent event) throws IOException {
+    App.setRoot("suspect1room");
   }
 }

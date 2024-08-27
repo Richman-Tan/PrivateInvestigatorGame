@@ -1,0 +1,19 @@
+.button {
+  -fx-font-size: 17px;
+  font-size: 17px;
+  -fx-text-fill: black;
+  -fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);
+  color: white;
+}
+
+.first-button {
+  -fx-background-color: white;
+  background-color: #ffffffeb;
+  -fx-shape: "M150 0 L75 200 L225 200 Z";
+}
+
+.button:hover {
+  -fx-background-color: #5e5548;
+  -fx-border-color: #5e5548;
+  -fx-cursor: hand;
+}

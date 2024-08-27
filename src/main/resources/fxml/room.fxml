@@ -36,5 +36,6 @@
             <Font size="21.0" />
          </font>
       </Label>
+      <Button fx:id="btnLeft" layoutX="23.0" layoutY="295.0" mnemonicParsing="false" onAction="#onLeft" prefHeight="39.0" prefWidth="47.0" rotate="270.0" styleClass="first-button" stylesheets="@../css/button.css" />
    </children>
 </Pane>
