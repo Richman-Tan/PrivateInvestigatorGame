@@ -29,6 +29,10 @@ public class GameStateContext {
   private final GameOver gameOverState;
   private GameState gameState;
 
+  private static GameStateContext instance;
+
+  private boolean isMenuVisible = false; // Add this variable to manage menu visibility
+
   /** Constructs a new GameStateContext and initializes the game states and professions. */
   public GameStateContext() {
     gameStartedState = new GameStarted(this);
@@ -68,6 +72,14 @@ public class GameStateContext {
     rectIdToGuess =
         randomNumber == 0 ? "rectPerson1" : ((randomNumber == 1) ? "rectPerson2" : "rectPerson3");
     professionToGuess = rectanglesToProfession.get(rectIdToGuess);
+  }
+
+  // Static method to get the single instance of GameStateContext
+  public static GameStateContext getInstance() {
+    if (instance == null) {
+      instance = new GameStateContext();
+    }
+    return instance;
   }
 
   /**
@@ -152,5 +164,28 @@ public class GameStateContext {
    */
   public void handleGuessClick() throws IOException {
     gameState.handleGuessClick();
+  }
+
+  /**
+   * Gets the isMenuVisible variable.
+   *
+   * @return
+   */
+  public boolean isMenuVisible() {
+    return isMenuVisible;
+  }
+
+  /**
+   * Sets the isMenuVisible variable.
+   *
+   * @param menuVisible
+   */
+  public void setMenuVisible(boolean menuVisible) {
+    this.isMenuVisible = menuVisible;
+  }
+
+  /** Toggles the visibility of the menu. */
+  public void toggleMenuVisibility() {
+    this.isMenuVisible = !this.isMenuVisible;
   }
 }

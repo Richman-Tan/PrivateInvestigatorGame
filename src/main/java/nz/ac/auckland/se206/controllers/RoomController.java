@@ -26,8 +26,14 @@ public class RoomController {
   @FXML private Label lblProfession;
   @FXML private Button btnGuess;
 
+  @FXML private Button btnMenu;
+  @FXML private Button btnCrimeScene;
+  @FXML private Button btnGrandma;
+  @FXML private Button btnGrandson;
+  @FXML private Button btnUncle;
+
   private static boolean isFirstTimeInit = true;
-  private static GameStateContext context = new GameStateContext();
+  private static GameStateContext context = GameStateContext.getInstance();
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -41,6 +47,9 @@ public class RoomController {
       isFirstTimeInit = false;
     }
     lblProfession.setText(context.getProfessionToGuess());
+
+    // Set the menu visibility based on the GameStateContext
+    updateMenuVisibility();
   }
 
   /**
@@ -87,7 +96,7 @@ public class RoomController {
   }
 
   /**
-   * Handles the left button click event.
+   * Handles the inspect uncle button click event.
    *
    * @param event
    * @throws IOException
@@ -98,18 +107,19 @@ public class RoomController {
   }
 
   /**
-   * Handles the right button click event.
+   * Handles the inspect Grandmother button click event.
    *
    * @param event
    * @throws IOException
    */
   @FXML
   private void onGrandmother(ActionEvent event) throws IOException {
+    context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
   /**
-   * Handles the down button click event.
+   * Handles the inspect Grandson button click event.
    *
    * @param event
    * @throws IOException
@@ -117,5 +127,47 @@ public class RoomController {
   @FXML
   private void onGrandson(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
+  }
+
+  /**
+   * Toggles the menu button when clicked.
+   *
+   * @param event
+   * @throws IOException
+   */
+  @FXML
+  private void onToggleMenu(ActionEvent event) {
+    context.toggleMenuVisibility(); // Toggle the visibility in the context
+    updateMenuVisibility(); // Update the visibility in the UI
+  }
+
+  /**
+   * Updates the visibility of the menu buttons based on the isMenuVisible variable in the
+   * GameStateContext.
+   */
+  private void updateMenuVisibility() {
+    boolean isMenuVisible = context.isMenuVisible();
+
+    if (isMenuVisible) {
+      btnMenu.setStyle(
+          "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
+              + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
+    } else {
+      btnMenu.setStyle(
+          "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
+              + " -fx-background-insets: 0;");
+    }
+
+    btnCrimeScene.setVisible(isMenuVisible);
+    btnCrimeScene.setManaged(isMenuVisible);
+
+    btnGrandma.setVisible(isMenuVisible);
+    btnGrandma.setManaged(isMenuVisible);
+
+    btnGrandson.setVisible(isMenuVisible);
+    btnGrandson.setManaged(isMenuVisible);
+
+    btnUncle.setVisible(isMenuVisible);
+    btnUncle.setManaged(isMenuVisible);
   }
 }
