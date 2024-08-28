@@ -22,7 +22,7 @@ public class Suspect3RoomController {
    * @throws IOException
    */
   @FXML
-  private void onUp() throws IOException {
+  private void onRoom() throws IOException {
     App.setRoot("room");
   }
 }
