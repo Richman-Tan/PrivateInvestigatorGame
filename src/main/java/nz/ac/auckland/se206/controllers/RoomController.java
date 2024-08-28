@@ -93,7 +93,7 @@ public class RoomController {
    * @throws IOException
    */
   @FXML
-  private void onLeft(ActionEvent event) throws IOException {
+  private void onUncle(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
@@ -104,7 +104,7 @@ public class RoomController {
    * @throws IOException
    */
   @FXML
-  private void onRight(ActionEvent event) throws IOException {
+  private void onGrandmother(ActionEvent event) throws IOException {
     App.setRoot("suspect2room");
   }
 
@@ -115,7 +115,7 @@ public class RoomController {
    * @throws IOException
    */
   @FXML
-  private void onDown(ActionEvent event) throws IOException {
+  private void onGrandson(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
   }
 }
