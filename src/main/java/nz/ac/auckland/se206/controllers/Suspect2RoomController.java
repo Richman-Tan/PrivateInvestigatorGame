@@ -5,6 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
@@ -15,6 +19,10 @@ public class Suspect2RoomController {
   @FXML private Button btnGrandma;
   @FXML private Button btnGrandson;
   @FXML private Button btnUncle;
+  @FXML private TextField userChatBox;
+  @FXML private TextArea suspect2ChatBox;
+  @FXML private ScrollBar scrollSuspect2;
+  @FXML private Circle sendButton;
 
   @FXML private Label lbltimer;
 
@@ -41,6 +49,9 @@ public class Suspect2RoomController {
   private void onRoom() throws IOException {
     App.setRoot("room");
   }
+
+  @FXML
+  private void onSend() {}
 
   /**
    * Handles the event when the uncle button is clicked.
