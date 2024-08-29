@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="599.0" prefWidth="789.0" style="-fx-background-color: #A9A9A9;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.RoomController">
+<AnchorPane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="600.0" prefWidth="1067.0" style="-fx-background-color: #A9A9A9;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.RoomController">
    <children>
       <ImageView fitHeight="452.0" fitWidth="789.0" layoutY="149.0" preserveRatio="true">
          <image>
