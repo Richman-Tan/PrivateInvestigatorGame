@@ -25,7 +25,6 @@ public class RoomController {
   @FXML private Rectangle rectWaitress;
   @FXML private Label lblProfession;
   @FXML private Button btnGuess;
-
   @FXML private Button btnMenu;
   @FXML private Button btnCrimeScene;
   @FXML private Button btnGrandma;
