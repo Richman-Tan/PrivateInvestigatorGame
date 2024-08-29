@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect2RoomController">
@@ -70,18 +71,24 @@
             </Label>
          </children>
       </Pane>
-      <ImageView fitHeight="313.0" fitWidth="454.0" layoutX="131.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-width: 10px;">
-         <image>
-            <Image url="@../images/suspect2ChatBox.png" />
-         </image>
-      </ImageView>
       <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="-31.0" layoutY="123.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: black; -fx-border-width: 10px;">
          <image>
             <Image url="@../images/userChatBoxS2.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="313.0" fitWidth="454.0" layoutX="131.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-width: 10px;">
+         <image>
+            <Image url="@../images/suspect2ChatBox.png" />
+         </image>
+      </ImageView>
       <TextArea fx:id="suspect2ChatBox" layoutX="178.0" layoutY="26.0" prefHeight="115.0" prefWidth="229.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: BEC6B9;" />
-      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="51.0" layoutY="162.0" prefHeight="99.0" prefWidth="236.0" promptText="Begin interrogating..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white;" />
-      <ScrollBar fx:id="scrollSuspect2" layoutX="415.0" layoutY="37.0" orientation="VERTICAL" prefHeight="81.0" prefWidth="17.0" />
+      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="51.0" layoutY="162.0" prefHeight="99.0" prefWidth="236.0" promptText="Begin interrogating..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
+      <ScrollBar fx:id="scrollSuspect2" layoutX="415.0" layoutY="26.0" orientation="VERTICAL" prefHeight="115.0" prefWidth="8.0" stylesheets="@../css/scrollBar.css" />
+      <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="289.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true" rotate="270.0">
+         <image>
+            <Image url="@../images/sendArrow.png" />
+         </image>
+      </ImageView>
+      <Circle fx:id="sendButton" fill="#1f93ff00" layoutX="296.0" layoutY="247.0" onMouseClicked="#onSend" radius="11.0" stroke="#4d6543" strokeType="INSIDE" />
    </children>
 </AnchorPane>
