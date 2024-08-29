@@ -13,6 +13,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect1RoomController">
    <children>
+      <ImageView fitHeight="600" fitWidth="1067" pickOnBounds="true" preserveRatio="true">
+         <image>
+        <Image url="@../images/unclePic.jpg" />
+    </image>
+  </ImageView>
       <HBox alignment="CENTER" layoutX="21.0" layoutY="20.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
          <children>
             <Button fx:id="btnMenu" maxHeight="10.0" mnemonicParsing="false" onAction="#onToggleMenu" opacity="0.8" prefHeight="60.0" prefWidth="31.0" style="-fx-background-radius: 10 0 0 10; -fx-border-radius: 10 0 0 10; -fx-border-color: black transparent black black; -fx-background-insets: 0;" stylesheets="@../css/button.css">
