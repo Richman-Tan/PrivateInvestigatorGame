@@ -5,6 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
@@ -15,6 +18,9 @@ public class Suspect2RoomController {
   @FXML private Button btnGrandma;
   @FXML private Button btnGrandson;
   @FXML private Button btnUncle;
+  @FXML private TextField userChatBox;
+  @FXML private TextArea suspect2ChatBox;
+  @FXML private ScrollBar scrollSuspect2;
 
   @FXML private Label lbltimer;
 
