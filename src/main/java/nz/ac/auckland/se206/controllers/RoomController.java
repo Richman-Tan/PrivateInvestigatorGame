@@ -32,8 +32,12 @@ public class RoomController {
   @FXML private Button btnGrandson;
   @FXML private Button btnUncle;
 
+  @FXML private Label lbltimer;
+
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = GameStateContext.getInstance();
+
+  private TimerModel countdownTimer;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -50,6 +54,10 @@ public class RoomController {
 
     // Set the menu visibility based on the GameStateContext
     updateMenuVisibility();
+
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.start();
+    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
   }
 
   /**

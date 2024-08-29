@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
@@ -15,13 +16,20 @@ public class Suspect2RoomController {
   @FXML private Button btnGrandson;
   @FXML private Button btnUncle;
 
+  @FXML private Label lbltimer;
+
   private GameStateContext context = GameStateContext.getInstance();
+
+  private TimerModel countdownTimer;
 
   /** Initializes the suspect 2 room view. */
   @FXML
   public void initialize() {
     // Set initial visibility of the buttons
     updateMenuVisibility();
+
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
   }
 
   /**
