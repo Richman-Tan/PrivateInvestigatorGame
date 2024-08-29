@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 
@@ -24,9 +25,18 @@ public class RoomController {
   @FXML private Rectangle rectWaitress;
   @FXML private Label lblProfession;
   @FXML private Button btnGuess;
+  @FXML private Button btnMenu;
+  @FXML private Button btnCrimeScene;
+  @FXML private Button btnGrandma;
+  @FXML private Button btnGrandson;
+  @FXML private Button btnUncle;
+
+  @FXML private Label lbltimer;
 
   private static boolean isFirstTimeInit = true;
-  private static GameStateContext context = new GameStateContext();
+  private static GameStateContext context = GameStateContext.getInstance();
+
+  private TimerModel countdownTimer;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -36,11 +46,17 @@ public class RoomController {
   public void initialize() {
     if (isFirstTimeInit) {
       TextToSpeech.speak(
-          "Chat with the three customers, and guess who is the "
-              + context.getProfessionToGuess());
+          "Chat with the three customers, and guess who is the " + context.getProfessionToGuess());
       isFirstTimeInit = false;
     }
     lblProfession.setText(context.getProfessionToGuess());
+
+    // Set the menu visibility based on the GameStateContext
+    updateMenuVisibility();
+
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.start();
+    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
   }
 
   /**
@@ -84,5 +100,81 @@ public class RoomController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
+  }
+
+  /**
+   * Handles the inspect uncle button click event.
+   *
+   * @param event
+   * @throws IOException
+   */
+  @FXML
+  private void onUncle(ActionEvent event) throws IOException {
+    App.setRoot("suspect1room");
+  }
+
+  /**
+   * Handles the inspect Grandmother button click event.
+   *
+   * @param event
+   * @throws IOException
+   */
+  @FXML
+  private void onGrandmother(ActionEvent event) throws IOException {
+    context.setMenuVisible(true); // Toggle the visibility in the context
+    App.setRoot("suspect2room");
+  }
+
+  /**
+   * Handles the inspect Grandson button click event.
+   *
+   * @param event
+   * @throws IOException
+   */
+  @FXML
+  private void onGrandson(ActionEvent event) throws IOException {
+    App.setRoot("suspect3room");
+  }
+
+  /**
+   * Toggles the menu button when clicked.
+   *
+   * @param event
+   * @throws IOException
+   */
+  @FXML
+  private void onToggleMenu(ActionEvent event) {
+    context.toggleMenuVisibility(); // Toggle the visibility in the context
+    updateMenuVisibility(); // Update the visibility in the UI
+  }
+
+  /**
+   * Updates the visibility of the menu buttons based on the isMenuVisible variable in the
+   * GameStateContext.
+   */
+  private void updateMenuVisibility() {
+    boolean isMenuVisible = context.isMenuVisible();
+
+    if (isMenuVisible) {
+      btnMenu.setStyle(
+          "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
+              + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
+    } else {
+      btnMenu.setStyle(
+          "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
+              + " -fx-background-insets: 0;");
+    }
+
+    btnCrimeScene.setVisible(isMenuVisible);
+    btnCrimeScene.setManaged(isMenuVisible);
+
+    btnGrandma.setVisible(isMenuVisible);
+    btnGrandma.setManaged(isMenuVisible);
+
+    btnGrandson.setVisible(isMenuVisible);
+    btnGrandson.setManaged(isMenuVisible);
+
+    btnUncle.setVisible(isMenuVisible);
+    btnUncle.setManaged(isMenuVisible);
   }
 }
