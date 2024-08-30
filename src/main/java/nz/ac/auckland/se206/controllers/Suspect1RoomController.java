@@ -42,6 +42,9 @@ public class Suspect1RoomController {
     App.setRoot("room");
   }
 
+  @FXML
+  private void onSend() {}
+
   /**
    * Handles the event when the grandson button is clicked.
    *
