@@ -71,7 +71,7 @@
             </Label>
          </children>
       </Pane>
-      <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="-31.0" layoutY="123.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: black; -fx-border-width: 10px;">
+      <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="-31.0" layoutY="123.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" >
          <image>
             <Image url="@../images/userChatBoxS2.png" />
          </image>
@@ -83,7 +83,7 @@
       </ImageView>
       <TextArea fx:id="suspect2ChatBox" layoutX="178.0" layoutY="26.0" prefHeight="115.0" prefWidth="229.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: BEC6B9;" />
       <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="51.0" layoutY="162.0" prefHeight="99.0" prefWidth="236.0" promptText="Begin interrogating..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
-      <ScrollBar fx:id="scrollSuspect2" layoutX="415.0" layoutY="26.0" orientation="VERTICAL" prefHeight="115.0" prefWidth="8.0" stylesheets="@../css/scrollBar.css" />
+      <ScrollBar fx:id="scrollSuspect2" layoutX="415.0" layoutY="26.0" orientation="VERTICAL" prefHeight="115.0" prefWidth="8.0" stylesheets="@../css/scrollBarSuspect2.css" />
       <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="289.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true" rotate="270.0">
          <image>
             <Image url="@../images/sendArrow.png" />

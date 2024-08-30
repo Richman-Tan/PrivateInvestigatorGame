@@ -3,16 +3,23 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect1RoomController">
    <children>
+      <ImageView fitHeight="600" fitWidth="1067" pickOnBounds="true" preserveRatio="true">
+         <image>
+        <Image url="@../images/unclePic.jpg" />
+    </image>
+  </ImageView>
       <HBox alignment="CENTER" layoutX="21.0" layoutY="20.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
          <children>
             <Button fx:id="btnMenu" maxHeight="10.0" mnemonicParsing="false" onAction="#onToggleMenu" opacity="0.8" prefHeight="60.0" prefWidth="31.0" style="-fx-background-radius: 10 0 0 10; -fx-border-radius: 10 0 0 10; -fx-border-color: black transparent black black; -fx-background-insets: 0;" stylesheets="@../css/button.css">
@@ -54,7 +61,6 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </HBox>
-      <Text layoutX="351.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Suspect 1 Room" />
       <Pane layoutX="22.0" layoutY="25.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="8.0" text="Label">
@@ -64,5 +70,23 @@
             </Label>
          </children>
       </Pane>
+      <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="312.0" layoutY="223.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/userChatBoxS1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="335.0" fitWidth="454.0" layoutX="402.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-width: 10px;">
+         <image>
+            <Image url="@../images/suspect1ChatBox.png" />
+         </image>
+      </ImageView>
+      <TextArea fx:id="suspect1ChatBox" editable="false" layoutX="461.0" layoutY="124.0" prefHeight="98.0" prefWidth="273.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: A28B71;" />
+      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="401.0" layoutY="270.0" prefHeight="87.0" prefWidth="226.0" promptText="Begin interrogating..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
+      <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="632.0" layoutY="338.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" rotate="270.0">
+         <image>
+            <Image url="@../images/sendArrow.png" />
+         </image>
+      </ImageView>
+      <Circle fx:id="sendButton" fill="#1f93ff00" layoutX="639.0" layoutY="346.0" onMouseClicked="#onSend" radius="11.0" stroke="#907f62" strokeType="INSIDE" />
    </children>
 </AnchorPane>
