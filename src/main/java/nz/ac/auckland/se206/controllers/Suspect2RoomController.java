@@ -36,8 +36,6 @@ public class Suspect2RoomController {
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
-
-    suspect2ChatBox.setEditable(false);
   }
 
   /**
