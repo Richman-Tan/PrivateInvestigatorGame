@@ -1,13 +1,16 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
@@ -30,6 +33,7 @@ public class RoomController {
   @FXML private Button btnGrandma;
   @FXML private Button btnGrandson;
   @FXML private Button btnUncle;
+  @FXML private AnchorPane rootNode;
 
   @FXML private Label lbltimer;
 
@@ -45,6 +49,15 @@ public class RoomController {
   @FXML
   public void initialize() {
     if (isFirstTimeInit) {
+
+      rootNode.setOpacity(0);
+      FadeTransition fadeTransition = new FadeTransition();
+      fadeTransition.setDuration(Duration.millis(1000));
+      fadeTransition.setNode(rootNode);
+      fadeTransition.setFromValue(0);
+      fadeTransition.setToValue(1);
+      fadeTransition.play();
+
       TextToSpeech.speak(
           "Chat with the three customers, and guess who is the " + context.getProfessionToGuess());
       isFirstTimeInit = false;

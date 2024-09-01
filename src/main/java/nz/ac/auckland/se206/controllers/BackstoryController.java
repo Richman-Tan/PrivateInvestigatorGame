@@ -3,8 +3,13 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -241,20 +246,20 @@ public class BackstoryController {
     // Bind the size of the additional image to a fraction of the AnchorPane's size
     additionalImageView
         .fitWidthProperty()
-        .bind(anchorPane.widthProperty().multiply(0.3)); // 30% of the anchor pane's width
+        .bind(anchorPane.widthProperty().multiply(0.32)); // 30% of the anchor pane's width
     additionalImageView
         .fitHeightProperty()
-        .bind(anchorPane.heightProperty().multiply(0.3)); // 30% of the anchor pane's height
+        .bind(anchorPane.heightProperty().multiply(0.32)); // 30% of the anchor pane's height
     additionalImageView.setOpacity(0); // Start with the image invisible
 
     // Create the enlarged version of the additional image
     ImageView enlargedImageView = new ImageView(additionalImage);
     enlargedImageView
         .fitWidthProperty()
-        .bind(anchorPane.widthProperty().multiply(0.34)); // Slightly larger, 34% of the width
+        .bind(anchorPane.widthProperty().multiply(0.36)); // Slightly larger, 34% of the width
     enlargedImageView
         .fitHeightProperty()
-        .bind(anchorPane.heightProperty().multiply(0.34)); // Slightly larger, 34% of the height
+        .bind(anchorPane.heightProperty().multiply(0.36)); // Slightly larger, 34% of the height
     enlargedImageView.setOpacity(0); // Start hidden
 
     // Add both images to the anchorPane
@@ -268,11 +273,11 @@ public class BackstoryController {
               additionalImageView.setLayoutX(
                   anchorPane.getWidth()
                       - additionalImageView.getFitWidth()
-                      + 10); // 5px padding from the right
+                      + 40); // 5px padding from the right
               enlargedImageView.setLayoutX(
                   anchorPane.getWidth()
                       - enlargedImageView.getFitWidth()
-                      + 10); // Align enlarged image with original
+                      + 40); // Align enlarged image with original
             });
 
     anchorPane
@@ -326,23 +331,14 @@ public class BackstoryController {
 
     additionalImageView.setOnMouseClicked(
         e -> {
-          // Load the next scene
-          try {
-            App.setRoot("room");
-          } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-          }
+          // Load the next scene after the zoom-in effect
+          zoomIn(additionalImageView, "room");
         });
 
-    enlargedImageView.setOnMouseClicked( // Load the next scene
+    enlargedImageView.setOnMouseClicked(
         e -> {
-          try {
-            App.setRoot("room");
-          } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-          }
+          // Load the next scene after the zoom-in effect
+          zoomIn(enlargedImageView, "room");
         });
   }
 
@@ -350,5 +346,66 @@ public class BackstoryController {
     // Calculate the position to center the image within the anchorPane
     imageView.setX(((anchorPane.getWidth() - imageView.getFitWidth()) / 2) - 50);
     imageView.setY((anchorPane.getHeight() - imageView.getFitHeight()) / 2);
+  }
+
+  private void zoomIn(ImageView imageView, String nextScene) {
+    // Scale transition for zooming in
+    ScaleTransition zoomInTransition = new ScaleTransition(Duration.seconds(1), imageView);
+    zoomInTransition.setToX(50.0); // Scale to 2x the original size
+    zoomInTransition.setToY(50.0); // Scale to 2x the original size
+    zoomInTransition.setCycleCount(1);
+    zoomInTransition.setAutoReverse(false);
+
+    // Get the current bounds of the ImageView
+    Bounds bounds = imageView.localToScene(imageView.getBoundsInLocal());
+
+    // Calculate the center positions to move to after scaling
+    double sceneCenterX = anchorPane.getWidth() / 2;
+    double sceneCenterY = anchorPane.getHeight() / 2;
+
+    double imageCenterX = bounds.getMinX() + bounds.getWidth() / 2;
+    double imageCenterY = bounds.getMinY() + bounds.getHeight() / 2;
+
+    double translateX = sceneCenterX - imageCenterX + 750;
+    double translateY = sceneCenterY - imageCenterY + 750;
+
+    // Translate transition for moving to the center of the screen
+    TranslateTransition moveToCenterTransition =
+        new TranslateTransition(Duration.seconds(1), imageView);
+    moveToCenterTransition.setByX(translateX);
+    moveToCenterTransition.setByY(translateY);
+    moveToCenterTransition.setCycleCount(1);
+    moveToCenterTransition.setAutoReverse(false);
+
+    // Rotate transition for rotating the image by 45 degrees
+    RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), imageView);
+    rotateTransition.setByAngle(20); // Rotate by 10 degrees to the right
+    rotateTransition.setCycleCount(1);
+    rotateTransition.setAutoReverse(false);
+
+    // Fade transition for fading out the entire scene
+    FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(1), anchorPane);
+    fadeOutTransition.setFromValue(1.0);
+    fadeOutTransition.setToValue(0.0);
+    fadeOutTransition.setCycleCount(1);
+    fadeOutTransition.setAutoReverse(false);
+
+    // Combine the zoom, move, fade out, and rotate transitions in a parallel transition
+    ParallelTransition parallelTransition =
+        new ParallelTransition(
+            zoomInTransition, moveToCenterTransition, rotateTransition, fadeOutTransition);
+
+    // Add event handler to change the scene after the transitions complete
+    parallelTransition.setOnFinished(
+        event -> {
+          try {
+            App.setRoot(nextScene);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+
+    // Play the combined transitions
+    parallelTransition.play();
   }
 }
