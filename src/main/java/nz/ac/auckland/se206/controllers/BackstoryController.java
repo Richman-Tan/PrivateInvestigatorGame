@@ -1,5 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
+import java.io.IOException;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import nz.ac.auckland.se206.App;
 
 public class BackstoryController {
 
@@ -229,6 +231,119 @@ public class BackstoryController {
                 centerImage((ImageView) file.getChildren().get(0));
               }
             });
+
+    // Load the additional image to be shown at the bottom right
+    Image additionalImage =
+        new Image(
+            BackstoryController.class.getResource("/images/magnifyingglassbtn.png").toString());
+    ImageView additionalImageView = new ImageView(additionalImage);
+
+    // Bind the size of the additional image to a fraction of the AnchorPane's size
+    additionalImageView
+        .fitWidthProperty()
+        .bind(anchorPane.widthProperty().multiply(0.3)); // 30% of the anchor pane's width
+    additionalImageView
+        .fitHeightProperty()
+        .bind(anchorPane.heightProperty().multiply(0.3)); // 30% of the anchor pane's height
+    additionalImageView.setOpacity(0); // Start with the image invisible
+
+    // Create the enlarged version of the additional image
+    ImageView enlargedImageView = new ImageView(additionalImage);
+    enlargedImageView
+        .fitWidthProperty()
+        .bind(anchorPane.widthProperty().multiply(0.34)); // Slightly larger, 34% of the width
+    enlargedImageView
+        .fitHeightProperty()
+        .bind(anchorPane.heightProperty().multiply(0.34)); // Slightly larger, 34% of the height
+    enlargedImageView.setOpacity(0); // Start hidden
+
+    // Add both images to the anchorPane
+    anchorPane.getChildren().addAll(additionalImageView, enlargedImageView);
+
+    // Add listeners to position the image closer to the right edge of the anchorPane
+    anchorPane
+        .widthProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              additionalImageView.setLayoutX(
+                  anchorPane.getWidth()
+                      - additionalImageView.getFitWidth()
+                      + 10); // 5px padding from the right
+              enlargedImageView.setLayoutX(
+                  anchorPane.getWidth()
+                      - enlargedImageView.getFitWidth()
+                      + 10); // Align enlarged image with original
+            });
+
+    anchorPane
+        .heightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              additionalImageView.setLayoutY(
+                  anchorPane.getHeight()
+                      - additionalImageView.getFitHeight()
+                      + 10); // 10px padding from the bottom
+              enlargedImageView.setLayoutY(
+                  anchorPane.getHeight()
+                      - enlargedImageView.getFitHeight()
+                      + 10); // Align enlarged image with original
+            });
+
+    // Set the fade transition for the additional image
+    FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), additionalImageView);
+    fadeIn.setFromValue(0);
+    fadeIn.setToValue(1);
+
+    // Trigger the fade-in transition after the timeline completes
+    timeline.setOnFinished(e -> fadeIn.play());
+
+    // Set hover event handlers
+    additionalImageView.setOnMouseEntered(
+        e -> {
+          additionalImageView.setOpacity(0); // Hide the original image
+          enlargedImageView.setOpacity(1); // Show the enlarged image
+        });
+
+    additionalImageView.setOnMouseExited(
+        e -> {
+          additionalImageView.setOpacity(1); // Show the original image
+          enlargedImageView.setOpacity(0); // Hide the enlarged image
+        });
+
+    // Ensure the enlarged image responds to hover events as well
+    enlargedImageView.setOnMouseExited(
+        e -> {
+          additionalImageView.setOpacity(1); // Show the original image
+          enlargedImageView.setOpacity(0); // Hide the enlarged image
+        });
+
+    // Ensure the enlarged image responds to hover events as well
+    enlargedImageView.setOnMouseEntered(
+        e -> {
+          additionalImageView.setOpacity(0); // Show the original image
+          enlargedImageView.setOpacity(1); // Hide the enlarged image
+        });
+
+    additionalImageView.setOnMouseClicked(
+        e -> {
+          // Load the next scene
+          try {
+            App.setRoot("room");
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+        });
+
+    enlargedImageView.setOnMouseClicked( // Load the next scene
+        e -> {
+          try {
+            App.setRoot("room");
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+        });
   }
 
   private void centerImage(ImageView imageView) {
