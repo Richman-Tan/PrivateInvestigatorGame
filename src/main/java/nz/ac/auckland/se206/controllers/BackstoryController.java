@@ -251,6 +251,7 @@ public class BackstoryController {
         .fitHeightProperty()
         .bind(anchorPane.heightProperty().multiply(0.32)); // 30% of the anchor pane's height
     additionalImageView.setOpacity(0); // Start with the image invisible
+    additionalImageView.setDisable(true); // Disable the image to prevent interaction
 
     // Create the enlarged version of the additional image
     ImageView enlargedImageView = new ImageView(additionalImage);
@@ -261,6 +262,7 @@ public class BackstoryController {
         .fitHeightProperty()
         .bind(anchorPane.heightProperty().multiply(0.36)); // Slightly larger, 34% of the height
     enlargedImageView.setOpacity(0); // Start hidden
+    enlargedImageView.setDisable(true); // Disable the image to prevent interaction
 
     // Add both images to the anchorPane
     anchorPane.getChildren().addAll(additionalImageView, enlargedImageView);
@@ -301,6 +303,12 @@ public class BackstoryController {
 
     // Trigger the fade-in transition after the timeline completes
     timeline.setOnFinished(e -> fadeIn.play());
+
+    fadeIn.setOnFinished(
+        event -> {
+          additionalImageView.setDisable(false);
+          enlargedImageView.setDisable(false);
+        });
 
     // Set hover event handlers
     additionalImageView.setOnMouseEntered(
