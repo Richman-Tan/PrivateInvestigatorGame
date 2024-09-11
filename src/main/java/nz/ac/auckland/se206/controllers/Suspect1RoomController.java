@@ -108,4 +108,16 @@ public class Suspect1RoomController {
     btnUncle.setVisible(isMenuVisible);
     btnUncle.setManaged(isMenuVisible);
   }
+
+  /**
+   * Handles the guess button click event.
+   *
+   * @param event the action event triggered by clicking the guess button
+   * @throws IOException if there is an I/O error
+   */
+  @FXML
+  private void handleGuessClick(ActionEvent event) throws IOException {
+    App.setRoot("guessing");
+    context.handleGuessClick();
+  }
 }

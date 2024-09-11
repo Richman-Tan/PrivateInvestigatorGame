@@ -11,6 +11,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -33,6 +34,10 @@ public class GuessingController {
   @FXML private TextField txtInput;
   @FXML private Button btnSend;
 
+  @FXML private Label lbltimer;
+
+  private TimerModel countdownTimer;
+
   private ChatCompletionRequest chatCompletionRequest;
 
   /**
@@ -44,6 +49,10 @@ public class GuessingController {
    */
   @FXML
   public void initialize() {
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.reset(61);
+    countdownTimer.start();
+    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
     Task<Void> task =
         new Task<Void>() {
           @Override
