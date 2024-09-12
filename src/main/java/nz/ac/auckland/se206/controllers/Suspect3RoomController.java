@@ -253,8 +253,21 @@ public class Suspect3RoomController {
       return;
     }
     userChatBox.clear();
+    userChatBox.setPromptText("You are awaiting a response");
     ChatMessage msg = new ChatMessage("user", message);
-    runGpt(msg);
+
+    // Run the GPT model in a separate thread to avoid blocking the UI
+    Thread thread =
+        new Thread(
+            () -> {
+              try {
+                runGpt(msg);
+                userChatBox.setPromptText("Ask another question...");
+              } catch (ApiProxyException e) {
+                e.printStackTrace();
+              }
+            });
+    thread.start(); // Start the GPT thread
   }
 
   // Method to disable/enable send button
