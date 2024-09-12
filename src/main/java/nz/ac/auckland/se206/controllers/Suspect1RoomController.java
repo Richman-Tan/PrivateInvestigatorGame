@@ -14,6 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
@@ -73,10 +75,8 @@ public class Suspect1RoomController {
               // Initial GPT system message
               ChatMessage systemMessage = new ChatMessage("system", template);
               ChatMessage response = runGpt(systemMessage);
-
               // Update the UI using Platform.runLater
               Platform.runLater(() -> appendChatMessage(response));
-
             } catch (ApiProxyException | IOException | URISyntaxException e) {
               // If there is an error, show it in the chat on the JavaFX thread
               Platform.runLater(
@@ -217,7 +217,8 @@ public class Suspect1RoomController {
    */
   @FXML
   private void appendChatMessage(ChatMessage msg) {
-    suspect1ChatBox.appendText(msg.getRole() + ": " + msg.getContent() + "\n\n");
+    suspect1ChatBox.clear();
+    suspect1ChatBox.appendText(msg.getContent() + "\n\n");
   }
 
   /**
@@ -229,14 +230,33 @@ public class Suspect1RoomController {
    */
   @FXML
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
-    // to adjust
+    sendMessageCode();
+  }
+
+  /**
+   * Handles the key pressed event.
+   *
+   * @param event the key event
+   */
+  @FXML
+  public void onKeyPressed(KeyEvent event) {
+    // Capture the ENTER key
+    if (event.getCode() == KeyCode.ENTER) {
+      try {
+        sendMessageCode();
+      } catch (ApiProxyException | IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private void sendMessageCode() throws ApiProxyException, IOException {
     String message = userChatBox.getText().trim();
     if (message.isEmpty()) {
       return;
     }
     userChatBox.clear();
     ChatMessage msg = new ChatMessage("user", message);
-    // appendChatMessage(msg);
     runGpt(msg);
   }
 
