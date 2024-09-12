@@ -61,7 +61,7 @@ public class TimerModel {
                       timeString.set("Over!");
                       timerEnded++; // Set the flag when the timer ends
                       try {
-                        App.setRoot("gameoverlose");
+                        App.setRoot("guessing");
                       } catch (IOException e) {
                         e.printStackTrace();
                       }
@@ -75,6 +75,12 @@ public class TimerModel {
                       // Create a PauseTransition for the desired delay duration (e.g., 2 seconds)
                       PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
+                      try {
+                        App.setRoot("guessing");
+                      } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                      }
                       pause.setOnFinished(
                           event -> {
                             // Reset and start the timer after the delay

@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -16,7 +15,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect2RoomController">
    <children>
-   <ImageView fitHeight="600" fitWidth="1067" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="600" fitWidth="1067" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
         <Image url="@../images/grandmotherPic.jpg" />
     </image>
@@ -54,7 +53,7 @@
             </Button>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
+                  <Button mnemonicParsing="false" onAction="#handleGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
                </children>
             </HBox>
          </children>
@@ -71,7 +70,7 @@
             </Label>
          </children>
       </Pane>
-      <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="-31.0" layoutY="123.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" >
+      <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="-31.0" layoutY="123.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/userChatBoxS2.png" />
          </image>
@@ -81,9 +80,8 @@
             <Image url="@../images/suspect2ChatBox.png" />
          </image>
       </ImageView>
-      <TextArea fx:id="suspect2ChatBox" layoutX="178.0" layoutY="26.0" prefHeight="115.0" prefWidth="229.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: BEC6B9;" editable="false" />
+      <TextArea fx:id="suspect2ChatBox" editable="false" layoutX="178.0" layoutY="26.0" prefHeight="115.0" prefWidth="229.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: BEC6B9;" />
       <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="51.0" layoutY="162.0" prefHeight="99.0" prefWidth="236.0" promptText="Begin interrogating..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
-      <ScrollBar fx:id="scrollSuspect2" layoutX="415.0" layoutY="26.0" orientation="VERTICAL" prefHeight="115.0" prefWidth="8.0" stylesheets="@../css/scrollBarSuspect2.css" />
       <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="289.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true" rotate="270.0">
          <image>
             <Image url="@../images/sendArrow.png" />
