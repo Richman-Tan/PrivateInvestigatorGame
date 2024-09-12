@@ -1,9 +1,13 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javafx.event.ActionEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -14,7 +18,6 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
-import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
@@ -29,7 +32,11 @@ public class ChatController {
   @FXML private Button btnSend;
 
   private ChatCompletionRequest chatCompletionRequest;
-  private String profession;
+  private String messageRecieved = "";
+
+  ChatController(String messageRecieved) {
+    this.messageRecieved = messageRecieved;
+  }
 
   /**
    * Initializes the chat view.
@@ -37,40 +44,47 @@ public class ChatController {
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
   @FXML
-  public void initialize() throws ApiProxyException {
-    // Any required initialization code can be placed here
-  }
+  public void initialize() {
+    Task<Void> task =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws IOException, URISyntaxException {
+            try {
+              ApiProxyConfig config = ApiProxyConfig.readConfig();
+              chatCompletionRequest =
+                  new ChatCompletionRequest(config)
+                      .setN(1)
+                      .setTemperature(0.2)
+                      .setTopP(0.5)
+                      .setMaxTokens(100);
 
-  /**
-   * Generates the system prompt based on the profession.
-   *
-   * @return the system prompt string
-   */
-  private String getSystemPrompt() {
-    Map<String, String> map = new HashMap<>();
-    map.put("profession", profession);
-    return PromptEngineering.getPrompt("chat.txt", map);
-  }
+              URL resourceUrl =
+                  PromptEngineering.class.getClassLoader().getResource("prompts/guessing.txt");
+              String template = loadTemplate(resourceUrl.toURI());
 
-  /**
-   * Sets the profession for the chat context and initializes the ChatCompletionRequest.
-   *
-   * @param profession the profession to set
-   */
-  public void setProfession(String profession) {
-    this.profession = profession;
-    try {
-      ApiProxyConfig config = ApiProxyConfig.readConfig();
-      chatCompletionRequest =
-          new ChatCompletionRequest(config)
-              .setN(1)
-              .setTemperature(0.2)
-              .setTopP(0.5)
-              .setMaxTokens(100);
-      runGpt(new ChatMessage("system", getSystemPrompt()));
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-    }
+              // Initial GPT system message
+              ChatMessage systemMessage = new ChatMessage("system", template);
+              ChatMessage response = runGpt(systemMessage);
+
+              // Update the UI using Platform.runLater
+              Platform.runLater(() -> appendChatMessage(response));
+
+            } catch (ApiProxyException | IOException | URISyntaxException e) {
+              // If there is an error, show it in the chat on the JavaFX thread
+              Platform.runLater(
+                  () ->
+                      appendChatMessage(
+                          new ChatMessage("system", "Error initializing chat: " + e.getMessage())));
+              e.printStackTrace();
+            }
+            return null;
+          }
+        };
+
+    // Run the task in a separate thread
+    Thread thread = new Thread(task);
+    thread.setDaemon(true);
+    thread.start();
   }
 
   /**
@@ -112,26 +126,18 @@ public class ChatController {
    * @throws IOException if there is an I/O error
    */
   @FXML
-  private void onSendMessage(ActionEvent event) throws ApiProxyException, IOException {
-    String message = txtInput.getText().trim();
+  private void recieveMessage() throws ApiProxyException, IOException {
+    // to adjust
+    String message = messageRecieved;
     if (message.isEmpty()) {
       return;
     }
-    txtInput.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
     runGpt(msg);
   }
 
-  /**
-   * Navigates back to the previous view.
-   *
-   * @param event the action event triggered by the go back button
-   * @throws ApiProxyException if there is an error communicating with the API proxy
-   * @throws IOException if there is an I/O error
-   */
-  @FXML
-  private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
-    App.setRoot("room");
+  private static String loadTemplate(URI filePath) throws IOException {
+    return new String(Files.readAllBytes(Paths.get(filePath)));
   }
 }
