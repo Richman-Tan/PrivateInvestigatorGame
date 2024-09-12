@@ -35,7 +35,7 @@ public class TextToSpeech {
             try {
               ApiProxyConfig config = ApiProxyConfig.readConfig();
               Provider provider = Provider.GOOGLE;
-              Voice voice = Voice.GOOGLE_EN_US_STANDARD_H;
+              Voice voice = Voice.GOOGLE_EN_GB_STANDARD_F;
 
               TextToSpeechRequest ttsRequest = new TextToSpeechRequest(config);
               ttsRequest.setText(text).setProvider(provider).setVoice(voice);
