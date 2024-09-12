@@ -27,7 +27,7 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
-import nz.ac.auckland.se206.speech.TextToSpeech;
+import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
 public class Suspect2RoomController {
 
@@ -199,7 +199,7 @@ public class Suspect2RoomController {
       Choice result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequest.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
-      TextToSpeech.speak(result.getChatMessage().getContent());
+      FreeTextToSpeech.speak(result.getChatMessage().getContent());
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));

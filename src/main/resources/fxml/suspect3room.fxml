@@ -3,15 +3,18 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect3RoomController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect3RoomController">
    <children>
       <HBox alignment="CENTER" layoutX="21.0" layoutY="20.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
          <children>
@@ -64,5 +67,23 @@
             </Label>
          </children>
       </Pane>
+      <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="-21.0" layoutY="133.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/userChatBoxS2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="313.0" fitWidth="454.0" layoutX="141.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-width: 10px;">
+         <image>
+            <Image url="@../images/suspect2ChatBox.png" />
+         </image>
+      </ImageView>
+      <TextArea fx:id="suspect3ChatBox" editable="false" layoutX="188.0" layoutY="36.0" prefHeight="115.0" prefWidth="229.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: BEC6B9; -fx-text-fill: white;" wrapText="true" />
+      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="61.0" layoutY="172.0" prefHeight="99.0" prefWidth="236.0" promptText="Begin interrogating..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
+      <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="299.0" layoutY="249.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" rotate="270.0">
+         <image>
+            <Image url="@../images/sendArrow.png" />
+         </image>
+      </ImageView>
+      <Circle fx:id="sendButton" fill="#1f93ff00" layoutX="306.0" layoutY="257.0" onMouseClicked="#onSend" radius="11.0" stroke="#4d6543" strokeType="INSIDE" />
    </children>
 </AnchorPane>
