@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -32,11 +33,6 @@ public class ChatController {
   @FXML private Button btnSend;
 
   private ChatCompletionRequest chatCompletionRequest;
-  private String messageRecieved = "";
-
-  ChatController(String messageRecieved) {
-    this.messageRecieved = messageRecieved;
-  }
 
   /**
    * Initializes the chat view.
@@ -126,12 +122,13 @@ public class ChatController {
    * @throws IOException if there is an I/O error
    */
   @FXML
-  private void recieveMessage() throws ApiProxyException, IOException {
+  private void onSendMessage(ActionEvent event) throws ApiProxyException, IOException {
     // to adjust
-    String message = messageRecieved;
+    String message = txtInput.getText().trim();
     if (message.isEmpty()) {
       return;
     }
+    txtInput.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
     runGpt(msg);
