@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +26,6 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
-import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
 public class Suspect3RoomController {
 
@@ -74,15 +72,9 @@ public class Suspect3RoomController {
 
               // Initial GPT system message
               ChatMessage systemMessage = new ChatMessage("system", template);
-              ChatMessage response = runGpt(systemMessage);
-              // Update the UI using Platform.runLater
-              Platform.runLater(() -> appendChatMessage(response));
+              runGpt(systemMessage);
+
             } catch (ApiProxyException | IOException | URISyntaxException e) {
-              // If there is an error, show it in the chat on the JavaFX thread
-              Platform.runLater(
-                  () ->
-                      appendChatMessage(
-                          new ChatMessage("system", "Error initializing chat: " + e.getMessage())));
               e.printStackTrace();
             }
             return null;
@@ -196,7 +188,6 @@ public class Suspect3RoomController {
       Choice result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequest.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
-      FreeTextToSpeech.speak(result.getChatMessage().getContent());
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
