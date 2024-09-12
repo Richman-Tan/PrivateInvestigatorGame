@@ -169,6 +169,22 @@ public class RoomController {
 
     timeline.setCycleCount(1); // Play only once
     timeline.play();
+
+    // 1 sec delay and then on animation finish
+    timeline.setOnFinished(
+        e -> {
+          try {
+            // 1 second delay
+            Thread.sleep(1000);
+            App.setRoot("cluedrawer");
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+        });
   }
 
   private ImageView createAndBindImageView(Image image) {
