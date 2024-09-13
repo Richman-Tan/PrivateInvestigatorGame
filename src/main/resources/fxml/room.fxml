@@ -83,6 +83,13 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+               <children>
+                  <ImageView fx:id="clue1" fitHeight="54.0" fitWidth="91.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/cluedrawimages/gardenshears.png" />
+                     </image>
+                  </ImageView>
+               </children>
             </Pane>
             <Pane opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>

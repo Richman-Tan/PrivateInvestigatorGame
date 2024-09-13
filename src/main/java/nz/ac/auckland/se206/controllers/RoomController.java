@@ -41,6 +41,8 @@ public class RoomController {
 
   @FXML private Label lbltimer;
 
+  @FXML private ImageView clue1;
+
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = GameStateContext.getInstance();
 
@@ -51,6 +53,15 @@ public class RoomController {
 
   @FXML
   public void initialize() {
+
+    // Set the initial opacity of clue1 to 0 (hidden)
+    clue1.setOpacity(0);
+
+    // Check if the garden tool has been found
+    if (context.isGardenToolFound()) {
+      // If found, set the opacity of clue1 to 1 (visible)
+      clue1.setOpacity(1);
+    }
 
     final Image image1 =
         new Image(RoomController.class.getResource("/images/drawframe1.PNG").toString());
