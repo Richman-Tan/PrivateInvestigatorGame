@@ -33,6 +33,9 @@ public class GameStateContext {
 
   private boolean isMenuVisible = false; // Add this variable to manage menu visibility
 
+  // State of whether the garden tool has been found
+  private boolean isGardenToolFound = false;
+
   /** Constructs a new GameStateContext and initializes the game states and professions. */
   public GameStateContext() {
     gameStartedState = new GameStarted(this);
@@ -187,5 +190,15 @@ public class GameStateContext {
   /** Toggles the visibility of the menu. */
   public void toggleMenuVisibility() {
     this.isMenuVisible = !this.isMenuVisible;
+  }
+
+  // Getter for garden tool state
+  public boolean isGardenToolFound() {
+    return isGardenToolFound;
+  }
+
+  // Setter for garden tool state
+  public void setGardenToolFound(boolean found) {
+    this.isGardenToolFound = found;
   }
 }
