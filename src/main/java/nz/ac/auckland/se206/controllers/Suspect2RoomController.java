@@ -42,6 +42,7 @@ public class Suspect2RoomController {
 
   private ChatCompletionRequest chatCompletionRequest;
   private GameStateContext context = GameStateContext.getInstance();
+  private boolean firstTime = true;
 
   private TimerModel countdownTimer;
 
@@ -73,6 +74,10 @@ public class Suspect2RoomController {
               // Initial GPT system message
               ChatMessage systemMessage = new ChatMessage("system", template);
               runGpt(systemMessage);
+              if (firstTime == true) {
+                userChatBox.setPromptText("Begin interrogating...");
+                firstTime = false;
+              }
 
             } catch (ApiProxyException | IOException | URISyntaxException e) {
               e.printStackTrace();
@@ -247,7 +252,8 @@ public class Suspect2RoomController {
       return;
     }
     userChatBox.clear();
-    userChatBox.setPromptText("You are awaiting a response");
+    suspect2ChatBox.clear();
+    userChatBox.setPromptText("Waiting for response...");
     ChatMessage msg = new ChatMessage("user", message);
 
     // Run the GPT model in a separate thread to avoid blocking the UI
