@@ -13,9 +13,9 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect1RoomController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="599.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect1RoomController">
    <children>
-      <ImageView fitHeight="600" fitWidth="1067" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="605.0" fitWidth="1067" layoutY="-4.0" pickOnBounds="true">
          <image>
         <Image url="@../images/unclePic.jpg" />
     </image>
@@ -80,8 +80,8 @@
             <Image url="@../images/suspect1ChatBox.png" />
          </image>
       </ImageView>
-      <TextArea fx:id="suspect1ChatBox" editable="false" layoutX="461.0" layoutY="124.0" prefHeight="98.0" prefWidth="273.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: A28B71;" />
-      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="401.0" layoutY="270.0" prefHeight="87.0" prefWidth="226.0" promptText="Begin interrogating..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
+      <TextArea fx:id="suspect1ChatBox" editable="false" layoutX="461.0" layoutY="124.0" prefHeight="98.0" prefWidth="273.0" promptText="The suspect is thinking..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: A28B71; -fx-text-fill: white; -fx-prompt-text-fill: white;" wrapText="true" />
+      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="401.0" layoutY="270.0" prefHeight="87.0" prefWidth="226.0" promptText="You are waiting for a response..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
       <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="632.0" layoutY="338.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" rotate="270.0">
          <image>
             <Image url="@../images/sendArrow.png" />

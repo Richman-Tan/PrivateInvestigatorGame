@@ -20,7 +20,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
-import nz.ac.auckland.se206.speech.TextToSpeech;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -82,8 +81,8 @@ public class RoomController {
       fadeTransition.setToValue(1);
       fadeTransition.play();
 
-      TextToSpeech.speak(
-          "Chat with the three customers, and guess who is the " + context.getProfessionToGuess());
+      // TextToSpeech.speak("Chat with the three customers, and guess who is the " +
+      // context.getProfessionToGuess());
       isFirstTimeInit = false;
     }
 
