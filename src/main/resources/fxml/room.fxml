@@ -14,11 +14,6 @@
 
 <AnchorPane fx:id="rootNode" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="347.0" prefWidth="792.0" style="-fx-background-color: #A9A9A9;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.RoomController">
    <children>
-      <Label fx:id="lblProfession" layoutX="503.0" layoutY="56.0" prefHeight="37.0" prefWidth="289.0" wrapText="true">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Label>
       <HBox alignment="CENTER" layoutX="11.0" layoutY="10.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
          <children>
             <Button fx:id="btnMenu" maxHeight="10.0" mnemonicParsing="false" onAction="#onToggleMenu" opacity="0.8" prefHeight="60.0" prefWidth="31.0" style="-fx-background-radius: 10 0 0 10; -fx-border-radius: 10 0 0 10; -fx-border-color: black transparent black black; -fx-background-insets: 0;" stylesheets="@../css/button.css">
@@ -106,5 +101,6 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
+      <Button fx:id="safeButtonTemporary" layoutX="421.0" layoutY="55.0" mnemonicParsing="false" onAction="#onSafe" text="Safe button temporary" />
    </children>
 </AnchorPane>

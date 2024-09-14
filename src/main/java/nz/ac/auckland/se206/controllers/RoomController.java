@@ -27,7 +27,6 @@ import nz.ac.auckland.se206.GameStateContext;
  */
 public class RoomController {
 
-  @FXML private Label lblProfession;
   @FXML private Button btnGuess;
   @FXML private Button btnMenu;
   @FXML private Button btnCrimeScene;
@@ -80,9 +79,6 @@ public class RoomController {
       fadeTransition.setFromValue(0);
       fadeTransition.setToValue(1);
       fadeTransition.play();
-
-      // TextToSpeech.speak("Chat with the three customers, and guess who is the " +
-      // context.getProfessionToGuess());
       isFirstTimeInit = false;
     }
 
@@ -108,7 +104,6 @@ public class RoomController {
     dropShadow.setColor(Color.color(0, 0, 0, 0.4)); // Less opacity for lighter shadow
 
     // Timer and other UI-related updates
-    lblProfession.setText(context.getProfessionToGuess());
     updateMenuVisibility();
 
     final ImageView file1 = createAndBindImageView(image1); // Displayed initially
@@ -260,6 +255,11 @@ public class RoomController {
   private void handleGuessClick(ActionEvent event) throws IOException {
     App.setRoot("guessing");
     context.handleGuessClick();
+  }
+
+  @FXML
+  private void onSafe(ActionEvent event) throws IOException {
+    App.setRoot("clueSafe");
   }
 
   /**
