@@ -2,6 +2,7 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ public class GameStateContext {
   private final Guessing guessingState;
   private final GameOver gameOverState;
   private GameState gameState;
+  private List<String> listOfVisitors;
 
   private static GameStateContext instance;
 
@@ -41,6 +43,7 @@ public class GameStateContext {
     gameStartedState = new GameStarted(this);
     guessingState = new Guessing(this);
     gameOverState = new GameOver(this);
+    listOfVisitors = new ArrayList<>();
 
     gameState = gameStartedState; // Initial state
     Map<String, Object> obj = null;
@@ -200,5 +203,15 @@ public class GameStateContext {
   // Setter for garden tool state
   public void setGardenToolFound(boolean found) {
     this.isGardenToolFound = found;
+  }
+
+  public void addVisitor(String visitor) {
+    // Add visitor to the list of visitors
+    listOfVisitors.add(visitor);
+  }
+
+  public List getListOfVisitors() {
+    // Return the list of visitors
+    return listOfVisitors;
   }
 }
