@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -21,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
@@ -54,6 +56,8 @@ public class GuessingController {
 
   private ChatCompletionRequest chatCompletionRequest;
 
+  private String guessedsuspect;
+
   private Timeline timeline;
   private String text = "Who is the culprit . . .";
   private int i = 0;
@@ -67,6 +71,9 @@ public class GuessingController {
    */
   @FXML
   public void initialize() {
+
+    txtaChat.setOpacity(0);
+
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.reset(61);
     countdownTimer.start();
@@ -137,6 +144,24 @@ public class GuessingController {
     createAndBindImageView(suspectframes1hover);
     suspectframes1hover.setOpacity(0);
 
+    Image suspectframe2hover =
+        new Image(
+            GuessingController.class
+                .getResource("/images/guessingimages/suspect2big.png")
+                .toString());
+    ImageView suspectframes2hover = new ImageView(suspectframe2hover);
+    createAndBindImageView(suspectframes2hover);
+    suspectframes2hover.setOpacity(0);
+
+    Image suspectframe3hover =
+        new Image(
+            GuessingController.class
+                .getResource("/images/guessingimages/suspect3big.png")
+                .toString());
+    ImageView suspectframes3hover = new ImageView(suspectframe3hover);
+    createAndBindImageView(suspectframes3hover);
+    suspectframes3hover.setOpacity(0);
+
     // Create a hover effect for the ImageView
     suspectframes1.setOnMouseEntered(
         event -> {
@@ -154,15 +179,32 @@ public class GuessingController {
         e -> {
           suspectframes1hover.setOpacity(1);
         });
-
-    Image suspectframe2hover =
-        new Image(
-            GuessingController.class
-                .getResource("/images/guessingimages/suspect2big.png")
-                .toString());
-    ImageView suspectframes2hover = new ImageView(suspectframe2hover);
-    createAndBindImageView(suspectframes2hover);
-    suspectframes2hover.setOpacity(0);
+    suspectframes1hover.setOnMouseClicked(
+        e -> {
+          setframestoopacity0(
+              suspectframes1hover,
+              suspectframes2hover,
+              suspectframes3hover,
+              suspectframes1,
+              suspectframes2,
+              suspectframes3,
+              framesImages);
+          guessedsuspect = "suspect1";
+          onClickedGuess();
+        });
+    suspectframes1.setOnMouseClicked(
+        e -> {
+          setframestoopacity0(
+              suspectframes1hover,
+              suspectframes2hover,
+              suspectframes3hover,
+              suspectframes1,
+              suspectframes2,
+              suspectframes3,
+              framesImages);
+          guessedsuspect = "suspect1";
+          onClickedGuess();
+        });
 
     // Create a hover effect for the ImageView
     suspectframes2.setOnMouseEntered(
@@ -181,15 +223,32 @@ public class GuessingController {
         e -> {
           suspectframes2hover.setOpacity(1);
         });
-
-    Image suspectframe3hover =
-        new Image(
-            GuessingController.class
-                .getResource("/images/guessingimages/suspect3big.png")
-                .toString());
-    ImageView suspectframes3hover = new ImageView(suspectframe3hover);
-    createAndBindImageView(suspectframes3hover);
-    suspectframes3hover.setOpacity(0);
+    suspectframes2hover.setOnMouseClicked(
+        e -> {
+          setframestoopacity0(
+              suspectframes1hover,
+              suspectframes2hover,
+              suspectframes3hover,
+              suspectframes1,
+              suspectframes2,
+              suspectframes3,
+              framesImages);
+          guessedsuspect = "suspect2";
+          onClickedGuess();
+        });
+    suspectframes2.setOnMouseClicked(
+        e -> {
+          setframestoopacity0(
+              suspectframes1hover,
+              suspectframes2hover,
+              suspectframes3hover,
+              suspectframes1,
+              suspectframes2,
+              suspectframes3,
+              framesImages);
+          guessedsuspect = "suspect2";
+          onClickedGuess();
+        });
 
     // Create a hover effect for the ImageView
     suspectframes3.setOnMouseEntered(
@@ -208,6 +267,32 @@ public class GuessingController {
         e -> {
           suspectframes3hover.setOpacity(1);
         });
+    suspectframes3hover.setOnMouseClicked(
+        e -> {
+          setframestoopacity0(
+              suspectframes1hover,
+              suspectframes2hover,
+              suspectframes3hover,
+              suspectframes1,
+              suspectframes2,
+              suspectframes3,
+              framesImages);
+          guessedsuspect = "suspect3";
+          onClickedGuess();
+        });
+    suspectframes3.setOnMouseClicked(
+        e -> {
+          setframestoopacity0(
+              suspectframes1hover,
+              suspectframes2hover,
+              suspectframes3hover,
+              suspectframes1,
+              suspectframes2,
+              suspectframes3,
+              framesImages);
+          guessedsuspect = "suspect3";
+          onClickedGuess();
+        });
 
     // add hover effect
     addHoverEffect(suspectframes3hover);
@@ -218,6 +303,33 @@ public class GuessingController {
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
     staticimages(); // Start the GIF playback every 5 seconds
+  }
+
+  private void setframestoopacity0(
+      ImageView suspectframes1hover,
+      ImageView suspectframes2hover,
+      ImageView suspectframes3hover,
+      ImageView suspectframes1,
+      ImageView suspectframes2,
+      ImageView suspectframes3,
+      ImageView framesImages) {
+    suspectframes1hover.setOpacity(0);
+    suspectframes2hover.setOpacity(0);
+    suspectframes3hover.setOpacity(0);
+    suspectframes1.setOpacity(0);
+    suspectframes2.setOpacity(0);
+    suspectframes3.setOpacity(0);
+    framesImages.setOpacity(0);
+    lblStory.setOpacity(0);
+
+    // disable the hover
+    suspectframes1hover.setDisable(true);
+    suspectframes2hover.setDisable(true);
+    suspectframes3hover.setDisable(true);
+    suspectframes1.setDisable(true);
+    suspectframes2.setDisable(true);
+    suspectframes3.setDisable(true);
+    framesImages.setDisable(true);
   }
 
   private void addHoverEffect(ImageView group) {
@@ -238,15 +350,66 @@ public class GuessingController {
     // Creating a new label programmatically
     lblStory = new Label("");
 
-    // Set the initial position for the label
-    lblStory.setLayoutX(550); // Adjust X position as needed
-    lblStory.setLayoutY(100); // Adjust Y position as needed
+    // Load the Fira Code font from the resources folder
+    Font firaCodeFont =
+        Font.loadFont(getClass().getResourceAsStream("/fonts/FiraCode-Regular.ttf"), 20);
 
-    // Set the color and font size of the label text
-    lblStory.setStyle("-fx-text-fill: white; -fx-font-size: 30px;");
+    // Check if the font was loaded correctly
+    if (firaCodeFont == null) {
+      System.out.println("Font not loaded, check the path to the font file.");
+      return; // Stop execution if font loading fails
+    }
+
+    // Set the color and the custom Fira Code font of the label text
+    lblStory.setFont(firaCodeFont);
+    lblStory.setStyle("-fx-text-fill: white;");
+
+    // Set the initial Y position (closer to the top)
+    lblStory.setLayoutY(100); // Adjust the Y position as needed
 
     // Add the label to the rootPane
     rootPane.getChildren().add(lblStory);
+
+    // Make the label horizontally centered and responsive to window resizing
+    rootPane
+        .widthProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              // Adjust font size based on window width
+              double newFontSize =
+                  newVal.doubleValue() / 35; // Change the division factor as needed
+              lblStory.setFont(Font.font(firaCodeFont.getFamily(), newFontSize));
+
+              // Center the label horizontally by setting its X position dynamically
+              double labelWidth = lblStory.getWidth();
+              lblStory.setLayoutX((newVal.doubleValue() - labelWidth) / 2);
+            });
+
+    // Center the label horizontally on initial display as well
+    rootPane
+        .sceneProperty()
+        .addListener(
+            (obs, oldScene, newScene) -> {
+              if (newScene != null) {
+                newScene
+                    .widthProperty()
+                    .addListener(
+                        (sceneObs, oldWidth, newWidth) -> {
+                          double labelWidth = lblStory.getWidth();
+                          lblStory.setLayoutX((newWidth.doubleValue() - labelWidth) / 2);
+                        });
+
+                // Add listener for dynamic font sizing based on height too, if desired
+                newScene
+                    .heightProperty()
+                    .addListener(
+                        (obsH, oldHeight, newHeight) -> {
+                          double newFontSize =
+                              newHeight.doubleValue() / 25; // Adjust based on height
+                          lblStory.setFont(Font.font(firaCodeFont.getFamily(), newFontSize));
+                        });
+              }
+            });
   }
 
   private void appendChatMessage(ChatMessage msg) {
@@ -258,7 +421,6 @@ public class GuessingController {
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
     chatCompletionRequest.addMessage(msg);
-    disableSendButton(true); // Disable send button during processing
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
@@ -270,8 +432,6 @@ public class GuessingController {
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
       e.printStackTrace();
       return null;
-    } finally {
-      disableSendButton(false); // Re-enable send button after processing
     }
   }
 
@@ -284,19 +444,58 @@ public class GuessingController {
     }
 
     txtInput.clear();
-    ChatMessage msg = new ChatMessage("user", message);
-    appendChatMessage(msg);
 
-    try {
-      runGpt(msg);
-    } catch (ApiProxyException e) {
-      appendChatMessage(new ChatMessage("system", "Error sending message: " + e.getMessage()));
-    }
-  }
+    // Create a background task for the GPT request
+    Task<ChatMessage> task =
+        new Task<ChatMessage>() {
+          @Override
+          protected ChatMessage call() throws Exception {
+            // Initialize the API configuration and ChatCompletionRequest
+            ApiProxyConfig config = ApiProxyConfig.readConfig();
+            chatCompletionRequest =
+                new ChatCompletionRequest(config)
+                    .setN(1)
+                    .setTemperature(0.2)
+                    .setTopP(0.5)
+                    .setMaxTokens(100);
 
-  // Method to disable/enable send button
-  private void disableSendButton(boolean disable) {
-    btnSend.setDisable(disable);
+            // Load the template from the resource file
+            URL resourceUrl =
+                PromptEngineering.class.getClassLoader().getResource("prompts/guessing.txt");
+            String template = loadTemplate(resourceUrl.toURI());
+
+            // Append the user's message to the end of the template
+            String combinedMessage = template + "\n" + message;
+
+            // Create a system message with the combined template and user input
+            ChatMessage systemMessage = new ChatMessage("system", combinedMessage);
+
+            // Run GPT and get the response
+            return runGpt(systemMessage);
+          }
+        };
+
+    // On success, update the UI (run on the JavaFX Application Thread)
+    task.setOnSucceeded(
+        workerStateEvent -> {
+          ChatMessage response = task.getValue();
+          Platform.runLater(() -> appendChatMessage(response));
+        });
+
+    // On failure, handle the exception (you can also update the UI with an error message)
+    task.setOnFailed(
+        workerStateEvent -> {
+          Throwable throwable = task.getException();
+          Platform.runLater(
+              () ->
+                  appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage())));
+          throwable.printStackTrace();
+        });
+
+    // Start the task in a new thread
+    Thread thread = new Thread(task);
+    thread.setDaemon(true);
+    thread.start();
   }
 
   private static String loadTemplate(URI filePath) throws IOException {
@@ -422,6 +621,125 @@ public class GuessingController {
   @FXML
   private void onClickedGuess() {
 
+    if (guessedsuspect.equals("suspect1")) {
+      // Create the label above the TextField
+      Label selectedLabel = new Label("You have selected the first suspect.");
+      selectedLabel.setStyle(
+          "-fx-text-fill: white; -fx-font-size: 14px;"); // Set text color and size
+      selectedLabel.setLayoutX(450.0); // Same X position as TextField to align it
+      selectedLabel.setLayoutY(100.0); // Place it above the TextField
+      rootPane.getChildren().add(selectedLabel); // Add the label to the rootPane
+
+      // Load the image for the suspect
+      Image suspectImage =
+          new Image(getClass().getResource("/images/guessingimages/suspectframe1.png").toString());
+      ImageView suspectImageView = new ImageView(suspectImage);
+
+      // Set the image's size and position
+      suspectImageView.setFitWidth(rootPane.getWidth());
+      suspectImageView.setFitHeight(rootPane.getHeight() - 100);
+
+      // Add the image to the rootPane
+      rootPane.getChildren().add(suspectImageView);
+    } else if (guessedsuspect.equals("suspect2")) {
+      // Create the label above the TextField
+      Label selectedLabel = new Label("You have selected the second suspect.");
+      selectedLabel.setStyle(
+          "-fx-text-fill: white; -fx-font-size: 14px;"); // Set text color and size
+      selectedLabel.setLayoutX(450.0); // Same X position as TextField to align it
+      selectedLabel.setLayoutY(100.0); // Place it above the TextField
+      rootPane.getChildren().add(selectedLabel); // Add the label to the rootPane
+
+      // Load the image for the suspect
+      Image suspectImage =
+          new Image(getClass().getResource("/images/guessingimages/suspectframe2.png").toString());
+      ImageView suspectImageView = new ImageView(suspectImage);
+
+      // Set the image's size and position
+      suspectImageView.setFitWidth(rootPane.getWidth());
+      suspectImageView.setFitHeight(rootPane.getHeight() - 100);
+
+      // Add the image
+      rootPane.getChildren().add(suspectImageView);
+    } else if (guessedsuspect.equals("suspect3")) {
+      // Create the label above the TextField
+      Label selectedLabel = new Label("You have selected the UNCLE.");
+      selectedLabel.setStyle(
+          "-fx-text-fill: white; -fx-font-size: 14px;"); // Set text color and size
+      selectedLabel.setLayoutX(450.0); // Same X position as TextField to align it
+      selectedLabel.setLayoutY(100.0); // Place it above the TextField
+      rootPane.getChildren().add(selectedLabel); // Add the label to the rootPane
+
+      // Load the image for the suspect
+      Image suspectImage =
+          new Image(getClass().getResource("/images/guessingimages/suspectframe3.png").toString());
+      ImageView suspectImageView = new ImageView(suspectImage);
+
+      // Set the image's size and position
+      suspectImageView.setFitWidth(rootPane.getWidth() - 25);
+      suspectImageView.setFitHeight(rootPane.getHeight() - 50);
+
+      // Add the image
+      rootPane.getChildren().add(suspectImageView);
+    }
+
+    // Create a new TextField dynamically
+    txtInput = new TextField();
+
+    // Set the id, layout properties, size, and styles to match the FXML definition
+    txtInput.setId("userChatBox"); // Set the fx:id equivalent
+    txtInput.setLayoutX(450.0); // Set X position
+    txtInput.setLayoutY(130.0); // Set Y position
+    txtInput.setPrefHeight(120.0); // Set preferred height
+    txtInput.setPrefWidth(226.0); // Set preferred width
+
+    // Set the prompt text (placeholder)
+    txtInput.setPromptText("Enter your reasoning here...");
+
+    // Set the CSS style for border, background, and text colors
+    txtInput.setStyle(
+        "-fx-border-color: black; "
+            + // No border color
+            "-fx-background-color: black; "
+            + // Transparent background
+            "-fx-prompt-text-fill: white; "
+            + // White color for prompt text
+            "-fx-text-fill: white;" // White color for input text
+            + "-fx-font-size: 12px;"
+            + "-fx-border-radius: 10px; "
+            + // Rounded border radius
+            "-fx-background-radius: 10px"); // Rounded background radius); // Font size for the
+    // input text
+
+    txtInput.setOpacity(0.8);
+
+    // Align the text to the top left
+    txtInput.setAlignment(Pos.TOP_LEFT);
+
+    // Add the TextField to the rootPane
+    rootPane.getChildren().add(txtInput);
+
+    // Create a new Button dynamically below the TextField
+    Button btnSend = new Button("Send");
+    btnSend.setLayoutX(450.0); // Align with TextField
+    btnSend.setLayoutY(270.0); // Position right below the TextField
+    btnSend.setPrefWidth(226.0); // Same width as the TextField
+
+    // Add event handler to the button
+    btnSend.setOnAction(
+        event -> {
+          String userInput = txtInput.getText();
+          if (!userInput.isEmpty()) {
+            System.out.println("User Input: " + userInput);
+            // Add logic to handle the user's input
+            txtaChat.setOpacity(1);
+            onSendMessage(event);
+          }
+        });
+
+    // Add the Button to the rootPane
+    rootPane.getChildren().add(btnSend);
+
     Task<Void> task =
         new Task<Void>() {
           @Override
@@ -460,6 +778,6 @@ public class GuessingController {
     // Run the task in a separate thread
     Thread thread = new Thread(task);
     thread.setDaemon(true);
-    thread.start();
+    // thread.start();
   }
 }
