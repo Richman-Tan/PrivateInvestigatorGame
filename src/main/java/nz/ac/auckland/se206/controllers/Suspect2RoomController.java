@@ -227,6 +227,7 @@ public class Suspect2RoomController {
   @FXML
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
     sendMessageCode();
+    recordVisit();
   }
 
   /**
@@ -277,5 +278,12 @@ public class Suspect2RoomController {
 
   private static String loadTemplate(URI filePath) throws IOException {
     return new String(Files.readAllBytes(Paths.get(filePath)));
+  }
+
+  private void recordVisit() {
+    if (GameStateContext.getInstance().getListOfVisitors().isEmpty()
+        || !GameStateContext.getInstance().getListOfVisitors().contains("suspect2")) {
+      GameStateContext.getInstance().addVisitor("suspect2");
+    }
   }
 }
