@@ -259,7 +259,11 @@ public class RoomController {
 
   @FXML
   private void onSafe(ActionEvent event) throws IOException {
-    App.setRoot("clueSafe");
+    if (context.isNoteFound()) {
+      App.setRoot("cluesafeopened");
+    } else {
+      App.setRoot("cluesafe");
+    }
   }
 
   /**

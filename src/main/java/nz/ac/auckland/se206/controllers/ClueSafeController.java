@@ -7,9 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameStateContext;
 
 // import nz.ac.auckland.se206.GameStateContext;
 
@@ -19,14 +21,30 @@ public class ClueSafeController {
   @FXML private Label codeDisplay;
   @FXML private ImageView notes;
   private String line = "";
+  private DropShadow permShadow = new DropShadow();
 
   @FXML
   private void initialize() {
     if (notes != null) {
-      DropShadow permShadow = new DropShadow();
       permShadow.setColor(Color.GOLD); // Customize the hover effect color
-      permShadow.setRadius(10); // Customize the shadow effect
+      permShadow.setRadius(5); // Customize the shadow effect
+      notes.setEffect(permShadow);
       addHoverEffect(notes);
+
+      // Check if the notes have already been found
+      if (GameStateContext.getInstance().isNoteFound()) {
+        notes.setOpacity(0); // Hide the tool if already found
+      } else {
+        notes.setOpacity(1); // Show the tool if not found
+      }
+
+      // Set mouse click event to mark the notes as found and hide it
+      notes.setOnMouseClicked(
+          event -> {
+            notes.setOpacity(0); // Hide the tool after it's clicked
+            System.out.println("Notes clicked");
+            GameStateContext.getInstance().setNoteFound(true); // Mark as found in the context
+          });
     }
     // Add the "Go Back" button
     Button goBackButton = new Button("Go Back");
@@ -124,7 +142,7 @@ public class ClueSafeController {
   private void addHoverEffect(ImageView notes) {
     DropShadow hoverShadow = new DropShadow();
     hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
-    hoverShadow.setRadius(10); // Customize the shadow effect
+    hoverShadow.setRadius(20); // Customize the shadow effect
 
     notes.setOnMouseEntered(
         e -> {
@@ -133,7 +151,16 @@ public class ClueSafeController {
 
     notes.setOnMouseExited(
         e -> {
-          notes.setEffect(null); // Remove effect when mouse exits
+          notes.setEffect(permShadow); // Remove effect when mouse exits
         });
+  }
+
+  @FXML
+  private void onNote(MouseEvent event) {
+    try {
+      App.setRoot("cluenotes");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

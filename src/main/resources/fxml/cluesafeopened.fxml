@@ -17,7 +17,7 @@
             <Image url="@../images/cluesafeimages/pinpad.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="271.0" fitWidth="163.0" layoutX="236.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="247.0" fitWidth="158.0" layoutX="239.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/cluesafeimages/pinpadopened.png" />
          </image>
@@ -27,7 +27,7 @@
             <Image url="@../images/cluesafeimages/safeopen.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="notes" fitHeight="81.0" fitWidth="83.0" layoutX="512.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true" rotate="121.6">
+      <ImageView fx:id="notes" fitHeight="81.0" fitWidth="83.0" layoutX="512.0" layoutY="448.0" onMouseClicked="#onNote" pickOnBounds="true" preserveRatio="true" rotate="121.6">
          <image>
             <Image url="@../images/cluesafeimages/notesfloor.png" />
          </image>

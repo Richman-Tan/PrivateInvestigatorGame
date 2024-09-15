@@ -35,6 +35,7 @@ public class GameStateContext {
 
   // State of whether the garden tool has been found
   private boolean isGardenToolFound = false;
+  private boolean isNoteFound = false;
 
   /** Constructs a new GameStateContext and initializes the game states and professions. */
   public GameStateContext() {
@@ -200,5 +201,15 @@ public class GameStateContext {
   // Setter for garden tool state
   public void setGardenToolFound(boolean found) {
     this.isGardenToolFound = found;
+  }
+
+  // Getter for garden tool state
+  public boolean isNoteFound() {
+    return isNoteFound;
+  }
+
+  // Setter for garden tool state
+  public void setNoteFound(boolean found) {
+    this.isNoteFound = found;
   }
 }
