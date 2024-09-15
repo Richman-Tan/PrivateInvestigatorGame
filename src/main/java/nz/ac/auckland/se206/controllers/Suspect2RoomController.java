@@ -13,9 +13,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
@@ -37,6 +39,8 @@ public class Suspect2RoomController {
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect2ChatBox;
   @FXML private Circle sendButton;
+  @FXML private AnchorPane rootNode;
+  @FXML private ImageView backgroundimg;
 
   @FXML private Label lbltimer;
 
@@ -90,6 +94,13 @@ public class Suspect2RoomController {
     Thread thread = new Thread(task);
     thread.setDaemon(true);
     thread.start();
+
+    backgroundimg.setFitWidth(rootNode.getWidth());
+    backgroundimg.setFitHeight(rootNode.getHeight());
+
+    // Make sure the background resizes with the window
+    backgroundimg.fitWidthProperty().bind(rootNode.widthProperty());
+    backgroundimg.fitHeightProperty().bind(rootNode.heightProperty());
   }
 
   /**

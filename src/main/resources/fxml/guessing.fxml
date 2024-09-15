@@ -20,11 +20,6 @@
             <Image url="@../images/GuessingScene.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="613.0" fitWidth="1127.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <image>
-            <Image url="@../images/guessingborder.png" />
-         </image>
-      </ImageView>
       <BorderPane layoutX="199.0" layoutY="74.0" prefHeight="523.0" prefWidth="619.0" AnchorPane.leftAnchor="199.0" AnchorPane.topAnchor="74.0">
          <center>
             <HBox prefHeight="166.0" prefWidth="435.0" BorderPane.alignment="CENTER">
