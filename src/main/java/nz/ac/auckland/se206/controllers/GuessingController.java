@@ -614,7 +614,16 @@ public class GuessingController {
     wires.fitWidthProperty().bind(rootPane.widthProperty());
     wires.fitHeightProperty().bind(rootPane.heightProperty());
 
-    // Move the image one layer back
+    // Add a darker drop shadow to the wires
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setRadius(5.0);
+    dropShadow.setOffsetX(3.0);
+    dropShadow.setOffsetY(3.0);
+
+    // Make the shadow darker by reducing the brightness and increasing the opacity
+    dropShadow.setColor(Color.color(0.1, 0.1, 0.1, 0.8)); // Darker shadow with 80% opacity
+
+    wires.setEffect(dropShadow);
 
     if (context.isGardenToolFound()) {
       clue1foundimg.setFitWidth(rootPane.getWidth());
