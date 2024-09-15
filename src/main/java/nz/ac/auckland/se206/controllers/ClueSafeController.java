@@ -14,20 +14,7 @@ public class ClueSafeController {
 
   @FXML private AnchorPane anchorPane;
   @FXML private Label codeDisplay;
-
   private String line = "";
-
-  // @FXML private Button one;
-  // @FXML private Button two;
-  // @FXML private Button three;
-  // @FXML private Button four;
-  // @FXML private Button five;
-  // @FXML private Button six;
-  // @FXML private Button seven;
-  // @FXML private Button eight;
-  // @FXML private Button nine;
-  // @FXML private Button zero;
-  // @FXML private Button enter;
 
   @FXML
   private void initialize() {
@@ -44,6 +31,10 @@ public class ClueSafeController {
             + "-fx-border-insets: 0;");
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
+
+    // Position the button at the bottom-right corner
+    AnchorPane.setBottomAnchor(goBackButton, 10.0); // 10px from the bottom
+    AnchorPane.setRightAnchor(goBackButton, 10.0); // 10px from the right
 
     anchorPane.getChildren().add(goBackButton);
 
@@ -102,19 +93,20 @@ public class ClueSafeController {
 
     if (pinId.equals("delete")) {
       line = "";
-      codeDisplay.setText(line);
+      codeDisplay.setText("ENTER CODE");
     }
 
     if (pinId.equals("enter")) {
       if (line.equals("019")) {
         try {
+          codeDisplay.setText("ENTERED");
           App.setRoot("room");
         } catch (IOException e) {
           e.printStackTrace();
         }
       } else {
         line = "";
-        codeDisplay.setText("Incorrect");
+        codeDisplay.setText("INCORRECT");
       }
     }
   }

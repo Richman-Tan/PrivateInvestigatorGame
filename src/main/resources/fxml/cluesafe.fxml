@@ -5,52 +5,97 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="anchorPane" prefHeight="365.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ClueSafeController">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ClueSafeController">
    <children>
-      <ImageView fitHeight="395.0" fitWidth="800.0" layoutX="-11.0" layoutY="-18.0" pickOnBounds="true" smooth="false">
+      <ImageView fitHeight="600.0" fitWidth="1076.0" pickOnBounds="true" smooth="false">
          <image>
             <Image url="@../images/cluesafeimages/wall.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="370.0" fitWidth="386.0" layoutX="199.0" layoutY="9.0" pickOnBounds="true">
+      <ImageView fitHeight="531.0" fitWidth="575.0" layoutX="238.0" layoutY="5.0" pickOnBounds="true" AnchorPane.bottomAnchor="231.66666666666674" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="265.33333333333326" AnchorPane.topAnchor="5.0">
          <image>
             <Image url="@../images/cluesafeimages/safe.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="279.0" fitWidth="200.0" layoutX="287.0" layoutY="53.0" pickOnBounds="true">
+      <ImageView fitHeight="362.0" fitWidth="262.0" layoutX="422.0" layoutY="91.0" pickOnBounds="true">
          <image>
             <Image url="@../images/cluesafeimages/pinpad.png" />
          </image>
       </ImageView>
-      <Button fx:id="one" layoutX="346.0" layoutY="163.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="1" textFill="WHITE" />
-      <Button fx:id="two" layoutX="376.0" layoutY="163.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="2" textFill="WHITE" />
-      <Button fx:id="three" layoutX="406.0" layoutY="163.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="3" textFill="WHITE" />
-      <Button fx:id="four" layoutX="346.0" layoutY="189.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="4" textFill="WHITE" />
-      <Button fx:id="five" layoutX="376.0" layoutY="189.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="5" textFill="WHITE" />
-      <Button fx:id="six" layoutX="406.0" layoutY="189.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="6" textFill="WHITE" />
-      <Button fx:id="seven" layoutX="346.0" layoutY="215.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="7" textFill="WHITE" />
-      <Button fx:id="eight" layoutX="376.0" layoutY="215.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="8" textFill="WHITE" />
-      <Button fx:id="nine" layoutX="406.0" layoutY="215.0" mnemonicParsing="false" onAction="#onPin" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="9" textFill="WHITE" />
-      <Button fx:id="zero" layoutX="376.0" layoutY="242.0" mnemonicParsing="false" onAction="#onPin" prefHeight="28.0" prefWidth="30.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="0" textFill="WHITE" />
-      <Button fx:id="enter" layoutX="346.0" layoutY="242.0" mnemonicParsing="false" onAction="#onPin" prefHeight="28.0" prefWidth="30.0" style="-fx-background-color: darkgreen; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="ENTER" textFill="WHITE">
-         <font>
-            <Font size="6.0" />
-         </font>
-      </Button>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="28.0" layoutX="345.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" width="90.0" />
-      <Label fx:id="codeDisplay" layoutX="343.0" layoutY="110.0" prefHeight="26.0" prefWidth="106.0" text="ENTER CODE:" textFill="WHITE">
-         <font>
-            <Font name="Batang" size="13.0" />
-         </font>
-      </Label>
-      <Button fx:id="delete" layoutX="406.0" layoutY="242.0" mnemonicParsing="false" onAction="#onPin" prefHeight="28.0" prefWidth="30.0" style="-fx-background-color: maroon; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="CANCEL" textFill="WHITE">
-         <font>
-            <Font size="5.0" />
-         </font>
-      </Button>
+      <Pane layoutX="495.0" layoutY="150.0">
+         <children>
+            <Button fx:id="one" layoutX="4.0" layoutY="83.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="1" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="two" layoutX="43.0" layoutY="83.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="2" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="three" layoutX="82.0" layoutY="83.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="3" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="four" layoutX="4.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="4" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="five" layoutX="43.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="5" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="six" layoutX="82.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="6" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="seven" layoutX="4.0" layoutY="151.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="7" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="eight" layoutX="43.0" layoutY="151.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="8" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="nine" layoutX="82.0" layoutY="151.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="9" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="zero" layoutX="43.0" layoutY="185.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="enter" layoutX="4.0" layoutY="185.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: darkgreen; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="✔" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="delete" layoutX="82.0" layoutY="185.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: maroon; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="X" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Button>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="52.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="132.0" />
+            <Label fx:id="codeDisplay" layoutX="4.0" prefHeight="58.0" prefWidth="123.0" text="ENTER CODE" textFill="WHITE">
+               <font>
+                  <Font name="Batang" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
