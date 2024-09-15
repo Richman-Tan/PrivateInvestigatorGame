@@ -60,6 +60,7 @@ public class Suspect2RoomController {
           @Override
           protected Void call() throws IOException, URISyntaxException {
             try {
+              checkGuessButton();
               ApiProxyConfig config = ApiProxyConfig.readConfig();
               chatCompletionRequest =
                   new ChatCompletionRequest(config)
