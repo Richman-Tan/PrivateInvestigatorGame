@@ -36,6 +36,9 @@ public class GameStateContext {
   // State of whether the garden tool has been found
   private boolean isGardenToolFound = false;
 
+  // State of wheter the guess has been pressed.
+  private boolean isGuessPressed = false;
+
   /** Constructs a new GameStateContext and initializes the game states and professions. */
   public GameStateContext() {
     gameStartedState = new GameStarted(this);
@@ -200,5 +203,15 @@ public class GameStateContext {
   // Setter for garden tool state
   public void setGardenToolFound(boolean found) {
     this.isGardenToolFound = found;
+  }
+
+  // Getter for guess pressed state
+  public boolean isGuessPressed() {
+    return isGuessPressed;
+  }
+
+  // Setter for guess pressed state
+  public void setGuessPressed(boolean pressed) {
+    this.isGuessPressed = pressed;
   }
 }

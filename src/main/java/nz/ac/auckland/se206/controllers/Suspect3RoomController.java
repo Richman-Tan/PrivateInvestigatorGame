@@ -185,6 +185,7 @@ public class Suspect3RoomController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
+    GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
     App.setRoot("guessing");
     context.handleGuessClick();
   }

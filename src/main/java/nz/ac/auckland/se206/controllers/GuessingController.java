@@ -15,12 +15,14 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -41,6 +43,9 @@ public class GuessingController {
   @FXML private TextField txtInput;
   @FXML private Button btnSend;
 
+  @FXML private Button btnReplay;
+  @FXML private StackPane stackPane;
+
   @FXML private Label lbltimer;
 
   @FXML private Label lblStory; // The Label for displaying text
@@ -50,7 +55,11 @@ public class GuessingController {
 
   @FXML private ImageView staticlayer; // GIF image view created programmatically
 
+  @FXML private ProgressIndicator progressIndicator;
+
   private ImageView staticimg1; // GIF image view created programmatically
+
+  private Label selectedLabel = new Label("");
 
   private TimerModel countdownTimer;
 
@@ -72,7 +81,19 @@ public class GuessingController {
   @FXML
   public void initialize() {
 
+    txtaChat.setStyle(
+        "-fx-border-color: black; "
+            + "-fx-background-color: black; "
+            + "-fx-text-fill: white; "
+            + "-fx-prompt-text-fill: white; "
+            + "-fx-font-size: 12px;"
+            + "-fx-border-radius: 10px; "
+            + "-fx-background-radius: 10px;"
+            + "-fx-control-inner-background: black;");
+    txtaChat.setEditable(false);
+
     txtaChat.setOpacity(0);
+    btnReplay.setOpacity(0);
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.reset(61);
@@ -415,8 +436,33 @@ public class GuessingController {
   private void appendChatMessage(ChatMessage msg) {
     // Clear the text area before showing the new message
     txtaChat.clear();
-    // Show only the latest message
-    txtaChat.appendText(msg.getContent() + "\n\n");
+
+    // Get the message content as a string
+    String content = msg.getContent();
+
+    // Create a new StringBuilder to hold the text progressively
+    StringBuilder displayedText = new StringBuilder();
+
+    // Create a new Timeline to append the text one letter at a time
+    Timeline timeline = new Timeline();
+
+    // Loop through each character of the message and create keyframes to append the characters
+    for (int i = 0; i < content.length(); i++) {
+      final int index = i;
+      KeyFrame keyFrame =
+          new KeyFrame(
+              Duration.millis(50 * (index + 1)), // Delay based on character position
+              event -> {
+                // Append the next character to the StringBuilder
+                displayedText.append(content.charAt(index));
+                // Update the TextArea with the current text
+                txtaChat.setText(displayedText.toString());
+              });
+      timeline.getKeyFrames().add(keyFrame);
+    }
+
+    // Play the timeline animation
+    timeline.play();
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
@@ -437,6 +483,8 @@ public class GuessingController {
 
   @FXML
   private void onSendMessage(ActionEvent event) {
+    btnReplay.setOpacity(1);
+
     String message = txtInput.getText().trim();
     System.out.println("Message: " + message);
     if (message.isEmpty()) {
@@ -444,6 +492,9 @@ public class GuessingController {
     }
 
     txtInput.clear();
+
+    // Show the ProgressIndicator when the task starts
+    progressIndicator.setVisible(true);
 
     // Create a background task for the GPT request
     Task<ChatMessage> task =
@@ -479,7 +530,11 @@ public class GuessingController {
     task.setOnSucceeded(
         workerStateEvent -> {
           ChatMessage response = task.getValue();
-          Platform.runLater(() -> appendChatMessage(response));
+          Platform.runLater(
+              () -> {
+                appendChatMessage(response); // Append the GPT response to the chat
+                progressIndicator.setVisible(false); // Hide the progress indicator
+              });
         });
 
     // On failure, handle the exception (you can also update the UI with an error message)
@@ -487,8 +542,10 @@ public class GuessingController {
         workerStateEvent -> {
           Throwable throwable = task.getException();
           Platform.runLater(
-              () ->
-                  appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage())));
+              () -> {
+                appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage()));
+                progressIndicator.setVisible(false); // Hide the progress indicator on failure
+              });
           throwable.printStackTrace();
         });
 
@@ -623,7 +680,7 @@ public class GuessingController {
 
     if (guessedsuspect.equals("suspect1")) {
       // Create the label above the TextField
-      Label selectedLabel = new Label("You have selected the first suspect.");
+      selectedLabel = new Label("You have selected the WIDOW");
       selectedLabel.setStyle(
           "-fx-text-fill: white; -fx-font-size: 14px;"); // Set text color and size
       selectedLabel.setLayoutX(450.0); // Same X position as TextField to align it
@@ -635,15 +692,19 @@ public class GuessingController {
           new Image(getClass().getResource("/images/guessingimages/suspectframe1.png").toString());
       ImageView suspectImageView = new ImageView(suspectImage);
 
+      suspectImageView.setPreserveRatio(true);
       // Set the image's size and position
       suspectImageView.setFitWidth(rootPane.getWidth());
-      suspectImageView.setFitHeight(rootPane.getHeight() - 100);
+      suspectImageView.setFitHeight(rootPane.getHeight());
+
+      suspectImageView.setLayoutX(-120); // Set the X position (move right if needed)
+      suspectImageView.setLayoutY(-15); // Set the Y position to move it lower
 
       // Add the image to the rootPane
       rootPane.getChildren().add(suspectImageView);
     } else if (guessedsuspect.equals("suspect2")) {
       // Create the label above the TextField
-      Label selectedLabel = new Label("You have selected the second suspect.");
+      selectedLabel = new Label("You have selected the SON.");
       selectedLabel.setStyle(
           "-fx-text-fill: white; -fx-font-size: 14px;"); // Set text color and size
       selectedLabel.setLayoutX(450.0); // Same X position as TextField to align it
@@ -656,14 +717,18 @@ public class GuessingController {
       ImageView suspectImageView = new ImageView(suspectImage);
 
       // Set the image's size and position
+      suspectImageView.setPreserveRatio(true);
       suspectImageView.setFitWidth(rootPane.getWidth());
-      suspectImageView.setFitHeight(rootPane.getHeight() - 100);
+      suspectImageView.setFitHeight(rootPane.getHeight());
+
+      suspectImageView.setLayoutX(-230); // Set the X position (move right if needed)
+      suspectImageView.setLayoutY(-15); // Set the Y position to move it lower
 
       // Add the image
       rootPane.getChildren().add(suspectImageView);
     } else if (guessedsuspect.equals("suspect3")) {
       // Create the label above the TextField
-      Label selectedLabel = new Label("You have selected the UNCLE.");
+      selectedLabel = new Label("You have selected the UNCLE.");
       selectedLabel.setStyle(
           "-fx-text-fill: white; -fx-font-size: 14px;"); // Set text color and size
       selectedLabel.setLayoutX(450.0); // Same X position as TextField to align it
@@ -732,7 +797,14 @@ public class GuessingController {
           if (!userInput.isEmpty()) {
             System.out.println("User Input: " + userInput);
             // Add logic to handle the user's input
-            txtaChat.setOpacity(1);
+            stackPane.setOpacity(0.8);
+            txtaChat.setOpacity(0.8);
+            txtInput.setOpacity(0);
+            btnSend.setOpacity(0);
+
+            btnSend.setDisable(true);
+
+            selectedLabel.setOpacity(0);
             onSendMessage(event);
           }
         });
