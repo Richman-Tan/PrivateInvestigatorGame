@@ -214,8 +214,4 @@ public class GameStateContext {
     // Return the list of visitors
     return listOfVisitors;
   }
-
-  // public static boolean canPlayerMakeGuess() {
-  //   return listOfVisitors.size() == 3;
-  // }
 }

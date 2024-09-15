@@ -229,6 +229,7 @@ public class Suspect1RoomController {
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
     sendMessageCode();
     recordVisit();
+    checkGuessButton();
   }
 
   /**
@@ -285,6 +286,21 @@ public class Suspect1RoomController {
     if (GameStateContext.getInstance().getListOfVisitors().isEmpty()
         || !GameStateContext.getInstance().getListOfVisitors().contains("suspect1")) {
       GameStateContext.getInstance().addVisitor("suspect1");
+    }
+  }
+
+  @FXML
+  private void checkGuessButton() {
+    if (context.getListOfVisitors().contains("suspect1")
+        && context.getListOfVisitors().contains("suspect2")
+        && context.getListOfVisitors().contains("suspect3")) {
+      // Enable the guess button
+      guessButton.setOpacity(0.8);
+      guessButton.setDisable(false);
+    } else {
+      // Disable the guess button
+      guessButton.setOpacity(0.3);
+      guessButton.setDisable(true);
     }
   }
 }
