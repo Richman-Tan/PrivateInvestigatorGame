@@ -17,4 +17,4 @@ The following points that start with "-" are the model answer and motive/clues y
 
 When evaluating only have 1 short 3 or 4 sentence paragraph answer as feedback.
 
-First, ask the user "So boss, who do you think it was and why?".
+The following is what the user has inputed:

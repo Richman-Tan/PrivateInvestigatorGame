@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect3RoomController">
+<AnchorPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect3RoomController">
    <children>
-      <ImageView fitHeight="613.0" fitWidth="790.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="backgroundimg" fitHeight="599.0" fitWidth="790.0" pickOnBounds="true">
          <image>
             <Image url="@../images/suspectson.png" />
          </image>

@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import javafx.scene.input.MouseEvent;
+import nz.ac.auckland.se206.controllers.SharedTimerModel;
+import nz.ac.auckland.se206.controllers.TimerModel;
 import nz.ac.auckland.se206.states.GameOver;
 import nz.ac.auckland.se206.states.GameStarted;
 import nz.ac.auckland.se206.states.GameState;
@@ -37,6 +39,11 @@ public class GameStateContext {
 
   // State of whether the garden tool has been found
   private boolean isGardenToolFound = false;
+
+  // State of wheter the guess has been pressed.
+  private boolean isGuessPressed = false;
+
+  private TimerModel countdownTimer;
 
   /** Constructs a new GameStateContext and initializes the game states and professions. */
   public GameStateContext() {
@@ -213,5 +220,36 @@ public class GameStateContext {
   public List getListOfVisitors() {
     // Return the list of visitors
     return listOfVisitors;
+  }
+
+  // Getter for guess pressed state
+  public boolean isGuessPressed() {
+    return isGuessPressed;
+  }
+
+  // Setter for guess pressed state
+  public void setGuessPressed(boolean pressed) {
+    this.isGuessPressed = pressed;
+  }
+
+  /**
+   * Resets the game state to the initial game started state.
+   *
+   * @throws IOException if there is an I/O error
+   */
+  public void reset() throws IOException {
+    isMenuVisible = false;
+    isGardenToolFound = false;
+    isGuessPressed = false;
+    gameState = gameStartedState;
+
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+
+    countdownTimer.resetI();
+    countdownTimer.stop();
+    SharedTimerModel.getInstance().resetTimer();
+
+    // Reset instance
+    instance = new GameStateContext();
   }
 }

@@ -13,9 +13,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
@@ -37,9 +39,14 @@ public class Suspect3RoomController {
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect3ChatBox;
   @FXML private Circle sendButton;
+
   @FXML private Button guessButton;
 
+  @FXML private AnchorPane rootNode;
+
+
   @FXML private Label lbltimer;
+  @FXML private ImageView backgroundimg;
 
   private ChatCompletionRequest chatCompletionRequest;
   private GameStateContext context = GameStateContext.getInstance();
@@ -92,6 +99,13 @@ public class Suspect3RoomController {
     Thread thread = new Thread(task);
     thread.setDaemon(true);
     thread.start();
+
+    backgroundimg.setFitWidth(rootNode.getWidth());
+    backgroundimg.setFitHeight(rootNode.getHeight());
+
+    // Make sure the background resizes with the window
+    backgroundimg.fitWidthProperty().bind(rootNode.widthProperty());
+    backgroundimg.fitHeightProperty().bind(rootNode.heightProperty());
   }
 
   /**
@@ -176,6 +190,7 @@ public class Suspect3RoomController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
+    GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
     App.setRoot("guessing");
     context.handleGuessClick();
   }

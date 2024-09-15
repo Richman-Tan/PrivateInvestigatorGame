@@ -12,13 +12,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="rootNode" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="347.0" prefWidth="792.0" style="-fx-background-color: #A9A9A9;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.RoomController">
+<AnchorPane fx:id="rootNode" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="508.0" prefWidth="792.0" style="-fx-background-color: #A9A9A9;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.RoomController">
    <children>
-      <Label fx:id="lblProfession" layoutX="503.0" layoutY="56.0" prefHeight="37.0" prefWidth="289.0" wrapText="true">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Label>
       <HBox alignment="CENTER" layoutX="11.0" layoutY="10.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
          <children>
             <Button fx:id="btnMenu" maxHeight="10.0" mnemonicParsing="false" onAction="#onToggleMenu" opacity="0.8" prefHeight="60.0" prefWidth="31.0" style="-fx-background-radius: 10 0 0 10; -fx-border-radius: 10 0 0 10; -fx-border-color: black transparent black black; -fx-background-insets: 0;" stylesheets="@../css/button.css">
@@ -69,34 +64,34 @@
             </Label>
          </children>
       </Pane>
-      <VBox layoutX="659.0" layoutY="33.0" opacity="0.75" prefHeight="200.0" prefWidth="100.0" AnchorPane.rightAnchor="6.0">
+      <VBox layoutX="659.0" layoutY="-11.0" opacity="0.75" prefHeight="403.0" prefWidth="143.0" AnchorPane.rightAnchor="6.0">
          <children>
-            <Pane opacity="0.75" prefHeight="16.0" prefWidth="86.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+            <Pane opacity="0.75" prefHeight="23.0" prefWidth="91.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
                <children>
-                  <Text layoutX="6.0" layoutY="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clues Found" wrappingWidth="78.14582848290627" />
+                  <Text layoutX="28.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clues Found" wrappingWidth="78.14582848290627" />
                </children>
             </Pane>
-            <Pane opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+            <Pane opacity="0.75" prefHeight="100.0" prefWidth="123.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
                <children>
-                  <ImageView fx:id="clue1" fitHeight="54.0" fitWidth="91.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="clue1" fitHeight="162.0" fitWidth="285.0" layoutX="-113.0" layoutY="-63.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/cluedrawimages/gardenshears.png" />
                      </image>
                   </ImageView>
                </children>
             </Pane>
-            <Pane opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+            <Pane opacity="0.75" prefHeight="100.0" prefWidth="123.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </Pane>
-            <Pane opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+            <Pane opacity="0.75" prefHeight="100.0" prefWidth="80.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>

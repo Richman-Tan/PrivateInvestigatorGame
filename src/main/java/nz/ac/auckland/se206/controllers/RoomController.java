@@ -27,7 +27,6 @@ import nz.ac.auckland.se206.GameStateContext;
  */
 public class RoomController {
 
-  @FXML private Label lblProfession;
   @FXML private Button btnGuess;
   @FXML private Button btnMenu;
   @FXML private Button btnCrimeScene;
@@ -108,7 +107,6 @@ public class RoomController {
     dropShadow.setColor(Color.color(0, 0, 0, 0.4)); // Less opacity for lighter shadow
 
     // Timer and other UI-related updates
-    lblProfession.setText(context.getProfessionToGuess());
     updateMenuVisibility();
 
     final ImageView file1 = createAndBindImageView(image1); // Displayed initially
@@ -185,7 +183,7 @@ public class RoomController {
         e -> {
           try {
             // 1 second delay
-            Thread.sleep(1000);
+            Thread.sleep(10);
             App.setRoot("cluedrawer");
           } catch (IOException e1) {
             // TODO Auto-generated catch block
@@ -258,6 +256,7 @@ public class RoomController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
+    GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
     App.setRoot("guessing");
     context.handleGuessClick();
   }
