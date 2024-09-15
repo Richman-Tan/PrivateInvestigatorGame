@@ -45,7 +45,6 @@ public class Suspect1RoomController {
   @FXML private AnchorPane rootNode;
   @FXML private ImageView backgroundimg;
 
-
   @FXML private Label lbltimer;
 
   private ChatCompletionRequest chatCompletionRequest;
@@ -318,5 +317,12 @@ public class Suspect1RoomController {
       guessButton.setOpacity(0.3);
       guessButton.setDisable(true);
     }
+  }
+
+  @FXML
+  private void onEnterKey(ActionEvent event) throws ApiProxyException, IOException {
+    sendMessageCode();
+    recordVisit();
+    checkGuessButton();
   }
 }
