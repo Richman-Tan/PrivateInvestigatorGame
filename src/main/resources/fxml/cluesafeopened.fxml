@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ClueSafeController">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="1076.0" pickOnBounds="true" smooth="false">
+         <image>
+            <Image url="@../images/cluesafeimages/wall.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="362.0" fitWidth="262.0" layoutX="184.0" layoutY="139.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/cluesafeimages/pinpad.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="271.0" fitWidth="163.0" layoutX="236.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/cluesafeimages/pinpadopened.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="531.0" fitWidth="391.0" layoutX="431.0" layoutY="45.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/cluesafeimages/safeopen.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="notes" fitHeight="81.0" fitWidth="83.0" layoutX="512.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true" rotate="121.6">
+         <image>
+            <Image url="@../images/cluesafeimages/notesfloor.png" />
+         </image>
+         <rotationAxis>
+            <Point3D x="1.0" />
+         </rotationAxis>
+      </ImageView>
+   </children>
+   <rotationAxis>
+      <Point3D y="1.0" z="1.0" />
+   </rotationAxis>
+</AnchorPane>

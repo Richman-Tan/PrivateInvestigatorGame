@@ -5,7 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import nz.ac.auckland.se206.App;
 
 // import nz.ac.auckland.se206.GameStateContext;
@@ -14,10 +17,17 @@ public class ClueSafeController {
 
   @FXML private AnchorPane anchorPane;
   @FXML private Label codeDisplay;
+  @FXML private ImageView notes;
   private String line = "";
 
   @FXML
   private void initialize() {
+    if (notes != null) {
+      DropShadow permShadow = new DropShadow();
+      permShadow.setColor(Color.GOLD); // Customize the hover effect color
+      permShadow.setRadius(10); // Customize the shadow effect
+      addHoverEffect(notes);
+    }
     // Add the "Go Back" button
     Button goBackButton = new Button("Go Back");
     goBackButton.setStyle(
@@ -100,7 +110,7 @@ public class ClueSafeController {
       if (line.equals("019")) {
         try {
           codeDisplay.setText("ENTERED");
-          App.setRoot("room");
+          App.setRoot("cluesafeopened");
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -109,5 +119,21 @@ public class ClueSafeController {
         codeDisplay.setText("INCORRECT");
       }
     }
+  }
+
+  private void addHoverEffect(ImageView notes) {
+    DropShadow hoverShadow = new DropShadow();
+    hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
+    hoverShadow.setRadius(10); // Customize the shadow effect
+
+    notes.setOnMouseEntered(
+        e -> {
+          notes.setEffect(hoverShadow); // Apply hover effect when mouse enters
+        });
+
+    notes.setOnMouseExited(
+        e -> {
+          notes.setEffect(null); // Remove effect when mouse exits
+        });
   }
 }

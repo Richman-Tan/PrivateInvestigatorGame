@@ -17,17 +17,17 @@
             <Image url="@../images/cluesafeimages/wall.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="531.0" fitWidth="575.0" layoutX="238.0" layoutY="5.0" pickOnBounds="true" AnchorPane.bottomAnchor="231.66666666666674" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="265.33333333333326" AnchorPane.topAnchor="5.0">
+      <ImageView fitHeight="531.0" fitWidth="391.0" layoutX="412.0" layoutY="39.0" pickOnBounds="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="412.0" AnchorPane.rightAnchor="286.0" AnchorPane.topAnchor="39.0">
          <image>
             <Image url="@../images/cluesafeimages/safe.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="362.0" fitWidth="262.0" layoutX="422.0" layoutY="91.0" pickOnBounds="true">
+      <ImageView fitHeight="362.0" fitWidth="262.0" layoutX="174.0" layoutY="129.0" pickOnBounds="true">
          <image>
             <Image url="@../images/cluesafeimages/pinpad.png" />
          </image>
       </ImageView>
-      <Pane layoutX="495.0" layoutY="150.0">
+      <Pane layoutX="247.0" layoutY="188.0">
          <children>
             <Button fx:id="one" layoutX="4.0" layoutY="83.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPin" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: black; -fx-border-color: lightblue; -fx-font-family: trebuchet;" text="1" textFill="WHITE">
                <font>
