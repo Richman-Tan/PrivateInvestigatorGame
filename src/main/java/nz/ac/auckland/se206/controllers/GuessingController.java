@@ -55,10 +55,14 @@ public class GuessingController {
 
   @FXML private ImageView background; // GIF image view created in Scene Builder
   @FXML private ImageView backgroundoverlay; // GIF image view created in Scene Builder
+  @FXML private ImageView wires;
+  @FXML private ImageView clue1foundimg;
 
   @FXML private ImageView staticlayer; // GIF image view created programmatically
 
   @FXML private ProgressIndicator progressIndicator;
+
+  private GameStateContext context = GameStateContext.getInstance();
 
   private ImageView staticimg1; // GIF image view created programmatically
 
@@ -384,56 +388,24 @@ public class GuessingController {
       return; // Stop execution if font loading fails
     }
 
-    // Set the color and the custom Fira Code font of the label text
+    // Set the font and color for the label
     lblStory.setFont(firaCodeFont);
     lblStory.setStyle("-fx-text-fill: white;");
 
-    // Set the initial Y position (closer to the top)
-    lblStory.setLayoutY(100); // Adjust the Y position as needed
-
-    // Add the label to the rootPane
+    // Add the label to the rootPane first
     rootPane.getChildren().add(lblStory);
 
-    // Make the label horizontally centered and responsive to window resizing
-    rootPane
-        .widthProperty()
-        .addListener(
-            (obs, oldVal, newVal) -> {
-              // Adjust font size based on window width
-              double newFontSize =
-                  newVal.doubleValue() / 35; // Change the division factor as needed
-              lblStory.setFont(Font.font(firaCodeFont.getFamily(), newFontSize));
+    // Use Platform.runLater to wait until the layout is applied
+    Platform.runLater(
+        () -> {
+          // Calculate the center X and Y after the label's width and height are set
+          double centerX = (rootPane.getWidth() - lblStory.getWidth()) / 2;
+          double centerY = (rootPane.getHeight() - lblStory.getHeight()) / 2;
 
-              // Center the label horizontally by setting its X position dynamically
-              double labelWidth = lblStory.getWidth();
-              lblStory.setLayoutX((newVal.doubleValue() - labelWidth) / 2);
-            });
-
-    // Center the label horizontally on initial display as well
-    rootPane
-        .sceneProperty()
-        .addListener(
-            (obs, oldScene, newScene) -> {
-              if (newScene != null) {
-                newScene
-                    .widthProperty()
-                    .addListener(
-                        (sceneObs, oldWidth, newWidth) -> {
-                          double labelWidth = lblStory.getWidth();
-                          lblStory.setLayoutX((newWidth.doubleValue() - labelWidth) / 2);
-                        });
-
-                // Add listener for dynamic font sizing based on height too, if desired
-                newScene
-                    .heightProperty()
-                    .addListener(
-                        (obsH, oldHeight, newHeight) -> {
-                          double newFontSize =
-                              newHeight.doubleValue() / 25; // Adjust based on height
-                          lblStory.setFont(Font.font(firaCodeFont.getFamily(), newFontSize));
-                        });
-              }
-            });
+          // Set the label's position to center it
+          lblStory.setLayoutX(centerX - 130);
+          lblStory.setLayoutY(centerY - 200);
+        });
   }
 
   private void appendChatMessage(ChatMessage msg) {
@@ -635,8 +607,27 @@ public class GuessingController {
     staticlayer.fitWidthProperty().bind(rootPane.widthProperty());
     staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
 
+    wires.setFitWidth(rootPane.getWidth());
+    wires.setFitHeight(rootPane.getHeight());
+
+    // Make sure the background resizes with the window
+    wires.fitWidthProperty().bind(rootPane.widthProperty());
+    wires.fitHeightProperty().bind(rootPane.heightProperty());
+
     // Move the image one layer back
 
+    if (context.isGardenToolFound()) {
+      clue1foundimg.setFitWidth(rootPane.getWidth());
+      clue1foundimg.setFitHeight(rootPane.getHeight());
+
+      // Make sure the background resizes with the window
+      clue1foundimg.fitWidthProperty().bind(rootPane.widthProperty());
+      clue1foundimg.fitHeightProperty().bind(rootPane.heightProperty());
+
+      clue1foundimg.setOpacity(1);
+    }
+
+    wires.toBack();
     backgroundoverlay.toBack();
     staticimg1.toBack();
     staticlayer.toBack();

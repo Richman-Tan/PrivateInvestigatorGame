@@ -28,6 +28,16 @@
             <Image url="@../images/guessingimages/guessingoverlay.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="wires" fitHeight="712.0" fitWidth="1746.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/guessingimages/wireforclues.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="clue1foundimg" fitHeight="671.0" fitWidth="1221.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/guessingimages/clue1found.png" />
+         </image>
+      </ImageView>
       <StackPane fx:id="stackPane" layoutX="455.0" layoutY="80.0" opacity="0.0" prefHeight="212.0" prefWidth="235.0" style="-fx-background-color: black;">
          <children>
       <TextArea fx:id="txtaChat" editable="false" prefHeight="212.0" prefWidth="184.0" style="-fx-border-color: black;             -fx-background-color: black;             -fx-text-fill: white;             -fx-prompt-text-fill: white;             -fx-font-size: 12px;             -fx-border-radius: 10px;             -fx-background-radius: 10px;" wrapText="true" />
