@@ -19,11 +19,27 @@ public class ClueSafeController {
     Image backgroundImage =
         new Image(
             BackstoryController.class
-                .getResource("/images/cluesafeimages/clueSafe.jpg")
+                .getResource("/images/cluesafeimages/wall.jpg")
                 .toString());
+
+    Image metal =
+    new Image(
+        ClueDrawerController.class
+            .getResource("/images/cluesafeimages/metal.png")
+            .toString());
+
 
     createAndBindImageView(backgroundImage);
 
+    // Create the ImageView for the safe background
+    ImageView imageView = new ImageView(metal);
+    imageView.setFitWidth(anchorPane.getWidth());
+    imageView.setFitHeight(anchorPane.getHeight());
+    imageView.fitWidthProperty().bind(anchorPane.widthProperty());
+    imageView.fitHeightProperty().bind(anchorPane.heightProperty());
+    imageView.setOpacity(1);
+    // Add the garden tool ImageView to the anchorPane
+    anchorPane.getChildren().add(imageView);
 
     // Add the "Go Back" button
     Button goBackButton = new Button("Go Back");
