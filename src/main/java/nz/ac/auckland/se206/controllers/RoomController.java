@@ -139,6 +139,58 @@ public class RoomController {
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    // Load background image
+    Image phoneClueImage =
+        new Image(RoomController.class.getResource("/images/phoneclue.png").toString());
+
+    // Create the background ImageView and set an initial size (scale)
+    ImageView phoneClueImageView = new ImageView(phoneClueImage);
+
+    // Apply a scaling factor (e.g., 0.14 for 14% of the root node size)
+    double scaleFactor = 0.14;
+    phoneClueImageView.setFitWidth(rootNode.getWidth() * scaleFactor);
+    phoneClueImageView.setFitHeight(rootNode.getHeight() * scaleFactor);
+
+    // Make sure the background resizes with the window, but maintain the scaling
+    phoneClueImageView.fitWidthProperty().bind(rootNode.widthProperty().multiply(scaleFactor));
+    phoneClueImageView.fitHeightProperty().bind(rootNode.heightProperty().multiply(scaleFactor));
+
+    // Use AnchorPane constraints to position the ImageView
+    double rightMargin = 280.0; // Increase this value to move further from the right
+    double verticalOffset = 70.0; // Move it slightly further down from the center
+
+    AnchorPane.setRightAnchor(phoneClueImageView, rightMargin); // Move it 100px from the right
+    AnchorPane.setTopAnchor(
+        phoneClueImageView,
+        (rootNode.getHeight() - phoneClueImageView.getFitHeight()) / 2
+            + verticalOffset); // Vertically slightly lower
+
+    // Bind TopAnchor to keep the image vertically responsive as the window resizes
+    phoneClueImageView
+        .fitHeightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              AnchorPane.setTopAnchor(
+                  phoneClueImageView,
+                  (rootNode.getHeight() - newVal.doubleValue()) / 2 + verticalOffset);
+            });
+
+    DropShadow hoverShadow = new DropShadow();
+    hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
+    hoverShadow.setRadius(10); // Customize the shadow effect
+
+    phoneClueImageView.setOnMouseEntered(
+        e -> {
+          phoneClueImageView.setEffect(hoverShadow); // Apply hover effect when mouse enters
+        });
+    phoneClueImageView.setOnMouseExited(
+        e -> {
+          phoneClueImageView.setEffect(null); // Remove effect when mouse exits
+        });
+
+    // Add the ImageView to the root node
+    rootNode.getChildren().addAll(phoneClueImageView);
   }
 
   private void addHoverEffect(Group group) {
