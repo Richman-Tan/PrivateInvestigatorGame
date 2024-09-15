@@ -138,4 +138,13 @@ public class TimerModel {
     int seconds = totalSeconds % 60;
     return String.format("%02d:%02d", minutes, seconds);
   }
+
+  /*
+   * Gets the time in seconds.
+   *
+   * @return the time in seconds
+   */
+  public void resetI() {
+    i = 0;
+  }
 }

@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -32,6 +33,8 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
@@ -851,5 +854,20 @@ public class GuessingController {
     Thread thread = new Thread(task);
     thread.setDaemon(true);
     // thread.start();
+  }
+
+  @FXML
+  private void onReplay(ActionEvent event) throws IOException {
+
+    // Re initalise the context
+    GameStateContext.getInstance().reset();
+
+    // Fade out transition
+    FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(1000), rootPane);
+    fadeOutTransition.setFromValue(1.0);
+    fadeOutTransition.setToValue(0.0);
+    fadeOutTransition.play();
+
+    App.setRoot("initialScene");
   }
 }
