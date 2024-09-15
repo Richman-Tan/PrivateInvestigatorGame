@@ -3,8 +3,6 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import nz.ac.auckland.se206.App;
 // import nz.ac.auckland.se206.GameStateContext;
@@ -15,32 +13,6 @@ public class ClueSafeController {
 
   @FXML
   private void initialize() {
-    // Load background and garden tool images
-    Image backgroundImage =
-        new Image(
-            BackstoryController.class
-                .getResource("/images/cluesafeimages/wall.jpg")
-                .toString());
-
-    Image metal =
-    new Image(
-        ClueDrawerController.class
-            .getResource("/images/cluesafeimages/metal.png")
-            .toString());
-
-
-    createAndBindImageView(backgroundImage);
-
-    // Create the ImageView for the safe background
-    ImageView imageView = new ImageView(metal);
-    imageView.setFitWidth(anchorPane.getWidth());
-    imageView.setFitHeight(anchorPane.getHeight());
-    imageView.fitWidthProperty().bind(anchorPane.widthProperty());
-    imageView.fitHeightProperty().bind(anchorPane.heightProperty());
-    imageView.setOpacity(1);
-    // Add the garden tool ImageView to the anchorPane
-    anchorPane.getChildren().add(imageView);
-
     // Add the "Go Back" button
     Button goBackButton = new Button("Go Back");
     goBackButton.setStyle(
@@ -54,12 +26,7 @@ public class ClueSafeController {
             + "-fx-border-insets: 0;");
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
-
-    // Position the button at the bottom-right corner
-    AnchorPane.setBottomAnchor(goBackButton, 10.0); // 10px from the bottom
-    AnchorPane.setRightAnchor(goBackButton, 10.0); // 10px from the right
-
-    // Add the button to the anchorPane
+    
     anchorPane.getChildren().add(goBackButton);
 
     // Set the action when the button is clicked
@@ -71,20 +38,6 @@ public class ClueSafeController {
             e.printStackTrace();
           }
         });
-  }
-
-  /*
-   * Creating images
-   */
-  private void createAndBindImageView(Image image) {
-    ImageView imageView = new ImageView(image);
-    imageView.setFitWidth(anchorPane.getWidth());
-    imageView.setFitHeight(anchorPane.getHeight());
-
-    imageView.fitWidthProperty().bind(anchorPane.widthProperty());
-    imageView.fitHeightProperty().bind(anchorPane.heightProperty());
-
-    anchorPane.getChildren().add(imageView);
   }
 
 }
