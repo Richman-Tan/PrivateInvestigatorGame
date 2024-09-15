@@ -37,6 +37,7 @@ public class Suspect2RoomController {
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect2ChatBox;
   @FXML private Circle sendButton;
+  @FXML private Button guessButton;
 
   @FXML private Label lbltimer;
 

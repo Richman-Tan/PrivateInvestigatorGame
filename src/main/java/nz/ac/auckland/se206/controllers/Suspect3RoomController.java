@@ -37,6 +37,7 @@ public class Suspect3RoomController {
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect3ChatBox;
   @FXML private Circle sendButton;
+  @FXML private Button guessButton;
 
   @FXML private Label lbltimer;
 
@@ -225,6 +226,7 @@ public class Suspect3RoomController {
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
     sendMessageCode();
     recordVisit();
+    checkGuessButton();
   }
 
   /**
@@ -281,6 +283,21 @@ public class Suspect3RoomController {
     if (GameStateContext.getInstance().getListOfVisitors().isEmpty()
         || !GameStateContext.getInstance().getListOfVisitors().contains("suspect3")) {
       GameStateContext.getInstance().addVisitor("suspect3");
+    }
+  }
+
+  @FXML
+  private void checkGuessButton() {
+    if (context.getListOfVisitors().contains("suspect1")
+        && context.getListOfVisitors().contains("suspect2")
+        && context.getListOfVisitors().contains("suspect3")) {
+      // Enable the guess button
+      guessButton.setOpacity(0.8);
+      guessButton.setDisable(false);
+    } else {
+      // Disable the guess button
+      guessButton.setOpacity(0.3);
+      guessButton.setDisable(true);
     }
   }
 }
