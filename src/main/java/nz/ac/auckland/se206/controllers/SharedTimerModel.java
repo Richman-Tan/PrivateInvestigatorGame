@@ -31,4 +31,9 @@ public class SharedTimerModel {
   public TimerModel getTimer() {
     return countdownTimer;
   }
+
+  /** Resets the timer. */
+  public void resetTimer() {
+    countdownTimer = new TimerModel(301);
+  }
 }

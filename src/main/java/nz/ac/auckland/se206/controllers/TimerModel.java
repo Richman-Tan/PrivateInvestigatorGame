@@ -9,11 +9,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameStateContext;
 
 public class TimerModel {
 
   private static int i = 0;
   private static int timerEnded = 0; // Flag to indicate if the timer has ended
+
+  // get context
+  GameStateContext gameStateContext = GameStateContext.getInstance();
 
   /*
    * Checks if the timer has ended.
@@ -57,14 +61,10 @@ public class TimerModel {
               timer.cancel();
               Platform.runLater(
                   () -> {
-                    if (i == 1) {
+                    if (i == 1
+                        || gameStateContext.isGuessPressed()) { // Mark as found in the context
                       timeString.set("Over!");
                       timerEnded++; // Set the flag when the timer ends
-                      try {
-                        App.setRoot("guessing");
-                      } catch (IOException e) {
-                        e.printStackTrace();
-                      }
                     } else {
                       i++;
                       timeString.set("Time!");
@@ -137,5 +137,14 @@ public class TimerModel {
     int minutes = totalSeconds / 60;
     int seconds = totalSeconds % 60;
     return String.format("%02d:%02d", minutes, seconds);
+  }
+
+  /*
+   * Gets the time in seconds.
+   *
+   * @return the time in seconds
+   */
+  public void resetI() {
+    i = 0;
   }
 }
