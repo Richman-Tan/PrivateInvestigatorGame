@@ -23,6 +23,7 @@ public class UpdatedGuessingController {
   @FXML private ImageView confirmedSuspect1;
   @FXML private ImageView confirmedSuspect2;
   @FXML private ImageView confirmedSuspect3;
+  @FXML private Label culpritLabel;
 
   @FXML private Label lbltimer;
 
@@ -91,12 +92,15 @@ public class UpdatedGuessingController {
     switch (guessedsuspect) {
       case "Uncle":
         confirmedSuspect1.setVisible(true);
+        culpritLabel.setText("The Uncle");
         break;
       case "Grandma":
         confirmedSuspect2.setVisible(true);
+        culpritLabel.setText("The Widow");
         break;
       case "Grandson":
         confirmedSuspect3.setVisible(true);
+        culpritLabel.setText("The Grandson");
         break;
     }
   }

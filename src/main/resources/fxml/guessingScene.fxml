@@ -39,31 +39,32 @@
       </Pane>
       <Pane fx:id="verifyCulpritPane" layoutX="325.0" layoutY="38.0" prefHeight="396.0" prefWidth="476.0" visible="false">
          <children>
-            <ImageView fx:id="confirmedSuspect1" fitHeight="128.0" fitWidth="120.0" layoutX="28.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#414951b2" height="155.0" layoutX="18.0" layoutY="115.0" stroke="#0000007b" strokeType="INSIDE" width="409.0" />
+            <ImageView fx:id="confirmedSuspect1" fitHeight="117.0" fitWidth="120.0" layoutX="28.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/updatedguessingimages/unclePhoto.jpg" />
                </image>
             </ImageView>
-            <ImageView fx:id="confirmedSuspect3" fitHeight="119.0" fitWidth="126.0" layoutX="28.0" layoutY="122.0" preserveRatio="true" visible="false">
+            <ImageView fx:id="confirmedSuspect3" fitHeight="119.0" fitWidth="126.0" layoutX="29.0" layoutY="132.0" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/updatedguessingimages/sonPhoto.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="confirmedSuspect2" fitHeight="119.0" fitWidth="126.0" layoutX="28.0" layoutY="123.0" preserveRatio="true" visible="false">
+            <ImageView fx:id="confirmedSuspect2" fitHeight="119.0" fitWidth="126.0" layoutX="29.0" layoutY="131.0" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/updatedguessingimages/grandmaPhoto.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" layoutX="160.0" layoutY="120.0" prefHeight="120.0" prefWidth="256.0" />
+            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" text="CONFIRM EXPLANATION" />
+            <TextField fx:id="userExplanation" layoutX="160.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" style="-fx-border-color: '#0d1a25'; -fx-background-color: '#47535e'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 4px;" />
             <Label layoutX="50.0" layoutY="85.0" prefHeight="31.0" prefWidth="254.0" text="You have identified the culprit is:">
                <font>
-                  <Font size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="culpritLabel" layoutX="304.0" layoutY="89.0" prefHeight="18.0" prefWidth="49.0" text="Uncle">
+            <Label fx:id="culpritLabel" layoutX="271.0" layoutY="89.0" prefHeight="23.0" prefWidth="123.0">
                <font>
-                  <Font size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
          </children>
@@ -91,9 +92,9 @@
                </font>
             </Text>
             <Button layoutX="160.0" layoutY="278.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" text="CONFIRM CULPRIT" />
-            <Rectangle fx:id="recSuspect1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="115.0" layoutX="26.0" layoutY="123.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" width="119.0" />
-            <Rectangle fx:id="recSuspect2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="115.0" layoutX="300.0" layoutY="123.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" width="116.0" />
-            <Rectangle fx:id="recSuspect3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="116.0" layoutX="165.0" layoutY="122.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" width="116.0" />
+            <Rectangle fx:id="recSuspect1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="115.0" layoutX="26.0" layoutY="123.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" width="119.0" />
+            <Rectangle fx:id="recSuspect2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="115.0" layoutX="300.0" layoutY="123.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" width="116.0" />
+            <Rectangle fx:id="recSuspect3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="116.0" layoutX="165.0" layoutY="122.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" width="116.0" />
          </children>
       </Pane>
    </children>
