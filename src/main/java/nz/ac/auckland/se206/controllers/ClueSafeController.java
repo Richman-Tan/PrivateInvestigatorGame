@@ -9,6 +9,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
@@ -20,12 +21,14 @@ public class ClueSafeController {
   @FXML private AnchorPane anchorPane;
   @FXML private Label codeDisplay;
   @FXML private ImageView notes;
+  @FXML private Pane safecontent;
   private String line = "";
   private DropShadow permShadow = new DropShadow();
 
   @FXML
   private void initialize() {
     if (notes != null) {
+      safecontent.toFront();
       permShadow.setColor(Color.GOLD); // Customize the hover effect color
       permShadow.setRadius(5); // Customize the shadow effect
       notes.setEffect(permShadow);
@@ -33,15 +36,19 @@ public class ClueSafeController {
 
       // Check if the notes have already been found
       if (GameStateContext.getInstance().isNoteFound()) {
-        notes.setOpacity(0); // Hide the tool if already found
+        notes.toBack();
+        ; // Hide the tool if already found
       } else {
-        notes.setOpacity(1); // Show the tool if not found
+        notes.toFront();
+        ; // Show the tool if not found
       }
 
       // Set mouse click event to mark the notes as found and hide it
       notes.setOnMouseClicked(
           event -> {
-            notes.setOpacity(0); // Hide the tool after it's clicked
+            notes.toBack();
+            ; // Hide the tool after it's clicked
+            safecontent.toBack();
             System.out.println("Notes clicked");
             GameStateContext.getInstance().setNoteFound(true); // Mark as found in the context
           });
@@ -65,6 +72,7 @@ public class ClueSafeController {
     AnchorPane.setRightAnchor(goBackButton, 10.0); // 10px from the right
 
     anchorPane.getChildren().add(goBackButton);
+    goBackButton.toFront();
 
     // Set the action when the button is clicked
     goBackButton.setOnAction(
@@ -128,6 +136,7 @@ public class ClueSafeController {
       if (line.equals("019")) {
         try {
           codeDisplay.setText("ENTERED");
+          GameStateContext.getInstance().setSafeOpen(true);
           App.setRoot("cluesafeopened");
         } catch (IOException e) {
           e.printStackTrace();
