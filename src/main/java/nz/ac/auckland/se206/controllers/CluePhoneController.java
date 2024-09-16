@@ -2,6 +2,7 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 
 public class CluePhoneController {
@@ -26,6 +28,8 @@ public class CluePhoneController {
 
   // Declare arrowButton as a class-level variable
   @FXML private Button arrowButton;
+
+  @FXML private Label label;
 
   // Start circles (left-hand side)
   private Circle startCircleRed;
@@ -60,27 +64,34 @@ public class CluePhoneController {
   @FXML
   private void initialize() {
 
-    // Create pane for the timer and label
+    // Create a Pane for the timer
     Pane timerPane = new Pane();
-    timerPane.setPrefSize(101, 45);
-    // Bind the timerPane to the rootPane
-    AnchorPane.setTopAnchor(timerPane, 10.0);
-    AnchorPane.setLeftAnchor(timerPane, 10.0);
+    timerPane.setPrefSize(101, 45); // Set the preferred size
+    timerPane.setOpacity(0.75); // Set the opacity
+    timerPane.setStyle(
+        "-fx-background-color: white;"
+            + "-fx-background-radius: 10px;"
+            + "-fx-border-radius: 10px;"
+            + "-fx-border-color: black;");
+
+    // Position the timerPane
+    AnchorPane.setLeftAnchor(timerPane, 10.0); // Set position using AnchorPane
+    AnchorPane.setTopAnchor(timerPane, 10.0); // Set top anchor
 
     // Create a label for the timer
     Label timerLabel = new Label();
-    timerLabel.setStyle(
-        "-fx-font-size: 20px;"
-            + "-fx-background-color: white;"
-            + "-fx-background-radius: 10px;"
-            + "-fx-border-radius: 10px;"
-            + "-fx-padding: 5px;"
-            + "-fx-border-color: black;");
+    timerLabel.setText("Label"); // Default text (will be updated by the timer)
+    timerLabel.setFont(new Font(24)); // Set font size
+    timerLabel.setAlignment(Pos.CENTER); // Align the text to the center
+    timerLabel.setLayoutX(21.0); // Set the label's X position inside the Pane
+    timerLabel.setLayoutY(8.0); // Set the label's Y position inside the Pane
+
+    // Bind the timerLabel to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
 
-    // Bind the timerLabel to the timerPane
+    // Add the label to the Pane
     timerPane.getChildren().add(timerLabel);
 
     // Add the timerPane to the rootPane
@@ -291,7 +302,7 @@ public class CluePhoneController {
     rootPane.getChildren().add(imageView);
 
     // Create a new label
-    Label label = new Label("Connect the wires to unlock the phone! (From left to right)");
+    label = new Label("Connect the wires to unlock the phone! (From left to right)");
     label.setStyle(
         "-fx-font-size: 14px; -fx-background-color: white; -fx-background-radius: 10px;"
             + " -fx-border-radius: 10px; -fx-padding: 5px; -fx-border-color: black;");
@@ -466,7 +477,11 @@ public class CluePhoneController {
         e.printStackTrace();
       }
 
+      // Set opacity of all wires to 0 when all are connected
       imageView.setOpacity(0);
+
+      // set opacity of label to 0
+      label.setOpacity(0);
 
       // Load the phone ringing image
       Image phoneRingingImage =
