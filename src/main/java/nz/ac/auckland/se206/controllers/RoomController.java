@@ -41,6 +41,8 @@ public class RoomController {
 
   @FXML private ImageView clue1;
 
+  @FXML private ImageView clue2;
+
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = GameStateContext.getInstance();
 
@@ -54,11 +56,17 @@ public class RoomController {
 
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
+    clue2.setOpacity(0);
 
     // Check if the garden tool has been found
     if (context.isGardenToolFound()) {
       // If found, set the opacity of clue1 to 1 (visible)
       clue1.setOpacity(1);
+    }
+
+    if (context.isPhoneFound()) {
+      // If found, set the opacity of clue2 to 1 (visible)
+      clue2.setOpacity(1);
     }
 
     final Image image1 =
@@ -147,33 +155,42 @@ public class RoomController {
     // Create the background ImageView and set an initial size (scale)
     ImageView phoneClueImageView = new ImageView(phoneClueImage);
 
-    // Apply a scaling factor (e.g., 0.14 for 14% of the root node size)
-    double scaleFactor = 0.14;
-    phoneClueImageView.setFitWidth(rootNode.getWidth() * scaleFactor);
-    phoneClueImageView.setFitHeight(rootNode.getHeight() * scaleFactor);
+    // Set whether to preserve the aspect ratio (optional)
+    phoneClueImageView.setPreserveRatio(false);
 
-    // Make sure the background resizes with the window, but maintain the scaling
-    phoneClueImageView.fitWidthProperty().bind(rootNode.widthProperty().multiply(scaleFactor));
-    phoneClueImageView.fitHeightProperty().bind(rootNode.heightProperty().multiply(scaleFactor));
-
-    // Use AnchorPane constraints to position the ImageView
-    double rightMargin = 280.0; // Increase this value to move further from the right
-    double verticalOffset = 70.0; // Move it slightly further down from the center
-
-    AnchorPane.setRightAnchor(phoneClueImageView, rightMargin); // Move it 100px from the right
-    AnchorPane.setTopAnchor(
-        phoneClueImageView,
-        (rootNode.getHeight() - phoneClueImageView.getFitHeight()) / 2
-            + verticalOffset); // Vertically slightly lower
-
-    // Bind TopAnchor to keep the image vertically responsive as the window resizes
+    // Bind the MediaView's fitWidth and fitHeight to a percentage of the rootPane's width and
+    // height
+    double mediaHorizontalScaleFactor = 0.1; // Adjust this value to control horizontal size
+    double mediaVerticalScaleFactor = 0.1; // Adjust this value to control vertical size
+    phoneClueImageView
+        .fitWidthProperty()
+        .bind(rootNode.widthProperty().multiply(mediaHorizontalScaleFactor));
     phoneClueImageView
         .fitHeightProperty()
+        .bind(rootNode.heightProperty().multiply(mediaVerticalScaleFactor));
+
+    // Center the MediaView horizontally and vertically
+    // Center the MediaView when the screen loads
+    double initialCenterX = (rootNode.getWidth() - phoneClueImageView.getFitWidth()) / 2 + 170;
+    double initialCenterY = (rootNode.getHeight() - phoneClueImageView.getFitHeight()) / 2 + 80;
+    AnchorPane.setLeftAnchor(phoneClueImageView, initialCenterX);
+    AnchorPane.setTopAnchor(phoneClueImageView, initialCenterY);
+
+    // Add listeners to ensure it stays centered when resized
+    rootNode
+        .widthProperty()
         .addListener(
             (obs, oldVal, newVal) -> {
-              AnchorPane.setTopAnchor(
-                  phoneClueImageView,
-                  (rootNode.getHeight() - newVal.doubleValue()) / 2 + verticalOffset);
+              double centerX = (newVal.doubleValue() - phoneClueImageView.getFitWidth()) / 2 + 170;
+              AnchorPane.setLeftAnchor(phoneClueImageView, centerX);
+            });
+
+    rootNode
+        .heightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              double centerY = (newVal.doubleValue() - phoneClueImageView.getFitHeight()) / 2 + 80;
+              AnchorPane.setTopAnchor(phoneClueImageView, centerY);
             });
 
     DropShadow hoverShadow = new DropShadow();
@@ -191,6 +208,7 @@ public class RoomController {
     phoneClueImageView.setOnMouseClicked(
         e -> {
           try {
+            GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
             App.setRoot("cluephone");
           } catch (IOException e1) {
             e1.printStackTrace();

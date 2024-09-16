@@ -3,10 +3,12 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -21,6 +23,9 @@ public class CluePhoneController {
   @FXML private AnchorPane rootPane;
   @FXML private ImageView phoneImageView;
   @FXML private ImageView imageView;
+
+  // Declare arrowButton as a class-level variable
+  @FXML private Button arrowButton;
 
   // Start circles (left-hand side)
   private Circle startCircleRed;
@@ -49,8 +54,38 @@ public class CluePhoneController {
   // Currently active circle for dragging
   private Circle activeStartCircle = null;
 
+  // Get timer
+  private TimerModel countdownTimer;
+
   @FXML
   private void initialize() {
+
+    // Create pane for the timer and label
+    Pane timerPane = new Pane();
+    timerPane.setPrefSize(101, 45);
+    // Bind the timerPane to the rootPane
+    AnchorPane.setTopAnchor(timerPane, 10.0);
+    AnchorPane.setLeftAnchor(timerPane, 10.0);
+
+    // Create a label for the timer
+    Label timerLabel = new Label();
+    timerLabel.setStyle(
+        "-fx-font-size: 20px;"
+            + "-fx-background-color: white;"
+            + "-fx-background-radius: 10px;"
+            + "-fx-border-radius: 10px;"
+            + "-fx-padding: 5px;"
+            + "-fx-border-color: black;");
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.start();
+    timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
+
+    // Bind the timerLabel to the timerPane
+    timerPane.getChildren().add(timerLabel);
+
+    // Add the timerPane to the rootPane
+    rootPane.getChildren().add(timerPane);
+
     rootPane.getStylesheets().add(getClass().getResource("/css/button.css").toExternalForm());
     // Load background
     Image backgroundImage =
@@ -99,25 +134,56 @@ public class CluePhoneController {
     rootPane.getChildren().add(phoneImageView);
 
     // Create arrow button on the left side of the phoneImage
-    Button arrowButton =
-        new Button("Turn phone around"); // Unicode left arrow, you can also use an image
+    arrowButton = new Button("Turn phone around"); // Unicode left arrow, you can also use an image
     arrowButton.setStyle(
         "-fx-background-radius: 10; "
             + "-fx-border-radius: 10; "
             + "-fx-border-color: black; "
             + "-fx-background-color: white; "
             + "-fx-text-fill: black; "
-            + "-fx-font-size: 13px; "
+            + "-fx-font-size: 14px; "
             + "-fx-background-insets: 0; "
             + "-fx-border-insets: 0;"); // Larger font and clear border for visibility
-    arrowButton.setPrefWidth(200); // Set a fixed width
-    arrowButton.setPrefHeight(50); // Set a fixed height
+    arrowButton.setPrefWidth(180); // Set a fixed width
+    arrowButton.setPrefHeight(40); // Set a fixed height
 
     // Position the button on the left side
     AnchorPane.setLeftAnchor(arrowButton, 20.0); // Set 20px from the left
-    AnchorPane.setTopAnchor(arrowButton, 20.0); // Center the button vertically
+    AnchorPane.setBottomAnchor(arrowButton, 20.0); // Center the button vertically
 
     arrowButton.setOnAction(e -> handleArrowButtonClick()); // Define action on click
+    arrowButton.setOnMouseEntered(
+        e -> {
+          // Apply custom styles for hover
+          arrowButton.setStyle(
+              "-fx-background-color: #5e5548; "
+                  + // Change background color
+                  "-fx-border-color: #5e5548; "
+                  + // Change border color
+                  "-fx-cursor: hand;" // Change cursor to hand
+                  + "-fx-background-radius: 10; "
+                  + "-fx-border-radius: 10; "
+                  + "-fx-text-fill: black; "
+                  + "-fx-font-size: 14px; "
+                  + "-fx-background-insets: 0; "
+                  + "-fx-border-insets: 0;");
+        });
+
+    // Reset styles on mouse exit
+    arrowButton.setOnMouseExited(
+        e -> {
+          // Reset the button style when the mouse exits
+          arrowButton.setStyle(
+              "-fx-background-radius: 10; "
+                  + "-fx-border-radius: 10; "
+                  + "-fx-border-color: black; "
+                  + "-fx-background-color: white; "
+                  + "-fx-text-fill: black; "
+                  + "-fx-font-size: 14px; "
+                  + "-fx-background-insets: 0; "
+                  + "-fx-border-insets: 0;");
+        });
+
     arrowButton.getStyleClass().add("button"); // Apply the style class from CSS
     arrowButton.setOpacity(0.8);
 
@@ -154,10 +220,43 @@ public class CluePhoneController {
             e.printStackTrace();
           }
         });
+    goBackButton.setOnMouseEntered(
+        e -> {
+          // Apply custom styles for hover
+          goBackButton.setStyle(
+              "-fx-background-color: #5e5548; "
+                  + // Change background color
+                  "-fx-border-color: #5e5548; "
+                  + // Change border color
+                  "-fx-cursor: hand;" // Change cursor to hand
+                  + "-fx-background-radius: 10; "
+                  + "-fx-border-radius: 10; "
+                  + "-fx-text-fill: black; "
+                  + "-fx-font-size: 14px; "
+                  + "-fx-background-insets: 0; "
+                  + "-fx-border-insets: 0;");
+        });
+    goBackButton.setOnMouseExited(
+        e -> {
+          // Reset the button style when the mouse exits
+          goBackButton.setStyle(
+              "-fx-background-radius: 10; "
+                  + "-fx-border-radius: 10; "
+                  + "-fx-border-color: black; "
+                  + "-fx-background-color: white; "
+                  + "-fx-text-fill: black; "
+                  + "-fx-font-size: 14px; "
+                  + "-fx-background-insets: 0; "
+                  + "-fx-border-insets: 0;");
+        });
+
+    timerPane.toFront();
   }
 
   private void handleArrowButtonClick() {
     System.out.println("Arrow button clicked!");
+
+    disableArrowButton();
 
     // Set opacity of phoneImageView to 0 (assuming phoneImageView is defined earlier)
     phoneImageView.setOpacity(0);
@@ -190,6 +289,24 @@ public class CluePhoneController {
 
     // Add the imageView to the rootPane
     rootPane.getChildren().add(imageView);
+
+    // Create a new label
+    Label label = new Label("Connect the wires to unlock the phone! (From left to right)");
+    label.setStyle(
+        "-fx-font-size: 14px; -fx-background-color: white; -fx-background-radius: 10px;"
+            + " -fx-border-radius: 10px; -fx-padding: 5px; -fx-border-color: black;");
+    label.setPrefWidth(360);
+    label.setPrefHeight(50);
+
+    // Bind the label to the rootPane
+    AnchorPane.setBottomAnchor(label, 10.0);
+    // Set center
+    AnchorPane.setLeftAnchor(label, (rootPane.getWidth() - label.getPrefWidth()) / 2);
+
+    label.setOpacity(0.8);
+
+    // Add the label to the rootPane
+    rootPane.getChildren().add(label);
 
     // Create and setup the wiring game
     setupGame();
@@ -359,38 +476,21 @@ public class CluePhoneController {
                   .toString());
       ImageView phoneRingingImageView = new ImageView(phoneRingingImage);
 
-      phoneRingingImageView.setPreserveRatio(true);
+      // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
+      phoneRingingImageView.setFitWidth(rootPane.getWidth());
+      phoneRingingImageView.setFitHeight(rootPane.getHeight());
 
-      // Apply a scaling factor (e.g., 0.14 for 14% of the root node size)
-      double scaleFactor = 1;
-      phoneRingingImageView.setFitWidth(rootPane.getWidth() * scaleFactor);
-      phoneRingingImageView.setFitHeight(rootPane.getHeight() * scaleFactor);
-
-      // Make sure the background resizes with the window, but maintain the scaling
-      phoneRingingImageView.fitWidthProperty().bind(rootPane.widthProperty().multiply(scaleFactor));
+      // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
+      // rootPane width)
+      double horizontalScaleFactor = 1; // Change this value to adjust the horizontal size
       phoneRingingImageView
-          .fitHeightProperty()
-          .bind(rootPane.heightProperty().multiply(scaleFactor));
+          .fitWidthProperty()
+          .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
+      phoneRingingImageView.fitHeightProperty().bind(rootPane.heightProperty());
 
       // Use AnchorPane constraints to position the ImageView
       double rightMargin = 0.0; // Increase this value to move further from the right
-      double verticalOffset = 50.0; // Move it slightly further down from the center
-
       AnchorPane.setRightAnchor(phoneRingingImageView, rightMargin); // Move it 100px from the right
-      AnchorPane.setTopAnchor(
-          phoneRingingImageView,
-          (rootPane.getHeight() - phoneRingingImageView.getFitHeight()) / 2
-              + verticalOffset); // Vertically slightly lower
-
-      // Bind TopAnchor to keep the image vertically responsive as the window resizes
-      phoneRingingImageView
-          .fitHeightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setTopAnchor(
-                    phoneRingingImageView,
-                    (rootPane.getHeight() - newVal.doubleValue()) / 2 + verticalOffset);
-              });
 
       rootPane.getChildren().add(phoneRingingImageView);
 
@@ -403,35 +503,42 @@ public class CluePhoneController {
       MediaPlayer mediaPlayer = new MediaPlayer(media);
       MediaView mediaView = new MediaView(mediaPlayer);
 
-      // Set the MediaView size to fit within a portion of the rootPane
-      mediaView.setFitWidth(rootPane.getWidth() * 0.74); // 60% of rootPane width
-      mediaView.setFitHeight(rootPane.getHeight() * 0.74); // 60% of rootPane height
-      mediaView.setPreserveRatio(true); // Preserve the aspect ratio
+      // Set whether to preserve the aspect ratio (optional)
+      mediaView.setPreserveRatio(false);
 
-      // Center the media view in the rootPane with an additional shift to the right
-      double additionalRightShift = 295.0; // Move 100 pixels further to the right
-      double verticalOffsetMedia = 39.0; // Move it slightly further down from the center
-      AnchorPane.setTopAnchor(
-          mediaView, (rootPane.getHeight() - mediaView.getFitHeight()) / 2 + verticalOffsetMedia);
-      AnchorPane.setLeftAnchor(
-          mediaView, (rootPane.getWidth() - mediaView.getFitWidth()) / 2 + additionalRightShift);
+      // Bind the MediaView's fitWidth and fitHeight to a percentage of the rootPane's width and
+      // height
+      double mediaHorizontalScaleFactor = 0.2; // Adjust this value to control horizontal size
+      double mediaVerticalScaleFactor = 0.75; // Adjust this value to control vertical size
+      mediaView
+          .fitWidthProperty()
+          .bind(rootPane.widthProperty().multiply(mediaHorizontalScaleFactor));
+      mediaView
+          .fitHeightProperty()
+          .bind(rootPane.heightProperty().multiply(mediaVerticalScaleFactor));
 
-      // Make the mediaView responsive to window resizing and maintain the shift to the right
-      rootPane
-          .heightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setTopAnchor(
-                    mediaView,
-                    (newVal.doubleValue() - mediaView.getFitHeight()) / 2 + verticalOffsetMedia);
-              });
+      // Center the MediaView horizontally and vertically
+      // Center the MediaView when the screen loads
+      double initialCenterX = (rootPane.getWidth() - mediaView.getFitWidth()) / 2 + 10;
+      double initialCenterY = (rootPane.getHeight() - mediaView.getFitHeight()) / 2 - 10;
+      AnchorPane.setLeftAnchor(mediaView, initialCenterX);
+      AnchorPane.setTopAnchor(mediaView, initialCenterY);
+
+      // Add listeners to ensure it stays centered when resized
       rootPane
           .widthProperty()
           .addListener(
               (obs, oldVal, newVal) -> {
-                AnchorPane.setLeftAnchor(
-                    mediaView,
-                    (newVal.doubleValue() - mediaView.getFitWidth()) / 2 + additionalRightShift);
+                double centerX = (newVal.doubleValue() - mediaView.getFitWidth()) / 2 + 10;
+                AnchorPane.setLeftAnchor(mediaView, centerX);
+              });
+
+      rootPane
+          .heightProperty()
+          .addListener(
+              (obs, oldVal, newVal) -> {
+                double centerY = (newVal.doubleValue() - mediaView.getFitHeight()) / 2 - 10;
+                AnchorPane.setTopAnchor(mediaView, centerY);
               });
 
       // Add the MediaView to the rootPane
@@ -445,31 +552,18 @@ public class CluePhoneController {
                   .toString());
       ImageView overlayImageView = new ImageView(overlay);
 
-      overlayImageView.setPreserveRatio(true);
+      // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
+      overlayImageView.setFitWidth(rootPane.getWidth());
+      overlayImageView.setFitHeight(rootPane.getHeight());
 
-      // Apply a scaling factor (e.g., 0.14 for 14% of the root node size)
-      overlayImageView.setFitWidth(rootPane.getWidth() * scaleFactor);
-      overlayImageView.setFitHeight(rootPane.getHeight() * scaleFactor);
-
-      // Make sure the background resizes with the window, but maintain the scaling
-      overlayImageView.fitWidthProperty().bind(rootPane.widthProperty().multiply(scaleFactor));
-      overlayImageView.fitHeightProperty().bind(rootPane.heightProperty().multiply(scaleFactor));
+      // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
+      // rootPane width)
+      overlayImageView
+          .fitWidthProperty()
+          .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
+      overlayImageView.fitHeightProperty().bind(rootPane.heightProperty());
 
       AnchorPane.setRightAnchor(overlayImageView, rightMargin); // Move it 100px from the right
-      AnchorPane.setTopAnchor(
-          overlayImageView,
-          (rootPane.getHeight() - overlayImageView.getFitHeight()) / 2
-              + verticalOffset); // Vertically slightly lower
-
-      // Bind TopAnchor to keep the image vertically responsive as the window resizes
-      overlayImageView
-          .fitHeightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setTopAnchor(
-                    overlayImageView,
-                    (rootPane.getHeight() - newVal.doubleValue()) / 2 + verticalOffset);
-              });
 
       rootPane.getChildren().add(overlayImageView);
 
@@ -479,9 +573,11 @@ public class CluePhoneController {
           "-fx-background-radius: 200px; -fx-background-color: #FFFFFF; -fx-font-size: 18px;");
       playPauseButton.setPrefSize(50, 50); // Set size for circular button
 
+      playPauseButton.setOpacity(0.8);
+
       // Position the button in the center of the media
       AnchorPane.setTopAnchor(playPauseButton, (rootPane.getHeight() - 50) / 2);
-      AnchorPane.setLeftAnchor(playPauseButton, (rootPane.getWidth() - 50) / 2);
+      AnchorPane.setLeftAnchor(playPauseButton, (rootPane.getWidth() - 50) / 2 + 10);
 
       // Make the button responsive to the rootPane size changes
       rootPane
@@ -494,7 +590,7 @@ public class CluePhoneController {
           .widthProperty()
           .addListener(
               (obs, oldVal, newVal) -> {
-                AnchorPane.setLeftAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2);
+                AnchorPane.setLeftAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2 + 10);
               });
 
       // Toggle between play and pause
@@ -514,7 +610,16 @@ public class CluePhoneController {
 
       // Show the play/pause button when the video is paused
       mediaPlayer.setOnPaused(() -> playPauseButton.setVisible(true));
-      mediaPlayer.setOnEndOfMedia(() -> playPauseButton.setVisible(true));
+      mediaPlayer.setOnEndOfMedia(
+          () -> {
+            playPauseButton.setText("⟳"); // Change button text to replay symbol
+            playPauseButton.setOnAction(
+                e -> {
+                  mediaPlayer.seek(mediaPlayer.getStartTime()); // Reset to start of video
+                  mediaPlayer.play();
+                  playPauseButton.setText("⏸"); // Change button back to "Pause" during replay
+                });
+          });
 
       // Add the play/pause button to the rootPane
       rootPane.getChildren().add(playPauseButton);
@@ -569,5 +674,11 @@ public class CluePhoneController {
     imageView.fitHeightProperty().bind(rootPane.heightProperty());
 
     rootPane.getChildren().add(imageView);
+  }
+
+  // Create a method to disable the "Turn phone around" button
+  public void disableArrowButton() {
+    arrowButton.setDisable(true);
+    arrowButton.setOpacity(0.5); // lower the opacity to visually indicate it's disabled
   }
 }
