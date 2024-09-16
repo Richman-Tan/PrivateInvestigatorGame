@@ -3,10 +3,10 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -20,37 +20,48 @@ public class ClueSafeController {
 
   @FXML private AnchorPane anchorPane;
   @FXML private Label codeDisplay;
-  @FXML private ImageView notes;
+  @FXML private Group notes;
+  @FXML private Group note1;
+  @FXML private Group note2;
+  @FXML private Group note3;
   @FXML private Pane safecontent;
   private String line = "";
   private DropShadow permShadow = new DropShadow();
 
   @FXML
   private void initialize() {
-    if (notes != null) {
+    if (GameStateContext.getInstance().isSafeOpen()) {
       safecontent.toFront();
       permShadow.setColor(Color.GOLD); // Customize the hover effect color
       permShadow.setRadius(5); // Customize the shadow effect
       notes.setEffect(permShadow);
+      note1.setEffect(permShadow);
+      note2.setEffect(permShadow);
+      note3.setEffect(permShadow);
       addHoverEffect(notes);
+      addHoverEffect(note1);
+      addHoverEffect(note2);
+      addHoverEffect(note3);
 
       // Check if the notes have already been found
       if (GameStateContext.getInstance().isNoteFound()) {
         notes.toBack();
-        ; // Hide the tool if already found
       } else {
         notes.toFront();
-        ; // Show the tool if not found
       }
 
-      // Set mouse click event to mark the notes as found and hide it
-      notes.setOnMouseClicked(
+      // Set mouse click event to bring the notes to front
+      note1.setOnMouseClicked(
           event -> {
-            notes.toBack();
-            ; // Hide the tool after it's clicked
-            safecontent.toBack();
-            System.out.println("Notes clicked");
-            GameStateContext.getInstance().setNoteFound(true); // Mark as found in the context
+            note1.toFront();
+          });
+      note2.setOnMouseClicked(
+          event -> {
+            note2.toFront();
+          });
+      note3.setOnMouseClicked(
+          event -> {
+            note3.toFront();
           });
     }
     // Add the "Go Back" button
@@ -121,8 +132,6 @@ public class ClueSafeController {
         case "nine":
           line = line + "9";
           break;
-        default:
-          // enter
       }
       codeDisplay.setText(line);
     }
@@ -148,28 +157,27 @@ public class ClueSafeController {
     }
   }
 
-  private void addHoverEffect(ImageView notes) {
+  private void addHoverEffect(Group image) {
     DropShadow hoverShadow = new DropShadow();
     hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
     hoverShadow.setRadius(20); // Customize the shadow effect
 
-    notes.setOnMouseEntered(
+    image.setOnMouseEntered(
         e -> {
-          notes.setEffect(hoverShadow); // Apply hover effect when mouse enters
+          image.setEffect(hoverShadow); // Apply hover effect when mouse enters
         });
 
-    notes.setOnMouseExited(
+    image.setOnMouseExited(
         e -> {
-          notes.setEffect(permShadow); // Remove effect when mouse exits
+          image.setEffect(permShadow); // Remove effect when mouse exits
         });
   }
 
   @FXML
   private void onNote(MouseEvent event) {
-    try {
-      App.setRoot("cluenotes");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    notes.toBack(); // Hide the tool after it's clicked
+    safecontent.toBack();
+    System.out.println("Notes clicked");
+    GameStateContext.getInstance().setNoteFound(true); // Mark as found in the context
   }
 }
