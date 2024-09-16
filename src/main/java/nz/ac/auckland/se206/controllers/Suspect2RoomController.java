@@ -39,6 +39,9 @@ public class Suspect2RoomController {
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect2ChatBox;
   @FXML private Circle sendButton;
+
+  @FXML private Button guessButton;
+
   @FXML private AnchorPane rootNode;
   @FXML private ImageView backgroundimg;
 
@@ -63,6 +66,7 @@ public class Suspect2RoomController {
           @Override
           protected Void call() throws IOException, URISyntaxException {
             try {
+              checkGuessButton();
               ApiProxyConfig config = ApiProxyConfig.readConfig();
               chatCompletionRequest =
                   new ChatCompletionRequest(config)
@@ -239,6 +243,8 @@ public class Suspect2RoomController {
   @FXML
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
     sendMessageCode();
+    recordVisit();
+    checkGuessButton();
   }
 
   /**
@@ -289,5 +295,35 @@ public class Suspect2RoomController {
 
   private static String loadTemplate(URI filePath) throws IOException {
     return new String(Files.readAllBytes(Paths.get(filePath)));
+  }
+
+  private void recordVisit() {
+    if (GameStateContext.getInstance().getListOfVisitors().isEmpty()
+        || !GameStateContext.getInstance().getListOfVisitors().contains("suspect2")) {
+      GameStateContext.getInstance().addVisitor("suspect2");
+    }
+  }
+
+  @FXML
+  private void checkGuessButton() {
+    if (context.getListOfVisitors().contains("suspect1")
+        && context.getListOfVisitors().contains("suspect2")
+        && context.getListOfVisitors().contains("suspect3")) {
+      // Enable the guess button
+      guessButton.setOpacity(0.8);
+      guessButton.setDisable(false);
+    } else {
+      // Disable the guess button
+      guessButton.setOpacity(0.3);
+      guessButton.setDisable(true);
+    }
+    System.out.println("Visitors:      " + context.getListOfVisitors());
+  }
+
+  @FXML
+  private void onEnterKey(ActionEvent event) throws ApiProxyException, IOException {
+    sendMessageCode();
+    recordVisit();
+    checkGuessButton();
   }
 }

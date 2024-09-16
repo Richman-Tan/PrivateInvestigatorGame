@@ -47,7 +47,7 @@
             </Button>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
+                  <Button fx:id="guessButton" mnemonicParsing="false" onAction="#handleGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
                </children>
             </HBox>
          </children>

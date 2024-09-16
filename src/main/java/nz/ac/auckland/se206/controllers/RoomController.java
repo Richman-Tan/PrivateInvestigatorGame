@@ -34,6 +34,7 @@ public class RoomController {
   @FXML private Button btnGrandson;
   @FXML private Button btnUncle;
   @FXML private AnchorPane rootNode;
+  @FXML private Button guessButton;
 
   @FXML private ImageView background;
 
@@ -55,6 +56,7 @@ public class RoomController {
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
 
+    checkGuessButton();
     // Check if the garden tool has been found
     if (context.isGardenToolFound()) {
       // If found, set the opacity of clue1 to 1 (visible)
@@ -335,5 +337,20 @@ public class RoomController {
 
     btnUncle.setVisible(isMenuVisible);
     btnUncle.setManaged(isMenuVisible);
+  }
+
+  @FXML
+  private void checkGuessButton() {
+    if (context.getListOfVisitors().contains("suspect1")
+        && context.getListOfVisitors().contains("suspect2")
+        && context.getListOfVisitors().contains("suspect3")) {
+      // Enable the guess button
+      guessButton.setOpacity(0.8);
+      guessButton.setDisable(false);
+    } else {
+      // Disable the guess button
+      guessButton.setOpacity(0.3);
+      guessButton.setDisable(true);
+    }
   }
 }
