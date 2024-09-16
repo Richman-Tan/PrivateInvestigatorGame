@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.UpdatedGuessingController">
    <children>
@@ -22,6 +21,16 @@
       <ImageView fx:id="staticlayer" fitHeight="813.0" fitWidth="1498.0" layoutX="-200.0" layoutY="-28.0" opacity="0.69" pickOnBounds="true">
          <image>
             <Image url="@../images/guessingimages/static1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="626.0" fitWidth="1127.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/updatedguessingimages/guessingBackground.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="backgroundoverlay" fitHeight="626.0" fitWidth="1076.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/updatedguessingimages/guessingbackgroundoverlay.png" />
          </image>
       </ImageView>
       <Pane fx:id="verifyCulpritPane" layoutX="325.0" layoutY="38.0" prefHeight="396.0" prefWidth="476.0" visible="false">
@@ -58,11 +67,6 @@
       </Pane>
       <Pane fx:id="guessPhotoPane" layoutX="326.0" layoutY="52.0" prefHeight="396.0" prefWidth="476.0">
          <children>
-            <Text layoutX="57.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font: Courier new;" text="CLICK ON THE CULPRIT..." wrappingWidth="356.9939880371094">
-               <font>
-                  <Font size="31.0" />
-               </font>
-            </Text>
             <Button fx:id="confirmCulpritButton" layoutX="160.0" layoutY="278.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" opacity="0.5" text="CONFIRM CULPRIT" />
             <StackPane layoutX="-4.0" layoutY="111.0" prefHeight="150.0" prefWidth="456.0" />
             <ImageView fx:id="suspect1" fitHeight="116.0" fitWidth="116.0" layoutX="28.0" layoutY="122.0" onMouseEntered="#hoverImageUncle" onMouseExited="#offHoverImageUncle" onMousePressed="#clickedImageUncle" pickOnBounds="true" preserveRatio="true">
@@ -83,18 +87,13 @@
             <Rectangle fx:id="recSuspect1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="115.0" layoutX="26.0" layoutY="123.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" width="119.0" />
             <Rectangle fx:id="recSuspect2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="115.0" layoutX="300.0" layoutY="123.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" width="116.0" />
             <Rectangle fx:id="recSuspect3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="116.0" layoutX="165.0" layoutY="122.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" width="116.0" />
+            <Label fx:id="lblStory" layoutX="74.0" layoutY="37.0" prefHeight="77.0" prefWidth="296.0">
+               <font>
+                  <Font name="Courier New Bold" size="20.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
-      <ImageView fitHeight="626.0" fitWidth="1127.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/updatedguessingimages/guessingBackground.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="backgroundoverlay" fitHeight="626.0" fitWidth="1076.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/updatedguessingimages/guessingbackgroundoverlay.png" />
-         </image>
-      </ImageView>
       <Pane layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label">

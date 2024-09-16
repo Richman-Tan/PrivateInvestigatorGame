@@ -35,6 +35,7 @@ public class UpdatedGuessingController {
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
   @FXML private ImageView background;
+  private String text = "Who is the culprit . . .";
 
   private ImageView staticimg1; // GIF image view created programmatically
   private Timeline timeline;
@@ -84,7 +85,7 @@ public class UpdatedGuessingController {
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
     // createLabel(); // Create the label and add it to the scene
-    // warpText(); // Start the text animation
+    warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
     staticimages(); // Start the GIF playback every 5 seconds
   }
@@ -206,48 +207,45 @@ public class UpdatedGuessingController {
   //       });
   // }
 
-  // private void warpText() {
-  //   timeline =
-  //       new Timeline(
-  //           new KeyFrame(
-  //               Duration.seconds(0.2),
-  //               event -> {
-  //                 if (i == 0) {
-  //                   System.out.println("i is 0");
-  //                 }
-  //                 // if (i < text.length()) {
-  //                 //   lblStory.setText(text.substring(0, i + 1));
-  //                 //   i++;
-  //                 else {
-  //                   timeline.stop();
-  //                   flashLastDot(); // Start flashing the last dot
-  //                 }
-  //               }));
+  private void warpText() {
+    timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0.2),
+                event -> {
+                  if (i < text.length()) {
+                    lblStory.setText(text.substring(0, i + 1));
+                    i++;
+                  } else {
+                    timeline.stop();
+                    flashLastDot(); // Start flashing the last dot
+                  }
+                }));
 
-  //   timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
-  //   timeline.play(); // Start the animation
-  // }
+    timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
+    timeline.play(); // Start the animation
+  }
 
-  // private void flashLastDot() {
-  //   // Create a new Timeline for flashing the last '.'
-  //   Timeline flashTimeline =
-  //       new Timeline(
-  //           new KeyFrame(
-  //               Duration.seconds(0.5),
-  //               event -> {
-  //                 // Get the current text and toggle the last dot's visibility
-  //                 String currentText = lblStory.getText();
-  //                 if (currentText.endsWith(".")) {
-  //                   lblStory.setText(
-  //                       currentText.substring(0, currentText.length() - 1)); // Hide dot
-  //                 } else {
-  //                   lblStory.setText(currentText + "."); // Show dot
-  //                 }
-  //               }));
+  private void flashLastDot() {
+    // Create a new Timeline for flashing the last '.'
+    Timeline flashTimeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0.5),
+                event -> {
+                  // Get the current text and toggle the last dot's visibility
+                  String currentText = lblStory.getText();
+                  if (currentText.endsWith(".")) {
+                    lblStory.setText(
+                        currentText.substring(0, currentText.length() - 1)); // Hide dot
+                  } else {
+                    lblStory.setText(currentText + "."); // Show dot
+                  }
+                }));
 
-  //   flashTimeline.setCycleCount(Timeline.INDEFINITE); // Keep flashing indefinitely
-  //   flashTimeline.play(); // Start the flashing animation
-  // }
+    flashTimeline.setCycleCount(Timeline.INDEFINITE); // Keep flashing indefinitely
+    flashTimeline.play(); // Start the flashing animation
+  }
 
   private void createImageView() {
     // Create the ImageView programmatically
