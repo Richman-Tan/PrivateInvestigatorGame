@@ -51,7 +51,7 @@
       <Pane fx:id="noteoverlay" layoutY="-3.0">
          <children>
             <Rectangle fx:id="safeoverlay" arcHeight="5.0" arcWidth="5.0" height="602.0" layoutY="3.0" opacity="0.7" stroke="BLACK" strokeType="INSIDE" width="1076.0" />
-            <Group fx:id="note3" layoutX="265.0" layoutY="98.0" rotate="-24.8">
+            <Group fx:id="note3" layoutX="265.0" layoutY="98.0" onMouseClicked="#onPage" rotate="-24.8">
                <children>
                   <ImageView fitHeight="466.0" fitWidth="268.0" layoutX="99.66851806640625" pickOnBounds="true" preserveRatio="true" rotate="15.4">
                      <image>
@@ -65,7 +65,7 @@
                   </Label>
                </children>
             </Group>
-            <Group fx:id="note2" layoutX="320.0" layoutY="98.0" rotate="-13.2">
+            <Group fx:id="note2" layoutX="320.0" layoutY="98.0" onMouseClicked="#onPage" rotate="-13.2">
                <children>
                   <ImageView fitHeight="466.0" fitWidth="268.0" layoutX="99.66851806640625" pickOnBounds="true" preserveRatio="true" rotate="15.4">
                      <image>
@@ -79,7 +79,7 @@
                   </Label>
                </children>
             </Group>
-            <Group fx:id="note1" layoutX="353.0" layoutY="129.0">
+            <Group fx:id="note1" layoutX="353.0" layoutY="129.0" onMouseClicked="#onPage">
                <children>
                   <ImageView fitHeight="466.0" fitWidth="268.0" layoutX="99.66851806640625" pickOnBounds="true" preserveRatio="true" rotate="15.4">
                      <image>

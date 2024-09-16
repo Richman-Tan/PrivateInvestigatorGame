@@ -27,6 +27,10 @@ public class ClueSafeController {
   @FXML private Pane safecontent;
   private String line = "";
   private DropShadow permShadow = new DropShadow();
+  Button goBackButton = new Button("Go Back");
+
+  boolean middleNote = false;
+  boolean backNote = false;
 
   @FXML
   private void initialize() {
@@ -49,23 +53,9 @@ public class ClueSafeController {
       } else {
         notes.toFront();
       }
-
-      // Set mouse click event to bring the notes to front
-      note1.setOnMouseClicked(
-          event -> {
-            note1.toFront();
-          });
-      note2.setOnMouseClicked(
-          event -> {
-            note2.toFront();
-          });
-      note3.setOnMouseClicked(
-          event -> {
-            note3.toFront();
-          });
     }
+
     // Add the "Go Back" button
-    Button goBackButton = new Button("Go Back");
     goBackButton.setStyle(
         "-fx-background-radius: 10; "
             + "-fx-border-radius: 10; "
@@ -175,9 +165,28 @@ public class ClueSafeController {
 
   @FXML
   private void onNote(MouseEvent event) {
-    notes.toBack(); // Hide the tool after it's clicked
+    goBackButton.toBack();
     safecontent.toBack();
+    notes.toBack(); // Hide the tool after it's clicked
     System.out.println("Notes clicked");
     GameStateContext.getInstance().setNoteFound(true); // Mark as found in the context
+  }
+
+  @FXML
+  private void onPage(MouseEvent event) {
+    // Set mouse click event to bring the notes to front
+    Group page = (Group) event.getSource();
+    switch (page.getId()) {
+      case "note2":
+        middleNote = true;
+        break;
+      case "note3":
+        backNote = true;
+        break;
+    }
+    page.toFront();
+    if (middleNote && backNote) {
+      goBackButton.toFront();
+    }
   }
 }
