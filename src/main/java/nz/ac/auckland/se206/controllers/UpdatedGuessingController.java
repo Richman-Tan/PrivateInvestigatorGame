@@ -255,9 +255,9 @@ public class UpdatedGuessingController {
 
     // Set the initial size and position for the ImageView
     staticimg1.setFitWidth(700);
-    staticimg1.setFitHeight(800);
+    staticimg1.setFitHeight(900);
     staticimg1.setLayoutX(200); // Set X position
-    staticimg1.setLayoutY(100); // Set Y position
+    staticimg1.setLayoutY(0); // Set Y position
 
     // Add the ImageView to the rootPane (or any other container)
     rootPane.getChildren().add(staticimg1);
@@ -293,7 +293,6 @@ public class UpdatedGuessingController {
     //   clue1foundimg.setOpacity(1);
     // }
 
-    // wires.toBack();
     // backgroundoverlay.toBack();
     staticimg1.toBack();
     staticlayer.toBack();

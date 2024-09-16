@@ -24,15 +24,6 @@
             <Image url="@../images/guessingimages/static1.png" />
          </image>
       </ImageView>
-      <Pane layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
-         <children>
-            <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <Pane fx:id="verifyCulpritPane" layoutX="325.0" layoutY="38.0" prefHeight="396.0" prefWidth="476.0" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#414951b2" height="155.0" layoutX="18.0" layoutY="115.0" stroke="#0000007b" strokeType="INSIDE" width="409.0" />
@@ -104,5 +95,14 @@
             <Image url="@../images/updatedguessingimages/guessingbackgroundoverlay.png" />
          </image>
       </ImageView>
+      <Pane layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+         <children>
+            <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
