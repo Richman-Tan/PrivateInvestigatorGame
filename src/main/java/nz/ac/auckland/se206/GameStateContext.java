@@ -43,6 +43,9 @@ public class GameStateContext {
   // State of wheter the guess has been pressed.
   private boolean isGuessPressed = false;
 
+  // State of wheter the phone has been found.
+  private boolean isPhoneFound = false;
+
   private TimerModel countdownTimer;
 
   /** Constructs a new GameStateContext and initializes the game states and professions. */
@@ -251,5 +254,13 @@ public class GameStateContext {
 
     // Reset instance
     instance = new GameStateContext();
+  }
+
+  public boolean isPhoneFound() {
+    return isPhoneFound;
+  }
+
+  public void setPhoneFound(boolean b) {
+    this.isPhoneFound = b;
   }
 }

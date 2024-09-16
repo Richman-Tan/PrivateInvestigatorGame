@@ -90,6 +90,13 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+               <children>
+                  <ImageView fx:id="clue2" fitHeight="194.0" fitWidth="336.0" layoutX="-149.0" layoutY="-85.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/phoneclue.png" />
+                     </image>
+                  </ImageView>
+               </children>
             </Pane>
             <Pane opacity="0.75" prefHeight="100.0" prefWidth="80.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>

@@ -42,6 +42,8 @@ public class RoomController {
 
   @FXML private ImageView clue1;
 
+  @FXML private ImageView clue2;
+
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = GameStateContext.getInstance();
 
@@ -55,12 +57,18 @@ public class RoomController {
 
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
+    clue2.setOpacity(0);
 
     checkGuessButton();
     // Check if the garden tool has been found
     if (context.isGardenToolFound()) {
       // If found, set the opacity of clue1 to 1 (visible)
       clue1.setOpacity(1);
+    }
+
+    if (context.isPhoneFound()) {
+      // If found, set the opacity of clue2 to 1 (visible)
+      clue2.setOpacity(1);
     }
 
     final Image image1 =
@@ -141,6 +149,76 @@ public class RoomController {
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    // Load background image
+    Image phoneClueImage =
+        new Image(RoomController.class.getResource("/images/phoneclue.png").toString());
+
+    // Create the background ImageView and set an initial size (scale)
+    ImageView phoneClueImageView = new ImageView(phoneClueImage);
+
+    // Set whether to preserve the aspect ratio (optional)
+    phoneClueImageView.setPreserveRatio(false);
+
+    // Bind the MediaView's fitWidth and fitHeight to a percentage of the rootPane's width and
+    // height
+    double mediaHorizontalScaleFactor = 0.1; // Adjust this value to control horizontal size
+    double mediaVerticalScaleFactor = 0.1; // Adjust this value to control vertical size
+    phoneClueImageView
+        .fitWidthProperty()
+        .bind(rootNode.widthProperty().multiply(mediaHorizontalScaleFactor));
+    phoneClueImageView
+        .fitHeightProperty()
+        .bind(rootNode.heightProperty().multiply(mediaVerticalScaleFactor));
+
+    // Center the MediaView horizontally and vertically
+    // Center the MediaView when the screen loads
+    double initialCenterX = (rootNode.getWidth() - phoneClueImageView.getFitWidth()) / 2 + 170;
+    double initialCenterY = (rootNode.getHeight() - phoneClueImageView.getFitHeight()) / 2 + 80;
+    AnchorPane.setLeftAnchor(phoneClueImageView, initialCenterX);
+    AnchorPane.setTopAnchor(phoneClueImageView, initialCenterY);
+
+    // Add listeners to ensure it stays centered when resized
+    rootNode
+        .widthProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              double centerX = (newVal.doubleValue() - phoneClueImageView.getFitWidth()) / 2 + 170;
+              AnchorPane.setLeftAnchor(phoneClueImageView, centerX);
+            });
+
+    rootNode
+        .heightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              double centerY = (newVal.doubleValue() - phoneClueImageView.getFitHeight()) / 2 + 80;
+              AnchorPane.setTopAnchor(phoneClueImageView, centerY);
+            });
+
+    DropShadow hoverShadow = new DropShadow();
+    hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
+    hoverShadow.setRadius(10); // Customize the shadow effect
+
+    phoneClueImageView.setOnMouseEntered(
+        e -> {
+          phoneClueImageView.setEffect(hoverShadow); // Apply hover effect when mouse enters
+        });
+    phoneClueImageView.setOnMouseExited(
+        e -> {
+          phoneClueImageView.setEffect(null); // Remove effect when mouse exits
+        });
+    phoneClueImageView.setOnMouseClicked(
+        e -> {
+          try {
+            GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
+            App.setRoot("cluephone");
+          } catch (IOException e1) {
+            e1.printStackTrace();
+          }
+        });
+
+    // Add the ImageView to the root node
+    rootNode.getChildren().addAll(phoneClueImageView);
   }
 
   private void addHoverEffect(Group group) {
