@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.UpdatedGuessingController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.UpdatedGuessingController">
    <children>
       <ImageView fitHeight="626.0" fitWidth="1127.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -77,7 +77,7 @@
                   <Font size="31.0" />
                </font>
             </Text>
-            <Button layoutX="160.0" layoutY="278.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" text="CONFIRM CULPRIT" />
+            <Button fx:id="confirmCulpritButton" layoutX="160.0" layoutY="278.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" opacity="0.5" text="CONFIRM CULPRIT" />
             <StackPane layoutX="-4.0" layoutY="111.0" prefHeight="150.0" prefWidth="456.0" />
             <ImageView fx:id="suspect1" fitHeight="116.0" fitWidth="116.0" layoutX="28.0" layoutY="122.0" onMouseEntered="#hoverImageUncle" onMouseExited="#offHoverImageUncle" onMousePressed="#clickedImageUncle" pickOnBounds="true" preserveRatio="true">
                <image>
