@@ -13,9 +13,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
@@ -38,6 +40,11 @@ public class Suspect2RoomController {
   @FXML private TextArea suspect2ChatBox;
   @FXML private Circle sendButton;
 
+  @FXML private Button guessButton;
+
+  @FXML private AnchorPane rootNode;
+  @FXML private ImageView backgroundimg;
+
   @FXML private Label lbltimer;
 
   private ChatCompletionRequest chatCompletionRequest;
@@ -59,6 +66,7 @@ public class Suspect2RoomController {
           @Override
           protected Void call() throws IOException, URISyntaxException {
             try {
+              checkGuessButton();
               ApiProxyConfig config = ApiProxyConfig.readConfig();
               chatCompletionRequest =
                   new ChatCompletionRequest(config)
@@ -90,6 +98,13 @@ public class Suspect2RoomController {
     Thread thread = new Thread(task);
     thread.setDaemon(true);
     thread.start();
+
+    backgroundimg.setFitWidth(rootNode.getWidth());
+    backgroundimg.setFitHeight(rootNode.getHeight());
+
+    // Make sure the background resizes with the window
+    backgroundimg.fitWidthProperty().bind(rootNode.widthProperty());
+    backgroundimg.fitHeightProperty().bind(rootNode.heightProperty());
   }
 
   /**
@@ -177,6 +192,7 @@ public class Suspect2RoomController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
+    GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
     App.setRoot("guessing");
     context.handleGuessClick();
   }
@@ -227,6 +243,8 @@ public class Suspect2RoomController {
   @FXML
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
     sendMessageCode();
+    recordVisit();
+    checkGuessButton();
   }
 
   /**
@@ -277,5 +295,35 @@ public class Suspect2RoomController {
 
   private static String loadTemplate(URI filePath) throws IOException {
     return new String(Files.readAllBytes(Paths.get(filePath)));
+  }
+
+  private void recordVisit() {
+    if (GameStateContext.getInstance().getListOfVisitors().isEmpty()
+        || !GameStateContext.getInstance().getListOfVisitors().contains("suspect2")) {
+      GameStateContext.getInstance().addVisitor("suspect2");
+    }
+  }
+
+  @FXML
+  private void checkGuessButton() {
+    if (context.getListOfVisitors().contains("suspect1")
+        && context.getListOfVisitors().contains("suspect2")
+        && context.getListOfVisitors().contains("suspect3")) {
+      // Enable the guess button
+      guessButton.setOpacity(0.8);
+      guessButton.setDisable(false);
+    } else {
+      // Disable the guess button
+      guessButton.setOpacity(0.3);
+      guessButton.setDisable(true);
+    }
+    System.out.println("Visitors:      " + context.getListOfVisitors());
+  }
+
+  @FXML
+  private void onEnterKey(ActionEvent event) throws ApiProxyException, IOException {
+    sendMessageCode();
+    recordVisit();
+    checkGuessButton();
   }
 }

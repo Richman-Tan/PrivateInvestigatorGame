@@ -13,9 +13,9 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="590.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect2RoomController">
+<AnchorPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="590.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect2RoomController">
    <children>
-   <ImageView fitHeight="600" fitWidth="1067" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <ImageView fx:id="backgroundimg" fitHeight="600" fitWidth="1067" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
         <Image url="@../images/grandmotherPic.jpg" />
     </image>
@@ -53,7 +53,7 @@
             </Button>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
+                  <Button fx:id="guessButton" mnemonicParsing="false" onAction="#handleGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
                </children>
             </HBox>
          </children>
@@ -81,7 +81,7 @@
          </image>
       </ImageView>
       <TextArea fx:id="suspect2ChatBox" editable="false" layoutX="178.0" layoutY="26.0" prefHeight="115.0" prefWidth="229.0" promptText="The suspect is thinking...." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: BEC6B9; -fx-text-fill: white; -fx-prompt-text-fill: white;" wrapText="true" />
-      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="51.0" layoutY="162.0" prefHeight="99.0" prefWidth="236.0" promptText="You are waiting for a response..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
+      <TextField fx:id="userChatBox" alignment="TOP_LEFT" layoutX="51.0" layoutY="162.0" onAction="#onEnterKey" prefHeight="99.0" prefWidth="236.0" promptText="You are waiting for a response..." style="-fx-border-color: 'transparent'; -fx-background-color: 'transparent'; -fx-prompt-text-fill: white; -fx-text-fill: white;" />
       <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="289.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true" rotate="270.0">
          <image>
             <Image url="@../images/sendArrow.png" />

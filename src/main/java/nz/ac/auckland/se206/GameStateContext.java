@@ -2,6 +2,7 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import javafx.scene.input.MouseEvent;
+import nz.ac.auckland.se206.controllers.SharedTimerModel;
+import nz.ac.auckland.se206.controllers.TimerModel;
 import nz.ac.auckland.se206.states.GameOver;
 import nz.ac.auckland.se206.states.GameStarted;
 import nz.ac.auckland.se206.states.GameState;
@@ -28,6 +31,7 @@ public class GameStateContext {
   private final Guessing guessingState;
   private final GameOver gameOverState;
   private GameState gameState;
+  private List<String> listOfVisitors;
 
   private static GameStateContext instance;
 
@@ -38,11 +42,20 @@ public class GameStateContext {
   private boolean isNoteFound = false;
   private boolean isSafeFound = false;
 
+  // State of wheter the guess has been pressed.
+  private boolean isGuessPressed = false;
+
+  // State of wheter the phone has been found.
+  private boolean isPhoneFound = false;
+
+  private TimerModel countdownTimer;
+
   /** Constructs a new GameStateContext and initializes the game states and professions. */
   public GameStateContext() {
     gameStartedState = new GameStarted(this);
     guessingState = new Guessing(this);
     gameOverState = new GameOver(this);
+    listOfVisitors = new ArrayList<>();
 
     gameState = gameStartedState; // Initial state
     Map<String, Object> obj = null;
@@ -222,5 +235,54 @@ public class GameStateContext {
   // Setter for note state
   public void setNoteFound(boolean found) {
     this.isNoteFound = found;
+  }
+
+  public void addVisitor(String visitor) {
+    // Add visitor to the list of visitors
+    listOfVisitors.add(visitor);
+  }
+
+  public List getListOfVisitors() {
+    // Return the list of visitors
+    return listOfVisitors;
+  }
+
+  // Getter for guess pressed state
+  public boolean isGuessPressed() {
+    return isGuessPressed;
+  }
+
+  // Setter for guess pressed state
+  public void setGuessPressed(boolean pressed) {
+    this.isGuessPressed = pressed;
+  }
+
+  /**
+   * Resets the game state to the initial game started state.
+   *
+   * @throws IOException if there is an I/O error
+   */
+  public void reset() throws IOException {
+    isMenuVisible = false;
+    isGardenToolFound = false;
+    isGuessPressed = false;
+    gameState = gameStartedState;
+
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+
+    countdownTimer.resetI();
+    countdownTimer.stop();
+    SharedTimerModel.getInstance().resetTimer();
+
+    // Reset instance
+    instance = new GameStateContext();
+  }
+
+  public boolean isPhoneFound() {
+    return isPhoneFound;
+  }
+
+  public void setPhoneFound(boolean b) {
+    this.isPhoneFound = b;
   }
 }
