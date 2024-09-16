@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="599.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect3RoomController">
    <children>
@@ -62,7 +61,6 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </HBox>
-      <Text layoutX="351.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Suspect 3 Room" />
       <Pane layoutX="22.0" layoutY="25.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="8.0" text="Label">

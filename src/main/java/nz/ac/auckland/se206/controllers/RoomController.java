@@ -188,6 +188,14 @@ public class RoomController {
         e -> {
           phoneClueImageView.setEffect(null); // Remove effect when mouse exits
         });
+    phoneClueImageView.setOnMouseClicked(
+        e -> {
+          try {
+            App.setRoot("cluephone");
+          } catch (IOException e1) {
+            e1.printStackTrace();
+          }
+        });
 
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(phoneClueImageView);
