@@ -34,6 +34,7 @@ public class UpdatedGuessingController {
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
+  @FXML private ImageView background;
 
   private ImageView staticimg1; // GIF image view created programmatically
   private Timeline timeline;
@@ -253,9 +254,9 @@ public class UpdatedGuessingController {
     staticimg1 = new ImageView();
 
     // Set the initial size and position for the ImageView
-    staticimg1.setFitWidth(200);
-    staticimg1.setFitHeight(200);
-    staticimg1.setLayoutX(100); // Set X position
+    staticimg1.setFitWidth(700);
+    staticimg1.setFitHeight(800);
+    staticimg1.setLayoutX(200); // Set X position
     staticimg1.setLayoutY(100); // Set Y position
 
     // Add the ImageView to the rootPane (or any other container)
@@ -264,22 +265,22 @@ public class UpdatedGuessingController {
 
   private void staticimages() {
     // Ensure the staticimg1 is anchored to all sides of the AnchorPane (rootPane)
-    AnchorPane.setTopAnchor(staticimg1, 0.0);
-    AnchorPane.setBottomAnchor(staticimg1, 0.0);
-    AnchorPane.setLeftAnchor(staticimg1, 0.0);
-    AnchorPane.setRightAnchor(staticimg1, 0.0);
+    // AnchorPane.setTopAnchor(staticimg1, 0.0);
+    // AnchorPane.setBottomAnchor(staticimg1, 0.0);
+    // AnchorPane.setLeftAnchor(staticimg1, 0.0);
+    // AnchorPane.setRightAnchor(staticimg1, 0.0);
 
-    // Bind the width and height of the ImageView to match the rootPane's size
-    staticimg1.fitWidthProperty().bind(rootPane.widthProperty());
-    staticimg1.fitHeightProperty().bind(rootPane.heightProperty());
+    // // Bind the width and height of the ImageView to match the rootPane's size
+    // staticimg1.fitWidthProperty().bind(rootPane.widthProperty());
+    // staticimg1.fitHeightProperty().bind(rootPane.heightProperty());
 
-    // Center the image in the rootPane
-    staticlayer.setFitWidth(rootPane.getWidth());
-    staticlayer.setFitHeight(rootPane.getHeight());
+    // // Center the image in the rootPane
+    // staticlayer.setFitWidth(rootPane.getWidth());
+    // staticlayer.setFitHeight(rootPane.getHeight());
 
-    // Make sure the background resizes with the window
-    staticlayer.fitWidthProperty().bind(rootPane.widthProperty());
-    staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
+    // // Make sure the background resizes with the window
+    // staticlayer.fitWidthProperty().bind(rootPane.widthProperty());
+    // staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
 
     // if (context.isGardenToolFound()) {
     //   clue1foundimg.setFitWidth(rootPane.getWidth());
@@ -294,9 +295,9 @@ public class UpdatedGuessingController {
 
     // wires.toBack();
     // backgroundoverlay.toBack();
-    // staticimg1.toBack();
-    // staticlayer.toBack();
-    // background.toBack();
+    staticimg1.toBack();
+    staticlayer.toBack();
+    background.toBack();
 
     Timeline gifPlayTimeline =
         new Timeline(

@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.UpdatedGuessingController">
    <children>
-      <ImageView fitHeight="626.0" fitWidth="1127.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="background" fitHeight="626.0" fitWidth="1127.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/updatedguessingimages/guessingBackground.png" />
          </image>
@@ -22,11 +22,6 @@
       <ImageView fx:id="staticlayer" fitHeight="813.0" fitWidth="1498.0" layoutX="-200.0" layoutY="-28.0" opacity="0.69" pickOnBounds="true">
          <image>
             <Image url="@../images/guessingimages/static1.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="backgroundoverlay" fitHeight="626.0" fitWidth="1076.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/updatedguessingimages/guessingbackgroundoverlay.png" />
          </image>
       </ImageView>
       <Pane layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
@@ -99,5 +94,15 @@
             <Rectangle fx:id="recSuspect3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="116.0" layoutX="165.0" layoutY="122.0" opacity="0.4" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" width="116.0" />
          </children>
       </Pane>
+      <ImageView fitHeight="626.0" fitWidth="1127.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/updatedguessingimages/guessingBackground.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="backgroundoverlay" fitHeight="626.0" fitWidth="1076.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/updatedguessingimages/guessingbackgroundoverlay.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
