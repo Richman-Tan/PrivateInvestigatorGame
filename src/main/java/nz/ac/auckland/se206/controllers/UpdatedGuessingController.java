@@ -1,5 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -37,18 +38,21 @@ public class UpdatedGuessingController {
   private String guessedsuspect;
 
   @FXML
-  private void hoverImageGma(MouseEvent event) {
+  private void hoverImageGma(MouseEvent event) throws IOException {
     recSuspect2.setVisible(true);
+    recSuspect2.setMouseTransparent(true);
   }
 
   @FXML
-  private void hoverImageUncle(MouseEvent event) {
+  private void hoverImageUncle(MouseEvent event) throws IOException {
     recSuspect1.setVisible(true);
+    recSuspect1.setMouseTransparent(true);
   }
 
   @FXML
-  private void hoverImageSon(MouseEvent event) {
+  private void hoverImageSon(MouseEvent event) throws IOException {
     recSuspect3.setVisible(true);
+    recSuspect3.setMouseTransparent(true);
   }
 
   @FXML
@@ -67,25 +71,25 @@ public class UpdatedGuessingController {
   }
 
   @FXML
-  private void clickedImageUncle(MouseEvent event) {
+  private void clickedImageUncle(MouseEvent event) throws IOException {
     guessedsuspect = "Uncle";
     recSuspect1.setVisible(true);
   }
 
   @FXML
-  private void clickedImageSon(MouseEvent event) {
+  private void clickedImageSon(MouseEvent event) throws IOException {
     guessedsuspect = "Grandson";
     recSuspect3.setVisible(true);
   }
 
   @FXML
-  private void clickedImageGma(MouseEvent event) {
+  private void clickedImageGma(MouseEvent event) throws IOException {
     guessedsuspect = "Grandma";
     recSuspect2.setVisible(true);
   }
 
   @FXML
-  private void confirmCulprit(MouseEvent event) {
+  private void confirmCulprit(MouseEvent event) throws IOException {
     // open new pane to confirm culprit
     guessPhotoPane.setVisible(false);
     verifyCulpritPane.setVisible(true);
