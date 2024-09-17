@@ -64,7 +64,7 @@
             </Label>
          </children>
       </Pane>
-      <VBox layoutX="659.0" layoutY="-11.0" opacity="0.75" prefHeight="403.0" prefWidth="143.0" AnchorPane.rightAnchor="6.0">
+      <VBox fx:id="vBox" layoutX="659.0" layoutY="-11.0" opacity="0.75" prefHeight="403.0" prefWidth="143.0" AnchorPane.rightAnchor="6.0">
          <children>
             <Pane opacity="0.75" prefHeight="23.0" prefWidth="91.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>
@@ -91,9 +91,9 @@
                   <Insets top="10.0" />
                </VBox.margin>
                <children>
-                  <ImageView fx:id="clue2" fitHeight="194.0" fitWidth="336.0" layoutX="-149.0" layoutY="-85.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="clue2" fitHeight="85.0" fitWidth="114.0" layoutX="5.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/phoneclue.png" />
+                        <Image url="@../images/phonecluesmall.png" />
                      </image>
                   </ImageView>
                </children>
@@ -102,12 +102,18 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+               <children>
+                  <ImageView fx:id="clue3" fitHeight="107.0" fitWidth="114.0" layoutX="5.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/cluesafeimages/notesfloor.png" />
+                     </image>
+                  </ImageView>
+               </children>
             </Pane>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <Button fx:id="safeButtonTemporary" layoutX="421.0" layoutY="55.0" mnemonicParsing="false" onAction="#onSafe" text="Safe button temporary" />
    </children>
 </AnchorPane>
