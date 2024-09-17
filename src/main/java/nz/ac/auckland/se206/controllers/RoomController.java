@@ -13,11 +13,9 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
@@ -49,8 +47,8 @@ public class RoomController {
 
   @FXML private VBox vBox;
 
-  private static boolean isFirstTimeInit = true;
   private static GameStateContext context = GameStateContext.getInstance();
+  private boolean isFirstTimeInit = context.isFirstTimeInit();
 
   private TimerModel countdownTimer;
 
@@ -100,7 +98,8 @@ public class RoomController {
       fadeTransition.setFromValue(0);
       fadeTransition.setToValue(1);
       fadeTransition.play();
-      isFirstTimeInit = false;
+      context.setFirstTimeInit(false);
+      isFirstTimeInit = context.isFirstTimeInit();
     }
 
     // Load background image
@@ -375,18 +374,6 @@ public class RoomController {
   @FXML
   public void onKeyReleased(KeyEvent event) {
     System.out.println("Key " + event.getCode() + " released");
-  }
-
-  /**
-   * Handles mouse clicks on rectangles representing people in the room.
-   *
-   * @param event the mouse event triggered by clicking a rectangle
-   * @throws IOException if there is an I/O error
-   */
-  @FXML
-  private void handleRectangleClick(MouseEvent event) throws IOException {
-    Rectangle clickedRectangle = (Rectangle) event.getSource();
-    context.handleRectangleClick(event, clickedRectangle.getId());
   }
 
   /**
