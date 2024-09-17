@@ -167,6 +167,12 @@ public class UpdatedGuessingController {
     confirmCulpritButton.setOpacity(1);
   }
 
+  /**
+   * Method to handle when the confirm culprit button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void confirmCulprit(MouseEvent event) throws IOException {
     // open new pane to confirm culprit

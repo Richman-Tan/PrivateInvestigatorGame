@@ -105,7 +105,7 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="gameOverPane" layoutX="314.0" layoutY="60.0" prefHeight="396.0" prefWidth="476.0" visible="false">
+      <Pane fx:id="gameOverPane" layoutX="314.0" layoutY="60.0" prefHeight="396.0" prefWidth="476.0">
          <children>
             <Label fx:id="gameOverTxt" layoutX="132.0" layoutY="33.0" prefHeight="48.0" prefWidth="206.0" text="GAME OVER" textFill="#dad7d7" visible="false">
                <font>
