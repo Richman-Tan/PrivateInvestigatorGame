@@ -56,6 +56,7 @@ public class UpdatedGuessingController {
   @FXML private Label lblStory; // The Label for displaying text
   private boolean guess = false;
   @FXML private Label incorrectGuessLbl2;
+  private boolean stopTimeline = false;
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -98,7 +99,7 @@ public class UpdatedGuessingController {
 
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
-    staticimages(); // Start the GIF playback every 5 seconds
+    // staticimages(); // Start the GIF playback every 5 seconds
   }
 
   @FXML
@@ -164,7 +165,9 @@ public class UpdatedGuessingController {
     guessPhotoPane.setVisible(false);
     verifyCulpritPane.setVisible(true);
     // play gif
+    stopTimeline = true;
     staticlayer.setVisible(false);
+    playgif();
 
     switch (guessedsuspect) {
       case "Uncle":
@@ -213,7 +216,6 @@ public class UpdatedGuessingController {
                 Duration.seconds(0.7),
                 event -> {
                   if (j < 4) {
-                    System.out.println(j + " this");
                     Object obj = list.get(j);
                     if (obj instanceof Node) {
                       ((Node) obj).setVisible(true); // Make the current element visible
@@ -302,13 +304,6 @@ public class UpdatedGuessingController {
     // staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
 
     if (context.isGardenToolFound()) {
-      //   clue1foundimg.setFitWidth(rootPane.getWidth());
-      //   clue1foundimg.setFitHeight(rootPane.getHeight());
-
-      //   // Make sure the background resizes with the window
-      //   clue1foundimg.fitWidthProperty().bind(rootPane.widthProperty());
-      //   clue1foundimg.fitHeightProperty().bind(rootPane.heightProperty());
-
       clue1foundimg.setVisible(true);
     }
 
@@ -351,29 +346,26 @@ public class UpdatedGuessingController {
 
     // Start the GIF animation timeline
     gifPlayTimeline.play();
+    if (stopTimeline) {
+      System.out.println("Should be Stopped");
+      gifPlayTimeline.stop();
+    }
   }
 
   private void playgif() {
-    Timeline gifOnly =
-        new Timeline(
-            // KeyFrame 1: Show the GIF (make it visible and set opacity to 1)
-            new KeyFrame(
-                Duration.seconds(0), // Start immediately
-                event -> {
-                  // Reset the GIF by loading it again
-                  Image gifImage =
-                      new Image(
-                          GuessingController.class
-                              .getResource("/images/guessingimages/static.gif")
-                              .toString());
-                  staticimg1.setImage(gifImage); // Set the GIF image to staticimg1
-                  staticimg1.setVisible(true); // Show the ImageView
-                  staticimg1.setOpacity(0.75); // Fully visible
-                }));
-    // Set the cycle count to indefinite, so it repeats
-    gifOnly.setCycleCount(Timeline.INDEFINITE);
+    // Load the GIF image once
+    Image gifImage =
+        new Image(
+            GuessingController.class.getResource("/images/guessingimages/static.gif").toString(),
+            true // Enable background loading for smoother performance
+            );
 
-    // Start the GIF animation timeline
-    gifOnly.play();
+    // Set the GIF to the ImageView
+    staticimg1.setImage(gifImage);
+    staticimg1.toBack();
+
+    // Make the ImageView visible and set opacity
+    staticimg1.setVisible(true);
+    staticimg1.setOpacity(0.75); // Adjust opacity as needed
   }
 }
