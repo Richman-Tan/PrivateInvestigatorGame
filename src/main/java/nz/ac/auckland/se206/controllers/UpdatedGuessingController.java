@@ -73,6 +73,7 @@ public class UpdatedGuessingController {
   private MediaPlayer mediaPlayer;
   private MediaPlayer gameOverPlayer;
   private MediaPlayer culpritPlayer;
+  private MediaPlayer explanationPlayer;
 
   private final String confirmed =
       GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
@@ -80,6 +81,11 @@ public class UpdatedGuessingController {
       GameStarted.class.getClassLoader().getResource("sounds/gameover.mp3").toExternalForm();
   private final String culprit =
       GameStarted.class.getClassLoader().getResource("sounds/clickOnCulprit.mp3").toExternalForm();
+  private final String explanation =
+      GameStarted.class
+          .getClassLoader()
+          .getResource("sounds/provideExplanation.mp3")
+          .toExternalForm();
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -122,8 +128,8 @@ public class UpdatedGuessingController {
 
     // play the audio
     Media sound = new Media(culprit);
-    mediaPlayer = new MediaPlayer(sound);
-    mediaPlayer.play();
+    culpritPlayer = new MediaPlayer(sound);
+    culpritPlayer.play();
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
   }
@@ -196,6 +202,10 @@ public class UpdatedGuessingController {
     // play sound
     Media sound = new Media(confirmed);
     mediaPlayer = new MediaPlayer(sound);
+
+    Media sound2 = new Media(explanation);
+    explanationPlayer = new MediaPlayer(sound2);
+
     mediaPlayer.play();
     mediaPlayer.setOnEndOfMedia(
         () -> {
@@ -205,6 +215,7 @@ public class UpdatedGuessingController {
           // play gif
           staticImage.setVisible(false);
           playgif();
+          explanationPlayer.play();
         });
 
     switch (guessedsuspect) {
