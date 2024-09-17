@@ -1,14 +1,22 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,9 +31,10 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
+import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.GameStateContext;
-import nz.ac.auckland.se206.speech.FreeTextToSpeech;
+import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
 
 public class UpdatedGuessingController {
@@ -45,6 +54,9 @@ public class UpdatedGuessingController {
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
+  @FXML private TextField userExplanation;
+
+  @FXML private ProgressIndicator progressIndicator;
 
   @FXML private ImageView staticImage;
   @FXML private ImageView background;
@@ -62,7 +74,7 @@ public class UpdatedGuessingController {
   @FXML private Label lbltimer;
   @FXML private Label gameOverTxt;
   @FXML private Label reviewLbl;
-  @FXML private TextField feedbackField;
+  @FXML private TextArea feedbackField;
   @FXML private Label lblStory; // The Label for displaying text
   private boolean guess = false;
   @FXML private Label incorrectGuessLbl2;
@@ -291,6 +303,20 @@ public class UpdatedGuessingController {
       Media sound = new Media(incorrectGuess);
       guessPlayer = new MediaPlayer(sound);
     }
+
+    // Run a seperate thread to play the sound
+    new Thread(
+            () -> {
+              // 0.5 sec delay before playing the sound
+              try {
+                Thread.sleep(1500);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+              onSendMessage();
+            })
+        .start();
+
     Media sound = new Media(gameOver);
     gameOverPlayer = new MediaPlayer(sound);
     gameOverPlayer.play();
@@ -498,12 +524,88 @@ public class UpdatedGuessingController {
       Choice result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequest.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
-      FreeTextToSpeech.speak(result.getChatMessage().getContent());
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
       e.printStackTrace();
       return null;
     }
+  }
+
+  private void onSendMessage() {
+
+    String message = userExplanation.getText().trim();
+    System.out.println("Message: " + message);
+    if (message.isEmpty()) {
+      return;
+    }
+
+    userExplanation.clear();
+
+    // Show the ProgressIndicator when the task starts
+    progressIndicator.setVisible(true);
+    progressIndicator.toFront();
+
+    // Create a background task for the GPT request
+    Task<ChatMessage> task =
+        new Task<ChatMessage>() {
+          @Override
+          protected ChatMessage call() throws Exception {
+            // Initialize the API configuration and ChatCompletionRequest
+            ApiProxyConfig config = ApiProxyConfig.readConfig();
+            chatCompletionRequest =
+                new ChatCompletionRequest(config)
+                    .setN(1)
+                    .setTemperature(0.2)
+                    .setTopP(0.5)
+                    .setMaxTokens(100);
+
+            // Load the template from the resource file
+            URL resourceUrl =
+                PromptEngineering.class.getClassLoader().getResource("prompts/guessing.txt");
+            String template = loadTemplate(resourceUrl.toURI());
+
+            // Append the user's message to the end of the template
+            String combinedMessage = template + "\n" + message;
+
+            // Create a system message with the combined template and user input
+            ChatMessage systemMessage = new ChatMessage("system", combinedMessage);
+
+            // Run GPT and get the response
+            return runGpt(systemMessage);
+          }
+        };
+
+    // On success, update the UI (run on the JavaFX Application Thread)
+    task.setOnSucceeded(
+        workerStateEvent -> {
+          ChatMessage response = task.getValue();
+          Platform.runLater(
+              () -> {
+                appendChatMessage(response); // Append the GPT response to the chat
+                progressIndicator.setVisible(false); // Hide the progress indicator
+              });
+        });
+
+    // On failure, handle the exception (you can also update the UI with an error message)
+    task.setOnFailed(
+        workerStateEvent -> {
+          Throwable throwable = task.getException();
+          Platform.runLater(
+              () -> {
+                appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage()));
+                progressIndicator.setVisible(false); // Hide the progress indicator on failure
+              });
+          throwable.printStackTrace();
+        });
+
+    // Start the task in a new thread
+    Thread thread = new Thread(task);
+    thread.setDaemon(true);
+    thread.start();
+  }
+
+  private static String loadTemplate(URI filePath) throws IOException {
+    return new String(Files.readAllBytes(Paths.get(filePath)));
   }
 }
