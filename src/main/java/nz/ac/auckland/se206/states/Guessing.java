@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.states;
 
 import java.io.IOException;
-import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.GameStateContext;
 
 /**
@@ -22,24 +21,13 @@ public class Guessing implements GameState {
   }
 
   /**
-   * Handles the event when a rectangle is clicked. Checks if the clicked rectangle is a customer
-   * and updates the game state accordingly.
-   *
-   * @param event the mouse event triggered by clicking a rectangle
-   * @param rectangleId the ID of the clicked rectangle
-   * @throws IOException if there is an I/O error
-   */
-  @Override
-  public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {
-    context.setState(context.getGameOverState());
-  }
-
-  /**
    * Handles the event when the guess button is clicked. Since the player has already guessed, it
    * notifies the player.
    *
    * @throws IOException if there is an I/O error
    */
   @Override
-  public void handleGuessClick() throws IOException {}
+  public void handleGuessClick() throws IOException {
+    context.setState(context.getGameOverState());
+  }
 }

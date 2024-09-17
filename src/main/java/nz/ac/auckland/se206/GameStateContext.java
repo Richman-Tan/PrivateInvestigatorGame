@@ -3,7 +3,6 @@ package nz.ac.auckland.se206;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.controllers.SharedTimerModel;
 import nz.ac.auckland.se206.controllers.TimerModel;
 import nz.ac.auckland.se206.states.GameOver;
@@ -101,17 +100,6 @@ public class GameStateContext {
    */
   public GameState getGameOverState() {
     return gameOverState;
-  }
-
-  /**
-   * Handles the event when a rectangle is clicked.
-   *
-   * @param event the mouse event triggered by clicking a rectangle
-   * @param rectangleId the ID of the clicked rectangle
-   * @throws IOException if there is an I/O error
-   */
-  public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {
-    gameState.handleRectangleClick(event, rectangleId);
   }
 
   /**

@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.states;
 
 import java.io.IOException;
-import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.GameStateContext;
 
 /**
@@ -16,9 +15,6 @@ public class GameOver implements GameState {
    * @param context the context of the game state
    */
   public GameOver(GameStateContext context) {}
-
-  @Override
-  public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {}
 
   @Override
   public void handleGuessClick() throws IOException {}
