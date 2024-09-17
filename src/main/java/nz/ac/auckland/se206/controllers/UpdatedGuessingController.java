@@ -20,8 +20,12 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
+import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
+import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 import nz.ac.auckland.se206.states.GameStarted;
 
 public class UpdatedGuessingController {
@@ -453,5 +457,53 @@ public class UpdatedGuessingController {
     // Make the ImageView visible and set opacity
     staticimg1.setVisible(true);
     staticimg1.setOpacity(0.75); // Adjust opacity as needed
+  }
+
+  private void appendChatMessage(ChatMessage msg) {
+    // Clear the text area before showing the new message
+    feedbackField.clear();
+
+    // Get the message content as a string
+    String content = msg.getContent();
+
+    // Create a new StringBuilder to hold the text progressively
+    StringBuilder displayedText = new StringBuilder();
+
+    // Create a new Timeline to append the text one letter at a time
+    Timeline timeline = new Timeline();
+
+    // Loop through each character of the message and create keyframes to append the characters
+    for (int i = 0; i < content.length(); i++) {
+      final int index = i;
+      KeyFrame keyFrame =
+          new KeyFrame(
+              Duration.millis(50 * (index + 1)), // Delay based on character position
+              event -> {
+                // Append the next character to the StringBuilder
+                displayedText.append(content.charAt(index));
+                // Update the TextArea with the current text
+                feedbackField.setText(displayedText.toString());
+              });
+      timeline.getKeyFrames().add(keyFrame);
+    }
+
+    // Play the timeline animation
+    timeline.play();
+  }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    chatCompletionRequest.addMessage(msg);
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      appendChatMessage(result.getChatMessage());
+      FreeTextToSpeech.speak(result.getChatMessage().getContent());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
+      e.printStackTrace();
+      return null;
+    }
   }
 }
