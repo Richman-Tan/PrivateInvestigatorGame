@@ -56,9 +56,6 @@ public class CluePhoneController {
   private boolean isBlueWireConnected = false;
   private boolean isGreenWireConnected = false;
 
-  // Flag for all connections
-  private boolean allConnected = false;
-
   // Currently active circle for dragging
   private Circle activeStartCircle = null;
 
@@ -273,7 +270,6 @@ public class CluePhoneController {
       rootPane.getChildren().add(playPauseButton);
 
     } else {
-      GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
       Image phoneImage =
           new Image(
               CluePhoneController.class
@@ -672,7 +668,6 @@ public class CluePhoneController {
   // Check if all wires are connected
   private void checkAllConnections() {
     if (isRedWireConnected && isBlueWireConnected && isGreenWireConnected) {
-      allConnected = true;
       System.out.println("All wires are connected!");
 
       // Set a 0.5 second delay before the phone rings
@@ -857,6 +852,7 @@ public class CluePhoneController {
       endCircleBlue.setOpacity(0);
       endCircleGreen.setOpacity(0);
     }
+    GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
   }
 
   // Check if the drag ends on a valid end circle with the same color

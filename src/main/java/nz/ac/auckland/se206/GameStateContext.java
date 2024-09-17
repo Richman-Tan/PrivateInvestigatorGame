@@ -1,22 +1,14 @@
 package nz.ac.auckland.se206;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.controllers.SharedTimerModel;
 import nz.ac.auckland.se206.controllers.TimerModel;
 import nz.ac.auckland.se206.states.GameOver;
 import nz.ac.auckland.se206.states.GameStarted;
 import nz.ac.auckland.se206.states.GameState;
 import nz.ac.auckland.se206.states.Guessing;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Context class for managing the state of the game. Handles transitions between different game
@@ -24,9 +16,6 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class GameStateContext {
 
-  private final String rectIdToGuess;
-  private final String professionToGuess;
-  private final Map<String, String> rectanglesToProfession;
   private final GameStarted gameStartedState;
   private final Guessing guessingState;
   private final GameOver gameOverState;
@@ -34,23 +23,24 @@ public class GameStateContext {
   private List<String> listOfVisitors;
 
   private static GameStateContext instance;
-
-  private boolean isMenuVisible = false; // Add this variable to manage menu visibility
-
-  // State of whether the garden tool has been found
-  private boolean isGardenToolFound = false;
-  private boolean isNoteFound = false;
-  private boolean isSafeFound = false;
-
-  // State of wheter the guess has been pressed.
-  private boolean isGuessPressed = false;
-
+  // Add this variable to manage first time initialization
+  private boolean firstTimeInit;
+  // Add this variable to manage menu visibility
+  private boolean isMenuVisible;
+  // State of whether the garden tool shas been found
+  private boolean isGardenToolFound;
+  // State of whether the note has been found
+  private boolean isNoteFound;
+  // State of whether the safe has been opened
+  private boolean isSafeOpen;
   // State of wheter the phone has been found.
-  private boolean isPhoneFound = false;
+  private boolean isPhoneFound;
+  // State of whether the guess has been pressed.
+  private boolean isGuessPressed;
 
   private TimerModel countdownTimer;
 
-  /** Constructs a new GameStateContext and initializes the game states and professions. */
+  /** Constructs a new GameStateContext and initializes the game states. */
   public GameStateContext() {
     gameStartedState = new GameStarted(this);
     guessingState = new Guessing(this);
@@ -58,38 +48,14 @@ public class GameStateContext {
     listOfVisitors = new ArrayList<>();
 
     gameState = gameStartedState; // Initial state
-    Map<String, Object> obj = null;
-    Yaml yaml = new Yaml();
-    try (InputStream inputStream =
-        GameStateContext.class.getClassLoader().getResourceAsStream("data/professions.yaml")) {
-      if (inputStream == null) {
-        throw new IllegalStateException("File not found!");
-      }
-      obj = yaml.load(inputStream);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
 
-    @SuppressWarnings("unchecked")
-    List<String> professions = (List<String>) obj.get("professions");
-
-    Random random = new Random();
-    Set<String> randomProfessions = new HashSet<>();
-    while (randomProfessions.size() < 3) {
-      String profession = professions.get(random.nextInt(professions.size()));
-      randomProfessions.add(profession);
-    }
-
-    String[] randomProfessionsArray = randomProfessions.toArray(new String[3]);
-    rectanglesToProfession = new HashMap<>();
-    rectanglesToProfession.put("rectPerson1", randomProfessionsArray[0]);
-    rectanglesToProfession.put("rectPerson2", randomProfessionsArray[1]);
-    rectanglesToProfession.put("rectPerson3", randomProfessionsArray[2]);
-
-    int randomNumber = random.nextInt(3);
-    rectIdToGuess =
-        randomNumber == 0 ? "rectPerson1" : ((randomNumber == 1) ? "rectPerson2" : "rectPerson3");
-    professionToGuess = rectanglesToProfession.get(rectIdToGuess);
+    this.firstTimeInit = true;
+    this.isMenuVisible = false;
+    this.isGardenToolFound = false;
+    this.isNoteFound = false;
+    this.isSafeOpen = false;
+    this.isPhoneFound = false;
+    this.isGuessPressed = false;
   }
 
   // Static method to get the single instance of GameStateContext
@@ -137,45 +103,6 @@ public class GameStateContext {
   }
 
   /**
-   * Gets the profession to be guessed.
-   *
-   * @return the profession to guess
-   */
-  public String getProfessionToGuess() {
-    return professionToGuess;
-  }
-
-  /**
-   * Gets the ID of the rectangle to be guessed.
-   *
-   * @return the rectangle ID to guess
-   */
-  public String getRectIdToGuess() {
-    return rectIdToGuess;
-  }
-
-  /**
-   * Gets the profession associated with a specific rectangle ID.
-   *
-   * @param rectangleId the rectangle ID
-   * @return the profession associated with the rectangle ID
-   */
-  public String getProfession(String rectangleId) {
-    return rectanglesToProfession.get(rectangleId);
-  }
-
-  /**
-   * Handles the event when a rectangle is clicked.
-   *
-   * @param event the mouse event triggered by clicking a rectangle
-   * @param rectangleId the ID of the clicked rectangle
-   * @throws IOException if there is an I/O error
-   */
-  public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {
-    gameState.handleRectangleClick(event, rectangleId);
-  }
-
-  /**
    * Handles the event when the guess button is clicked.
    *
    * @throws IOException if there is an I/O error
@@ -219,12 +146,12 @@ public class GameStateContext {
 
   // Getter for safe state
   public boolean isSafeOpen() {
-    return isSafeFound;
+    return isSafeOpen;
   }
 
   // Setter for safe state
-  public void setSafeOpen(boolean found) {
-    this.isSafeFound = found;
+  public void setSafeOpen(boolean open) {
+    this.isSafeOpen = open;
   }
 
   // Getter for note state
@@ -242,6 +169,7 @@ public class GameStateContext {
     listOfVisitors.add(visitor);
   }
 
+  @SuppressWarnings("rawtypes")
   public List getListOfVisitors() {
     // Return the list of visitors
     return listOfVisitors;
@@ -257,32 +185,43 @@ public class GameStateContext {
     this.isGuessPressed = pressed;
   }
 
-  /**
-   * Resets the game state to the initial game started state.
-   *
-   * @throws IOException if there is an I/O error
-   */
-  public void reset() throws IOException {
-    isMenuVisible = false;
-    isGardenToolFound = false;
-    isGuessPressed = false;
-    gameState = gameStartedState;
-
-    countdownTimer = SharedTimerModel.getInstance().getTimer();
-
-    countdownTimer.resetI();
-    countdownTimer.stop();
-    SharedTimerModel.getInstance().resetTimer();
-
-    // Reset instance
-    instance = new GameStateContext();
-  }
-
   public boolean isPhoneFound() {
     return isPhoneFound;
   }
 
   public void setPhoneFound(boolean b) {
     this.isPhoneFound = b;
+  }
+
+  public boolean isFirstTimeInit() {
+    return firstTimeInit;
+  }
+
+  public void setFirstTimeInit(boolean firstTimeInit) {
+    this.firstTimeInit = firstTimeInit;
+  }
+
+  /**
+   * Resets the game state to the initial game started state.
+   *
+   * @throws IOException if there is an I/O error
+   */
+  public void reset() throws IOException {
+    // Reset instance
+    isMenuVisible = false;
+    isGardenToolFound = false;
+    isPhoneFound = false;
+    isNoteFound = false;
+    isSafeOpen = false;
+    isGuessPressed = false;
+    firstTimeInit = true;
+    gameState = gameStartedState;
+    listOfVisitors.clear();
+
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+
+    countdownTimer.resetI();
+    countdownTimer.stop();
+    SharedTimerModel.getInstance().resetTimer();
   }
 }
