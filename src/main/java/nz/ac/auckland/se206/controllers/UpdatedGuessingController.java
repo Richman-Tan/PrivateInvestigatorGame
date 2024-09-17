@@ -15,11 +15,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.states.GameStarted;
 
 public class UpdatedGuessingController {
   // main pane
@@ -34,6 +37,7 @@ public class UpdatedGuessingController {
   @FXML private ImageView confirmedSuspect1;
   @FXML private ImageView confirmedSuspect2;
   @FXML private ImageView confirmedSuspect3;
+  @FXML private ImageView clue1foundimg;
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
@@ -41,7 +45,6 @@ public class UpdatedGuessingController {
   @FXML private ImageView staticImage;
   @FXML private ImageView background;
   private String text = "Who is the culprit . . .";
-  @FXML private ImageView clue1foundimg;
   private ImageView staticimg1; // GIF image view created programmatically
   private Timeline timeline;
   @FXML private Pane gameOverPane;
@@ -66,6 +69,10 @@ public class UpdatedGuessingController {
   @FXML private Rectangle recSus1;
   @FXML private Rectangle recSus2;
   @FXML private Rectangle recSus3;
+
+  private MediaPlayer mediaPlayer;
+  private final String confirmed =
+      GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -175,13 +182,19 @@ public class UpdatedGuessingController {
    */
   @FXML
   private void confirmCulprit(MouseEvent event) throws IOException {
-    // open new pane to confirm culprit
-    guessPhotoPane.setVisible(false);
-    verifyCulpritPane.setVisible(true);
-
-    // play gif
-    staticImage.setVisible(false);
-    playgif();
+    // play sound
+    Media sound = new Media(confirmed);
+    mediaPlayer = new MediaPlayer(sound);
+    mediaPlayer.play();
+    mediaPlayer.setOnEndOfMedia(
+        () -> {
+          // open new pane to confirm culprit
+          guessPhotoPane.setVisible(false);
+          verifyCulpritPane.setVisible(true);
+          // play gif
+          staticImage.setVisible(false);
+          playgif();
+        });
 
     switch (guessedsuspect) {
       case "Uncle":
@@ -208,12 +221,19 @@ public class UpdatedGuessingController {
    */
   @FXML
   private void confirmExplanation(MouseEvent event) throws IOException {
-    // open new pane to confirm explanation
-    verifyCulpritPane.setVisible(false);
-    staticimg1.setVisible(false);
-    gameOverRectangle.setVisible(true);
-    gameOverPane.setVisible(true);
-    showGameOver();
+    // play sound
+    Media sound = new Media(confirmed);
+    mediaPlayer = new MediaPlayer(sound);
+    mediaPlayer.play();
+    mediaPlayer.setOnEndOfMedia(
+        () -> {
+          // open new pane to confirm explanation
+          verifyCulpritPane.setVisible(false);
+          staticimg1.setVisible(false);
+          gameOverRectangle.setVisible(true);
+          gameOverPane.setVisible(true);
+          showGameOver();
+        });
   }
 
   /**
