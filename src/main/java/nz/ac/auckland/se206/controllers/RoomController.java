@@ -210,7 +210,6 @@ public class RoomController {
     phoneClueImageView.setOnMouseClicked(
         e -> {
           try {
-            GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
             App.setRoot("cluephone");
           } catch (IOException e1) {
             e1.printStackTrace();
