@@ -36,7 +36,7 @@ public class UpdatedGuessingController {
   @FXML private ImageView staticlayer; // GIF image view created programmatically
   @FXML private ImageView background;
   private String text = "Who is the culprit . . .";
-
+  @FXML private ImageView clue1foundimg;
   private ImageView staticimg1; // GIF image view created programmatically
   private Timeline timeline;
 
@@ -280,16 +280,16 @@ public class UpdatedGuessingController {
     // staticlayer.fitWidthProperty().bind(rootPane.widthProperty());
     // staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
 
-    // if (context.isGardenToolFound()) {
-    //   clue1foundimg.setFitWidth(rootPane.getWidth());
-    //   clue1foundimg.setFitHeight(rootPane.getHeight());
+    if (context.isGardenToolFound()) {
+      //   clue1foundimg.setFitWidth(rootPane.getWidth());
+      //   clue1foundimg.setFitHeight(rootPane.getHeight());
 
-    //   // Make sure the background resizes with the window
-    //   clue1foundimg.fitWidthProperty().bind(rootPane.widthProperty());
-    //   clue1foundimg.fitHeightProperty().bind(rootPane.heightProperty());
+      //   // Make sure the background resizes with the window
+      //   clue1foundimg.fitWidthProperty().bind(rootPane.widthProperty());
+      //   clue1foundimg.fitHeightProperty().bind(rootPane.heightProperty());
 
-    //   clue1foundimg.setOpacity(1);
-    // }
+      clue1foundimg.setVisible(true);
+    }
 
     // backgroundoverlay.toBack();
     staticimg1.toBack();
