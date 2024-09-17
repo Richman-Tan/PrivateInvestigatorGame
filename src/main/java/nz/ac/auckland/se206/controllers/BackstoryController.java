@@ -224,6 +224,7 @@ public class BackstoryController {
     setHoverHandlers(additionalImageView, enlargedImageView);
 
     additionalImageView.setOnMouseClicked(e -> zoomIn(additionalImageView, "room"));
+
     enlargedImageView.setOnMouseClicked(e -> zoomIn(enlargedImageView, "room"));
   }
 
@@ -303,12 +304,20 @@ public class BackstoryController {
   }
 
   private void zoomIn(ImageView imageView, String nextScene) {
+    mediaPlayer.play(); // Play the sound effect
+
     // Create a new thread to run the zoom-in logic
     new Thread(
             () -> {
               // All UI updates need to be run on the JavaFX Application Thread
               Platform.runLater(
                   () -> {
+                    // Wait 1 second before starting the zoom-in transition
+                    try {
+                      Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                      e.printStackTrace();
+                    }
                     // Scale transition for zooming in
                     ScaleTransition zoomInTransition =
                         new ScaleTransition(Duration.seconds(1), imageView);
