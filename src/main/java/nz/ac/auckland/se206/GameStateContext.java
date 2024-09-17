@@ -24,19 +24,20 @@ public class GameStateContext {
   private List<String> listOfVisitors;
 
   private static GameStateContext instance;
-
-  private boolean isMenuVisible = false; // Add this variable to manage menu visibility
-
-  // State of whether the garden tool has been found
-  private boolean isGardenToolFound = false;
-  private boolean isNoteFound = false;
-  private boolean isSafeOpen = false;
-
-  // State of wheter the guess has been pressed.
-  private boolean isGuessPressed = false;
-
+  // Add this variable to manage first time initialization
+  private boolean firstTimeInit;
+  // Add this variable to manage menu visibility
+  private boolean isMenuVisible;
+  // State of whether the garden tool shas been found
+  private boolean isGardenToolFound;
+  // State of whether the note has been found
+  private boolean isNoteFound;
+  // State of whether the safe has been opened
+  private boolean isSafeOpen;
   // State of wheter the phone has been found.
-  private boolean isPhoneFound = false;
+  private boolean isPhoneFound;
+  // State of whether the guess has been pressed.
+  private boolean isGuessPressed;
 
   private TimerModel countdownTimer;
 
@@ -48,6 +49,14 @@ public class GameStateContext {
     listOfVisitors = new ArrayList<>();
 
     gameState = gameStartedState; // Initial state
+
+    this.firstTimeInit = true;
+    this.isMenuVisible = false;
+    this.isGardenToolFound = false;
+    this.isNoteFound = false;
+    this.isSafeOpen = false;
+    this.isPhoneFound = false;
+    this.isGuessPressed = false;
   }
 
   // Static method to get the single instance of GameStateContext
@@ -194,12 +203,15 @@ public class GameStateContext {
    * @throws IOException if there is an I/O error
    */
   public void reset() throws IOException {
+    // Reset instance
+    instance = new GameStateContext();
     isMenuVisible = false;
     isGardenToolFound = false;
     isPhoneFound = false;
     isNoteFound = false;
     isSafeOpen = false;
     isGuessPressed = false;
+    firstTimeInit = true;
     gameState = gameStartedState;
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
@@ -207,9 +219,6 @@ public class GameStateContext {
     countdownTimer.resetI();
     countdownTimer.stop();
     SharedTimerModel.getInstance().resetTimer();
-
-    // Reset instance
-    instance = new GameStateContext();
   }
 
   public boolean isPhoneFound() {
@@ -218,5 +227,13 @@ public class GameStateContext {
 
   public void setPhoneFound(boolean b) {
     this.isPhoneFound = b;
+  }
+
+  public boolean isFirstTimeInit() {
+    return firstTimeInit;
+  }
+
+  public void setFirstTimeInit(boolean firstTimeInit) {
+    this.firstTimeInit = firstTimeInit;
   }
 }

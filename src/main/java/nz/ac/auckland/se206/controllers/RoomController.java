@@ -42,8 +42,8 @@ public class RoomController {
 
   @FXML private ImageView clue2;
 
-  private static boolean isFirstTimeInit = true;
   private static GameStateContext context = GameStateContext.getInstance();
+  private static boolean isFirstTimeInit = context.isFirstTimeInit();
 
   private TimerModel countdownTimer;
 
