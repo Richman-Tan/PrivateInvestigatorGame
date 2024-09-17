@@ -71,8 +71,12 @@ public class UpdatedGuessingController {
   @FXML private Rectangle recSus3;
 
   private MediaPlayer mediaPlayer;
+  private MediaPlayer gameOverPlayer;
+
   private final String confirmed =
       GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
+  private final String gameOver =
+      GameStarted.class.getClassLoader().getResource("sounds/gameover.mp3").toExternalForm();
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -244,9 +248,7 @@ public class UpdatedGuessingController {
    */
   @FXML
   private void showGameOver() {
-    System.out.println("Entered showGameOver");
     list = new ArrayList<>();
-    list.add(gameOverTxt);
     if (guess) {
       list.add(correctGuessLbl);
       list.add(reviewLbl);
@@ -255,25 +257,31 @@ public class UpdatedGuessingController {
       list.add(incorrectGuessLbl);
       list.add(incorrectGuessLbl2);
     }
-    System.out.println("Entered showGameOver");
-    timeline =
-        new Timeline(
-            new KeyFrame(
-                Duration.seconds(0.7),
-                event -> {
-                  if (j < 4) {
-                    Object obj = list.get(j);
-                    if (obj instanceof Node) {
-                      ((Node) obj).setVisible(true); // Make the current element visible
-                    }
-                    j++;
-                  } else {
-                    timeline.stop();
-                  }
-                }));
+    Media sound = new Media(gameOver);
+    gameOverPlayer = new MediaPlayer(sound);
+    gameOverPlayer.play();
+    gameOverTxt.setVisible(true);
+    gameOverPlayer.setOnEndOfMedia(
+        () -> {
+          timeline =
+              new Timeline(
+                  new KeyFrame(
+                      Duration.seconds(0.7),
+                      event -> {
+                        if (j < list.size()) {
+                          Object obj = list.get(j);
+                          if (obj instanceof Node) {
+                            ((Node) obj).setVisible(true); // Make the current element visible
+                          }
+                          j++;
+                        } else {
+                          timeline.stop();
+                        }
+                      }));
 
-    timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
-    timeline.play(); // Start the animation
+          timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
+          timeline.play(); // Start the animation
+        });
   }
 
   private void warpText() {
