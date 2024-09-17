@@ -197,6 +197,22 @@ public class GameStateContext {
     this.isGuessPressed = pressed;
   }
 
+  public boolean isPhoneFound() {
+    return isPhoneFound;
+  }
+
+  public void setPhoneFound(boolean b) {
+    this.isPhoneFound = b;
+  }
+
+  public boolean isFirstTimeInit() {
+    return firstTimeInit;
+  }
+
+  public void setFirstTimeInit(boolean firstTimeInit) {
+    this.firstTimeInit = firstTimeInit;
+  }
+
   /**
    * Resets the game state to the initial game started state.
    *
@@ -219,21 +235,5 @@ public class GameStateContext {
     countdownTimer.resetI();
     countdownTimer.stop();
     SharedTimerModel.getInstance().resetTimer();
-  }
-
-  public boolean isPhoneFound() {
-    return isPhoneFound;
-  }
-
-  public void setPhoneFound(boolean b) {
-    this.isPhoneFound = b;
-  }
-
-  public boolean isFirstTimeInit() {
-    return firstTimeInit;
-  }
-
-  public void setFirstTimeInit(boolean firstTimeInit) {
-    this.firstTimeInit = firstTimeInit;
   }
 }

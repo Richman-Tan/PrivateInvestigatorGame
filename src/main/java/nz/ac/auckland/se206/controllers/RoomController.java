@@ -43,7 +43,7 @@ public class RoomController {
   @FXML private ImageView clue2;
 
   private static GameStateContext context = GameStateContext.getInstance();
-  private static boolean isFirstTimeInit = context.isFirstTimeInit();
+  private boolean isFirstTimeInit = context.isFirstTimeInit();
 
   private TimerModel countdownTimer;
 
@@ -87,7 +87,8 @@ public class RoomController {
       fadeTransition.setFromValue(0);
       fadeTransition.setToValue(1);
       fadeTransition.play();
-      isFirstTimeInit = false;
+      context.setFirstTimeInit(false);
+      isFirstTimeInit = context.isFirstTimeInit();
     }
 
     // Load background image
