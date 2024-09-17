@@ -46,7 +46,7 @@
                   <Image url="@../images/updatedguessingimages/Gma.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow;" text="CONFIRM EXPLANATION" />
+            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.0, 0.0, 5.0);" text="CONFIRM EXPLANATION" />
             <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning ( &lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
                <font>
                   <Font size="11.0" />
@@ -66,7 +66,17 @@
       </Pane>
       <Pane fx:id="guessPhotoPane" layoutX="326.0" layoutY="52.0" prefHeight="396.0" prefWidth="476.0">
          <children>
-            <Button fx:id="confirmCulpritButton" layoutX="156.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" opacity="0.5" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow;" text="CONFIRM CULPRIT" />
+<Button fx:id="confirmCulpritButton" layoutX="156.0" layoutY="290.0" mnemonicParsing="false" 
+    onMouseClicked="#confirmCulprit" opacity="0.5" 
+    style="-fx-background-color: '#750E0E'; 
+           -fx-text-fill: '#FFFFFF'; 
+           -fx-border-color: '#960909'; 
+           -fx-font-family: 'Courier New'; 
+           -fx-font-weight: 800; 
+           -fx-padding: 5 10 5 10; 
+           -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.0, 0.0, 5.0);" 
+    text="CONFIRM CULPRIT" />
+
             <StackPane layoutX="-4.0" layoutY="123.0" prefHeight="150.0" prefWidth="456.0" visible="false" />
             <Label fx:id="lblStory" layoutX="74.0" layoutY="37.0" prefHeight="77.0" prefWidth="296.0" text="s" textFill="WHITE">
                <font>
