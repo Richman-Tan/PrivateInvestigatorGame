@@ -74,6 +74,7 @@ public class UpdatedGuessingController {
   private MediaPlayer gameOverPlayer;
   private MediaPlayer culpritPlayer;
   private MediaPlayer explanationPlayer;
+  private MediaPlayer guessPlayer;
 
   private final String confirmed =
       GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
@@ -85,6 +86,13 @@ public class UpdatedGuessingController {
       GameStarted.class
           .getClassLoader()
           .getResource("sounds/provideExplanation.mp3")
+          .toExternalForm();
+  private final String correctGuess =
+      GameStarted.class.getClassLoader().getResource("sounds/guessCorrectly.mp3").toExternalForm();
+  private final String incorrectGuess =
+      GameStarted.class
+          .getClassLoader()
+          .getResource("sounds/guessIncorrectly.mp3")
           .toExternalForm();
 
   private GameStateContext context = GameStateContext.getInstance();
@@ -271,9 +279,13 @@ public class UpdatedGuessingController {
       list.add(correctGuessLbl);
       list.add(reviewLbl);
       list.add(feedbackField);
+      Media sound = new Media(correctGuess);
+      guessPlayer = new MediaPlayer(sound);
     } else {
       list.add(incorrectGuessLbl);
       list.add(incorrectGuessLbl2);
+      Media sound = new Media(incorrectGuess);
+      guessPlayer = new MediaPlayer(sound);
     }
     Media sound = new Media(gameOver);
     gameOverPlayer = new MediaPlayer(sound);
@@ -281,6 +293,8 @@ public class UpdatedGuessingController {
     gameOverTxt.setVisible(true);
     gameOverPlayer.setOnEndOfMedia(
         () -> {
+          // play sound
+          guessPlayer.play();
           timeline =
               new Timeline(
                   new KeyFrame(
