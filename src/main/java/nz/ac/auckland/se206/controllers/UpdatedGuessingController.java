@@ -72,11 +72,14 @@ public class UpdatedGuessingController {
 
   private MediaPlayer mediaPlayer;
   private MediaPlayer gameOverPlayer;
+  private MediaPlayer culpritPlayer;
 
   private final String confirmed =
       GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
   private final String gameOver =
       GameStarted.class.getClassLoader().getResource("sounds/gameover.mp3").toExternalForm();
+  private final String culprit =
+      GameStarted.class.getClassLoader().getResource("sounds/clickOnCulprit.mp3").toExternalForm();
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -117,6 +120,10 @@ public class UpdatedGuessingController {
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
+    // play the audio
+    Media sound = new Media(culprit);
+    mediaPlayer = new MediaPlayer(sound);
+    mediaPlayer.play();
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
   }
