@@ -37,6 +37,8 @@ public class UpdatedGuessingController {
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
+
+  @FXML private ImageView staticImage;
   @FXML private ImageView background;
   private String text = "Who is the culprit . . .";
   @FXML private ImageView clue1foundimg;
@@ -44,6 +46,7 @@ public class UpdatedGuessingController {
   private Timeline timeline;
   @FXML private Pane gameOverPane;
   @FXML private Rectangle gameOverRectangle;
+  @FXML private Rectangle gameOverRectangle2;
   private int i = 0;
   private int j = 0;
   @FXML private Label correctGuessLbl;
@@ -57,6 +60,10 @@ public class UpdatedGuessingController {
   private boolean guess = false;
   @FXML private Label incorrectGuessLbl2;
   private boolean stopTimeline = false;
+
+  @FXML private Rectangle recSus1;
+  @FXML private Rectangle recSus2;
+  @FXML private Rectangle recSus3;
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -99,7 +106,6 @@ public class UpdatedGuessingController {
 
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
-    // staticimages(); // Start the GIF playback every 5 seconds
   }
 
   @FXML
@@ -138,7 +144,7 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageUncle(MouseEvent event) throws IOException {
     guessedsuspect = "Uncle";
-    recSuspect1.setVisible(true);
+    recSus1.setVisible(true);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -146,7 +152,7 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageSon(MouseEvent event) throws IOException {
     guessedsuspect = "Grandson";
-    recSuspect3.setVisible(true);
+    recSus3.setVisible(true);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -154,7 +160,7 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageGma(MouseEvent event) throws IOException {
     guessedsuspect = "Grandma";
-    recSuspect2.setVisible(true);
+    recSus2.setVisible(true);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -164,9 +170,9 @@ public class UpdatedGuessingController {
     // open new pane to confirm culprit
     guessPhotoPane.setVisible(false);
     verifyCulpritPane.setVisible(true);
+
     // play gif
-    stopTimeline = true;
-    staticlayer.setVisible(false);
+    staticImage.setVisible(false);
     playgif();
 
     switch (guessedsuspect) {
