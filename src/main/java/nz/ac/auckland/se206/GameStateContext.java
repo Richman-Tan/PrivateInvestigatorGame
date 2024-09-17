@@ -39,6 +39,8 @@ public class GameStateContext {
 
   // State of whether the garden tool has been found
   private boolean isGardenToolFound = false;
+  private boolean isNoteFound = false;
+  private boolean isSafeFound = false;
 
   // State of wheter the guess has been pressed.
   private boolean isGuessPressed = false;
@@ -213,6 +215,26 @@ public class GameStateContext {
   // Setter for garden tool state
   public void setGardenToolFound(boolean found) {
     this.isGardenToolFound = found;
+  }
+
+  // Getter for safe state
+  public boolean isSafeOpen() {
+    return isSafeFound;
+  }
+
+  // Setter for safe state
+  public void setSafeOpen(boolean found) {
+    this.isSafeFound = found;
+  }
+
+  // Getter for note state
+  public boolean isNoteFound() {
+    return isNoteFound;
+  }
+
+  // Setter for note state
+  public void setNoteFound(boolean found) {
+    this.isNoteFound = found;
   }
 
   public void addVisitor(String visitor) {

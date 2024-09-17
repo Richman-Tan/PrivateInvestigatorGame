@@ -89,9 +89,6 @@ public class RoomController {
       fadeTransition.setFromValue(0);
       fadeTransition.setToValue(1);
       fadeTransition.play();
-
-      // TextToSpeech.speak("Chat with the three customers, and guess who is the " +
-      // context.getProfessionToGuess());
       isFirstTimeInit = false;
     }
 
@@ -338,6 +335,15 @@ public class RoomController {
     GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
     App.setRoot("guessing");
     context.handleGuessClick();
+  }
+
+  @FXML
+  private void onSafe(ActionEvent event) throws IOException {
+    if (context.isNoteFound() || context.isSafeOpen()) {
+      App.setRoot("cluesafeopened");
+    } else {
+      App.setRoot("cluesafe");
+    }
   }
 
   /**
