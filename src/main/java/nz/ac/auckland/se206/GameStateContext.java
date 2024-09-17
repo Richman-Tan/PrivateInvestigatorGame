@@ -204,7 +204,6 @@ public class GameStateContext {
    */
   public void reset() throws IOException {
     // Reset instance
-    instance = new GameStateContext();
     isMenuVisible = false;
     isGardenToolFound = false;
     isPhoneFound = false;
@@ -213,6 +212,7 @@ public class GameStateContext {
     isGuessPressed = false;
     firstTimeInit = true;
     gameState = gameStartedState;
+    listOfVisitors.clear();
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
 
