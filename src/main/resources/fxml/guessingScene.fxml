@@ -23,31 +23,34 @@
             <Image url="@../images/guessingimages/clue1found.png" />
          </image>
       </ImageView>
+      <Rectangle fx:id="gameOverRectangle" arcHeight="5.0" arcWidth="5.0" height="373.0" layoutX="299.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="502.0" />
       <ImageView fx:id="background" fitHeight="626.0" fitWidth="1127.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/updatedguessingimages/guessingBackground.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="gameOverRectangle" arcHeight="5.0" arcWidth="5.0" height="373.0" layoutX="299.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="502.0" />
       <Pane fx:id="verifyCulpritPane" layoutX="325.0" layoutY="38.0" prefHeight="396.0" prefWidth="476.0" visible="false">
          <children>
-            <ImageView fx:id="confirmedSuspect1" fitHeight="117.0" fitWidth="120.0" layoutX="28.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="confirmedSuspect1" fitHeight="117.0" fitWidth="120.0" layoutX="40.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../images/updatedguessingimages/unclePhoto.jpg" />
+                  <Image url="@../images/updatedguessingimages/uncle.jpg" />
                </image>
             </ImageView>
-            <ImageView fx:id="confirmedSuspect3" fitHeight="119.0" fitWidth="126.0" layoutX="29.0" layoutY="132.0" preserveRatio="true" visible="false">
+            <ImageView fx:id="confirmedSuspect3" fitHeight="123.0" fitWidth="95.0" layoutX="39.0" layoutY="131.0" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../images/updatedguessingimages/sonPhoto.png" />
+                  <Image url="@../images/updatedguessingimages/son.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="confirmedSuspect2" fitHeight="119.0" fitWidth="126.0" layoutX="29.0" layoutY="131.0" preserveRatio="true" visible="false">
+            <ImageView fx:id="confirmedSuspect2" fitHeight="122.0" fitWidth="95.0" layoutX="40.0" layoutY="131.0" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../images/updatedguessingimages/grandmaPhoto.jpg" />
+                  <Image url="@../images/updatedguessingimages/Gma.jpg" />
                </image>
             </ImageView>
             <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow;" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" layoutX="160.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;" />
+            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning ( &lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
+               <font>
+                  <Font size="11.0" />
+               </font></TextField>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#424143" height="36.0" layoutX="31.0" layoutY="86.0" stroke="TRANSPARENT" strokeType="INSIDE" width="385.0" />
             <Label layoutX="47.0" layoutY="89.0" prefHeight="31.0" prefWidth="254.0" text="You have identified the culprit is:" textFill="WHITE">
                <font>
@@ -88,9 +91,9 @@
             <Rectangle fx:id="recSuspect1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="161.0" layoutX="20.0" layoutY="107.0" opacity="0.4" stroke="#9e0000" strokeType="INSIDE" visible="false" width="128.0" />
             <Rectangle fx:id="recSuspect2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="162.0" layoutX="294.0" layoutY="105.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
             <Rectangle fx:id="recSuspect3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="159.0" layoutX="155.0" layoutY="107.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="131.0" />
-            <Rectangle fx:id="recSuspect11" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="161.0" layoutX="21.0" layoutY="107.0" opacity="0.4" stroke="#9e0000" strokeType="INSIDE" visible="false" width="128.0" />
-            <Rectangle fx:id="recSus2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="162.0" layoutX="304.0" layoutY="115.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
-            <Rectangle fx:id="recSus3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="159.0" layoutX="165.0" layoutY="117.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="131.0" />
+            <Rectangle fx:id="recSus1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="161.0" layoutX="21.0" layoutY="107.0" opacity="0.4" stroke="#9e0000" strokeType="INSIDE" visible="false" width="128.0" />
+            <Rectangle fx:id="recSus2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="162.0" layoutX="294.0" layoutY="107.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
+            <Rectangle fx:id="recSus3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="159.0" layoutX="159.0" layoutY="107.0" nodeOrientation="LEFT_TO_RIGHT" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="131.0" />
          </children>
       </Pane>
       <Pane layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">

@@ -61,6 +61,8 @@ public class UpdatedGuessingController {
   @FXML private Label incorrectGuessLbl2;
   private boolean stopTimeline = false;
 
+  @FXML private Button confirmExplanationButton;
+
   @FXML private Rectangle recSus1;
   @FXML private Rectangle recSus2;
   @FXML private Rectangle recSus3;
@@ -192,19 +194,31 @@ public class UpdatedGuessingController {
     }
   }
 
+  /**
+   * Method to handle when the confirm explanation button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
-  private void confirmExplanation(MouseEvent event) {
+  private void confirmExplanation(MouseEvent event) throws IOException {
     // open new pane to confirm explanation
     verifyCulpritPane.setVisible(false);
-    gameOverPane.setVisible(true);
     staticimg1.setVisible(false);
-    staticlayer.setVisible(false);
     gameOverRectangle.setVisible(true);
+    gameOverPane.setVisible(true);
     showGameOver();
   }
 
+  /**
+   * Method to handle when the game over pane is shown
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void showGameOver() {
+    System.out.println("Entered showGameOver");
     list = new ArrayList<>();
     list.add(gameOverTxt);
     if (guess) {
