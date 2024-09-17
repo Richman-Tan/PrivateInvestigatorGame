@@ -76,7 +76,7 @@ public class TimerModel {
                       PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
                       try {
-                        App.setRoot("guessing");
+                        App.setRoot("guessingScene");
                       } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
