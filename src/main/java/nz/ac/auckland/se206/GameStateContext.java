@@ -242,6 +242,7 @@ public class GameStateContext {
     listOfVisitors.add(visitor);
   }
 
+  @SuppressWarnings("rawtypes")
   public List getListOfVisitors() {
     // Return the list of visitors
     return listOfVisitors;

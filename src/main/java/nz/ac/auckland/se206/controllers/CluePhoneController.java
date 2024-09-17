@@ -56,9 +56,6 @@ public class CluePhoneController {
   private boolean isBlueWireConnected = false;
   private boolean isGreenWireConnected = false;
 
-  // Flag for all connections
-  private boolean allConnected = false;
-
   // Currently active circle for dragging
   private Circle activeStartCircle = null;
 
@@ -672,7 +669,6 @@ public class CluePhoneController {
   // Check if all wires are connected
   private void checkAllConnections() {
     if (isRedWireConnected && isBlueWireConnected && isGreenWireConnected) {
-      allConnected = true;
       System.out.println("All wires are connected!");
 
       // Set a 0.5 second delay before the phone rings
