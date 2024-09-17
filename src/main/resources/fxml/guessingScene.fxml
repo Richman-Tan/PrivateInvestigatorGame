@@ -31,8 +31,7 @@
       </ImageView>
       <Pane fx:id="verifyCulpritPane" layoutX="325.0" layoutY="38.0" prefHeight="396.0" prefWidth="476.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#414951b2" height="155.0" layoutX="18.0" layoutY="115.0" stroke="#0000007b" strokeType="INSIDE" width="409.0" />
-            <ImageView fx:id="confirmedSuspect1" fitHeight="117.0" fitWidth="120.0" layoutX="28.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="confirmedSuspect1" fitHeight="117.0" fitWidth="120.0" layoutX="28.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/updatedguessingimages/unclePhoto.jpg" />
                </image>
@@ -48,15 +47,16 @@
                </image>
             </ImageView>
             <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" layoutX="160.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" style="-fx-border-color: '#0d1a25'; -fx-background-color: '#47535e'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 4px;" />
-            <Label layoutX="50.0" layoutY="85.0" prefHeight="31.0" prefWidth="254.0" text="You have identified the culprit is:">
+            <TextField fx:id="userExplanation" layoutX="160.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#424143" height="36.0" layoutX="31.0" layoutY="86.0" stroke="TRANSPARENT" strokeType="INSIDE" width="385.0" />
+            <Label layoutX="47.0" layoutY="89.0" prefHeight="31.0" prefWidth="254.0" text="You have identified the culprit is:" textFill="WHITE">
                <font>
-                  <Font size="16.0" />
+                  <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="culpritLabel" layoutX="271.0" layoutY="89.0" prefHeight="23.0" prefWidth="123.0">
+            <Label fx:id="culpritLabel" layoutX="300.0" layoutY="93.0" prefHeight="23.0" prefWidth="108.0" textFill="WHITE">
                <font>
-                  <Font size="16.0" />
+                  <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
          </children>
@@ -116,7 +116,7 @@
                   <Font name="Courier New Bold" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="incorrectGuessLbl" layoutX="89.0" layoutY="99.0" prefHeight="48.0" prefWidth="284.0" text="You incorrectly guessed" textFill="#9e2323" visible="false">
+            <Label fx:id="incorrectGuessLbl" layoutX="95.0" layoutY="159.0" prefHeight="48.0" prefWidth="291.0" text="You incorrectly guessed." textFill="#9e2323" visible="false">
                <font>
                   <Font name="Courier New Bold" size="20.0" />
                </font>
@@ -126,7 +126,12 @@
                   <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="feedbackField" layoutX="79.0" layoutY="198.0" prefHeight="70.0" prefWidth="329.0" style="-fx-border-color: '#9E8984'; -fx-background-color: 'transparent';" visible="false" editable="false" />
+            <TextField fx:id="feedbackField" layoutX="79.0" layoutY="198.0" prefHeight="70.0" prefWidth="329.0" style="-fx-border-color: '#9E8984'; -fx-background-color: 'transparent';" visible="false" />
+            <Label fx:id="incorrectGuessLbl2" layoutX="127.0" layoutY="184.0" prefHeight="48.0" prefWidth="222.0" text="BETTER INVESTIGATING NEXT TIME" textFill="#9e2323" visible="false">
+               <font>
+                  <Font name="Courier New Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

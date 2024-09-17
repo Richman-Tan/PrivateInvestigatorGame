@@ -55,6 +55,7 @@ public class UpdatedGuessingController {
   @FXML private TextField feedbackField;
   @FXML private Label lblStory; // The Label for displaying text
   private boolean guess = false;
+  @FXML private Label incorrectGuessLbl2;
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -95,7 +96,6 @@ public class UpdatedGuessingController {
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
-    // createLabel(); // Create the label and add it to the scene
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
     staticimages(); // Start the GIF playback every 5 seconds
@@ -163,6 +163,9 @@ public class UpdatedGuessingController {
     // open new pane to confirm culprit
     guessPhotoPane.setVisible(false);
     verifyCulpritPane.setVisible(true);
+    // play gif
+    staticlayer.setVisible(false);
+
     switch (guessedsuspect) {
       case "Uncle":
         confirmedSuspect1.setVisible(true);
@@ -197,11 +200,12 @@ public class UpdatedGuessingController {
     list.add(gameOverTxt);
     if (guess) {
       list.add(correctGuessLbl);
+      list.add(reviewLbl);
+      list.add(feedbackField);
     } else {
       list.add(incorrectGuessLbl);
+      list.add(incorrectGuessLbl2);
     }
-    list.add(reviewLbl);
-    list.add(feedbackField);
     System.out.println("Entered showGameOver");
     timeline =
         new Timeline(
@@ -223,40 +227,6 @@ public class UpdatedGuessingController {
     timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
     timeline.play(); // Start the animation
   }
-
-  // private void createLabel() {
-  //   // Creating a new label programmatically
-  //   lblStory = new Label("");
-
-  //   // Load the Fira Code font from the resources folder
-  //   Font firaCodeFont =
-  //       Font.loadFont(getClass().getResourceAsStream("/fonts/FiraCode-Regular.ttf"), 20);
-
-  //   // Check if the font was loaded correctly
-  //   if (firaCodeFont == null) {
-  //     System.out.println("Font not loaded, check the path to the font file.");
-  //     return; // Stop execution if font loading fails
-  //   }
-
-  //   // Set the font and color for the label
-  //   lblStory.setFont(firaCodeFont);
-  //   lblStory.setStyle("-fx-text-fill: white;");
-
-  //   // Add the label to the rootPane first
-  //   rootPane.getChildren().add(lblStory);
-
-  //   // Use Platform.runLater to wait until the layout is applied
-  //   Platform.runLater(
-  //       () -> {
-  //         // Calculate the center X and Y after the label's width and height are set
-  //         double centerX = (rootPane.getWidth() - lblStory.getWidth()) / 2;
-  //         double centerY = (rootPane.getHeight() - lblStory.getHeight()) / 2;
-
-  //         // Set the label's position to center it
-  //         lblStory.setLayoutX(centerX - 130);
-  //         lblStory.setLayoutY(centerY - 200);
-  //       });
-  // }
 
   private void warpText() {
     timeline =
@@ -381,5 +351,29 @@ public class UpdatedGuessingController {
 
     // Start the GIF animation timeline
     gifPlayTimeline.play();
+  }
+
+  private void playgif() {
+    Timeline gifOnly =
+        new Timeline(
+            // KeyFrame 1: Show the GIF (make it visible and set opacity to 1)
+            new KeyFrame(
+                Duration.seconds(0), // Start immediately
+                event -> {
+                  // Reset the GIF by loading it again
+                  Image gifImage =
+                      new Image(
+                          GuessingController.class
+                              .getResource("/images/guessingimages/static.gif")
+                              .toString());
+                  staticimg1.setImage(gifImage); // Set the GIF image to staticimg1
+                  staticimg1.setVisible(true); // Show the ImageView
+                  staticimg1.setOpacity(0.75); // Fully visible
+                }));
+    // Set the cycle count to indefinite, so it repeats
+    gifOnly.setCycleCount(Timeline.INDEFINITE);
+
+    // Start the GIF animation timeline
+    gifOnly.play();
   }
 }
