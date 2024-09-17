@@ -304,6 +304,7 @@ public class BackstoryController {
   }
 
   private void zoomIn(ImageView imageView, String nextScene) {
+    mediaPlayer.seek(Duration.seconds(1)); // Skip the first 1.3 seconds of the sound effect
     mediaPlayer.play(); // Play the sound effect
 
     // Create a new thread to run the zoom-in logic
@@ -312,12 +313,6 @@ public class BackstoryController {
               // All UI updates need to be run on the JavaFX Application Thread
               Platform.runLater(
                   () -> {
-                    // Wait 1 second before starting the zoom-in transition
-                    try {
-                      Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                      e.printStackTrace();
-                    }
                     // Scale transition for zooming in
                     ScaleTransition zoomInTransition =
                         new ScaleTransition(Duration.seconds(1), imageView);

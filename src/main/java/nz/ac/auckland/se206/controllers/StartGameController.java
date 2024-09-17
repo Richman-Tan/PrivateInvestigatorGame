@@ -78,6 +78,7 @@ public class StartGameController {
     imageView.setOnMouseClicked(
         e -> {
           try {
+            mediaPlayer.seek(Duration.seconds(1));
             mediaPlayer.play();
             // delay
             onPlay();
@@ -97,35 +98,31 @@ public class StartGameController {
     Timeline timeline = new Timeline();
     timeline
         .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.5), e -> imageView.setImage(image2)));
+        .add(new KeyFrame(Duration.seconds(0.06), e -> imageView.setImage(image3)));
 
     timeline
         .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.56), e -> imageView.setImage(image3)));
+        .add(new KeyFrame(Duration.seconds(0.12), e -> imageView.setImage(image4)));
 
     timeline
         .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.62), e -> imageView.setImage(image4)));
+        .add(new KeyFrame(Duration.seconds(0.18), e -> imageView.setImage(image5)));
 
     timeline
         .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.68), e -> imageView.setImage(image5)));
+        .add(new KeyFrame(Duration.seconds(0.24), e -> imageView.setImage(image6)));
 
     timeline
         .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.74), e -> imageView.setImage(image6)));
+        .add(new KeyFrame(Duration.seconds(0.3), e -> imageView.setImage(image7)));
 
     timeline
         .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.8), e -> imageView.setImage(image7)));
+        .add(new KeyFrame(Duration.seconds(0.36), e -> imageView.setImage(image8)));
 
     timeline
         .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.86), e -> imageView.setImage(image8)));
-
-    timeline
-        .getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(1.92), e -> imageView.setImage(image9)));
+        .add(new KeyFrame(Duration.seconds(0.42), e -> imageView.setImage(image9)));
 
     // After the timeline, add the fade transition to switch to the backstory view
     timeline.setOnFinished(
