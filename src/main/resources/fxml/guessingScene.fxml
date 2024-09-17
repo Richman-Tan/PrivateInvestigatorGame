@@ -23,6 +23,7 @@
             <Image url="@../images/guessingimages/static1.png" />
          </image>
       </ImageView>
+      <Rectangle fx:id="gameOverRectangle" arcHeight="5.0" arcWidth="5.0" height="373.0" layoutX="299.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="502.0" />
       <ImageView fitHeight="626.0" fitWidth="1127.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/updatedguessingimages/guessingBackground.png" />
@@ -103,5 +104,30 @@
             <Image url="@../images/guessingimages/clue1found.png" />
          </image>
       </ImageView>
+      <Pane fx:id="gameOverPane" layoutX="314.0" layoutY="60.0" prefHeight="396.0" prefWidth="476.0" visible="false">
+         <children>
+            <Label fx:id="gameOverTxt" layoutX="132.0" layoutY="33.0" prefHeight="48.0" prefWidth="206.0" text="GAME OVER" textFill="#dad7d7" visible="false">
+               <font>
+                  <Font name="Courier New Bold" size="38.0" />
+               </font>
+            </Label>
+            <Label fx:id="correctGuessLbl" layoutX="108.0" layoutY="99.0" prefHeight="48.0" prefWidth="253.0" text="You correctly guessed" textFill="#0e5707" visible="false">
+               <font>
+                  <Font name="Courier New Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="incorrectGuessLbl" layoutX="89.0" layoutY="99.0" prefHeight="48.0" prefWidth="284.0" text="You incorrectly guessed" textFill="#9e2323" visible="false">
+               <font>
+                  <Font name="Courier New Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="reviewLbl" layoutX="67.0" layoutY="161.0" prefHeight="24.0" prefWidth="351.0" style="-fx-background-radius: 3px; -fx-border-color: '#FFFFFF';" text=" Review this feedback to increase your PI skills" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Courier New Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="feedbackField" layoutX="79.0" layoutY="198.0" prefHeight="70.0" prefWidth="329.0" style="-fx-border-color: '#9E8984'; -fx-background-color: 'transparent';" visible="false" editable="false" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

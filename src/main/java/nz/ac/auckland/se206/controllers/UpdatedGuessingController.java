@@ -2,11 +2,14 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -39,11 +42,19 @@ public class UpdatedGuessingController {
   @FXML private ImageView clue1foundimg;
   private ImageView staticimg1; // GIF image view created programmatically
   private Timeline timeline;
-
+  @FXML private Pane gameOverPane;
+  @FXML private Rectangle gameOverRectangle;
   private int i = 0;
-
+  private int j = 0;
+  @FXML private Label correctGuessLbl;
+  @FXML private Label incorrectGuessLbl;
+  private ArrayList<Object> list;
   @FXML private Label lbltimer;
+  @FXML private Label gameOverTxt;
+  @FXML private Label reviewLbl;
+  @FXML private TextField feedbackField;
   @FXML private Label lblStory; // The Label for displaying text
+  private boolean guess = false;
 
   private GameStateContext context = GameStateContext.getInstance();
   private Label selectedLabel = new Label("");
@@ -158,6 +169,7 @@ public class UpdatedGuessingController {
         culpritLabel.setText("The Uncle");
         break;
       case "Grandma":
+        guess = true;
         confirmedSuspect2.setVisible(true);
         culpritLabel.setText("The Widow");
         break;
@@ -171,6 +183,45 @@ public class UpdatedGuessingController {
   @FXML
   private void confirmExplanation(MouseEvent event) {
     // open new pane to confirm explanation
+    verifyCulpritPane.setVisible(false);
+    gameOverPane.setVisible(true);
+    staticimg1.setVisible(false);
+    staticlayer.setVisible(false);
+    gameOverRectangle.setVisible(true);
+    showGameOver();
+  }
+
+  @FXML
+  private void showGameOver() {
+    list = new ArrayList<>();
+    list.add(gameOverTxt);
+    if (guess) {
+      list.add(correctGuessLbl);
+    } else {
+      list.add(incorrectGuessLbl);
+    }
+    list.add(reviewLbl);
+    list.add(feedbackField);
+    System.out.println("Entered showGameOver");
+    timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0.7),
+                event -> {
+                  if (j < 4) {
+                    System.out.println(j + " this");
+                    Object obj = list.get(j);
+                    if (obj instanceof Node) {
+                      ((Node) obj).setVisible(true); // Make the current element visible
+                    }
+                    j++;
+                  } else {
+                    timeline.stop();
+                  }
+                }));
+
+    timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
+    timeline.play(); // Start the animation
   }
 
   // private void createLabel() {
