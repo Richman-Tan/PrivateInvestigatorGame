@@ -124,7 +124,7 @@ public class StartGameController {
           fadeTransition.setOnFinished(
               event -> {
                 try {
-                  App.setRoot("backstory");
+                  App.setRoot("cutscene");
                 } catch (IOException ex) {
                   ex.printStackTrace();
                 }
