@@ -60,6 +60,9 @@ public class UpdatedGuessingController {
 
   @FXML private ProgressIndicator progressIndicator;
 
+  private boolean playedConfirmCulprit = false;
+  private boolean playedConfirmEx = false;
+
   @FXML private ImageView staticImage;
   @FXML private ImageView background;
   private String text = "Who is the culprit . . .";
@@ -250,18 +253,20 @@ public class UpdatedGuessingController {
 
     Media sound2 = new Media(explanation);
     explanationPlayer = new MediaPlayer(sound2);
-
-    mediaPlayer.play();
-    mediaPlayer.setOnEndOfMedia(
-        () -> {
-          // open new pane to confirm culprit
-          guessPhotoPane.setVisible(false);
-          verifyCulpritPane.setVisible(true);
-          // play gif
-          staticImage.setVisible(false);
-          playgif();
-          explanationPlayer.play();
-        });
+    if (!playedConfirmCulprit) {
+      mediaPlayer.play();
+      playedConfirmCulprit = true;
+      mediaPlayer.setOnEndOfMedia(
+          () -> {
+            // open new pane to confirm culprit
+            guessPhotoPane.setVisible(false);
+            verifyCulpritPane.setVisible(true);
+            // play gif
+            staticImage.setVisible(false);
+            playgif();
+            explanationPlayer.play();
+          });
+    }
 
     switch (guessedsuspect) {
       case "Uncle":
@@ -291,16 +296,19 @@ public class UpdatedGuessingController {
     // play sound
     Media sound = new Media(confirmed);
     mediaPlayer = new MediaPlayer(sound);
-    mediaPlayer.play();
-    mediaPlayer.setOnEndOfMedia(
-        () -> {
-          // open new pane to confirm explanation
-          verifyCulpritPane.setVisible(false);
-          staticimg1.setVisible(false);
-          gameOverRectangle.setVisible(true);
-          gameOverPane.setVisible(true);
-          showGameOver();
-        });
+    if (!playedConfirmEx) {
+      mediaPlayer.play();
+      playedConfirmEx = true;
+      mediaPlayer.setOnEndOfMedia(
+          () -> {
+            // open new pane to confirm explanation
+            verifyCulpritPane.setVisible(false);
+            staticimg1.setVisible(false);
+            gameOverRectangle.setVisible(true);
+            gameOverPane.setVisible(true);
+            showGameOver();
+          });
+    }
   }
 
   /**
