@@ -96,7 +96,7 @@ public class CutSceneController {
     revealLabel.setText(""); // Initially empty
     revealLabel.setOpacity(0); // Initially invisible
     revealLabel.setStyle(
-        "-fx-font-size: 48px; -fx-text-fill: white; -fx-font-weight: bold;"); // Style the label
+        "-fx-font-size: 48px; -fx-text-fill: red; -fx-font-weight: bold;"); // Style the label
 
     // Add listeners to center the label when its size changes
     revealLabel.widthProperty().addListener((obs, oldVal, newVal) -> centerLabel());
@@ -193,7 +193,7 @@ public class CutSceneController {
           dialogueLabel.setTextFill(Color.WHITE);
           dialogueLabel.setStyle("-fx-padding: 5; -fx-text-fill: black;");
           dialogueLabel.setWrapText(true); // Enable text wrapping for the dialogue
-          dialogueLabel.setMaxWidth(550); // Set a max width to allow wrapping within the pane
+          dialogueLabel.setMaxWidth(800); // Set a max width to allow wrapping within the pane
 
           // Place the nameLabel at the top left
           AnchorPane.setBottomAnchor(nameLabel, 100.0);
@@ -259,6 +259,10 @@ public class CutSceneController {
           AnchorPane.setBottomAnchor(nextButton, 130.0);
           AnchorPane.setRightAnchor(nextButton, 50.0);
 
+          dialogPane.setOpacity(0);
+          nameLabel.setOpacity(0);
+          nextButton.setOpacity(0);
+
           // Add everything to the root pane
           rootPane.getChildren().addAll(dialogPane, nameLabel, nextButton);
 
@@ -282,8 +286,9 @@ public class CutSceneController {
 
           // Set the dialogue text
           String dialogueText =
-              "Oh no! The will is missing! Who could have taken it? The ___ is coming in 5"
-                  + " minutes QUICK call PI masters!";
+              "Oh no! The will is missing! Who could've taken it? The FAMILY LAWER is coming in 5"
+                  + " minutes!!! If they come, and the will is gone, all his assets"
+                  + " will disappear! QUICK call PI masters!";
 
           // Create a timeline to reveal the text in the dialogueLabel one letter at a time
           Timeline timeline = new Timeline();
@@ -291,7 +296,7 @@ public class CutSceneController {
             final int index = i;
             KeyFrame keyFrame =
                 new KeyFrame(
-                    Duration.millis(50 * i),
+                    Duration.millis(20 * i),
                     e -> {
                       // Append the next character to the dialogueLabel's text
                       dialogueLabel.setText(dialogueLabel.getText() + dialogueText.charAt(index));
