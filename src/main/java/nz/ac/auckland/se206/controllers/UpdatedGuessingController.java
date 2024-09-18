@@ -7,10 +7,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -33,6 +36,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
@@ -57,6 +61,7 @@ public class UpdatedGuessingController {
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
   @FXML private TextField userExplanation;
+  @FXML private Button btnReplay;
 
   @FXML private ProgressIndicator progressIndicator;
 
@@ -146,20 +151,6 @@ public class UpdatedGuessingController {
     if (context.isNoteFound()) {
       clue3foundimg.setVisible(true);
     }
-
-    // txtaChat.setStyle(
-    //     "-fx-border-color: black; "
-    //         + "-fx-background-color: black; "
-    //         + "-fx-text-fill: white; "
-    //         + "-fx-prompt-text-fill: white; "
-    //         + "-fx-font-size: 12px;"
-    //         + "-fx-border-radius: 10px; "
-    //         + "-fx-background-radius: 10px;"
-    //         + "-fx-control-inner-background: black;");
-    // txtaChat.setEditable(false);
-
-    // txtaChat.setOpacity(0);
-    // btnReplay.setOpacity(0);
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.reset(61);
@@ -373,6 +364,11 @@ public class UpdatedGuessingController {
 
           timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
           timeline.play(); // Start the animation
+          if(!guess){
+            timeline.setOnFinished(e -> {
+              btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
+          });
+          }
         });
   }
 
@@ -538,6 +534,9 @@ public class UpdatedGuessingController {
               });
       timeline.getKeyFrames().add(keyFrame);
     }
+    timeline.setOnFinished(e -> {
+      btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
+  });
 
     // Play the timeline animation
     timeline.play();
@@ -639,5 +638,20 @@ public class UpdatedGuessingController {
   private void onEnterKey() {
     confirmExplanationButton.setDisable(false);
     confirmExplanationButton.setOpacity(1);
+  }
+
+  @FXML
+  private void onReplay(ActionEvent event) throws IOException {
+
+    // Re initalise the context
+    GameStateContext.getInstance().reset();
+
+    // Fade out transition
+    FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(1000), rootPane);
+    fadeOutTransition.setFromValue(1.0);
+    fadeOutTransition.setToValue(0.0);
+    fadeOutTransition.play();
+
+    App.setRoot("initialScene");
   }
 }
