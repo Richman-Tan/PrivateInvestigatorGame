@@ -21,7 +21,7 @@
          </image>
       </ImageView>
       <Rectangle fx:id="gameOverRectangle" arcHeight="5.0" arcWidth="5.0" height="373.0" layoutX="299.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="502.0" />
-      <ImageView fx:id="background" fitHeight="626.0" fitWidth="1127.0" layoutX="-21.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="background" fitHeight="626.0" fitWidth="1127.0" layoutX="-2.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/updatedguessingimages/guessingBackground.png" />
          </image>
@@ -58,10 +58,10 @@
                   <Image url="@../images/updatedguessingimages/Gma.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.0, 0.0, 5.0);" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning ( &lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
+            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" opacity="0.5" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.0, 0.0, 5.0);" text="CONFIRM EXPLANATION" />
+            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" onAction="#onEnterKey" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
                <font>
-                  <Font size="11.0" />
+                  <Font name="Courier New" size="8.0" />
                </font>
             </TextField>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#424143" height="36.0" layoutX="31.0" layoutY="86.0" stroke="TRANSPARENT" strokeType="INSIDE" width="385.0" />
@@ -73,6 +73,12 @@
             <Label fx:id="culpritLabel" layoutX="300.0" layoutY="93.0" prefHeight="23.0" prefWidth="108.0" textFill="WHITE">
                <font>
                   <Font name="Courier New Bold" size="12.0" />
+               </font>
+            </Label>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4f86abba" height="16.0" layoutX="312.0" layoutY="252.0" stroke="#908e8e" strokeType="INSIDE" width="93.0" />
+            <Label layoutX="320.0" layoutY="256.0" text="Hit ENTER to submit" textFill="WHITE">
+               <font>
+                  <Font name="Courier New Bold" size="7.0" />
                </font>
             </Label>
          </children>

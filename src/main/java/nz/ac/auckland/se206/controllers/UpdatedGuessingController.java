@@ -633,4 +633,10 @@ public class UpdatedGuessingController {
   private static String loadTemplate(URI filePath) throws IOException {
     return new String(Files.readAllBytes(Paths.get(filePath)));
   }
+
+  @FXML
+  private void onEnterKey() {
+    confirmExplanationButton.setDisable(false);
+    confirmExplanationButton.setOpacity(1);
+  }
 }
