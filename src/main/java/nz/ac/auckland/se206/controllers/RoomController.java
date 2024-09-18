@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
@@ -42,6 +43,10 @@ public class RoomController {
 
   @FXML private ImageView clue2;
 
+  @FXML private ImageView clue3;
+
+  @FXML private VBox vBox;
+
   private static GameStateContext context = GameStateContext.getInstance();
   private boolean isFirstTimeInit = context.isFirstTimeInit();
 
@@ -56,6 +61,7 @@ public class RoomController {
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
     clue2.setOpacity(0);
+    clue3.setOpacity(0);
 
     checkGuessButton();
     // Check if the garden tool has been found
@@ -67,6 +73,11 @@ public class RoomController {
     if (context.isPhoneFound()) {
       // If found, set the opacity of clue2 to 1 (visible)
       clue2.setOpacity(1);
+    }
+
+    if (context.isNoteFound()) {
+      // If found, set the opacity of clue3 to 1 (visible)
+      clue3.setOpacity(1);
     }
 
     final Image image1 =
@@ -214,6 +225,60 @@ public class RoomController {
 
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(phoneClueImageView);
+
+    // Load background image
+    Image paintingImage =
+        new Image(RoomController.class.getResource("/images/cluepainting.png").toString());
+
+    // Create the background ImageView and set it to fill the entire pane
+    ImageView paintingImageView = new ImageView(paintingImage);
+    paintingImageView.setFitWidth(rootNode.getWidth());
+    paintingImageView.setFitHeight(rootNode.getHeight());
+
+    // Make sure the background resizes with the window
+    paintingImageView.fitWidthProperty().bind(rootNode.widthProperty());
+    paintingImageView.fitHeightProperty().bind(rootNode.heightProperty());
+
+    // Create a DropShadow effect
+    DropShadow dropShadowPainting = new DropShadow();
+    dropShadowPainting.setOffsetX(5); // Smaller offset
+    dropShadowPainting.setOffsetY(5);
+    dropShadowPainting.setRadius(5); // Reduce blur radius
+    dropShadowPainting.setSpread(2); // Lower spread for less intensity
+    dropShadowPainting.setColor(Color.color(0, 0, 0, 0.5)); // Less opacity for lighter shadow
+
+    // Apply drop shadow effect to the painting image
+    paintingImageView.setEffect(dropShadowPainting);
+
+    // Apply hover effect
+    DropShadow hoverShadowPainting = new DropShadow();
+    hoverShadowPainting.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
+    hoverShadowPainting.setRadius(10); // Customize the shadow effect
+
+    paintingImageView.setOnMouseEntered(
+        e -> {
+          paintingImageView.setEffect(hoverShadowPainting); // Apply hover effect when mouse enters
+        });
+
+    paintingImageView.setOnMouseExited(
+        e -> {
+          paintingImageView.setEffect(null); // Remove effect when mouse exits
+          paintingImageView.setEffect(dropShadowPainting);
+        });
+
+    paintingImageView.setOnMouseClicked(
+        e -> {
+          try {
+            onSafe();
+          } catch (IOException e1) {
+            e1.printStackTrace();
+          }
+        });
+
+    // Add the ImageView to the root node
+    rootNode.getChildren().addAll(paintingImageView);
+
+    vBox.toFront();
   }
 
   private void addHoverEffect(Group group) {
@@ -324,8 +389,7 @@ public class RoomController {
     context.handleGuessClick();
   }
 
-  @FXML
-  private void onSafe(ActionEvent event) throws IOException {
+  private void onSafe() throws IOException {
     if (context.isNoteFound() || context.isSafeOpen()) {
       App.setRoot("cluesafeopened");
     } else {
