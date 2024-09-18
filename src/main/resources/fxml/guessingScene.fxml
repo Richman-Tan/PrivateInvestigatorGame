@@ -58,7 +58,7 @@
                   <Image url="@../images/updatedguessingimages/Gma.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="confirmExplanationButton" disable="true" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" opacity="0.5" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.0, 0.0, 5.0);" text="CONFIRM EXPLANATION" />
+            <Button fx:id="confirmExplanationButton" disable="true" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" opacity="0.5" stylesheets="@../css/confirmButton.css" text="CONFIRM EXPLANATION" />
             <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" onAction="#onEnterKey" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
                <font>
                   <Font name="Courier New" size="8.0" />
