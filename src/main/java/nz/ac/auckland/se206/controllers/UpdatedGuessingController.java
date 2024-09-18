@@ -135,6 +135,7 @@ public class UpdatedGuessingController {
   @FXML
   public void initialize() {
     confirmCulpritButton.setDisable(true);
+    confirmExplanationButton.setDisable(true);
 
     if (context.isGardenToolFound()) {
       clue1foundimg.setVisible(true);
