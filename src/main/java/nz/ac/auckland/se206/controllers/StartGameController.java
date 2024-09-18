@@ -8,13 +8,19 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.states.GameStarted;
 
 public class StartGameController {
 
   @FXML private AnchorPane rootPane;
+  private MediaPlayer mediaPlayer;
+  private final String door =
+      GameStarted.class.getClassLoader().getResource("sounds/doorOpen.mp3").toExternalForm();
 
   // Load images from the images folder
   static final Image image1 =
@@ -64,10 +70,17 @@ public class StartGameController {
     imageView.setOnMouseExited(
         e -> imageView.setStyle("-fx-cursor: default;")); // Restore to default on exit
 
+    // Load the audio file
+    Media sound = new Media(door);
+    mediaPlayer = new MediaPlayer(sound);
+
     // Set click action
     imageView.setOnMouseClicked(
         e -> {
           try {
+            mediaPlayer.seek(Duration.seconds(1));
+            mediaPlayer.play();
+            // delay
             onPlay();
           } catch (IOException | ApiProxyException ex) {
             ex.printStackTrace();
@@ -83,8 +96,6 @@ public class StartGameController {
   private void onPlay() throws IOException, ApiProxyException {
     // Create a timeline to rotate through the images
     Timeline timeline = new Timeline();
-    timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0), e -> imageView.setImage(image2)));
-
     timeline
         .getKeyFrames()
         .add(new KeyFrame(Duration.seconds(0.06), e -> imageView.setImage(image3)));
