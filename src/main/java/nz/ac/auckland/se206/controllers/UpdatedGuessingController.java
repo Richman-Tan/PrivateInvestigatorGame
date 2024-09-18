@@ -50,7 +50,9 @@ public class UpdatedGuessingController {
   @FXML private ImageView confirmedSuspect1;
   @FXML private ImageView confirmedSuspect2;
   @FXML private ImageView confirmedSuspect3;
-  @FXML private ImageView clue1foundimg;
+  @FXML private ImageView clue1foundimg; // gardening tool
+  @FXML private ImageView clue2foundimg; // phone
+  @FXML private ImageView clue3foundimg; // note
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
@@ -130,6 +132,16 @@ public class UpdatedGuessingController {
   @FXML
   public void initialize() {
     confirmCulpritButton.setDisable(true);
+
+    if (context.isGardenToolFound()) {
+      clue1foundimg.setVisible(true);
+    }
+    if (context.isPhoneFound()) {
+      clue2foundimg.setVisible(true);
+    }
+    if (context.isNoteFound()) {
+      clue3foundimg.setVisible(true);
+    }
 
     // txtaChat.setStyle(
     //     "-fx-border-color: black; "
@@ -418,10 +430,6 @@ public class UpdatedGuessingController {
     // // Make sure the background resizes with the window
     // staticlayer.fitWidthProperty().bind(rootPane.widthProperty());
     // staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
-
-    if (context.isGardenToolFound()) {
-      clue1foundimg.setVisible(true);
-    }
 
     // backgroundoverlay.toBack();
     staticimg1.toBack();
