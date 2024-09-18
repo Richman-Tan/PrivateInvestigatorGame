@@ -206,7 +206,10 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageUncle(MouseEvent event) throws IOException {
     guessedsuspect = "Uncle";
+    // set the red rectangle to visible but the other culprits to invisible
     recSus1.setVisible(true);
+    recSus2.setVisible(false);
+    recSus3.setVisible(false);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -214,7 +217,10 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageSon(MouseEvent event) throws IOException {
     guessedsuspect = "Grandson";
+    // set the red rectangle to visible but the other culprits to invisible
     recSus3.setVisible(true);
+    recSus2.setVisible(false);
+    recSus1.setVisible(false);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -222,7 +228,10 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageGma(MouseEvent event) throws IOException {
     guessedsuspect = "Grandma";
+    // set the red rectangle to visible but the other culprits to invisible
     recSus2.setVisible(true);
+    recSus3.setVisible(false);
+    recSus1.setVisible(false);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
