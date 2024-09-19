@@ -17,6 +17,15 @@ public class TimerModel {
   private static int i = 0;
   private static int timerEnded = 0; // Flag to indicate if the timer has ended
 
+    /*
+   * Checks if the timer has ended.
+   *
+   * @return true if the timer has ended, false otherwise
+   */
+  public static int hasEnded() {
+    return timerEnded;
+  }
+
   // Instance fields
   private GameStateContext gameStateContext = GameStateContext.getInstance();
   private TimerModel countdownTimer;
@@ -28,15 +37,6 @@ public class TimerModel {
   public TimerModel(int initialTimeInSeconds) {
     this.timeInSeconds = initialTimeInSeconds;
     this.timeString = new SimpleStringProperty(formatTime(initialTimeInSeconds));
-  }
-
-  /*
-   * Checks if the timer has ended.
-   *
-   * @return true if the timer has ended, false otherwise
-   */
-  public static int hasEnded() {
-    return timerEnded;
   }
 
   /*

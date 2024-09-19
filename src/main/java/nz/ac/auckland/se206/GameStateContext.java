@@ -16,12 +16,22 @@ import nz.ac.auckland.se206.states.Guessing;
  */
 public class GameStateContext {
 
+  private static GameStateContext instance;
+
+    // Static method to get the single instance of GameStateContext
+    public static GameStateContext getInstance() {
+      if (instance == null) {
+        instance = new GameStateContext();
+      }
+      return instance;
+    }
+
   private final GameStarted gameStartedState;
   private final Guessing guessingState;
   private final GameOver gameOverState;
+
   private GameState gameState;
   private List<String> listOfVisitors;
-  private static GameStateContext instance;
   private boolean firstTimeInit;
   private boolean isGardenToolFound;
   private boolean isGuessPressed;
@@ -47,14 +57,6 @@ public class GameStateContext {
     this.isSafeOpen = false;
     this.isPhoneFound = false;
     this.isGuessPressed = false;
-  }
-
-  // Static method to get the single instance of GameStateContext
-  public static GameStateContext getInstance() {
-    if (instance == null) {
-      instance = new GameStateContext();
-    }
-    return instance;
   }
 
   /**
