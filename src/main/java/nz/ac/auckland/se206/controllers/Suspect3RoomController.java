@@ -29,41 +29,41 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
+/** Suspect3RoomController is the controller class for the Suspect 3 Room scene. */
 public class Suspect3RoomController {
 
-  @FXML private Button btnMenu;
-  @FXML private Button btnCrimeScene;
-  @FXML private Button btnGrandma;
-  @FXML private Button btnGrandson;
-  @FXML private Button btnUncle;
+  @FXML private Button crimeSceneButton;
+  @FXML private Button grandmaButton;
+  @FXML private Button grandsonButton;
+  @FXML private Button menuButton;
+  @FXML private Button uncleButton;
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect3ChatBox;
   @FXML private Circle sendButton;
-
   @FXML private Button guessButton;
-
   @FXML private AnchorPane rootNode;
-
   @FXML private Label lbltimer;
   @FXML private ImageView backgroundimg;
 
   private ChatCompletionRequest chatCompletionRequest;
   private GameStateContext context = GameStateContext.getInstance();
   private boolean firstTime = true;
-
   private TimerModel countdownTimer;
 
   private boolean isatleastoncecluefound =
       context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
 
-  /** Initializes the suspect 2 room view. */
+  /** Initializes the suspect 3 room view. */
   @FXML
   public void initialize() {
-    // Set initial visibility of the buttons
+    // Set initial visibility of the buttons based on the current menu visibility state
     updateMenuVisibility();
 
+    // Initialize the countdown timer and bind its time string property to the label
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    // Create a task to perform the initialization in a separate thread
     Task<Void> task =
         new Task<Void>() {
           @Override
@@ -71,6 +71,7 @@ public class Suspect3RoomController {
             try {
               checkGuessButton();
               ApiProxyConfig config = ApiProxyConfig.readConfig();
+              // Create a chat completion request with the specified parameters
               chatCompletionRequest =
                   new ChatCompletionRequest(config)
                       .setN(1)
@@ -78,19 +79,24 @@ public class Suspect3RoomController {
                       .setTopP(0.5)
                       .setMaxTokens(100);
 
+              // Load the prompt template from a resource file
               URL resourceUrl =
                   PromptEngineering.class.getClassLoader().getResource("prompts/grandson.txt");
               String template = loadTemplate(resourceUrl.toURI());
 
-              // Initial GPT system message
+              // Create system message with the loaded template
               ChatMessage systemMessage = new ChatMessage("system", template);
               runGpt(systemMessage);
+
+              // If this is the first time the room is initialized, set the user chat box prompt
+              // text
               if (firstTime == true) {
                 userChatBox.setPromptText("Begin interrogating...");
                 firstTime = false;
               }
 
             } catch (ApiProxyException | IOException | URISyntaxException e) {
+              // Print any exceptions that occur during initialization
               e.printStackTrace();
             }
             return null;
@@ -102,10 +108,11 @@ public class Suspect3RoomController {
     thread.setDaemon(true);
     thread.start();
 
+    // Set the background image to fill the entire root node
     backgroundimg.setFitWidth(rootNode.getWidth());
     backgroundimg.setFitHeight(rootNode.getHeight());
 
-    // Make sure the background resizes with the window
+    // Bind the image view to the root node to ensure proper resizing
     backgroundimg.fitWidthProperty().bind(rootNode.widthProperty());
     backgroundimg.fitHeightProperty().bind(rootNode.heightProperty());
   }
@@ -127,7 +134,7 @@ public class Suspect3RoomController {
    * @throws IOException if the root cannot be set
    */
   @FXML
-  private void onUncle(ActionEvent event) throws IOException {
+  private void handleUncleClick(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
@@ -138,7 +145,7 @@ public class Suspect3RoomController {
    * @throws IOException if the root cannot be set
    */
   @FXML
-  private void onGrandma(ActionEvent event) throws IOException {
+  private void handleGrandmotherClick(ActionEvent event) throws IOException {
     App.setRoot("suspect2room");
   }
 
@@ -161,27 +168,27 @@ public class Suspect3RoomController {
     boolean isMenuVisible = context.isMenuVisible();
 
     if (isMenuVisible) {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 10 0 0 10; -fx-border-color:  black transparent black black;"
               + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
     } else {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
               + " -fx-background-insets: 0;");
     }
 
     // Set visibility and management of other buttons based on isMenuVisible
-    btnCrimeScene.setVisible(isMenuVisible);
-    btnCrimeScene.setManaged(isMenuVisible);
+    crimeSceneButton.setVisible(isMenuVisible);
+    crimeSceneButton.setManaged(isMenuVisible);
 
-    btnGrandma.setVisible(isMenuVisible);
-    btnGrandma.setManaged(isMenuVisible);
+    grandmaButton.setVisible(isMenuVisible);
+    grandmaButton.setManaged(isMenuVisible);
 
-    btnGrandson.setVisible(isMenuVisible);
-    btnGrandson.setManaged(isMenuVisible);
+    grandsonButton.setVisible(isMenuVisible);
+    grandsonButton.setManaged(isMenuVisible);
 
-    btnUncle.setVisible(isMenuVisible);
-    btnUncle.setManaged(isMenuVisible);
+    uncleButton.setVisible(isMenuVisible);
+    uncleButton.setManaged(isMenuVisible);
   }
 
   /**

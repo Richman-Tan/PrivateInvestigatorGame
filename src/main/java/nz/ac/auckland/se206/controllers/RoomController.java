@@ -29,26 +29,19 @@ import nz.ac.auckland.se206.GameStateContext;
  */
 public class RoomController {
 
-  @FXML private Button btnGuess;
-  @FXML private Button btnMenu;
-  @FXML private Button btnCrimeScene;
-  @FXML private Button btnGrandma;
-  @FXML private Button btnGrandson;
-  @FXML private Button btnUncle;
+  @FXML private Button menuButton;
+  @FXML private Button crimeSceneButton;
+  @FXML private Button grandmaButton;
+  @FXML private Button grandsonButton;
+  @FXML private Button uncleButton;
   @FXML private AnchorPane rootNode;
   @FXML private Button guessButton;
-
   @FXML private ImageView background;
-
   @FXML private Label lbltimer;
-
   @FXML private ImageView clue1;
-
   @FXML private ImageView clue2;
-
   @FXML private ImageView clue3;
-
-  @FXML private VBox vBox;
+  @FXML private VBox viewBox;
 
   private static GameStateContext context = GameStateContext.getInstance();
   private boolean isFirstTimeInit = context.isFirstTimeInit();
@@ -292,7 +285,7 @@ public class RoomController {
     paintingImageView.setOnMouseClicked(
         e -> {
           try {
-            onSafe();
+            handleSafeClick();
           } catch (IOException e1) {
             e1.printStackTrace();
           }
@@ -301,7 +294,7 @@ public class RoomController {
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(paintingImageView);
 
-    vBox.toFront();
+    viewBox.toFront();
   }
 
   private void addHoverEffect(Group group) {
@@ -412,7 +405,8 @@ public class RoomController {
     context.handleGuessClick();
   }
 
-  private void onSafe() throws IOException {
+  @FXML
+  private void handleSafeClick() throws IOException {
     if (context.isNoteFound() || context.isSafeOpen()) {
       App.setRoot("cluesafeopened");
     } else {
@@ -420,37 +414,19 @@ public class RoomController {
     }
   }
 
-  /**
-   * Handles the inspect uncle button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onUncle(ActionEvent event) throws IOException {
+  private void handleUncleClick(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
-  /**
-   * Handles the inspect Grandmother button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onGrandmother(ActionEvent event) throws IOException {
+  private void handleGrandmotherClick(ActionEvent event) throws IOException {
     context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
-  /**
-   * Handles the inspect Grandson button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onGrandson(ActionEvent event) throws IOException {
+  private void handleGrandsonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
   }
 
@@ -474,26 +450,27 @@ public class RoomController {
     boolean isMenuVisible = context.isMenuVisible();
 
     if (isMenuVisible) {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
               + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
     } else {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
               + " -fx-background-insets: 0;");
     }
 
-    btnCrimeScene.setVisible(isMenuVisible);
-    btnCrimeScene.setManaged(isMenuVisible);
+    // Set visibility and management of other buttons based on isMenuVisible
+    crimeSceneButton.setVisible(isMenuVisible);
+    crimeSceneButton.setManaged(isMenuVisible);
 
-    btnGrandma.setVisible(isMenuVisible);
-    btnGrandma.setManaged(isMenuVisible);
+    grandmaButton.setVisible(isMenuVisible);
+    grandmaButton.setManaged(isMenuVisible);
 
-    btnGrandson.setVisible(isMenuVisible);
-    btnGrandson.setManaged(isMenuVisible);
+    grandsonButton.setVisible(isMenuVisible);
+    grandsonButton.setManaged(isMenuVisible);
 
-    btnUncle.setVisible(isMenuVisible);
-    btnUncle.setManaged(isMenuVisible);
+    uncleButton.setVisible(isMenuVisible);
+    uncleButton.setManaged(isMenuVisible);
   }
 
   @FXML

@@ -22,17 +22,14 @@ import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
+/** CluePhoneController is the controller class for the Clue Phone scene. */
 public class CluePhoneController {
 
   @FXML private AnchorPane rootPane;
   @FXML private ImageView phoneImageView;
   @FXML private ImageView imageView;
-
-  // Declare arrowButton as a class-level variable
   @FXML private Button arrowButton;
-
   @FXML private Label label;
-
   @FXML private Label popUp;
 
   // Start circles (left-hand side)
@@ -855,10 +852,18 @@ public class CluePhoneController {
     GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
   }
 
-  // Check if the drag ends on a valid end circle with the same color
+  /**
+   * Returns the matching end circle based on the start circle and the given coordinates.
+   *
+   * @param startCircle the starting circle
+   * @param x the x-coordinate to check
+   * @param y the y-coordinate to check
+   * @return the matching end circle, or null if no match is found
+   */
   private Circle getMatchingEndCircle(Circle startCircle, double x, double y) {
     Circle targetEndCircle = null;
 
+    // Check if the start circle and compare it to the end circle
     if (startCircle == startCircleRed && isInsideCircle(endCircleRed, x, y)) {
       targetEndCircle = endCircleRed;
     } else if (startCircle == startCircleBlue && isInsideCircle(endCircleBlue, x, y)) {
