@@ -269,7 +269,7 @@ public class RoomController {
     paintingImageView.setOnMouseClicked(
         e -> {
           try {
-            onSafe();
+            handleSafeClick();
           } catch (IOException e1) {
             e1.printStackTrace();
           }
@@ -389,7 +389,8 @@ public class RoomController {
     context.handleGuessClick();
   }
 
-  private void onSafe() throws IOException {
+  @FXML
+  private void handleSafeClick() throws IOException {
     if (context.isNoteFound() || context.isSafeOpen()) {
       App.setRoot("cluesafeopened");
     } else {
@@ -397,37 +398,19 @@ public class RoomController {
     }
   }
 
-  /**
-   * Handles the inspect uncle button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onUncle(ActionEvent event) throws IOException {
+  private void handleUncleClick(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
-  /**
-   * Handles the inspect Grandmother button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onGrandmother(ActionEvent event) throws IOException {
+  private void handleGrandmotherClick(ActionEvent event) throws IOException {
     context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
-  /**
-   * Handles the inspect Grandson button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onGrandson(ActionEvent event) throws IOException {
+  private void handleGrandsonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
   }
 

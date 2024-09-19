@@ -89,8 +89,7 @@ public class StartGameController {
   }
 
   /*
-   * Handles the event when the image (acting as a button) is clicked. Transitions to the backstory view
-   * with image rotation.
+   * View with image rotation.
    */
   @FXML
   private void onPlay() throws IOException, ApiProxyException {
