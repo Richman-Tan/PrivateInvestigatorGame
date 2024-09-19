@@ -20,9 +20,9 @@
         <Image url="@../images/grandmotherPic.jpg" />
     </image>
   </ImageView>
-      <HBox alignment="CENTER" layoutX="31.0" layoutY="30.0" prefHeight="81.0" prefWidth="776.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
+      <HBox alignment="CENTER" layoutX="21.0" layoutY="20.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
          <children>
-            <Button fx:id="menuButton1" maxHeight="42.0" mnemonicParsing="false" onAction="#onToggleMenu" opacity="0.8" prefHeight="42.0" prefWidth="36.0" style="-fx-background-radius: 10 0 0 10; -fx-border-radius: 10 0 0 10; -fx-border-color: black transparent black black; -fx-background-insets: 0;" stylesheets="@../css/button.css">
+            <Button fx:id="menuButton" maxHeight="10.0" mnemonicParsing="false" onAction="#onToggleMenu" opacity="0.8" prefHeight="60.0" prefWidth="31.0" style="-fx-background-radius: 10 0 0 10; -fx-border-radius: 10 0 0 10; -fx-border-color: black transparent black black; -fx-background-insets: 0;" stylesheets="@../css/button.css">
                <graphic>
                   <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -31,29 +31,29 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="crimeSceneButton1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.8" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-padding: 0; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Go to Crime Scene">
+            <Button fx:id="crimeSceneButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRoom" opacity="0.8" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-padding: 0; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Go to Crime Scene">
                <HBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="grandmaButton1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGrandmotherClick" opacity="0.6" prefHeight="45.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandma">
+            <Button fx:id="grandmaButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.5" prefHeight="45.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandma">
                <HBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="grandsonButton1" maxHeight="48.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGrandsonClick" opacity="0.8" prefHeight="41.0" prefWidth="194.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandson">
+            <Button fx:id="grandsonButton" maxHeight="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGrandsonClick" opacity="0.8" prefHeight="60.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandson">
                <HBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="uncleButton1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUncleButtonClick" opacity="0.8" prefHeight="60.0" prefWidth="200.0" style="-fx-background-radius: 0 10 10 0; -fx-border-radius: 0 10 10 0; -fx-border-color: black black black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Uncle">
+            <Button fx:id="uncleButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUncleButtonClick" opacity="0.8" prefHeight="60.0" prefWidth="200.0" style="-fx-background-radius: 0 10 10 0; -fx-border-radius: 0 10 10 0; -fx-border-color: black black black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Uncle">
                <HBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </HBox.margin>
             </Button>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="guessButton1" mnemonicParsing="false" onAction="#onGuessClick" opacity="0.8" prefHeight="43.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
+                  <Button fx:id="guessButton" mnemonicParsing="false" onAction="#onGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
                </children>
             </HBox>
          </children>
