@@ -69,23 +69,28 @@ public class RoomController {
     clue2.setOpacity(0);
     clue3.setOpacity(0);
 
+    // Check if the guess button should be enabled
     checkGuessButton();
+
     // Check if the garden tool has been found
     if (context.isGardenToolFound()) {
       // If found, set the opacity of clue1 to 1 (visible)
       clue1.setOpacity(1);
     }
 
+    // Check if the phone has been found
     if (context.isPhoneFound()) {
       // If found, set the opacity of clue2 to 1 (visible)
       clue2.setOpacity(1);
     }
 
+    // Check if the note has been found
     if (context.isNoteFound()) {
       // If found, set the opacity of clue3 to 1 (visible)
       clue3.setOpacity(1);
     }
 
+    // Load the images
     final Image image1 =
         new Image(RoomController.class.getResource("/images/drawframe1.PNG").toString());
     final Image image2 =
@@ -105,13 +110,19 @@ public class RoomController {
             if (isFirstTimeInit) {
               Platform.runLater(
                   () -> {
+                    // Fade in the root node
                     rootNode.setOpacity(0);
+
+                    // Create a fade transition to fade in the root node
                     FadeTransition fadeTransition =
                         new FadeTransition(Duration.millis(1000), rootNode);
+
+                    // Set the opacity values
                     fadeTransition.setFromValue(0);
                     fadeTransition.setToValue(1);
                     fadeTransition.play();
                   });
+              // Set the first time initialization to false
               context.setFirstTimeInit(false);
               isFirstTimeInit = context.isFirstTimeInit();
             }
@@ -119,6 +130,7 @@ public class RoomController {
           }
         };
 
+    // Create a new thread and start the task
     Thread thread = new Thread(task);
     thread.setDaemon(true); // Allows the application to exit even if the thread is running
     thread.start();
@@ -147,12 +159,14 @@ public class RoomController {
     // Timer and other UI-related updates
     updateMenuVisibility();
 
+    // Load the images
     final ImageView file1 = createAndBindImageView(image1); // Displayed initially
     final ImageView file2 = createAndBindImageView(image2);
     final ImageView file3 = createAndBindImageView(image3);
     final ImageView file4 = createAndBindImageView(image4);
     final ImageView file5 = createAndBindImageView(image5);
 
+    // Apply the drop shadow effect to the images
     applyDropShadow(dropShadow, file1, file2, file3, file4, file5);
 
     // Instantiate an object called drawGroup and add the first image
@@ -165,7 +179,10 @@ public class RoomController {
     // Add the drawGroup to the AnchorPane (rootNode)
     rootNode.getChildren().addAll(backgroundImageView, drawGroup);
 
+    // Set the drawGroup to the back
     drawGroup.toBack();
+
+    // Set the background image to the back
     backgroundImageView.toBack();
 
     // Set hover effect
@@ -174,10 +191,14 @@ public class RoomController {
     // Set mouse click behavior to trigger the animation
     drawGroup.setOnMouseClicked(e -> playAnimation(file1, file2, file3, file4, file5));
 
+    // Apply the orange drop shadow effect to the drawGroup
     applyOrangeDropShadow(drawGroup);
 
+    // Timer and other UI-related updates
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
+
+    // Bind the timer label to the countdown timer
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
     // Load background image
@@ -231,6 +252,7 @@ public class RoomController {
     hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
     hoverShadow.setRadius(10); // Customize the shadow effect
 
+    // Apply hover effect
     phoneClueImageView.setOnMouseEntered(
         e -> {
           phoneClueImageView.setEffect(hoverShadow); // Apply hover effect when mouse enters
@@ -242,6 +264,7 @@ public class RoomController {
     phoneClueImageView.setOnMouseClicked(
         e -> {
           try {
+            // Handle the phone clue click event
             App.setRoot("cluephone");
           } catch (IOException e1) {
             e1.printStackTrace();
@@ -302,6 +325,7 @@ public class RoomController {
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(paintingImageView);
 
+    // Load background image
     viewBox.toFront();
   }
 

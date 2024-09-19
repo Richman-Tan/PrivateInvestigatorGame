@@ -17,18 +17,10 @@ import nz.ac.auckland.se206.states.GameStarted;
 
 public class StartGameController {
 
-  // FXML fields
-  @FXML private AnchorPane rootPane;
-
-  // Instance fields
-  private MediaPlayer mediaPlayer;
-  private ImageView imageView;
-
   // Static fields
   private static final String door =
       GameStarted.class.getClassLoader().getResource("sounds/doorOpen.mp3").toExternalForm();
 
-  // Load images from the images folder
   static final Image image1 =
       new Image(BackstoryController.class.getResource("/images/initialDoor.jpg").toString());
   static final Image image2 =
@@ -48,6 +40,14 @@ public class StartGameController {
   static final Image image9 =
       new Image(BackstoryController.class.getResource("/images/doorframe9.PNG").toString());
 
+  // Instance fields
+  @FXML private AnchorPane rootPane;
+  private MediaPlayer mediaPlayer;
+  private ImageView imageView;
+
+  // Constructors
+
+  // Instance methods
   /** Initializes the start view. */
   @FXML
   public void initialize() {
