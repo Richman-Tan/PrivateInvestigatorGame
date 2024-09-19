@@ -26,25 +26,18 @@ import nz.ac.auckland.se206.GameStateContext;
  */
 public class RoomController {
 
-  @FXML private Button btnGuess;
-  @FXML private Button btnMenu;
-  @FXML private Button btnCrimeScene;
-  @FXML private Button btnGrandma;
-  @FXML private Button btnGrandson;
-  @FXML private Button btnUncle;
+  @FXML private Button menuButton;
+  @FXML private Button crimeSceneButton;
+  @FXML private Button grandmaButton;
+  @FXML private Button grandsonButton;
+  @FXML private Button uncleButton;
   @FXML private AnchorPane rootNode;
   @FXML private Button guessButton;
-
   @FXML private ImageView background;
-
   @FXML private Label lbltimer;
-
   @FXML private ImageView clue1;
-
   @FXML private ImageView clue2;
-
   @FXML private ImageView clue3;
-
   @FXML private VBox viewBox;
 
   private static GameStateContext context = GameStateContext.getInstance();
@@ -434,26 +427,27 @@ public class RoomController {
     boolean isMenuVisible = context.isMenuVisible();
 
     if (isMenuVisible) {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
               + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
     } else {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
               + " -fx-background-insets: 0;");
     }
 
-    btnCrimeScene.setVisible(isMenuVisible);
-    btnCrimeScene.setManaged(isMenuVisible);
+    // Set visibility and management of other buttons based on isMenuVisible
+    crimeSceneButton.setVisible(isMenuVisible);
+    crimeSceneButton.setManaged(isMenuVisible);
 
-    btnGrandma.setVisible(isMenuVisible);
-    btnGrandma.setManaged(isMenuVisible);
+    grandmaButton.setVisible(isMenuVisible);
+    grandmaButton.setManaged(isMenuVisible);
 
-    btnGrandson.setVisible(isMenuVisible);
-    btnGrandson.setManaged(isMenuVisible);
+    grandsonButton.setVisible(isMenuVisible);
+    grandsonButton.setManaged(isMenuVisible);
 
-    btnUncle.setVisible(isMenuVisible);
-    btnUncle.setManaged(isMenuVisible);
+    uncleButton.setVisible(isMenuVisible);
+    uncleButton.setManaged(isMenuVisible);
   }
 
   @FXML

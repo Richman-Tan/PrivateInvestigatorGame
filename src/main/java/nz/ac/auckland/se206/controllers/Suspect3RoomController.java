@@ -29,28 +29,25 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
+/** Suspect3RoomController is the controller class for the Suspect 3 Room scene. */
 public class Suspect3RoomController {
 
-  @FXML private Button btnMenu;
-  @FXML private Button btnCrimeScene;
-  @FXML private Button btnGrandma;
-  @FXML private Button btnGrandson;
-  @FXML private Button btnUncle;
+  @FXML private Button crimeSceneButton;
+  @FXML private Button grandmaButton;
+  @FXML private Button grandsonButton;
+  @FXML private Button menuButton;
+  @FXML private Button uncleButton;
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect3ChatBox;
   @FXML private Circle sendButton;
-
   @FXML private Button guessButton;
-
   @FXML private AnchorPane rootNode;
-
   @FXML private Label lbltimer;
   @FXML private ImageView backgroundimg;
 
   private ChatCompletionRequest chatCompletionRequest;
   private GameStateContext context = GameStateContext.getInstance();
   private boolean firstTime = true;
-
   private TimerModel countdownTimer;
 
   /** Initializes the suspect 3 room view. */
@@ -168,27 +165,27 @@ public class Suspect3RoomController {
     boolean isMenuVisible = context.isMenuVisible();
 
     if (isMenuVisible) {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 10 0 0 10; -fx-border-color:  black transparent black black;"
               + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
     } else {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
               + " -fx-background-insets: 0;");
     }
 
     // Set visibility and management of other buttons based on isMenuVisible
-    btnCrimeScene.setVisible(isMenuVisible);
-    btnCrimeScene.setManaged(isMenuVisible);
+    crimeSceneButton.setVisible(isMenuVisible);
+    crimeSceneButton.setManaged(isMenuVisible);
 
-    btnGrandma.setVisible(isMenuVisible);
-    btnGrandma.setManaged(isMenuVisible);
+    grandmaButton.setVisible(isMenuVisible);
+    grandmaButton.setManaged(isMenuVisible);
 
-    btnGrandson.setVisible(isMenuVisible);
-    btnGrandson.setManaged(isMenuVisible);
+    grandsonButton.setVisible(isMenuVisible);
+    grandsonButton.setManaged(isMenuVisible);
 
-    btnUncle.setVisible(isMenuVisible);
-    btnUncle.setManaged(isMenuVisible);
+    uncleButton.setVisible(isMenuVisible);
+    uncleButton.setManaged(isMenuVisible);
   }
 
   /**

@@ -17,9 +17,15 @@ import nz.ac.auckland.se206.states.GameStarted;
 
 public class StartGameController {
 
+  // FXML fields
   @FXML private AnchorPane rootPane;
+
+  // Instance fields
   private MediaPlayer mediaPlayer;
-  private final String door =
+  private ImageView imageView;
+
+  // Static fields
+  private static final String door =
       GameStarted.class.getClassLoader().getResource("sounds/doorOpen.mp3").toExternalForm();
 
   // Load images from the images folder
@@ -41,9 +47,6 @@ public class StartGameController {
       new Image(BackstoryController.class.getResource("/images/doorframe8.PNG").toString());
   static final Image image9 =
       new Image(BackstoryController.class.getResource("/images/doorframe9.PNG").toString());
-
-  // Create an ImageView to display the images
-  private ImageView imageView;
 
   /** Initializes the start view. */
   @FXML
@@ -125,8 +128,7 @@ public class StartGameController {
     // After the timeline, add the fade transition to switch to the backstory view
     timeline.setOnFinished(
         e -> {
-          FadeTransition fadeTransition = new FadeTransition();
-          fadeTransition.setDuration(javafx.util.Duration.millis(1000));
+          FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000));
           fadeTransition.setNode(rootPane);
           fadeTransition.setFromValue(1);
           fadeTransition.setToValue(0);

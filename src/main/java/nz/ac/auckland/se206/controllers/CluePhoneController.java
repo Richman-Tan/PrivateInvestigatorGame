@@ -22,17 +22,14 @@ import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
+/** CluePhoneController is the controller class for the Clue Phone scene. */
 public class CluePhoneController {
 
   @FXML private AnchorPane rootPane;
   @FXML private ImageView phoneImageView;
   @FXML private ImageView imageView;
-
-  // Declare arrowButton as a class-level variable
   @FXML private Button arrowButton;
-
   @FXML private Label label;
-
   @FXML private Label popUp;
 
   // Start circles (left-hand side)

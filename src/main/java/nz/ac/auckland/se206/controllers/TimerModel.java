@@ -13,11 +13,22 @@ import nz.ac.auckland.se206.GameStateContext;
 
 public class TimerModel {
 
+  // Static fields
   private static int i = 0;
   private static int timerEnded = 0; // Flag to indicate if the timer has ended
 
-  // get context
+  // Instance fields
   private GameStateContext gameStateContext = GameStateContext.getInstance();
+  private TimerModel countdownTimer;
+  private Timer timer;
+  private int timeInSeconds;
+  private StringProperty timeString;
+
+  // Constructors
+  public TimerModel(int initialTimeInSeconds) {
+    this.timeInSeconds = initialTimeInSeconds;
+    this.timeString = new SimpleStringProperty(formatTime(initialTimeInSeconds));
+  }
 
   /*
    * Checks if the timer has ended.
@@ -26,21 +37,6 @@ public class TimerModel {
    */
   public static int hasEnded() {
     return timerEnded;
-  }
-
-  private Timer timer;
-  private int timeInSeconds;
-  private StringProperty timeString;
-  private TimerModel countdownTimer;
-
-  /*
-   * Constructs a new timer model.
-   *
-   * @param initialTimeInSeconds the initial time in seconds
-   */
-  public TimerModel(int initialTimeInSeconds) {
-    this.timeInSeconds = initialTimeInSeconds;
-    this.timeString = new SimpleStringProperty(formatTime(initialTimeInSeconds));
   }
 
   /*

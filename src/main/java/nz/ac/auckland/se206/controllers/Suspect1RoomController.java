@@ -31,26 +31,22 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class Suspect1RoomController {
 
-  @FXML private Button btnMenu;
-  @FXML private Button btnCrimeScene;
-  @FXML private Button btnGrandma;
-  @FXML private Button btnGrandson;
-  @FXML private Button btnUncle;
+  @FXML private Button crimeSceneButton;
+  @FXML private Button grandmaButton;
+  @FXML private Button grandsonButton;
+  @FXML private Button menuButton;
+  @FXML private Button uncleButton;
   @FXML private TextArea suspect1ChatBox;
   @FXML private TextField userChatBox;
   @FXML private Circle sendButton;
-
   @FXML private Button guessButton;
-
   @FXML private AnchorPane rootNode;
   @FXML private ImageView backgroundimg;
-
   @FXML private Label lbltimer;
 
   private ChatCompletionRequest chatCompletionRequest;
   private GameStateContext context = GameStateContext.getInstance();
   private boolean firstTime = true;
-
   private TimerModel countdownTimer;
 
   /** Initializes the suspect 1 room view. */
@@ -127,8 +123,19 @@ public class Suspect1RoomController {
     App.setRoot("room");
   }
 
+  /**
+   * Sends a message to the GPT model.
+   *
+   * @param event the action event triggered by the send button
+   * @throws ApiProxyException if there is an error communicating with the API proxy
+   * @throws IOException if there is an I/O error
+   */
   @FXML
-  private void onSend() {}
+  private void onSend(MouseEvent event) throws ApiProxyException, IOException {
+    sendMessageCode();
+    recordVisit();
+    checkGuessButton();
+  }
 
   /**
    * Handles the event when the grandson button is clicked.
@@ -171,27 +178,27 @@ public class Suspect1RoomController {
     boolean isMenuVisible = context.isMenuVisible();
 
     if (isMenuVisible) {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 10 0 0 10; -fx-border-color:  black transparent black black;"
               + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
     } else {
-      btnMenu.setStyle(
+      menuButton.setStyle(
           "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
               + " -fx-background-insets: 0;");
     }
 
     // Set visibility and management of other buttons based on isMenuVisible
-    btnCrimeScene.setVisible(isMenuVisible);
-    btnCrimeScene.setManaged(isMenuVisible);
+    crimeSceneButton.setVisible(isMenuVisible);
+    crimeSceneButton.setManaged(isMenuVisible);
 
-    btnGrandma.setVisible(isMenuVisible);
-    btnGrandma.setManaged(isMenuVisible);
+    grandmaButton.setVisible(isMenuVisible);
+    grandmaButton.setManaged(isMenuVisible);
 
-    btnGrandson.setVisible(isMenuVisible);
-    btnGrandson.setManaged(isMenuVisible);
+    grandsonButton.setVisible(isMenuVisible);
+    grandsonButton.setManaged(isMenuVisible);
 
-    btnUncle.setVisible(isMenuVisible);
-    btnUncle.setManaged(isMenuVisible);
+    uncleButton.setVisible(isMenuVisible);
+    uncleButton.setManaged(isMenuVisible);
   }
 
   /**
@@ -241,20 +248,6 @@ public class Suspect1RoomController {
   private void appendChatMessage(ChatMessage msg) {
     suspect1ChatBox.clear();
     suspect1ChatBox.appendText(msg.getContent() + "\n\n");
-  }
-
-  /**
-   * Sends a message to the GPT model.
-   *
-   * @param event the action event triggered by the send button
-   * @throws ApiProxyException if there is an error communicating with the API proxy
-   * @throws IOException if there is an I/O error
-   */
-  @FXML
-  private void onSend(MouseEvent event) throws ApiProxyException, IOException {
-    sendMessageCode();
-    recordVisit();
-    checkGuessButton();
   }
 
   /**
