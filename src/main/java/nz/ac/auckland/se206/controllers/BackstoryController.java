@@ -32,19 +32,9 @@ import nz.ac.auckland.se206.states.GameStarted;
 
 public class BackstoryController {
 
-  // FXML fields
-  @FXML private AnchorPane anchorPane;
-
-  // Instance fields
-  private MediaPlayer mediaPlayer;
-  private TimerModel countdownTimer;
-  private Group file;
-
   // Static fields
   private static final String sound =
       GameStarted.class.getClassLoader().getResource("sounds/woosh.mp3").toExternalForm();
-
-  // Load images from the images folder
   static final Image image1 =
       new Image(BackstoryController.class.getResource("/images/fileframe1.PNG").toString());
   static final Image image2 =
@@ -66,11 +56,18 @@ public class BackstoryController {
   static final Image image10 =
       new Image(BackstoryController.class.getResource("/images/fileframe10.PNG").toString());
 
+  // Instance fields
+  @FXML private AnchorPane anchorPane;
+  private MediaPlayer mediaPlayer;
+  private TimerModel countdownTimer;
+  private Group file;
+
+  // Constructors (if any)
+
+  // Instance methods
   /** Initializes the backstory view. */
   @FXML
   public void initialize() {
-
-    // Run the fade transition on the JavaFX Application Thread
     Platform.runLater(
         () -> {
           anchorPane.setOpacity(0);
@@ -82,29 +79,23 @@ public class BackstoryController {
           fadeTransition.play();
         });
 
-    // Load background image
     Image backgroundImage =
         new Image(
             BackstoryController.class.getResource("/images/blurredcrimescene.png").toString());
 
-    // Create the background ImageView and set it to fill the entire pane
     ImageView backgroundImageView = new ImageView(backgroundImage);
     backgroundImageView.setFitWidth(anchorPane.getWidth());
     backgroundImageView.setFitHeight(anchorPane.getHeight());
-
-    // Make sure the background resizes with the window
     backgroundImageView.fitWidthProperty().bind(anchorPane.widthProperty());
     backgroundImageView.fitHeightProperty().bind(anchorPane.heightProperty());
 
-    // Create a DropShadow effect
     DropShadow dropShadow = new DropShadow();
-    dropShadow.setOffsetX(5); // Smaller offset
+    dropShadow.setOffsetX(5);
     dropShadow.setOffsetY(5);
-    dropShadow.setRadius(6); // Reduce blur radius
-    dropShadow.setSpread(0.07); // Lower spread for less intensity
-    dropShadow.setColor(Color.color(0, 0, 0, 0.4)); // Less opacity for lighter shadow
+    dropShadow.setRadius(6);
+    dropShadow.setSpread(0.07);
+    dropShadow.setColor(Color.color(0, 0, 0, 0.4));
 
-    // Load and prepare ImageView nodes for animation
     final ImageView file1 = createAndBindImageView(image1);
     final ImageView file2 = createAndBindImageView(image2);
     final ImageView file3 = createAndBindImageView(image3);
@@ -116,20 +107,13 @@ public class BackstoryController {
     final ImageView file9 = createAndBindImageView(image9);
     final ImageView file10 = createAndBindImageView(image10);
 
-    // Apply the DropShadow effect to each frame
     applyDropShadow(
         dropShadow, file1, file2, file3, file4, file5, file6, file7, file8, file9, file10);
 
-    // Instantiate an object called file and add the first image
     file = new Group(file1);
-
-    // Center the image within the pane
     centerImage(file1);
 
-    // Animate file images in a loop
     Timeline timeline = new Timeline();
-
-    // Add images into the timeline
     timeline
         .getKeyFrames()
         .add(new KeyFrame(Duration.seconds(1.4), e -> showNextImage(file, file2)));
@@ -157,50 +141,29 @@ public class BackstoryController {
     timeline
         .getKeyFrames()
         .add(new KeyFrame(Duration.seconds(2.12), e -> showNextImage(file, file10)));
-    timeline.play();
-
-    // Set the cycle count to 1, so it only plays once
     timeline.setCycleCount(1);
     timeline.play();
 
-    // Add the background image first, then the group to the anchorPane
     anchorPane.getChildren().addAll(backgroundImageView, file);
-
-    // Add listeners to resize and recenter images when the AnchorPane size changes
     anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> recenterCurrentImage(file));
     anchorPane.heightProperty().addListener((obs, oldVal, newVal) -> recenterCurrentImage(file));
 
-    // Load the additional image to be shown at the bottom right
     Image additionalImage =
         new Image(
             BackstoryController.class.getResource("/images/magnifyingglassbtn.png").toString());
     ImageView additionalImageView = new ImageView(additionalImage);
+    additionalImageView.fitWidthProperty().bind(anchorPane.widthProperty().multiply(0.32));
+    additionalImageView.fitHeightProperty().bind(anchorPane.heightProperty().multiply(0.32));
+    additionalImageView.setOpacity(0);
+    additionalImageView.setDisable(true);
 
-    // Bind the size of the additional image to a fraction of the AnchorPane's size
-    additionalImageView
-        .fitWidthProperty()
-        .bind(anchorPane.widthProperty().multiply(0.32)); // 30% of the anchor pane's width
-    additionalImageView
-        .fitHeightProperty()
-        .bind(anchorPane.heightProperty().multiply(0.32)); // 30% of the anchor pane's height
-    additionalImageView.setOpacity(0); // Start with the image invisible
-    additionalImageView.setDisable(true); // Disable the image to prevent interaction
-
-    // Create the enlarged version of the additional image
     ImageView enlargedImageView = new ImageView(additionalImage);
-    enlargedImageView
-        .fitWidthProperty()
-        .bind(anchorPane.widthProperty().multiply(0.36)); // Slightly larger, 34% of the width
-    enlargedImageView
-        .fitHeightProperty()
-        .bind(anchorPane.heightProperty().multiply(0.36)); // Slightly larger, 34% of the height
-    enlargedImageView.setOpacity(0); // Start hidden
-    enlargedImageView.setDisable(true); // Disable the image to prevent interaction
+    enlargedImageView.fitWidthProperty().bind(anchorPane.widthProperty().multiply(0.36));
+    enlargedImageView.fitHeightProperty().bind(anchorPane.heightProperty().multiply(0.36));
+    enlargedImageView.setOpacity(0);
+    enlargedImageView.setDisable(true);
 
-    // Add both images to the anchorPane
     anchorPane.getChildren().addAll(additionalImageView, enlargedImageView);
-
-    // Add listeners to position the image closer to the right edge of the anchorPane
     anchorPane
         .widthProperty()
         .addListener(
@@ -210,15 +173,11 @@ public class BackstoryController {
         .addListener(
             (obs, oldVal, newVal) -> updateImagePosition(additionalImageView, enlargedImageView));
 
-    // Set the fade transition for the additional image
     FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), additionalImageView);
     fadeIn.setFromValue(0);
     fadeIn.setToValue(1);
-
-    // Trigger the fade-in transition after the timeline completes
     timeline.setOnFinished(e -> fadeIn.play());
 
-    // Load the sound effect
     Media woosh = new Media(sound);
     mediaPlayer = new MediaPlayer(woosh);
 
@@ -228,78 +187,97 @@ public class BackstoryController {
           enlargedImageView.setDisable(false);
         });
 
-    // Set hover event handlers
     setHoverHandlers(additionalImageView, enlargedImageView);
-
     additionalImageView.setOnMouseClicked(e -> zoomIn(additionalImageView, "room"));
-
     enlargedImageView.setOnMouseClicked(e -> zoomIn(enlargedImageView, "room"));
 
-    // Create a Pane for the timer
     Pane timerPane = new Pane();
-    timerPane.setPrefSize(101, 45); // Set the preferred size
-    timerPane.setOpacity(0.75); // Set the opacity
+    timerPane.setPrefSize(101, 45);
+    timerPane.setOpacity(0.75);
     timerPane.setStyle(
         "-fx-background-color: white;"
             + "-fx-background-radius: 10px;"
             + "-fx-border-radius: 10px;"
             + "-fx-border-color: black;");
+    AnchorPane.setLeftAnchor(timerPane, 10.0);
+    AnchorPane.setTopAnchor(timerPane, 10.0);
 
-    // Position the timerPane
-    AnchorPane.setLeftAnchor(timerPane, 10.0); // Set position using AnchorPane
-    AnchorPane.setTopAnchor(timerPane, 10.0); // Set top anchor
-
-    // Create a label for the timer
     Label timerLabel = new Label();
-    timerLabel.setText("Label"); // Default text (will be updated by the timer)
-    timerLabel.setFont(new Font(24)); // Set font size
-    timerLabel.setAlignment(Pos.CENTER); // Align the text to the center
-    timerLabel.setLayoutX(21.0); // Set the label's X position inside the Pane
-    timerLabel.setLayoutY(8.0); // Set the label's Y position inside the Pane
+    timerLabel.setText("Label");
+    timerLabel.setFont(new Font(24));
+    timerLabel.setAlignment(Pos.CENTER);
+    timerLabel.setLayoutX(21.0);
+    timerLabel.setLayoutY(8.0);
 
-    // Bind the timerLabel to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
 
-    // Add the label to the Pane
     timerPane.getChildren().add(timerLabel);
-
-    // Add the timerPane to the rootPane
     anchorPane.getChildren().add(timerPane);
   }
 
+  // Inner classes (if any)
+
+  // Static methods (if any)
+
+  /**
+   * Creates an ImageView and binds its width and height to the width and height of the anchorPane.
+   * The ImageView is then returned.
+   *
+   * @param image
+   * @return
+   */
   private ImageView createAndBindImageView(Image image) {
     ImageView imageView = new ImageView(image);
-    imageView
-        .fitWidthProperty()
-        .bind(anchorPane.widthProperty().multiply(1.2)); // 80% of AnchorPane width
-    imageView
-        .fitHeightProperty()
-        .bind(anchorPane.heightProperty().multiply(1.2)); // 80% of AnchorPane height
-    imageView.setPreserveRatio(true); // Preserve aspect ratio
+    imageView.fitWidthProperty().bind(anchorPane.widthProperty().multiply(1.2));
+    imageView.fitHeightProperty().bind(anchorPane.heightProperty().multiply(1.2));
+    imageView.setPreserveRatio(true);
     imageView.setCache(true);
     imageView.setCacheHint(CacheHint.SPEED);
     return imageView;
   }
 
+  /**
+   * Applies a drop shadow effect to the specified imageViews.
+   *
+   * @param dropShadow
+   * @param imageViews
+   */
   private void applyDropShadow(DropShadow dropShadow, ImageView... imageViews) {
     for (ImageView imageView : imageViews) {
       imageView.setEffect(dropShadow);
     }
   }
 
+  /**
+   * Shows the next image in the file.
+   *
+   * @param file
+   * @param nextImage
+   */
   private void showNextImage(Group file, ImageView nextImage) {
     file.getChildren().setAll(nextImage);
     centerImage(nextImage);
   }
 
+  /**
+   * Recenters the current image in the file.
+   *
+   * @param file
+   */
   private void recenterCurrentImage(Group file) {
     if (file.getChildren().get(0) instanceof ImageView) {
       centerImage((ImageView) file.getChildren().get(0));
     }
   }
 
+  /**
+   * Updates the position of the additional and enlarged image views.
+   *
+   * @param additionalImageView
+   * @param enlargedImageView
+   */
   private void updateImagePosition(ImageView additionalImageView, ImageView enlargedImageView) {
     additionalImageView.setLayoutX(anchorPane.getWidth() - additionalImageView.getFitWidth() + 40);
     enlargedImageView.setLayoutX(anchorPane.getWidth() - enlargedImageView.getFitWidth() + 40);
@@ -308,64 +286,75 @@ public class BackstoryController {
     enlargedImageView.setLayoutY(anchorPane.getHeight() - enlargedImageView.getFitHeight() + 10);
   }
 
+  /**
+   * Sets the hover handlers for the additional and enlarged image views.
+   *
+   * @param additionalImageView
+   * @param enlargedImageView
+   */
   private void setHoverHandlers(ImageView additionalImageView, ImageView enlargedImageView) {
     additionalImageView.setOnMouseEntered(
         e -> {
-          additionalImageView.setOpacity(0); // Hide the original image
-          enlargedImageView.setOpacity(1); // Show the enlarged image
-          additionalImageView.setCursor(javafx.scene.Cursor.HAND); // Change cursor to hand
+          additionalImageView.setOpacity(0);
+          enlargedImageView.setOpacity(1);
+          additionalImageView.setCursor(javafx.scene.Cursor.HAND);
         });
 
     additionalImageView.setOnMouseExited(
         e -> {
-          additionalImageView.setOpacity(1); // Show the original image
-          enlargedImageView.setOpacity(0); // Hide the enlarged image
-          additionalImageView.setCursor(javafx.scene.Cursor.DEFAULT); // Restore default cursor
+          additionalImageView.setOpacity(1);
+          enlargedImageView.setOpacity(0);
+          additionalImageView.setCursor(javafx.scene.Cursor.DEFAULT);
         });
 
     enlargedImageView.setOnMouseEntered(
         e -> {
-          additionalImageView.setOpacity(0); // Hide the original image
-          enlargedImageView.setOpacity(1); // Show the enlarged image
-          enlargedImageView.setCursor(javafx.scene.Cursor.HAND); // Change cursor to hand
+          additionalImageView.setOpacity(0);
+          enlargedImageView.setOpacity(1);
+          enlargedImageView.setCursor(javafx.scene.Cursor.HAND);
         });
 
     enlargedImageView.setOnMouseExited(
         e -> {
-          additionalImageView.setOpacity(1); // Show the original image
-          enlargedImageView.setOpacity(0); // Hide the enlarged image
-          enlargedImageView.setCursor(javafx.scene.Cursor.DEFAULT); // Restore default cursor
+          additionalImageView.setOpacity(1);
+          enlargedImageView.setOpacity(0);
+          enlargedImageView.setCursor(javafx.scene.Cursor.DEFAULT);
         });
   }
 
+  /**
+   * Centers the specified image view in the anchor pane.
+   *
+   * @param imageView
+   */
   private void centerImage(ImageView imageView) {
-    // Calculate the position to center the image within the anchorPane
     imageView.setX(((anchorPane.getWidth() - imageView.getFitWidth()) / 2) - 50);
     imageView.setY((anchorPane.getHeight() - imageView.getFitHeight()) / 2);
   }
 
+  /**
+   * Zooms in on the specified image view and transitions to the next scene.
+   *
+   * @param imageView
+   * @param nextScene
+   */
   private void zoomIn(ImageView imageView, String nextScene) {
-    mediaPlayer.seek(Duration.seconds(1)); // Skip the first 1.3 seconds of the sound effect
-    mediaPlayer.play(); // Play the sound effect
+    mediaPlayer.seek(Duration.seconds(1));
+    mediaPlayer.play();
 
-    // Create a new thread to run the zoom-in logic
     new Thread(
             () -> {
-              // All UI updates need to be run on the JavaFX Application Thread
               Platform.runLater(
                   () -> {
-                    // Scale transition for zooming in
                     ScaleTransition zoomInTransition =
                         new ScaleTransition(Duration.seconds(1), imageView);
-                    zoomInTransition.setToX(6.0); // Scale to 8x the original size
-                    zoomInTransition.setToY(6.0); // Scale to 8x the original size
+                    zoomInTransition.setToX(6.0);
+                    zoomInTransition.setToY(6.0);
                     zoomInTransition.setCycleCount(1);
                     zoomInTransition.setAutoReverse(false);
 
-                    // Get the current bounds of the ImageView
                     Bounds bounds = imageView.localToScene(imageView.getBoundsInLocal());
 
-                    // Calculate the center positions to move to after scaling
                     double sceneCenterX = anchorPane.getWidth() / 2;
                     double sceneCenterY = anchorPane.getHeight() / 2;
 
@@ -375,7 +364,6 @@ public class BackstoryController {
                     double translateX = sceneCenterX - imageCenterX + 250;
                     double translateY = sceneCenterY - imageCenterY + 300;
 
-                    // Translate transition for moving to the center of the screen
                     TranslateTransition moveToCenterTransition =
                         new TranslateTransition(Duration.seconds(0.5), imageView);
                     moveToCenterTransition.setByX(translateX);
@@ -383,32 +371,25 @@ public class BackstoryController {
                     moveToCenterTransition.setCycleCount(1);
                     moveToCenterTransition.setAutoReverse(false);
 
-                    // Rotate transition for rotating the image by 45 degrees
                     RotateTransition rotateTransition =
                         new RotateTransition(Duration.seconds(1), imageView);
-                    rotateTransition.setByAngle(20); // Rotate by 20 degrees to the right
+                    rotateTransition.setByAngle(20);
                     rotateTransition.setCycleCount(1);
                     rotateTransition.setAutoReverse(false);
 
-                    // Combine the zoom, move, fade out, and rotate transitions in a parallel
-                    // transition
                     ParallelTransition parallelTransition =
                         new ParallelTransition(
                             zoomInTransition, moveToCenterTransition, rotateTransition);
 
-                    // Play the combined transitions
                     parallelTransition.play();
                   });
             })
-        .start(); // Start the thread
+        .start();
 
-    // Run another thread
     new Thread(
             () -> {
-              // All UI updates need to be run on the JavaFX Application Thread
               Platform.runLater(
                   () -> {
-                    // Fade transition for fading out the entire scene
                     FadeTransition fadeOutTransition =
                         new FadeTransition(Duration.seconds(0.5), anchorPane);
                     fadeOutTransition.setFromValue(1.0);
@@ -416,16 +397,11 @@ public class BackstoryController {
                     fadeOutTransition.setCycleCount(1);
                     fadeOutTransition.setAutoReverse(false);
 
-                    // Pause transition to delay the fade-out
-                    PauseTransition pauseTransition =
-                        new PauseTransition(
-                            Duration.seconds(0.5)); // Halfway through the parallel transition
+                    PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.5));
 
-                    // Sequential transition to start the fade-out after the pause
                     SequentialTransition sequentialTransition =
                         new SequentialTransition(pauseTransition, fadeOutTransition);
 
-                    // Add event handler to change the scene after the transitions complete
                     fadeOutTransition.setOnFinished(
                         event -> {
                           try {
@@ -438,6 +414,6 @@ public class BackstoryController {
                     sequentialTransition.play();
                   });
             })
-        .start(); // Start the thread
+        .start();
   }
 }

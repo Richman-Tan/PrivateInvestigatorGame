@@ -7,7 +7,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -103,7 +102,6 @@ public class UpdatedGuessingController {
   private MediaPlayer explanationPlayer;
   private MediaPlayer guessPlayer;
 
-
   private final String confirmed =
       GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
   private final String gameOver =
@@ -158,29 +156,32 @@ public class UpdatedGuessingController {
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
-    //add listener for the label when it shows "over"
-    lbltimer.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (newValue.equals("Over!")){
-        countdownTimer.stop();
-        confirmCulpritButton.setDisable(true);
-        confirmCulpritButton.setOpacity(0.7);
-        confirmExplanationButton.setDisable(true);
-        confirmExplanationButton.setOpacity(0.7);
-        verifyCulpritPane.setVisible(false);
-        staticImage.setVisible(false);
-        guessPhotoPane.setVisible(false);
-        gameOverRectangle.setVisible(true);
-        gameOverPane.setVisible(true);
-        showGameOver();
-      }
-    });
+    // add listener for the label when it shows "over"
+    lbltimer
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.equals("Over!")) {
+                countdownTimer.stop();
+                confirmCulpritButton.setDisable(true);
+                confirmCulpritButton.setOpacity(0.7);
+                confirmExplanationButton.setDisable(true);
+                confirmExplanationButton.setOpacity(0.7);
+                verifyCulpritPane.setVisible(false);
+                staticImage.setVisible(false);
+                guessPhotoPane.setVisible(false);
+                gameOverRectangle.setVisible(true);
+                gameOverPane.setVisible(true);
+                showGameOver();
+              }
+            });
 
     // play the audio
     Media sound = new Media(culprit);
     culpritPlayer = new MediaPlayer(sound);
     culpritPlayer.play();
     warpText(); // Start the text animation
-createImageView(); // Create the ImageView and add it to the scene
+    createImageView(); // Create the ImageView and add it to the scene
   }
 
   @FXML
@@ -317,7 +318,7 @@ createImageView(); // Create the ImageView and add it to the scene
             gameOverRectangle.setVisible(true);
             gameOverPane.setVisible(true);
             showGameOver();
-            //remove the timer from the screen if user has been moved to game over state
+            // remove the timer from the screen if user has been moved to game over state
             labelPane.setVisible(false);
           });
     }
@@ -381,13 +382,13 @@ createImageView(); // Create the ImageView and add it to the scene
                           timeline.stop();
                         }
                       }));
-
           timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
           timeline.play(); // Start the animation
-          if(!guess){
-            timeline.setOnFinished(e -> {
-              btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
-          });
+          if (!guess) {
+            timeline.setOnFinished(
+                e -> {
+                  btnReplay.setVisible(true); // Show the replay button when the timeline finishes
+                });
           }
         });
   }
@@ -431,7 +432,7 @@ createImageView(); // Create the ImageView and add it to the scene
     flashTimeline.setCycleCount(Timeline.INDEFINITE); // Keep flashing indefinitely
     flashTimeline.play(); // Start the flashing animation
   }
-  
+
   private void createImageView() {
     // Create the ImageView programmatically
     staticimg1 = new ImageView();
@@ -450,7 +451,9 @@ createImageView(); // Create the ImageView and add it to the scene
     // Load the GIF image once
     Image gifImage =
         new Image(
-            UpdatedGuessingController.class.getResource("/images/guessingimages/static.gif").toString(),
+            UpdatedGuessingController.class
+                .getResource("/images/guessingimages/static.gif")
+                .toString(),
             true // Enable background loading for smoother performance
             );
 
@@ -490,9 +493,10 @@ createImageView(); // Create the ImageView and add it to the scene
               });
       timeline.getKeyFrames().add(keyFrame);
     }
-    timeline.setOnFinished(e -> {
-      btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
-  });
+    timeline.setOnFinished(
+        e -> {
+          btnReplay.setVisible(true); // Show the replay button when the timeline finishes
+        });
 
     // Play the timeline animation
     timeline.play();
@@ -514,12 +518,14 @@ createImageView(); // Create the ImageView and add it to the scene
   }
 
   private void onSendMessage() {
-
     String message = userExplanation.getText().trim();
     System.out.println("Message: " + message);
     if (message.isEmpty()) {
-      //Default feedback
-      appendChatMessage(new ChatMessage("system", "You did not provide an explanation, next time rely on clues rather than a hunch"));
+      // Default feedback
+      appendChatMessage(
+          new ChatMessage(
+              "system",
+              "You did not provide an explanation, next time rely on clues rather than a hunch"));
       return;
     }
 
@@ -591,12 +597,12 @@ createImageView(); // Create the ImageView and add it to the scene
   //   confirmExplanationButton.setDisable(false);
   //   confirmExplanationButton.setOpacity(1);
   // }
-  
+
   /**
    * Method to initialise the scene again when Replay button is clicked
+   *
    * @param event
    * @throws IOException
-   * 
    */
   @FXML
   private void onReplay(ActionEvent event) throws IOException {
@@ -612,5 +618,4 @@ createImageView(); // Create the ImageView and add it to the scene
 
     App.setRoot("initialScene");
   }
-
 }
