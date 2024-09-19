@@ -29,17 +29,16 @@ public class ClueSafeController {
   @FXML private Pane safecontent;
   private String line = "";
   private DropShadow permShadow = new DropShadow();
-  Button goBackButton = new Button("Go Back");
+  private Button goBackButton = new Button("Go Back");
 
-  boolean middleNote = false;
-  boolean backNote = false;
+  private boolean middleNote = false;
+  private boolean backNote = false;
 
   // Get timer
   private TimerModel countdownTimer;
 
   @FXML
   private void initialize() {
-
     // Create a Pane for the timer
     Pane timerPane = new Pane();
     timerPane.setPrefSize(101, 45); // Set the preferred size
@@ -127,8 +126,14 @@ public class ClueSafeController {
     timerPane.toFront();
   }
 
+  /**
+   * } Updates the code display based on the pin clicked.
+   *
+   * @param event the ActionEvent triggered by clicking a pin button
+   */
   @FXML
   private void onPin(ActionEvent event) {
+    // Get the clicked pin
     Button clickedPin = (Button) event.getSource();
     String pinId = clickedPin.getId();
     if (line.length() < 3) {
@@ -167,11 +172,13 @@ public class ClueSafeController {
       codeDisplay.setText(line);
     }
 
+    // Check to delete code
     if (pinId.equals("delete")) {
       line = "";
       codeDisplay.setText("ENTER CODE");
     }
 
+    // Check if the entered code is correct
     if (pinId.equals("enter")) {
       if (line.equals("019")) {
         try {

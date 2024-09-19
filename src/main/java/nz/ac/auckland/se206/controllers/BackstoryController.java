@@ -32,9 +32,16 @@ import nz.ac.auckland.se206.states.GameStarted;
 
 public class BackstoryController {
 
+  // FXML fields
   @FXML private AnchorPane anchorPane;
+
+  // Instance fields
   private MediaPlayer mediaPlayer;
-  private final String sound =
+  private TimerModel countdownTimer;
+  private Group file;
+
+  // Static fields
+  private static final String sound =
       GameStarted.class.getClassLoader().getResource("sounds/woosh.mp3").toExternalForm();
 
   // Load images from the images folder
@@ -58,11 +65,6 @@ public class BackstoryController {
       new Image(BackstoryController.class.getResource("/images/fileframe9.PNG").toString());
   static final Image image10 =
       new Image(BackstoryController.class.getResource("/images/fileframe10.PNG").toString());
-
-  // Create a group node
-  private Group file;
-
-  private TimerModel countdownTimer;
 
   /** Initializes the backstory view. */
   @FXML

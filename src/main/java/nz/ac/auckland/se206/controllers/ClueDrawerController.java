@@ -184,6 +184,12 @@ public class ClueDrawerController {
     anchorPane.getChildren().add(imageView);
   }
 
+  /**
+   * Creates a new ImageView from the given image and binds it to the anchor pane. The ImageView is
+   * also made draggable.
+   *
+   * @param image the image to display
+   */
   private void createAndBindleaves(Image image) {
     ImageView imageView = new ImageView(image);
     imageView.setFitWidth(anchorPane.getWidth());
