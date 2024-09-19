@@ -147,12 +147,12 @@
                   <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
-            <TextArea fx:id="feedbackField" editable="false" layoutX="67.0" layoutY="169.0" prefHeight="113.0" prefWidth="336.0" style="-fx-background-color: 'transparent'; -fx-border-color: '#8dbf3b'; -fx-control-inner-background: '#000000'; -fx-text-fill: white; -fx-prompt-text-fill: white;" visible="false" wrapText="true">
+            <TextArea fx:id="feedbackField" editable="false" layoutX="18.0" layoutY="169.0" prefHeight="131.0" prefWidth="428.0" style="-fx-background-color: 'transparent'; -fx-border-color: '#8dbf3b'; -fx-control-inner-background: '#000000'; -fx-text-fill: white; -fx-prompt-text-fill: white;" visible="false" wrapText="true">
                <font>
                   <Font name="Courier New" size="12.0" />
                </font>
             </TextArea>
-            <Button fx:id="btnReplay" layoutX="205.0" layoutY="292.0" mnemonicParsing="false" onAction="#onReplay" opacity="0.8" stylesheets="@../css/replayButton.css" text="REPLAY" visible="false" />
+            <Button fx:id="btnReplay" layoutX="205.0" layoutY="309.0" mnemonicParsing="false" onAction="#onReplay" opacity="0.8" prefHeight="31.0" prefWidth="71.0" stylesheets="@../css/replayButton.css" text="REPLAY" visible="false" />
          </children>
       </Pane>
    </children>

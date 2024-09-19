@@ -38,6 +38,6 @@ Summarize how well the user supports their accusation of the Grandmother. Is the
 and the clues, or are there weaknesses that undermine their argument?
 
 Response Format:
-Provide a concise 3-4 sentence evaluation based on the user’s input.
+Provide a concise 1-2 sentence evaluation based on the user’s input.
 
 The user has Input: 

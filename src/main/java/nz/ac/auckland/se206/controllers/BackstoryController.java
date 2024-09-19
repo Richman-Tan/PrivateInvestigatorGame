@@ -13,7 +13,6 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
-import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -25,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.states.GameStarted;
@@ -58,6 +56,8 @@ public class BackstoryController {
 
   // Instance fields
   @FXML private AnchorPane anchorPane;
+  @FXML private Label lbltimer;
+  @FXML private Pane labelPane;
   private MediaPlayer mediaPlayer;
   private TimerModel countdownTimer;
   private Group file;
@@ -221,38 +221,21 @@ public class BackstoryController {
     enlargedImageView.setOnMouseClicked(e -> zoomIn(enlargedImageView, "room"));
 
     // Create the timer pane
-    Pane timerPane = new Pane();
-    timerPane.setPrefSize(101, 45);
-    timerPane.setOpacity(0.75);
-    timerPane.setStyle(
-        "-fx-background-color: white;"
-            + "-fx-background-radius: 10px;"
-            + "-fx-border-radius: 10px;"
-            + "-fx-border-color: black;");
-    AnchorPane.setLeftAnchor(timerPane, 10.0);
-    AnchorPane.setTopAnchor(timerPane, 10.0);
-
-    // Create the timer label
-    Label timerLabel = new Label();
-    timerLabel.setText("Label");
-    timerLabel.setFont(new Font(24));
-    timerLabel.setAlignment(Pos.CENTER);
-    timerLabel.setLayoutX(21.0);
-    timerLabel.setLayoutY(8.0);
-
-    // Create the countdown timer
-    countdownTimer = SharedTimerModel.getInstance().getTimer();
-    countdownTimer.start();
-    timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
-
-    // Add the timer label to the timer pane
-    timerPane.getChildren().add(timerLabel);
-    anchorPane.getChildren().add(timerPane);
+    createTimerPane();
   }
 
   // Inner classes (if any)
 
   // Static methods (if any)
+
+  private void createTimerPane() {
+    // Create the countdown timer
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.start();
+    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    labelPane.toFront();
+  }
 
   /**
    * Creates an ImageView and binds its width and height to the width and height of the anchorPane.

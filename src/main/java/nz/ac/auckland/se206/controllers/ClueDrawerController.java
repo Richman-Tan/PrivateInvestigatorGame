@@ -144,6 +144,20 @@ public class ClueDrawerController {
     AnchorPane.setRightAnchor(goBackButton, 10.0);
     goBackButton.setOnAction(event -> goBackToRoom());
 
+    // Add hover effect to the button
+    goBackButton.setOnMouseEntered(
+        e -> {
+          goBackButton.setOpacity(0.7);
+          goBackButton.setCursor(javafx.scene.Cursor.HAND);
+        });
+
+    // Remove effect when mouse exits
+    goBackButton.setOnMouseExited(
+        e -> {
+          goBackButton.setOpacity(1);
+          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
+        });
+
     // Add the "Go Back" button to the anchor pane
     anchorPane.getChildren().add(goBackButton);
   }

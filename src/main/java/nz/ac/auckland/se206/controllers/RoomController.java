@@ -508,10 +508,10 @@ public class RoomController {
    * @throws IOException if there is an I/O error
    */
   @FXML
-  private void handleGuessClick(ActionEvent event) throws IOException {
+  private void onGuessClick(ActionEvent event) throws IOException {
     GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
     App.setRoot("guessingScene");
-    context.handleGuessClick();
+    context.onGuessClick();
   }
 
   @FXML
@@ -524,18 +524,18 @@ public class RoomController {
   }
 
   @FXML
-  private void handleUncleClick(ActionEvent event) throws IOException {
+  private void onUncleButtonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
   @FXML
-  private void handleGrandmotherClick(ActionEvent event) throws IOException {
+  private void onGrandmotherClick(ActionEvent event) throws IOException {
     context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
   @FXML
-  private void handleGrandsonClick(ActionEvent event) throws IOException {
+  private void onGrandsonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
   }
 

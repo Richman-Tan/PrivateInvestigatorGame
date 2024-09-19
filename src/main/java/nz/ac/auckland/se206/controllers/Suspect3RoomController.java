@@ -119,11 +119,11 @@ public class Suspect3RoomController {
 
   /** Handles the guess button click event. */
   @FXML
-  private void handleGuessClick(ActionEvent event) throws IOException {
+  private void onGuessClick(ActionEvent event) throws IOException {
     // Set the guess button pressed
     GameStateContext.getInstance().setGuessPressed(true);
     App.setRoot("guessingScene");
-    context.handleGuessClick();
+    context.onGuessClick();
   }
 
   /** Toggles the visibility of the menu and other buttons when the menu button is clicked. */
@@ -250,14 +250,14 @@ public class Suspect3RoomController {
 
   /** Handles the event when the uncle button is clicked. */
   @FXML
-  private void handleUncleClick(ActionEvent event) throws IOException {
+  private void onUncleButtonClick(ActionEvent event) throws IOException {
     // Set the root to the uncle room
     App.setRoot("suspect1room");
   }
 
   /** Handles the event when the grandma button is clicked. */
   @FXML
-  private void handleGrandmotherClick(ActionEvent event) throws IOException {
+  private void onGrandmotherClick(ActionEvent event) throws IOException {
     App.setRoot("suspect2room");
   }
 

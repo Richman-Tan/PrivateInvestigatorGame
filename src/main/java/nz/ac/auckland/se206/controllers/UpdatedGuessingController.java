@@ -312,6 +312,9 @@ public class UpdatedGuessingController {
             showGameOver();
             // remove the timer from the screen if user has been moved to game over state
             labelPane.setVisible(false);
+
+            // stop the timer
+            countdownTimer.stop();
           });
     }
   }
