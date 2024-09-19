@@ -20,15 +20,25 @@
             <Image url="@../images/updatedguessingimages/staticImage.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="clue1foundimg" fitHeight="554.0" fitWidth="897.0" layoutX="79.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <Rectangle fx:id="gameOverRectangle" arcHeight="5.0" arcWidth="5.0" height="373.0" layoutX="299.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="502.0" />
+      <ImageView fx:id="background" fitHeight="626.0" fitWidth="1127.0" layoutX="-2.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/updatedguessingimages/guessingBackground.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="clue1foundimg" fitHeight="513.0" fitWidth="1028.0" layoutX="18.0" layoutY="84.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/guessingimages/clue1found.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="gameOverRectangle" arcHeight="5.0" arcWidth="5.0" height="373.0" layoutX="299.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="502.0" />
-      <ImageView fx:id="background" fitHeight="626.0" fitWidth="1127.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="clue3foundimg" fitHeight="60.0" fitWidth="82.0" layoutX="36.0" layoutY="392.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../images/updatedguessingimages/guessingBackground.png" />
+            <Image url="@../images/cluesafeimages/notesfloor.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="clue2foundimg" fitHeight="77.0" fitWidth="95.0" layoutX="97.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true" rotate="27.0" visible="false">
+         <image>
+            <Image url="@../images/cluephoneimages/phoneinteraction.png" />
          </image>
       </ImageView>
       <Pane fx:id="verifyCulpritPane" layoutX="325.0" layoutY="38.0" prefHeight="396.0" prefWidth="476.0" visible="false">
@@ -48,13 +58,13 @@
                   <Image url="@../images/updatedguessingimages/Gma.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" style="-fx-background-color: '#750E0E'; -fx-text-fill: '#FFFFFF'; -fx-border-color: '#960909'; -fx-font-family: 'Courier New'; -fx-font-weight: 800; -fx-padding: 5 10 5 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.0, 0.0, 5.0);" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning ( &lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
+            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" stylesheets="@../css/confirmButton.css" text="CONFIRM EXPLANATION" />
+            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
                <font>
-                  <Font size="11.0" />
+                  <Font name="Courier New" size="8.0" />
                </font>
             </TextField>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#424143" height="36.0" layoutX="31.0" layoutY="86.0" stroke="TRANSPARENT" strokeType="INSIDE" width="385.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#324c57a1" height="36.0" layoutX="31.0" layoutY="86.0" stroke="#4278a8" strokeType="INSIDE" width="385.0" />
             <Label layoutX="47.0" layoutY="89.0" prefHeight="31.0" prefWidth="254.0" text="You have identified the culprit is: " textFill="WHITE">
                <font>
                   <Font name="Courier New Bold" size="12.0" />
@@ -69,7 +79,7 @@
       </Pane>
       <Pane fx:id="guessPhotoPane" layoutX="326.0" layoutY="52.0" prefHeight="396.0" prefWidth="476.0">
          <children>
-<Button fx:id="confirmCulpritButton" layoutX="156.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" opacity="0.5" style="-fx-background-color: '#750E0E';             -fx-text-fill: '#FFFFFF';             -fx-border-color: '#960909';             -fx-font-family: 'Courier New';             -fx-font-weight: 800;             -fx-padding: 5 10 5 10;             -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.0, 0.0, 5.0);" text="CONFIRM CULPRIT" />
+<Button fx:id="confirmCulpritButton" layoutX="156.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" opacity="0.5" stylesheets="@../css/confirmButton.css" text="CONFIRM CULPRIT" />
 
             <StackPane layoutX="-4.0" layoutY="123.0" prefHeight="150.0" prefWidth="456.0" visible="false" />
             <Label fx:id="lblStory" layoutX="74.0" layoutY="37.0" prefHeight="77.0" prefWidth="296.0" text="s" textFill="WHITE">
@@ -101,7 +111,7 @@
             <ProgressIndicator fx:id="progressIndicator" layoutX="200.0" layoutY="171.0" visible="false" />
          </children>
       </Pane>
-      <Pane layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+      <Pane fx:id="labelPane" layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label">
                <font>
@@ -117,7 +127,7 @@
                   <Font name="Courier New Bold" size="38.0" />
                </font>
             </Label>
-            <Label fx:id="correctGuessLbl" layoutX="108.0" layoutY="99.0" prefHeight="48.0" prefWidth="253.0" text="You correctly guessed" textFill="#0e5707" visible="false">
+            <Label fx:id="correctGuessLbl" layoutX="109.0" layoutY="81.0" prefHeight="48.0" prefWidth="253.0" text="You correctly guessed" textFill="#0e5707" visible="false">
                <font>
                   <Font name="Courier New Bold" size="20.0" />
                </font>
@@ -127,17 +137,22 @@
                   <Font name="Courier New Bold" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="reviewLbl" layoutX="67.0" layoutY="161.0" prefHeight="24.0" prefWidth="351.0" style="-fx-background-radius: 3px; -fx-border-color: '#FFFFFF';" text=" Review this feedback to increase your PI skills" textFill="WHITE" visible="false">
+            <Label fx:id="reviewLbl" layoutX="60.0" layoutY="135.0" prefHeight="24.0" prefWidth="351.0" style="-fx-background-radius: 3px; -fx-border-color: '#FFFFFF';" text=" Review this feedback to increase your PI skills" textFill="WHITE" visible="false">
                <font>
                   <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
-            <TextArea fx:id="feedbackField" editable="false" layoutX="79.0" layoutY="198.0" prefHeight="135.0" prefWidth="329.0" style="-fx-border-color: '#9E8984'; -fx-background-color: 'transparent';" visible="false" wrapText="true" />
             <Label fx:id="incorrectGuessLbl2" layoutX="127.0" layoutY="184.0" prefHeight="48.0" prefWidth="222.0" text="BETTER INVESTIGATING NEXT TIME" textFill="#9e2323" visible="false">
                <font>
                   <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
+            <TextArea fx:id="feedbackField" editable="false" layoutX="67.0" layoutY="169.0" prefHeight="113.0" prefWidth="336.0" style="-fx-background-color: 'transparent'; -fx-border-color: '#8dbf3b'; -fx-control-inner-background: '#000000'; -fx-text-fill: white; -fx-prompt-text-fill: white;" visible="false" wrapText="true">
+               <font>
+                  <Font name="Courier New" size="12.0" />
+               </font>
+            </TextArea>
+            <Button fx:id="btnReplay" layoutX="205.0" layoutY="292.0" mnemonicParsing="false" onAction="#onReplay" opacity="0.8" stylesheets="@../css/replayButton.css" text="REPLAY" visible="false" />
          </children>
       </Pane>
    </children>

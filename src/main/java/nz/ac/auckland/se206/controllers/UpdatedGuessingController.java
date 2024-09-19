@@ -7,10 +7,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -33,6 +36,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
@@ -50,13 +54,19 @@ public class UpdatedGuessingController {
   @FXML private ImageView confirmedSuspect1;
   @FXML private ImageView confirmedSuspect2;
   @FXML private ImageView confirmedSuspect3;
-  @FXML private ImageView clue1foundimg;
+  @FXML private ImageView clue1foundimg; // gardening tool
+  @FXML private ImageView clue2foundimg; // phone
+  @FXML private ImageView clue3foundimg; // note
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer; // GIF image view created programmatically
   @FXML private TextField userExplanation;
+  @FXML private Button btnReplay;
 
   @FXML private ProgressIndicator progressIndicator;
+
+  private boolean playedConfirmCulprit = false;
+  private boolean playedConfirmEx = false;
 
   @FXML private ImageView staticImage;
   @FXML private ImageView background;
@@ -78,7 +88,8 @@ public class UpdatedGuessingController {
   @FXML private Label lblStory; // The Label for displaying text
   private boolean guess = false;
   @FXML private Label incorrectGuessLbl2;
-  private boolean stopTimeline = false;
+
+  @FXML private Pane labelPane;
 
   @FXML private Button confirmExplanationButton;
 
@@ -91,6 +102,7 @@ public class UpdatedGuessingController {
   private MediaPlayer culpritPlayer;
   private MediaPlayer explanationPlayer;
   private MediaPlayer guessPlayer;
+
 
   private final String confirmed =
       GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
@@ -131,31 +143,44 @@ public class UpdatedGuessingController {
   public void initialize() {
     confirmCulpritButton.setDisable(true);
 
-    // txtaChat.setStyle(
-    //     "-fx-border-color: black; "
-    //         + "-fx-background-color: black; "
-    //         + "-fx-text-fill: white; "
-    //         + "-fx-prompt-text-fill: white; "
-    //         + "-fx-font-size: 12px;"
-    //         + "-fx-border-radius: 10px; "
-    //         + "-fx-background-radius: 10px;"
-    //         + "-fx-control-inner-background: black;");
-    // txtaChat.setEditable(false);
-
-    // txtaChat.setOpacity(0);
-    // btnReplay.setOpacity(0);
+    if (context.isGardenToolFound()) {
+      clue1foundimg.setVisible(true);
+    }
+    if (context.isPhoneFound()) {
+      clue2foundimg.setVisible(true);
+    }
+    if (context.isNoteFound()) {
+      clue3foundimg.setVisible(true);
+    }
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.reset(61);
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
+    //add listener for the label when it shows "over"
+    lbltimer.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (newValue.equals("Over!")){
+        countdownTimer.stop();
+        confirmCulpritButton.setDisable(true);
+        confirmCulpritButton.setOpacity(0.7);
+        confirmExplanationButton.setDisable(true);
+        confirmExplanationButton.setOpacity(0.7);
+        verifyCulpritPane.setVisible(false);
+        staticImage.setVisible(false);
+        guessPhotoPane.setVisible(false);
+        gameOverRectangle.setVisible(true);
+        gameOverPane.setVisible(true);
+        showGameOver();
+      }
+    });
+
     // play the audio
     Media sound = new Media(culprit);
     culpritPlayer = new MediaPlayer(sound);
     culpritPlayer.play();
     warpText(); // Start the text animation
-    createImageView(); // Create the ImageView and add it to the scene
+createImageView(); // Create the ImageView and add it to the scene
   }
 
   @FXML
@@ -194,7 +219,10 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageUncle(MouseEvent event) throws IOException {
     guessedsuspect = "Uncle";
+    // set the red rectangle to visible but the other culprits to invisible
     recSus1.setVisible(true);
+    recSus2.setVisible(false);
+    recSus3.setVisible(false);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -202,7 +230,10 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageSon(MouseEvent event) throws IOException {
     guessedsuspect = "Grandson";
+    // set the red rectangle to visible but the other culprits to invisible
     recSus3.setVisible(true);
+    recSus2.setVisible(false);
+    recSus1.setVisible(false);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -210,7 +241,10 @@ public class UpdatedGuessingController {
   @FXML
   private void clickedImageGma(MouseEvent event) throws IOException {
     guessedsuspect = "Grandma";
+    // set the red rectangle to visible but the other culprits to invisible
     recSus2.setVisible(true);
+    recSus3.setVisible(false);
+    recSus1.setVisible(false);
     confirmCulpritButton.setDisable(false);
     confirmCulpritButton.setOpacity(1);
   }
@@ -229,18 +263,20 @@ public class UpdatedGuessingController {
 
     Media sound2 = new Media(explanation);
     explanationPlayer = new MediaPlayer(sound2);
-
-    mediaPlayer.play();
-    mediaPlayer.setOnEndOfMedia(
-        () -> {
-          // open new pane to confirm culprit
-          guessPhotoPane.setVisible(false);
-          verifyCulpritPane.setVisible(true);
-          // play gif
-          staticImage.setVisible(false);
-          playgif();
-          explanationPlayer.play();
-        });
+    if (!playedConfirmCulprit) {
+      mediaPlayer.play();
+      playedConfirmCulprit = true;
+      mediaPlayer.setOnEndOfMedia(
+          () -> {
+            // open new pane to confirm culprit
+            guessPhotoPane.setVisible(false);
+            verifyCulpritPane.setVisible(true);
+            // play gif
+            staticImage.setVisible(false);
+            playgif();
+            explanationPlayer.play();
+          });
+    }
 
     switch (guessedsuspect) {
       case "Uncle":
@@ -270,16 +306,21 @@ public class UpdatedGuessingController {
     // play sound
     Media sound = new Media(confirmed);
     mediaPlayer = new MediaPlayer(sound);
-    mediaPlayer.play();
-    mediaPlayer.setOnEndOfMedia(
-        () -> {
-          // open new pane to confirm explanation
-          verifyCulpritPane.setVisible(false);
-          staticimg1.setVisible(false);
-          gameOverRectangle.setVisible(true);
-          gameOverPane.setVisible(true);
-          showGameOver();
-        });
+    if (!playedConfirmEx) {
+      mediaPlayer.play();
+      playedConfirmEx = true;
+      mediaPlayer.setOnEndOfMedia(
+          () -> {
+            // open new pane to confirm explanation
+            verifyCulpritPane.setVisible(false);
+            staticimg1.setVisible(false);
+            gameOverRectangle.setVisible(true);
+            gameOverPane.setVisible(true);
+            showGameOver();
+            //remove the timer from the screen if user has been moved to game over state
+            labelPane.setVisible(false);
+          });
+    }
   }
 
   /**
@@ -343,6 +384,11 @@ public class UpdatedGuessingController {
 
           timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
           timeline.play(); // Start the animation
+          if(!guess){
+            timeline.setOnFinished(e -> {
+              btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
+          });
+          }
         });
   }
 
@@ -385,7 +431,7 @@ public class UpdatedGuessingController {
     flashTimeline.setCycleCount(Timeline.INDEFINITE); // Keep flashing indefinitely
     flashTimeline.play(); // Start the flashing animation
   }
-
+  
   private void createImageView() {
     // Create the ImageView programmatically
     staticimg1 = new ImageView();
@@ -400,79 +446,11 @@ public class UpdatedGuessingController {
     rootPane.getChildren().add(staticimg1);
   }
 
-  private void staticimages() {
-    // Ensure the staticimg1 is anchored to all sides of the AnchorPane (rootPane)
-    // AnchorPane.setTopAnchor(staticimg1, 0.0);
-    // AnchorPane.setBottomAnchor(staticimg1, 0.0);
-    // AnchorPane.setLeftAnchor(staticimg1, 0.0);
-    // AnchorPane.setRightAnchor(staticimg1, 0.0);
-
-    // // Bind the width and height of the ImageView to match the rootPane's size
-    // staticimg1.fitWidthProperty().bind(rootPane.widthProperty());
-    // staticimg1.fitHeightProperty().bind(rootPane.heightProperty());
-
-    // // Center the image in the rootPane
-    // staticlayer.setFitWidth(rootPane.getWidth());
-    // staticlayer.setFitHeight(rootPane.getHeight());
-
-    // // Make sure the background resizes with the window
-    // staticlayer.fitWidthProperty().bind(rootPane.widthProperty());
-    // staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
-
-    if (context.isGardenToolFound()) {
-      clue1foundimg.setVisible(true);
-    }
-
-    // backgroundoverlay.toBack();
-    staticimg1.toBack();
-    staticlayer.toBack();
-    background.toBack();
-
-    Timeline gifPlayTimeline =
-        new Timeline(
-            // KeyFrame 1: Show the GIF (make it visible and set opacity to 1)
-            new KeyFrame(
-                Duration.seconds(0), // Start immediately
-                event -> {
-                  // Reset the GIF by loading it again
-                  Image gifImage =
-                      new Image(
-                          GuessingController.class
-                              .getResource("/images/guessingimages/static.gif")
-                              .toString());
-                  staticimg1.setImage(gifImage); // Set the GIF image to staticimg1
-                  staticimg1.setVisible(true); // Show the ImageView
-                  staticimg1.setOpacity(0.75); // Fully visible
-                }),
-            // KeyFrame 2: Hide the GIF after 2 seconds
-            new KeyFrame(
-                Duration.seconds(2), // After 2 seconds
-                event -> {
-                  staticimg1.setVisible(false); // Hide the ImageView
-                  staticimg1.setOpacity(0); // Set opacity to 0 (fully hidden)
-                }),
-            // KeyFrame 3: Wait for 8 seconds before the next cycle
-            new KeyFrame(
-                Duration.seconds(
-                    10) // After 10 seconds total (2 seconds visible + 8 seconds hidden)
-                ));
-
-    // Set the cycle count to indefinite, so it repeats
-    gifPlayTimeline.setCycleCount(Timeline.INDEFINITE);
-
-    // Start the GIF animation timeline
-    gifPlayTimeline.play();
-    if (stopTimeline) {
-      System.out.println("Should be Stopped");
-      gifPlayTimeline.stop();
-    }
-  }
-
   private void playgif() {
     // Load the GIF image once
     Image gifImage =
         new Image(
-            GuessingController.class.getResource("/images/guessingimages/static.gif").toString(),
+            UpdatedGuessingController.class.getResource("/images/guessingimages/static.gif").toString(),
             true // Enable background loading for smoother performance
             );
 
@@ -512,6 +490,9 @@ public class UpdatedGuessingController {
               });
       timeline.getKeyFrames().add(keyFrame);
     }
+    timeline.setOnFinished(e -> {
+      btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
+  });
 
     // Play the timeline animation
     timeline.play();
@@ -537,14 +518,12 @@ public class UpdatedGuessingController {
     String message = userExplanation.getText().trim();
     System.out.println("Message: " + message);
     if (message.isEmpty()) {
+      //Default feedback
+      appendChatMessage(new ChatMessage("system", "You did not provide an explanation, next time rely on clues rather than a hunch"));
       return;
     }
 
     userExplanation.clear();
-
-    // Show the ProgressIndicator when the task starts
-    progressIndicator.setVisible(true);
-    progressIndicator.toFront();
 
     // Create a background task for the GPT request
     Task<ChatMessage> task =
@@ -583,7 +562,6 @@ public class UpdatedGuessingController {
           Platform.runLater(
               () -> {
                 appendChatMessage(response); // Append the GPT response to the chat
-                progressIndicator.setVisible(false); // Hide the progress indicator
               });
         });
 
@@ -594,7 +572,6 @@ public class UpdatedGuessingController {
           Platform.runLater(
               () -> {
                 appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage()));
-                progressIndicator.setVisible(false); // Hide the progress indicator on failure
               });
           throwable.printStackTrace();
         });
@@ -608,4 +585,32 @@ public class UpdatedGuessingController {
   private static String loadTemplate(URI filePath) throws IOException {
     return new String(Files.readAllBytes(Paths.get(filePath)));
   }
+
+  // @FXML
+  // private void onEnterKey() {
+  //   confirmExplanationButton.setDisable(false);
+  //   confirmExplanationButton.setOpacity(1);
+  // }
+  
+  /**
+   * Method to initialise the scene again when Replay button is clicked
+   * @param event
+   * @throws IOException
+   * 
+   */
+  @FXML
+  private void onReplay(ActionEvent event) throws IOException {
+
+    // Re initalise the context
+    GameStateContext.getInstance().reset();
+
+    // Fade out transition
+    FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(1000), rootPane);
+    fadeOutTransition.setFromValue(1.0);
+    fadeOutTransition.setToValue(0.0);
+    fadeOutTransition.play();
+
+    App.setRoot("initialScene");
+  }
+
 }
