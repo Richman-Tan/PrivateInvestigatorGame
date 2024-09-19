@@ -111,7 +111,7 @@
             <ProgressIndicator fx:id="progressIndicator" layoutX="200.0" layoutY="171.0" visible="false" />
          </children>
       </Pane>
-      <Pane layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+      <Pane fx:id="labelPane" layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label">
                <font>

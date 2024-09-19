@@ -89,6 +89,8 @@ public class UpdatedGuessingController {
   private boolean guess = false;
   @FXML private Label incorrectGuessLbl2;
 
+  @FXML private Pane labelPane;
+
   @FXML private Button confirmExplanationButton;
 
   @FXML private Rectangle recSus1;
@@ -100,6 +102,7 @@ public class UpdatedGuessingController {
   private MediaPlayer culpritPlayer;
   private MediaPlayer explanationPlayer;
   private MediaPlayer guessPlayer;
+
 
   private final String confirmed =
       GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
@@ -154,6 +157,23 @@ public class UpdatedGuessingController {
     countdownTimer.reset(61);
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    //add listener for the label when it shows "over"
+    lbltimer.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (newValue.equals("Over!")){
+        countdownTimer.stop();
+        confirmCulpritButton.setDisable(true);
+        confirmCulpritButton.setOpacity(0.7);
+        confirmExplanationButton.setDisable(true);
+        confirmExplanationButton.setOpacity(0.7);
+        verifyCulpritPane.setVisible(false);
+        staticImage.setVisible(false);
+        guessPhotoPane.setVisible(false);
+        gameOverRectangle.setVisible(true);
+        gameOverPane.setVisible(true);
+        showGameOver();
+      }
+    });
 
     // play the audio
     Media sound = new Media(culprit);
@@ -297,6 +317,8 @@ createImageView(); // Create the ImageView and add it to the scene
             gameOverRectangle.setVisible(true);
             gameOverPane.setVisible(true);
             showGameOver();
+            //remove the timer from the screen if user has been moved to game over state
+            labelPane.setVisible(false);
           });
     }
   }
@@ -423,6 +445,7 @@ createImageView(); // Create the ImageView and add it to the scene
     // Add the ImageView to the rootPane (or any other container)
     rootPane.getChildren().add(staticimg1);
   }
+
   private void playgif() {
     // Load the GIF image once
     Image gifImage =
@@ -495,14 +518,12 @@ createImageView(); // Create the ImageView and add it to the scene
     String message = userExplanation.getText().trim();
     System.out.println("Message: " + message);
     if (message.isEmpty()) {
+      //Default feedback
+      appendChatMessage(new ChatMessage("system", "You did not provide an explanation, next time rely on clues rather than a hunch"));
       return;
     }
 
     userExplanation.clear();
-
-    // Show the ProgressIndicator when the task starts
-    progressIndicator.setVisible(true);
-    progressIndicator.toFront();
 
     // Create a background task for the GPT request
     Task<ChatMessage> task =
@@ -541,7 +562,6 @@ createImageView(); // Create the ImageView and add it to the scene
           Platform.runLater(
               () -> {
                 appendChatMessage(response); // Append the GPT response to the chat
-                progressIndicator.setVisible(false); // Hide the progress indicator
               });
         });
 
@@ -552,7 +572,6 @@ createImageView(); // Create the ImageView and add it to the scene
           Platform.runLater(
               () -> {
                 appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage()));
-                progressIndicator.setVisible(false); // Hide the progress indicator on failure
               });
           throwable.printStackTrace();
         });
@@ -593,4 +612,5 @@ createImageView(); // Create the ImageView and add it to the scene
 
     App.setRoot("initialScene");
   }
+
 }
