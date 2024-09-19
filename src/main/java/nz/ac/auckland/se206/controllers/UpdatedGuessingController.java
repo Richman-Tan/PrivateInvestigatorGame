@@ -41,12 +41,35 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
 
 public class UpdatedGuessingController {
-  // main pane
-  @FXML private AnchorPane rootPane;
 
+  private static final String confirmed =
+      GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
+  private static final String gameOver =
+      GameStarted.class.getClassLoader().getResource("sounds/gameover.mp3").toExternalForm();
+  private static final String culprit =
+      GameStarted.class.getClassLoader().getResource("sounds/clickOnCulprit.mp3").toExternalForm();
+  private static final String explanation =
+      GameStarted.class
+          .getClassLoader()
+          .getResource("sounds/provideExplanation.mp3")
+          .toExternalForm();
+  private static final String correctGuess =
+      GameStarted.class.getClassLoader().getResource("sounds/guessCorrectly.mp3").toExternalForm();
+  private static final String incorrectGuess =
+      GameStarted.class
+          .getClassLoader()
+          .getResource("sounds/guessIncorrectly.mp3")
+          .toExternalForm();
+
+  // Static methods
+  private static String loadTemplate(URI filePath) throws IOException {
+    return new String(Files.readAllBytes(Paths.get(filePath)));
+  }
+
+  // Instance fields
+  @FXML private AnchorPane rootPane;
   @FXML private Pane guessPhotoPane;
   @FXML private Pane verifyCulpritPane;
-
   @FXML private Rectangle recSuspect1;
   @FXML private Rectangle recSuspect2;
   @FXML private Rectangle recSuspect3;
@@ -58,76 +81,45 @@ public class UpdatedGuessingController {
   @FXML private ImageView clue3foundimg; // note
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
-  @FXML private ImageView staticlayer; // GIF image view created programmatically
+  @FXML private ImageView staticlayer;
   @FXML private TextField userExplanation;
   @FXML private Button btnReplay;
-
   @FXML private ProgressIndicator progressIndicator;
-
-  private boolean playedConfirmCulprit = false;
-  private boolean playedConfirmEx = false;
-
   @FXML private ImageView staticImage;
   @FXML private ImageView background;
-  private String text = "Who is the culprit . . .";
-  private ImageView staticimg1; // GIF image view created programmatically
-  private Timeline timeline;
   @FXML private Pane gameOverPane;
   @FXML private Rectangle gameOverRectangle;
-  @FXML private Rectangle gameOverRectangle2;
-  private int i = 0;
-  private int j = 0;
   @FXML private Label correctGuessLbl;
   @FXML private Label incorrectGuessLbl;
-  private ArrayList<Object> list;
   @FXML private Label lbltimer;
   @FXML private Label gameOverTxt;
   @FXML private Label reviewLbl;
   @FXML private TextArea feedbackField;
-  @FXML private Label lblStory; // The Label for displaying text
-  private boolean guess = false;
-  @FXML private Label incorrectGuessLbl2;
-
+  @FXML private Label lblStory;
   @FXML private Pane labelPane;
-
   @FXML private Button confirmExplanationButton;
-
   @FXML private Rectangle recSus1;
   @FXML private Rectangle recSus2;
   @FXML private Rectangle recSus3;
+  @FXML private Label incorrectGuessLbl2;
 
+  private boolean playedConfirmCulprit = false;
+  private boolean playedConfirmEx = false;
+  private String text = "Who is the culprit . . .";
+  private ImageView staticimg1;
+  private Timeline timeline;
+  private int i = 0;
+  private int j = 0;
+  private ArrayList<Object> list;
+  private boolean guess = false;
   private MediaPlayer mediaPlayer;
   private MediaPlayer gameOverPlayer;
   private MediaPlayer culpritPlayer;
   private MediaPlayer explanationPlayer;
   private MediaPlayer guessPlayer;
-
-  private final String confirmed =
-      GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
-  private final String gameOver =
-      GameStarted.class.getClassLoader().getResource("sounds/gameover.mp3").toExternalForm();
-  private final String culprit =
-      GameStarted.class.getClassLoader().getResource("sounds/clickOnCulprit.mp3").toExternalForm();
-  private final String explanation =
-      GameStarted.class
-          .getClassLoader()
-          .getResource("sounds/provideExplanation.mp3")
-          .toExternalForm();
-  private final String correctGuess =
-      GameStarted.class.getClassLoader().getResource("sounds/guessCorrectly.mp3").toExternalForm();
-  private final String incorrectGuess =
-      GameStarted.class
-          .getClassLoader()
-          .getResource("sounds/guessIncorrectly.mp3")
-          .toExternalForm();
-
   private GameStateContext context = GameStateContext.getInstance();
-  private Label selectedLabel = new Label("");
-
   private TimerModel countdownTimer;
-
   private ChatCompletionRequest chatCompletionRequest;
-
   private String guessedsuspect;
 
   /**
@@ -604,16 +596,6 @@ public class UpdatedGuessingController {
     thread.setDaemon(true);
     thread.start();
   }
-
-  private static String loadTemplate(URI filePath) throws IOException {
-    return new String(Files.readAllBytes(Paths.get(filePath)));
-  }
-
-  // @FXML
-  // private void onEnterKey() {
-  //   confirmExplanationButton.setDisable(false);
-  //   confirmExplanationButton.setOpacity(1);
-  // }
 
   /**
    * Method to initialise the scene again when Replay button is clicked

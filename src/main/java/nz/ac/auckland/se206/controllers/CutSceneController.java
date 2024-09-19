@@ -36,12 +36,7 @@ public class CutSceneController {
   private TimerModel countdownTimer;
   private MediaPlayer mediaPlayer; // Declare mediaPlayer as an instance variable
   private Label revealLabel; // Label for text reveal
-
-  // Constructors
-  public CutSceneController() {
-    // Default constructor if needed
-  }
-
+  
   // Static methods
   // No static methods for now
 
