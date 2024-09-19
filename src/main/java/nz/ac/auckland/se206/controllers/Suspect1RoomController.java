@@ -49,6 +49,9 @@ public class Suspect1RoomController {
   private boolean firstTime = true;
   private TimerModel countdownTimer;
 
+  private boolean isatleastoncecluefound =
+      context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
+
   /** Initializes the suspect 1 room view. */
   @FXML
   public void initialize() {
@@ -311,7 +314,8 @@ public class Suspect1RoomController {
   private void checkGuessButton() {
     if (context.getListOfVisitors().contains("suspect1")
         && context.getListOfVisitors().contains("suspect2")
-        && context.getListOfVisitors().contains("suspect3")) {
+        && context.getListOfVisitors().contains("suspect3")
+        && isatleastoncecluefound) {
       // Enable the guess button
       guessButton.setOpacity(0.8);
       guessButton.setDisable(false);
