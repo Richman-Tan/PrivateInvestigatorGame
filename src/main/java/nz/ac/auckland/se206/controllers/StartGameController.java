@@ -80,7 +80,6 @@ public class StartGameController {
           try {
             mediaPlayer.seek(Duration.seconds(1));
             mediaPlayer.play();
-            // delay
             onPlay();
           } catch (IOException | ApiProxyException ex) {
             ex.printStackTrace();

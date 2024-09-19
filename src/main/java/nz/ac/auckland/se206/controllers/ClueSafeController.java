@@ -29,17 +29,16 @@ public class ClueSafeController {
   @FXML private Pane safecontent;
   private String line = "";
   private DropShadow permShadow = new DropShadow();
-  Button goBackButton = new Button("Go Back");
+  private Button goBackButton = new Button("Go Back");
 
-  boolean middleNote = false;
-  boolean backNote = false;
+  private boolean middleNote = false;
+  private boolean backNote = false;
 
   // Get timer
   private TimerModel countdownTimer;
 
   @FXML
   private void initialize() {
-
     // Create a Pane for the timer
     Pane timerPane = new Pane();
     timerPane.setPrefSize(101, 45); // Set the preferred size

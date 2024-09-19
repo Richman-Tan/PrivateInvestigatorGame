@@ -17,7 +17,7 @@ public class TimerModel {
   private static int timerEnded = 0; // Flag to indicate if the timer has ended
 
   // get context
-  GameStateContext gameStateContext = GameStateContext.getInstance();
+  private GameStateContext gameStateContext = GameStateContext.getInstance();
 
   /*
    * Checks if the timer has ended.
