@@ -89,6 +89,20 @@ public class ClueSafeController {
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
 
+    // Add hover effect to the button
+    goBackButton.setOnMouseEntered(
+        e -> {
+          goBackButton.setOpacity(0.7);
+          goBackButton.setCursor(javafx.scene.Cursor.HAND);
+        });
+
+    // Remove effect when mouse exits
+    goBackButton.setOnMouseExited( // Remove effect when mouse exits
+        e -> {
+          goBackButton.setOpacity(1);
+          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
+        });
+
     // Position the button at the bottom-right corner
     AnchorPane.setBottomAnchor(goBackButton, 10.0); // 10px from the bottom
     AnchorPane.setRightAnchor(goBackButton, 10.0); // 10px from the right
