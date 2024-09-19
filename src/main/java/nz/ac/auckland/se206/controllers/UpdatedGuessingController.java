@@ -450,7 +450,7 @@ createImageView(); // Create the ImageView and add it to the scene
     // Load the GIF image once
     Image gifImage =
         new Image(
-            GuessingController.class.getResource("/images/guessingimages/static.gif").toString(),
+            UpdatedGuessingController.class.getResource("/images/guessingimages/static.gif").toString(),
             true // Enable background loading for smoother performance
             );
 
