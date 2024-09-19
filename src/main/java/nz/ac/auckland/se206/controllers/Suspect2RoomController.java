@@ -127,18 +127,18 @@ public class Suspect2RoomController {
    * @throws IOException if the root cannot be set
    */
   @FXML
-  private void onUncle(ActionEvent event) throws IOException {
+  private void handleUncleClick(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
   /**
-   * Handles the event when the grandma button is clicked.
+   * Handles the event when the grandson button is clicked.
    *
    * @param event the action event
    * @throws IOException if the root cannot be set
    */
   @FXML
-  private void onGrandson(ActionEvent event) throws IOException {
+  private void handleGrandsonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
   }
 

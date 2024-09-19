@@ -36,12 +36,12 @@
                   <Insets bottom="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnGrandma" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGrandma" opacity="0.8" prefHeight="45.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandma">
+            <Button fx:id="btnGrandma" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGrandmotherClick" opacity="0.8" prefHeight="45.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandma">
                <HBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnGrandson" maxHeight="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGrandson" opacity="0.8" prefHeight="60.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandson">
+            <Button fx:id="btnGrandson" maxHeight="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGrandsonClick" opacity="0.8" prefHeight="60.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandson">
                <HBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </HBox.margin>
