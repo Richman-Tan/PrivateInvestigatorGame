@@ -133,12 +133,12 @@ public class Suspect2RoomController {
   }
 
   @FXML
-  private void handleUncleClick(ActionEvent event) throws IOException {
+  private void onUncleButtonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
   @FXML
-  private void handleGrandsonClick(ActionEvent event) throws IOException {
+  private void onGrandsonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
   }
 
@@ -181,11 +181,11 @@ public class Suspect2RoomController {
   }
 
   @FXML
-  private void handleGuessClick(ActionEvent event) throws IOException {
+  private void onGuessClick(ActionEvent event) throws IOException {
     // Set the guess button opacity
     context.setGuessPressed(true);
     App.setRoot("guessingScene");
-    context.handleGuessClick();
+    context.onGuessClick();
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {

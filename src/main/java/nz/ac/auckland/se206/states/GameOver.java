@@ -17,5 +17,5 @@ public class GameOver implements GameState {
   public GameOver(GameStateContext context) {}
 
   @Override
-  public void handleGuessClick() throws IOException {}
+  public void onGuessClick() throws IOException {}
 }
