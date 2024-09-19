@@ -221,6 +221,14 @@ public class BackstoryController {
     enlargedImageView.setOnMouseClicked(e -> zoomIn(enlargedImageView, "room"));
 
     // Create the timer pane
+    createTimerPane();
+  }
+
+  // Inner classes (if any)
+
+  // Static methods (if any)
+
+  private void createTimerPane() {
     Pane timerPane = new Pane();
     timerPane.setPrefSize(101, 45);
     timerPane.setOpacity(0.75);
@@ -249,10 +257,6 @@ public class BackstoryController {
     timerPane.getChildren().add(timerLabel);
     anchorPane.getChildren().add(timerPane);
   }
-
-  // Inner classes (if any)
-
-  // Static methods (if any)
 
   /**
    * Creates an ImageView and binds its width and height to the width and height of the anchorPane.
