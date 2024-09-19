@@ -320,7 +320,6 @@ public class Suspect2RoomController {
       guessButton.setOpacity(0.3);
       guessButton.setDisable(true);
     }
-    System.out.println("Visitors:      " + context.getListOfVisitors());
   }
 
   @FXML

@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -50,7 +51,6 @@ public class RoomController {
 
   @FXML
   public void initialize() {
-
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
     clue2.setOpacity(0);
@@ -146,6 +146,8 @@ public class RoomController {
     // Set mouse click behavior to trigger the animation
     drawGroup.setOnMouseClicked(e -> playAnimation(file1, file2, file3, file4, file5));
 
+    applyOrangeDropShadow(drawGroup);
+
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
@@ -178,6 +180,8 @@ public class RoomController {
     AnchorPane.setLeftAnchor(phoneClueImageView, initialCenterX);
     AnchorPane.setTopAnchor(phoneClueImageView, initialCenterY);
 
+    applyOrangeDropShadow(phoneClueImageView);
+
     // Add listeners to ensure it stays centered when resized
     rootNode
         .widthProperty()
@@ -205,7 +209,7 @@ public class RoomController {
         });
     phoneClueImageView.setOnMouseExited(
         e -> {
-          phoneClueImageView.setEffect(null); // Remove effect when mouse exits
+          applyOrangeDropShadow(phoneClueImageView); // Remove effect when mouse exits
         });
     phoneClueImageView.setOnMouseClicked(
         e -> {
@@ -241,7 +245,7 @@ public class RoomController {
     dropShadowPainting.setColor(Color.color(0, 0, 0, 0.5)); // Less opacity for lighter shadow
 
     // Apply drop shadow effect to the painting image
-    paintingImageView.setEffect(dropShadowPainting);
+    applyOrangeDropShadow(paintingImageView);
 
     // Apply hover effect
     DropShadow hoverShadowPainting = new DropShadow();
@@ -255,8 +259,7 @@ public class RoomController {
 
     paintingImageView.setOnMouseExited(
         e -> {
-          paintingImageView.setEffect(null); // Remove effect when mouse exits
-          paintingImageView.setEffect(dropShadowPainting);
+          applyOrangeDropShadow(paintingImageView);
         });
 
     paintingImageView.setOnMouseClicked(
@@ -286,7 +289,7 @@ public class RoomController {
 
     group.setOnMouseExited(
         e -> {
-          group.setEffect(null); // Remove effect when mouse exits
+          applyOrangeDropShadow(group); // Remove effect when mouse exits
         });
   }
 
@@ -463,5 +466,14 @@ public class RoomController {
       guessButton.setOpacity(0.3);
       guessButton.setDisable(true);
     }
+  }
+
+  private void applyOrangeDropShadow(Node node) {
+    DropShadow orangedropShadow = new DropShadow();
+    orangedropShadow.setOffsetX(0);
+    orangedropShadow.setOffsetY(0);
+    orangedropShadow.setRadius(10); // Adjust the radius for desired shadow spread
+    orangedropShadow.setColor(Color.ORANGE);
+    node.setEffect(orangedropShadow);
   }
 }
