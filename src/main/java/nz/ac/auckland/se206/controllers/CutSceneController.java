@@ -323,7 +323,7 @@ public class CutSceneController {
 
           // Set the dialogue text
           String dialogueText =
-              "Oh no! The will is missing! Who could've taken it? The FAMILY LAWER is coming in 5"
+              "Oh no! The will is missing! Who could've taken it? The FAMILY LAWYER is coming in 5"
                   + " minutes!!! If they come, and the will is gone, all his assets"
                   + " will disappear! QUICK call PI masters!";
 

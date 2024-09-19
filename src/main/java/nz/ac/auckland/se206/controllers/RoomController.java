@@ -4,6 +4,8 @@ import java.io.IOException;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -53,6 +55,9 @@ public class RoomController {
 
   private TimerModel countdownTimer;
 
+  private boolean isatleastoncecluefound =
+      context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
+
   // Create a group node
   private Group drawGroup;
 
@@ -92,15 +97,30 @@ public class RoomController {
         new Image(RoomController.class.getResource("/images/drawframe5.PNG").toString());
 
     // Other initialization (fade transition, timer, label updates, etc.)
-    if (isFirstTimeInit) {
-      rootNode.setOpacity(0);
-      FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), rootNode);
-      fadeTransition.setFromValue(0);
-      fadeTransition.setToValue(1);
-      fadeTransition.play();
-      context.setFirstTimeInit(false);
-      isFirstTimeInit = context.isFirstTimeInit();
-    }
+    Task<Void> task =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            if (isFirstTimeInit) {
+              Platform.runLater(
+                  () -> {
+                    rootNode.setOpacity(0);
+                    FadeTransition fadeTransition =
+                        new FadeTransition(Duration.millis(1000), rootNode);
+                    fadeTransition.setFromValue(0);
+                    fadeTransition.setToValue(1);
+                    fadeTransition.play();
+                  });
+              context.setFirstTimeInit(false);
+              isFirstTimeInit = context.isFirstTimeInit();
+            }
+            return null;
+          }
+        };
+
+    Thread thread = new Thread(task);
+    thread.setDaemon(true); // Allows the application to exit even if the thread is running
+    thread.start();
 
     // Load background image
     Image backgroundImage =
@@ -480,7 +500,8 @@ public class RoomController {
   private void checkGuessButton() {
     if (context.getListOfVisitors().contains("suspect1")
         && context.getListOfVisitors().contains("suspect2")
-        && context.getListOfVisitors().contains("suspect3")) {
+        && context.getListOfVisitors().contains("suspect3")
+        && isatleastoncecluefound) {
       // Enable the guess button
       guessButton.setOpacity(0.8);
       guessButton.setDisable(false);
