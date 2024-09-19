@@ -58,8 +58,8 @@
                   <Image url="@../images/updatedguessingimages/Gma.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="confirmExplanationButton" disable="true" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" opacity="0.5" stylesheets="@../css/confirmButton.css" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" onAction="#onEnterKey" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
+            <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" stylesheets="@../css/confirmButton.css" text="CONFIRM EXPLANATION" />
+            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
                <font>
                   <Font name="Courier New" size="8.0" />
                </font>
@@ -73,12 +73,6 @@
             <Label fx:id="culpritLabel" layoutX="300.0" layoutY="93.0" prefHeight="23.0" prefWidth="108.0" textFill="WHITE">
                <font>
                   <Font name="Courier New Bold" size="12.0" />
-               </font>
-            </Label>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4f86abba" height="16.0" layoutX="312.0" layoutY="252.0" stroke="#908e8e" strokeType="INSIDE" width="93.0" />
-            <Label layoutX="320.0" layoutY="256.0" text="Hit ENTER to submit" textFill="WHITE">
-               <font>
-                  <Font name="Courier New Bold" size="7.0" />
                </font>
             </Label>
          </children>

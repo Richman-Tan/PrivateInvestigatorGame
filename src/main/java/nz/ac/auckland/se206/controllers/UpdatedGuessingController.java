@@ -88,7 +88,6 @@ public class UpdatedGuessingController {
   @FXML private Label lblStory; // The Label for displaying text
   private boolean guess = false;
   @FXML private Label incorrectGuessLbl2;
-  private boolean stopTimeline = false;
 
   @FXML private Button confirmExplanationButton;
 
@@ -140,7 +139,6 @@ public class UpdatedGuessingController {
   @FXML
   public void initialize() {
     confirmCulpritButton.setDisable(true);
-    confirmExplanationButton.setDisable(true);
 
     if (context.isGardenToolFound()) {
       clue1foundimg.setVisible(true);
@@ -162,7 +160,7 @@ public class UpdatedGuessingController {
     culpritPlayer = new MediaPlayer(sound);
     culpritPlayer.play();
     warpText(); // Start the text animation
-    createImageView(); // Create the ImageView and add it to the scene
+createImageView(); // Create the ImageView and add it to the scene
   }
 
   @FXML
@@ -411,7 +409,7 @@ public class UpdatedGuessingController {
     flashTimeline.setCycleCount(Timeline.INDEFINITE); // Keep flashing indefinitely
     flashTimeline.play(); // Start the flashing animation
   }
-
+  
   private void createImageView() {
     // Create the ImageView programmatically
     staticimg1 = new ImageView();
@@ -425,71 +423,6 @@ public class UpdatedGuessingController {
     // Add the ImageView to the rootPane (or any other container)
     rootPane.getChildren().add(staticimg1);
   }
-
-  private void staticimages() {
-    // Ensure the staticimg1 is anchored to all sides of the AnchorPane (rootPane)
-    // AnchorPane.setTopAnchor(staticimg1, 0.0);
-    // AnchorPane.setBottomAnchor(staticimg1, 0.0);
-    // AnchorPane.setLeftAnchor(staticimg1, 0.0);
-    // AnchorPane.setRightAnchor(staticimg1, 0.0);
-
-    // // Bind the width and height of the ImageView to match the rootPane's size
-    // staticimg1.fitWidthProperty().bind(rootPane.widthProperty());
-    // staticimg1.fitHeightProperty().bind(rootPane.heightProperty());
-
-    // // Center the image in the rootPane
-    // staticlayer.setFitWidth(rootPane.getWidth());
-    // staticlayer.setFitHeight(rootPane.getHeight());
-
-    // // Make sure the background resizes with the window
-    // staticlayer.fitWidthProperty().bind(rootPane.widthProperty());
-    // staticlayer.fitHeightProperty().bind(rootPane.heightProperty());
-
-    // backgroundoverlay.toBack();
-    staticimg1.toBack();
-    staticlayer.toBack();
-    background.toBack();
-
-    Timeline gifPlayTimeline =
-        new Timeline(
-            // KeyFrame 1: Show the GIF (make it visible and set opacity to 1)
-            new KeyFrame(
-                Duration.seconds(0), // Start immediately
-                event -> {
-                  // Reset the GIF by loading it again
-                  Image gifImage =
-                      new Image(
-                          GuessingController.class
-                              .getResource("/images/guessingimages/static.gif")
-                              .toString());
-                  staticimg1.setImage(gifImage); // Set the GIF image to staticimg1
-                  staticimg1.setVisible(true); // Show the ImageView
-                  staticimg1.setOpacity(0.75); // Fully visible
-                }),
-            // KeyFrame 2: Hide the GIF after 2 seconds
-            new KeyFrame(
-                Duration.seconds(2), // After 2 seconds
-                event -> {
-                  staticimg1.setVisible(false); // Hide the ImageView
-                  staticimg1.setOpacity(0); // Set opacity to 0 (fully hidden)
-                }),
-            // KeyFrame 3: Wait for 8 seconds before the next cycle
-            new KeyFrame(
-                Duration.seconds(
-                    10) // After 10 seconds total (2 seconds visible + 8 seconds hidden)
-                ));
-
-    // Set the cycle count to indefinite, so it repeats
-    gifPlayTimeline.setCycleCount(Timeline.INDEFINITE);
-
-    // Start the GIF animation timeline
-    gifPlayTimeline.play();
-    if (stopTimeline) {
-      System.out.println("Should be Stopped");
-      gifPlayTimeline.stop();
-    }
-  }
-
   private void playgif() {
     // Load the GIF image once
     Image gifImage =
@@ -634,12 +567,18 @@ public class UpdatedGuessingController {
     return new String(Files.readAllBytes(Paths.get(filePath)));
   }
 
-  @FXML
-  private void onEnterKey() {
-    confirmExplanationButton.setDisable(false);
-    confirmExplanationButton.setOpacity(1);
-  }
-
+  // @FXML
+  // private void onEnterKey() {
+  //   confirmExplanationButton.setDisable(false);
+  //   confirmExplanationButton.setOpacity(1);
+  // }
+  
+  /**
+   * Method to initialise the scene again when Replay button is clicked
+   * @param event
+   * @throws IOException
+   * 
+   */
   @FXML
   private void onReplay(ActionEvent event) throws IOException {
 
