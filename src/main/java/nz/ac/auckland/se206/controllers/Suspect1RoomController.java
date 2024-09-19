@@ -98,7 +98,7 @@ public class Suspect1RoomController {
                       .setTopP(0.5)
                       .setMaxTokens(100);
 
-                      // Load the template
+              // Load the template
               URL resourceUrl =
                   PromptEngineering.class.getClassLoader().getResource("prompts/uncle.txt");
               String template = loadTemplate(resourceUrl.toURI());
@@ -119,7 +119,7 @@ public class Suspect1RoomController {
           }
         };
 
-        // Create a new thread
+    // Create a new thread
     Thread thread = new Thread(task);
     thread.setDaemon(true);
     thread.start();
@@ -284,7 +284,7 @@ public class Suspect1RoomController {
         && context.getListOfVisitors().contains("suspect2")
         && context.getListOfVisitors().contains("suspect3")
         && isatleastoncecluefound) {
-          // Enable the guess button
+      // Enable the guess button
       guessButton.setOpacity(0.8);
       guessButton.setDisable(false);
     } else {

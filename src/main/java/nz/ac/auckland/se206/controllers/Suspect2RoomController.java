@@ -84,7 +84,7 @@ public class Suspect2RoomController {
                       .setTopP(0.5)
                       .setMaxTokens(100);
 
-                      // Load the template
+              // Load the template
               URL resourceUrl =
                   PromptEngineering.class.getClassLoader().getResource("prompts/grandma.txt");
               String template = loadTemplate(resourceUrl.toURI());
@@ -106,7 +106,7 @@ public class Suspect2RoomController {
           }
         };
 
-        // Run the task
+    // Run the task
     Thread thread = new Thread(task);
     thread.setDaemon(true);
     thread.start();
@@ -201,7 +201,7 @@ public class Suspect2RoomController {
       // Execute the chat completion request
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
-      
+
       // Add the message to the chat box
       chatCompletionRequest.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
@@ -274,7 +274,7 @@ public class Suspect2RoomController {
     // Record the visit
     if (GameStateContext.getInstance().getListOfVisitors().isEmpty()
         || !GameStateContext.getInstance().getListOfVisitors().contains("suspect2")) {
-          // Add the visitor
+      // Add the visitor
       GameStateContext.getInstance().addVisitor("suspect2");
     }
   }
@@ -286,7 +286,7 @@ public class Suspect2RoomController {
         && context.getListOfVisitors().contains("suspect2")
         && context.getListOfVisitors().contains("suspect3")
         && isatleastoncecluefound) {
-          // Enable the guess button
+      // Enable the guess button
       guessButton.setOpacity(0.8);
       guessButton.setDisable(false);
     } else {

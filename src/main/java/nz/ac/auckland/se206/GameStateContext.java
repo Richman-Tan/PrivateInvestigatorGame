@@ -18,13 +18,13 @@ public class GameStateContext {
 
   private static GameStateContext instance;
 
-    // Static method to get the single instance of GameStateContext
-    public static GameStateContext getInstance() {
-      if (instance == null) {
-        instance = new GameStateContext();
-      }
-      return instance;
+  // Static method to get the single instance of GameStateContext
+  public static GameStateContext getInstance() {
+    if (instance == null) {
+      instance = new GameStateContext();
     }
+    return instance;
+  }
 
   private final GameStarted gameStartedState;
   private final Guessing guessingState;

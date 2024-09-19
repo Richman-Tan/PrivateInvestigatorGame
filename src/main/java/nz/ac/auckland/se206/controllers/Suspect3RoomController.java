@@ -94,7 +94,7 @@ public class Suspect3RoomController {
                       .setTopP(0.5)
                       .setMaxTokens(100);
 
-                      // Load the template for the chat message
+              // Load the template for the chat message
               URL resourceUrl =
                   PromptEngineering.class.getClassLoader().getResource("prompts/grandson.txt");
               String template = loadTemplate(resourceUrl.toURI());
@@ -116,7 +116,7 @@ public class Suspect3RoomController {
           }
         };
 
-        // Create a new thread to run the task
+    // Create a new thread to run the task
     Thread thread = new Thread(task);
     thread.setDaemon(true);
     thread.start();
@@ -301,7 +301,7 @@ public class Suspect3RoomController {
         && context.getListOfVisitors().contains("suspect2")
         && context.getListOfVisitors().contains("suspect3")
         && isAtLeastOnceClueFound) {
-          // Enable the guess button
+      // Enable the guess button
       guessButton.setOpacity(0.8);
       guessButton.setDisable(false);
     } else {
