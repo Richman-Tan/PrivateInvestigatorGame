@@ -53,14 +53,17 @@ public class Suspect3RoomController {
 
   private TimerModel countdownTimer;
 
-  /** Initializes the suspect 2 room view. */
+  /** Initializes the suspect 3 room view. */
   @FXML
   public void initialize() {
-    // Set initial visibility of the buttons
+    // Set initial visibility of the buttons based on the current menu visibility state
     updateMenuVisibility();
 
+    // Initialize the countdown timer and bind its time string property to the label
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    // Create a task to perform the initialization in a separate thread
     Task<Void> task =
         new Task<Void>() {
           @Override
@@ -68,6 +71,7 @@ public class Suspect3RoomController {
             try {
               checkGuessButton();
               ApiProxyConfig config = ApiProxyConfig.readConfig();
+              // Create a chat completion request with the specified parameters
               chatCompletionRequest =
                   new ChatCompletionRequest(config)
                       .setN(1)
@@ -75,19 +79,24 @@ public class Suspect3RoomController {
                       .setTopP(0.5)
                       .setMaxTokens(100);
 
+              // Load the prompt template from a resource file
               URL resourceUrl =
                   PromptEngineering.class.getClassLoader().getResource("prompts/grandson.txt");
               String template = loadTemplate(resourceUrl.toURI());
 
-              // Initial GPT system message
+              // Create system message with the loaded template
               ChatMessage systemMessage = new ChatMessage("system", template);
               runGpt(systemMessage);
+
+              // If this is the first time the room is initialized, set the user chat box prompt
+              // text
               if (firstTime == true) {
                 userChatBox.setPromptText("Begin interrogating...");
                 firstTime = false;
               }
 
             } catch (ApiProxyException | IOException | URISyntaxException e) {
+              // Print any exceptions that occur during initialization
               e.printStackTrace();
             }
             return null;
@@ -99,10 +108,11 @@ public class Suspect3RoomController {
     thread.setDaemon(true);
     thread.start();
 
+    // Set the background image to fill the entire root node
     backgroundimg.setFitWidth(rootNode.getWidth());
     backgroundimg.setFitHeight(rootNode.getHeight());
 
-    // Make sure the background resizes with the window
+    // Bind the image view to the root node to ensure proper resizing
     backgroundimg.fitWidthProperty().bind(rootNode.widthProperty());
     backgroundimg.fitHeightProperty().bind(rootNode.heightProperty());
   }

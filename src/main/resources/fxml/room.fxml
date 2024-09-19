@@ -64,7 +64,7 @@
             </Label>
          </children>
       </Pane>
-      <VBox fx:id="vBox" layoutX="659.0" layoutY="-11.0" opacity="0.75" prefHeight="403.0" prefWidth="143.0" AnchorPane.rightAnchor="6.0">
+      <VBox fx:id="viewBox" layoutX="659.0" layoutY="-11.0" opacity="0.75" prefHeight="403.0" prefWidth="143.0" AnchorPane.rightAnchor="6.0">
          <children>
             <Pane opacity="0.75" prefHeight="23.0" prefWidth="91.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <VBox.margin>

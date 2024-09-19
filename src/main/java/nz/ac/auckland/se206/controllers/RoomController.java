@@ -45,7 +45,7 @@ public class RoomController {
 
   @FXML private ImageView clue3;
 
-  @FXML private VBox vBox;
+  @FXML private VBox viewBox;
 
   private static GameStateContext context = GameStateContext.getInstance();
   private boolean isFirstTimeInit = context.isFirstTimeInit();
@@ -278,7 +278,7 @@ public class RoomController {
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(paintingImageView);
 
-    vBox.toFront();
+    viewBox.toFront();
   }
 
   private void addHoverEffect(Group group) {
