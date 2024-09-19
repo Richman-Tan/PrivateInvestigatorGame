@@ -15,6 +15,12 @@ import nz.ac.auckland.se206.GameStateContext;
 
 public class ClueDrawerController {
 
+  // Inner classes
+
+  // Static fields
+
+  // Static methods
+
   @FXML private AnchorPane anchorPane;
 
   private double startX;
@@ -23,6 +29,12 @@ public class ClueDrawerController {
   // Get timer
   private TimerModel countdownTimer;
 
+  // Constructors
+
+  /**
+   * Initializes the ClueDrawerController. This method is called automatically when the FXML file is
+   * loaded.
+   */
   @FXML
   private void initialize() {
 
@@ -62,7 +74,7 @@ public class ClueDrawerController {
     // Load background and garden tool images
     Image backgroundImage =
         new Image(
-            BackstoryController.class
+            ClueDrawerController.class
                 .getResource("/images/cluedrawimages/clueshelf.png")
                 .toString());
 
@@ -153,7 +165,13 @@ public class ClueDrawerController {
     timerPane.toFront();
   }
 
-  // Method to make the ImageView draggable
+  // Instance methods
+
+  /**
+   * Makes the given ImageView draggable.
+   *
+   * @param imageView the ImageView to make draggable
+   */
   private void makeDraggable(ImageView imageView) {
     imageView.setOnMousePressed(
         event -> {

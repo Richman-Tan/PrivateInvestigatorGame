@@ -25,6 +25,13 @@ import nz.ac.auckland.se206.GameStateContext;
 /** CluePhoneController is the controller class for the Clue Phone scene. */
 public class CluePhoneController {
 
+  // Static fields
+  private static GameStateContext context = GameStateContext.getInstance();
+
+  // Static methods
+  // (None in this case)
+
+  // Instance fields
   @FXML private AnchorPane rootPane;
   @FXML private ImageView phoneImageView;
   @FXML private ImageView imageView;
@@ -32,34 +39,26 @@ public class CluePhoneController {
   @FXML private Label label;
   @FXML private Label popUp;
 
-  // Start circles (left-hand side)
   private Circle startCircleRed;
   private Circle startCircleBlue;
   private Circle startCircleGreen;
 
-  // End circles (right-hand side)
   private Circle endCircleRed;
   private Circle endCircleBlue;
   private Circle endCircleGreen;
 
-  // Wires (lines)
   private Line redWire;
   private Line blueWire;
   private Line greenWire;
   private Line activeWire;
 
-  // Flags for each wire connection
   private boolean isRedWireConnected = false;
   private boolean isBlueWireConnected = false;
   private boolean isGreenWireConnected = false;
 
-  // Currently active circle for dragging
   private Circle activeStartCircle = null;
 
-  // Get timer
   private TimerModel countdownTimer;
-
-  private static GameStateContext context = GameStateContext.getInstance();
 
   @FXML
   private void initialize() {
