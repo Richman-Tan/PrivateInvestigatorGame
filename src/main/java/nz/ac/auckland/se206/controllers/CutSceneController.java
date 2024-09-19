@@ -28,16 +28,27 @@ import nz.ac.auckland.se206.App;
 
 public class CutSceneController {
 
+  // Static fields
+  private static final String revealText = "THE WILL???"; // Text to display letter by letter
+
+  // Instance fields
   @FXML private AnchorPane rootPane;
-
   private TimerModel countdownTimer;
-
   private MediaPlayer mediaPlayer; // Declare mediaPlayer as an instance variable
   private Label revealLabel; // Label for text reveal
-  private final String revealText = "THE WILL???"; // Text to display letter by letter
 
+  // Constructors
+  public CutSceneController() {
+    // Default constructor if needed
+  }
+
+  // Static methods
+  // No static methods for now
+
+  // Instance methods
+
+  // Initialize method called when the controller is created
   public void initialize() {
-
     // Load background video using the correct class reference for resource path
     String videoPath =
         CutSceneController.class

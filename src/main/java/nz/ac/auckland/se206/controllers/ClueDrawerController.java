@@ -15,12 +15,6 @@ import nz.ac.auckland.se206.GameStateContext;
 
 public class ClueDrawerController {
 
-  // Inner classes
-
-  // Static fields
-
-  // Static methods
-
   @FXML private AnchorPane anchorPane;
 
   private double startX;
@@ -29,12 +23,6 @@ public class ClueDrawerController {
   // Get timer
   private TimerModel countdownTimer;
 
-  // Constructors
-
-  /**
-   * Initializes the ClueDrawerController. This method is called automatically when the FXML file is
-   * loaded.
-   */
   @FXML
   private void initialize() {
 
@@ -74,7 +62,7 @@ public class ClueDrawerController {
     // Load background and garden tool images
     Image backgroundImage =
         new Image(
-            ClueDrawerController.class
+            BackstoryController.class
                 .getResource("/images/cluedrawimages/clueshelf.png")
                 .toString());
 
@@ -165,13 +153,7 @@ public class ClueDrawerController {
     timerPane.toFront();
   }
 
-  // Instance methods
-
-  /**
-   * Makes the given ImageView draggable.
-   *
-   * @param imageView the ImageView to make draggable
-   */
+  // Method to make the ImageView draggable
   private void makeDraggable(ImageView imageView) {
     imageView.setOnMousePressed(
         event -> {
@@ -209,13 +191,19 @@ public class ClueDrawerController {
    * @param image the image to display
    */
   private void createAndBindleaves(Image image) {
+
+    // Create the ImageView
     ImageView imageView = new ImageView(image);
+
+    // Set the size of the ImageView to match the anchorPane
     imageView.setFitWidth(anchorPane.getWidth());
     imageView.setFitHeight(anchorPane.getHeight());
 
+    // Bind the size of the ImageView to the size of the anchorPane
     imageView.fitWidthProperty().bind(anchorPane.widthProperty());
     imageView.fitHeightProperty().bind(anchorPane.heightProperty());
 
+    // Add the ImageView to the anchorPane
     anchorPane.getChildren().add(imageView);
     makeDraggable(imageView);
   }

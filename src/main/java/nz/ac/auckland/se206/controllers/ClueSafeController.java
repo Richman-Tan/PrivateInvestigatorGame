@@ -16,10 +16,17 @@ import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
-// import nz.ac.auckland.se206.GameStateContext;
-
 public class ClueSafeController {
 
+  // Inner classes (none in this case)
+
+  // Static fields
+  // (none in this case)
+
+  // Static methods
+  // (none in this case)
+
+  // Instance fields
   @FXML private AnchorPane anchorPane;
   @FXML private Label codeDisplay;
   @FXML private Group notes;
@@ -30,13 +37,18 @@ public class ClueSafeController {
   private String line = "";
   private DropShadow permShadow = new DropShadow();
   private Button goBackButton = new Button("Go Back");
-
   private boolean middleNote = false;
   private boolean backNote = false;
 
   // Get timer
   private TimerModel countdownTimer;
 
+  // Constructors
+  // (default constructor is implied)
+
+  // Instance methods
+
+  /** Initializes the controller. */
   @FXML
   private void initialize() {
     // Create a Pane for the timer
@@ -127,9 +139,30 @@ public class ClueSafeController {
   }
 
   /**
-   * } Updates the code display based on the pin clicked.
+   * Adds a hover effect to the image.
    *
-   * @param event the ActionEvent triggered by clicking a pin button
+   * @param image
+   */
+  private void addHoverEffect(Group image) {
+    DropShadow hoverShadow = new DropShadow();
+    hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
+    hoverShadow.setRadius(20); // Customize the shadow effect
+
+    image.setOnMouseEntered(
+        e -> {
+          image.setEffect(hoverShadow); // Apply hover effect when mouse enters
+        });
+
+    image.setOnMouseExited(
+        e -> {
+          image.setEffect(permShadow); // Remove effect when mouse exits
+        });
+  }
+
+  /**
+   * Handles the pin button clicks.
+   *
+   * @param event
    */
   @FXML
   private void onPin(ActionEvent event) {
@@ -195,22 +228,11 @@ public class ClueSafeController {
     }
   }
 
-  private void addHoverEffect(Group image) {
-    DropShadow hoverShadow = new DropShadow();
-    hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
-    hoverShadow.setRadius(20); // Customize the shadow effect
-
-    image.setOnMouseEntered(
-        e -> {
-          image.setEffect(hoverShadow); // Apply hover effect when mouse enters
-        });
-
-    image.setOnMouseExited(
-        e -> {
-          image.setEffect(permShadow); // Remove effect when mouse exits
-        });
-  }
-
+  /**
+   * Handles the note click event.
+   *
+   * @param event
+   */
   @FXML
   private void onNote(MouseEvent event) {
     goBackButton.toBack();
@@ -220,6 +242,11 @@ public class ClueSafeController {
     GameStateContext.getInstance().setNoteFound(true); // Mark as found in the context
   }
 
+  /**
+   * Handles the page click event.
+   *
+   * @param event
+   */
   @FXML
   private void onPage(MouseEvent event) {
     // Set mouse click event to bring the notes to front

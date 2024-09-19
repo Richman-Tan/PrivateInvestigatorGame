@@ -503,12 +503,23 @@ public class UpdatedGuessingController {
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+
+    // Add the message to the request
     chatCompletionRequest.addMessage(msg);
     try {
+      // Execute the request and get the result
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+
+      // Get the first choice from the result
       Choice result = chatCompletionResult.getChoices().iterator().next();
+
+      // Add the result message to the request
       chatCompletionRequest.addMessage(result.getChatMessage());
+
+      // Append the result message to the chat
       appendChatMessage(result.getChatMessage());
+
+      // Return the result message
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
@@ -517,8 +528,12 @@ public class UpdatedGuessingController {
     }
   }
 
+  /** Method to handle when the send message button is clicked */
   private void onSendMessage() {
+    // Get the user's explanation message
     String message = userExplanation.getText().trim();
+
+    // Print the message to the console
     System.out.println("Message: " + message);
     if (message.isEmpty()) {
       // Default feedback
@@ -529,6 +544,7 @@ public class UpdatedGuessingController {
       return;
     }
 
+    // Clear the text area after sending the message
     userExplanation.clear();
 
     // Create a background task for the GPT request
@@ -577,6 +593,7 @@ public class UpdatedGuessingController {
           Throwable throwable = task.getException();
           Platform.runLater(
               () -> {
+                // Append an error message to the chat
                 appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage()));
               });
           throwable.printStackTrace();
