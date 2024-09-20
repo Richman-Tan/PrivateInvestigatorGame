@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.speech.TextToSpeech;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -121,6 +122,13 @@ public class RoomController {
                     fadeTransition.setFromValue(0);
                     fadeTransition.setToValue(1);
                     fadeTransition.play();
+                  });
+
+              Platform.runLater(
+                  () -> {
+                    TextToSpeech.speak(
+                        "Guess the culprit once you've interrogated all the suspects and analysed"
+                            + " the clues in the crime scene");
                   });
               // Set the first time initialization to false
               context.setFirstTimeInit(false);
