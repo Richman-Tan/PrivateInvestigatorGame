@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -223,13 +225,13 @@ public class CutSceneController {
           dialogPane.setPrefHeight(100);
 
           // Set the position of the dialog pane at the bottom of the screen
-          AnchorPane.setBottomAnchor(dialogPane, 20.0);
+          AnchorPane.setBottomAnchor(dialogPane, 40.0);
           AnchorPane.setLeftAnchor(dialogPane, 50.0);
           AnchorPane.setRightAnchor(dialogPane, 50.0);
 
           Button nextButton = new Button("CALL PI MASTERS");
           nextButton.setStyle(
-              "-fx-font-weight: bold; -fx-background-color: white; -fx-border-color: black;"
+              "-fx-font-weight: bold; -fx-background-color: #B9CAC0; -fx-border-color: black;"
                   + " -fx-border-radius: 20; -fx-padding: 5; -fx-border-width: 3;"
                   + " -fx-background-radius: 20;");
           nextButton.setOnAction(
@@ -256,17 +258,16 @@ public class CutSceneController {
           nextButton.setOnMouseEntered(
               e -> {
                 nextButton.setStyle(
-                    "-fx-font-weight: bold; -fx-background-color: white; -fx-border-color: black;"
+                    "-fx-font-weight: bold; -fx-background-color: #CDD8D1; -fx-border-color: black;"
                         + " -fx-border-radius: 20; -fx-padding: 5; -fx-border-width: 3;"
                         + " -fx-background-radius: 20;"
                         + "-fx-cursor: hand;");
-                nextButton.setOpacity(0.5);
               }); // Change to pointer on hover
 
           nextButton.setOnMouseExited(
               e -> {
                 nextButton.setStyle(
-                    "-fx-font-weight: bold; -fx-background-color: white; -fx-border-color: black;"
+                    "-fx-font-weight: bold; -fx-background-color: #B9CAC0; -fx-border-color: black;"
                         + " -fx-border-radius: 20; -fx-padding: 5; -fx-border-width: 3;"
                         + " -fx-background-radius: 20;"
                         + "-fx-cursor: default;");
@@ -274,7 +275,7 @@ public class CutSceneController {
               }); // Restore to default on exit
 
           // Place the nextButton at the bottom right
-          AnchorPane.setBottomAnchor(nextButton, 130.0);
+          AnchorPane.setBottomAnchor(nextButton, 20.0);
           AnchorPane.setRightAnchor(nextButton, 50.0);
 
           dialogPane.setOpacity(0);
@@ -324,6 +325,12 @@ public class CutSceneController {
 
           // Play the text reveal timeline
           timeline.play();
+          timeline.setOnFinished(
+              e -> {
+                // Enable the next button after the text reveal is complete
+                //  showArrow();
+                showPhone();
+              });
         });
   }
 
@@ -340,5 +347,26 @@ public class CutSceneController {
       System.out.println("mediaPlayer is already null, nothing to stop or dispose.");
     }
     // Perform any additional cleanup here if needed
+  }
+
+  private void showPhone() {
+    ImageView phoneImg = new ImageView();
+
+    // Load the image for the arrow (make sure the path is correct)
+    Image phone = new Image("/images/phone.png");
+    phoneImg.setImage(phone); // Set the image to the ImageView
+
+    // Set the initial size and position for the ImageView
+    phoneImg.rotateProperty().set(105);
+    phoneImg.setFitWidth(80);
+    phoneImg.setFitHeight(56);
+    phoneImg.setLayoutX(840); // Set X position
+    phoneImg.setLayoutY(525); // Set Y position
+
+    // Set the opacity (1 is fully visible)
+    phoneImg.setOpacity(1);
+
+    // Add the ImageView to the rootPane
+    rootPane.getChildren().add(phoneImg);
   }
 }
