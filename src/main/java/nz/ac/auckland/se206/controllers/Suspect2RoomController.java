@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,59 +55,30 @@ public class Suspect2RoomController {
   private GameStateContext context = GameStateContext.getInstance();
   private boolean firstTime = true;
   private TimerModel countdownTimer;
-
   private boolean isAtLeastOneClueFound =
       context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
 
   /** Initializes the suspect 2 room view. */
   @FXML
   public void initialize() {
-    // Set up the chat completion request and menu visibility
+    // Initialize chat completion request and menu visibility
     updateMenuVisibility();
-
-    // Bind the timer to the label
-    countdownTimer = SharedTimerModel.getInstance().getTimer();
-    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
-
-    // Run initialization task for GPT model
+    bindTimerToLabel();
     initializeGptModel();
-
-    // Set the background image to be responsive
-    backgroundimg.fitWidthProperty().bind(rootNode.widthProperty());
-    backgroundimg.fitHeightProperty().bind(rootNode.heightProperty());
+    setResponsiveBackground(backgroundimg, rootNode);
   }
 
   private void initializeGptModel() {
-    // Create a task to initialize the GPT model
     Task<Void> task =
         new Task<>() {
           @Override
           protected Void call() throws IOException, URISyntaxException {
             try {
-              // Prepare GPT model configuration
-              checkGuessButton();
+              setupGptRequest();
+              loadGptPrompt("prompts/grandma.txt");
 
-              // Load the GPT model configuration
-              ApiProxyConfig config = ApiProxyConfig.readConfig();
-              chatCompletionRequest =
-                  new ChatCompletionRequest(config)
-                      .setN(1)
-                      .setTemperature(0.2)
-                      .setTopP(0.5)
-                      .setMaxTokens(100);
-
-              // Load and run the GPT model
-              URL resourceUrl =
-                  PromptEngineering.class.getClassLoader().getResource("prompts/grandma.txt");
-              String template = loadTemplate(resourceUrl.toURI());
-
-              // Create and send a system message to the GPT model
-              ChatMessage systemMessage = new ChatMessage("system", template);
-              runGpt(systemMessage);
-
-              // Set the user chat box prompt on first run
               if (firstTime) {
-                userChatBox.setPromptText("Begin interrogating...");
+                setUserChatBoxPrompt("Begin interrogating...");
                 firstTime = false;
               }
             } catch (ApiProxyException | IOException | URISyntaxException e) {
@@ -116,8 +88,34 @@ public class Suspect2RoomController {
           }
         };
 
-    // Run the task in a separate thread
     new Thread(task).start();
+  }
+
+  private void setupGptRequest() throws IOException, ApiProxyException {
+    ApiProxyConfig config = ApiProxyConfig.readConfig();
+    chatCompletionRequest =
+        new ChatCompletionRequest(config)
+            .setN(1)
+            .setTemperature(0.2)
+            .setTopP(0.5)
+            .setMaxTokens(100);
+  }
+
+  private void loadGptPrompt(String resourcePath)
+      throws URISyntaxException, IOException, ApiProxyException {
+    URL resourceUrl = PromptEngineering.class.getClassLoader().getResource(resourcePath);
+    String template = loadTemplate(resourceUrl.toURI());
+    ChatMessage systemMessage = new ChatMessage("system", template);
+    runGpt(systemMessage);
+  }
+
+  private void bindTimerToLabel() {
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+  }
+
+  private void setUserChatBoxPrompt(String text) {
+    Platform.runLater(() -> userChatBox.setPromptText(text));
   }
 
   @FXML
@@ -127,6 +125,10 @@ public class Suspect2RoomController {
 
   @FXML
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
+    handleSendMessage();
+  }
+
+  private void handleSendMessage() throws ApiProxyException, IOException {
     sendMessageCode();
     recordVisit();
     checkGuessButton();
@@ -149,60 +151,47 @@ public class Suspect2RoomController {
   }
 
   private void updateMenuVisibility() {
-
-    // Update the menu button style
     boolean isMenuVisible = context.isMenuVisible();
+    updateMenuButtonStyle(isMenuVisible);
+    setButtonVisibility(isMenuVisible);
+  }
 
+  private void updateMenuButtonStyle(boolean isMenuVisible) {
     menuButton.setStyle(
         isMenuVisible
             ? "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
             : "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;");
-
-    // Update the menu button style based on visibility
-    setButtonVisibility(isMenuVisible);
   }
 
   private void setButtonVisibility(boolean isVisible) {
-    // Set button visibility based on menu visibility
-    crimeSceneButton.setVisible(isVisible);
-    crimeSceneButton.setManaged(isVisible);
+    setVisibleAndManaged(crimeSceneButton, isVisible);
+    setVisibleAndManaged(grandmaButton, isVisible);
+    setVisibleAndManaged(grandsonButton, isVisible);
+    setVisibleAndManaged(uncleButton, isVisible);
+  }
 
-    // Set button visibility based on menu visibility
-    grandmaButton.setVisible(isVisible);
-    grandmaButton.setManaged(isVisible);
-
-    // Set button visibility based on menu visibility
-    grandsonButton.setVisible(isVisible);
-    grandsonButton.setManaged(isVisible);
-
-    // Set button visibility based on menu visibility
-    uncleButton.setVisible(isVisible);
-    uncleButton.setManaged(isVisible);
+  private void setVisibleAndManaged(Button button, boolean isVisible) {
+    button.setVisible(isVisible);
+    button.setManaged(isVisible);
   }
 
   @FXML
   private void onGuessClick(ActionEvent event) throws IOException {
-    // Set the guess button opacity
     context.setGuessPressed(true);
     App.setRoot("guessingScene");
     context.onGuessClick();
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    // Send a message to the GPT model
     chatCompletionRequest.addMessage(msg);
     disableSendButton(true);
 
-    // Execute the GPT model
     try {
-      //  Execute the GPT model
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
-      // Append the chat message
       appendChatMessage(result.getChatMessage());
       return result.getChatMessage();
     } catch (ApiProxyException e) {
-      // Handle GPT model error
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
       return null;
     } finally {
@@ -216,59 +205,48 @@ public class Suspect2RoomController {
     suspect2ChatBox.appendText(msg.getContent() + "\n\n");
   }
 
-  /**
-   * Handle key press event
-   *
-   * @param event
-   */
   @FXML
   public void onKeyPressed(KeyEvent event) {
-    // Handle key press event
     if (event.getCode() == KeyCode.ENTER) {
       try {
-        // Send message when enter key is pressed
-        sendMessageCode();
+        handleSendMessage();
       } catch (ApiProxyException | IOException e) {
         appendChatMessage(new ChatMessage("system", "Error: " + e.getMessage()));
       }
     }
   }
 
-  /**
-   * Send message to GPT model
-   *
-   * @throws ApiProxyException
-   * @throws IOException
-   */
   private void sendMessageCode() throws ApiProxyException, IOException {
-    // Send message to GPT model
     String message = userChatBox.getText().trim();
+    if (message.isEmpty()) return;
 
-    // Check if message is empty
-    if (message.isEmpty()) {
-      return;
-    }
+    clearUserInput();
 
-    // Clear user input and wait for response
+    ChatMessage msg = new ChatMessage("user", message);
+    Task<Void> task = createGptTask(msg);
+
+    new Thread(task).start();
+  }
+
+  private Task<Void> createGptTask(ChatMessage msg) {
+    return new Task<>() {
+      @Override
+      protected Void call() {
+        try {
+          runGpt(msg);
+          setUserChatBoxPrompt("Ask another question...");
+        } catch (ApiProxyException e) {
+          appendChatMessage(new ChatMessage("system", "Error: " + e.getMessage()));
+        }
+        return null;
+      }
+    };
+  }
+
+  private void clearUserInput() {
     userChatBox.clear();
     suspect2ChatBox.clear();
     userChatBox.setPromptText("Waiting for response...");
-
-    // Create a new chat message
-    ChatMessage msg = new ChatMessage("user", message);
-
-    // Run GPT model in a separate thread
-    new Thread(
-            () -> {
-              try {
-                runGpt(msg);
-                // Update the prompt text
-                userChatBox.setPromptText("Ask another question...");
-              } catch (ApiProxyException e) {
-                appendChatMessage(new ChatMessage("system", "Error: " + e.getMessage()));
-              }
-            })
-        .start();
   }
 
   private void disableSendButton(boolean disable) {
@@ -283,22 +261,23 @@ public class Suspect2RoomController {
 
   @FXML
   private void checkGuessButton() {
-    // Check if the guess button can be enabled
     boolean canGuess =
         context.getListOfVisitors().contains("suspect1")
             && context.getListOfVisitors().contains("suspect2")
             && context.getListOfVisitors().contains("suspect3")
             && isAtLeastOneClueFound;
 
-    // Set the guess button opacity
     guessButton.setOpacity(canGuess ? 0.8 : 0.3);
     guessButton.setDisable(!canGuess);
   }
 
   @FXML
   private void onEnterKey(ActionEvent event) throws ApiProxyException, IOException {
-    sendMessageCode();
-    recordVisit();
-    checkGuessButton();
+    handleSendMessage();
+  }
+
+  private void setResponsiveBackground(ImageView imageView, AnchorPane pane) {
+    imageView.fitWidthProperty().bind(pane.widthProperty());
+    imageView.fitHeightProperty().bind(pane.heightProperty());
   }
 }
