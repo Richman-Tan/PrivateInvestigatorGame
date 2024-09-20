@@ -16,6 +16,8 @@ import nz.ac.auckland.se206.GameStateContext;
 public class ClueDrawerController {
 
   @FXML private AnchorPane anchorPane;
+  @FXML private Pane labelPane;
+  @FXML private Label timerLabel;
 
   private double startX;
   private double startY;
@@ -28,6 +30,15 @@ public class ClueDrawerController {
     setupGardenTool();
     setupLeaves();
     setupGoBackButton();
+
+    // Bind the timer label to the countdown timer
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.start();
+    // Bind the timer label to the countdown timer and bring the label pane to the front
+    timerLabel
+        .textProperty()
+        .bind(countdownTimer.timeStringProperty()); // Bring the label pane to the front
+    labelPane.toFront();
   }
 
   // Set up the timer pane

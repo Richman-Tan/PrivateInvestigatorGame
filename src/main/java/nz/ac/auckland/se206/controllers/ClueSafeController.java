@@ -33,6 +33,7 @@ public class ClueSafeController {
   @FXML private Group note3;
   @FXML private Pane safecontent;
   @FXML private Label timerLabel;
+  @FXML private Pane labelPane;
   private String line = "";
   private DropShadow permShadow = new DropShadow();
   private Button goBackButton = new Button("Go Back");
@@ -119,6 +120,8 @@ public class ClueSafeController {
             e.printStackTrace();
           }
         });
+
+    labelPane.toFront();
   }
 
   /**
