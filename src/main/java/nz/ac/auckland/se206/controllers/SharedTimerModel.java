@@ -2,8 +2,8 @@ package nz.ac.auckland.se206.controllers;
 
 public class SharedTimerModel {
 
-  private TimerModel countdownTimer;
   private static SharedTimerModel instance;
+  private TimerModel countdownTimer;
 
   /** Constructs a new shared timer model. */
   private SharedTimerModel() {
