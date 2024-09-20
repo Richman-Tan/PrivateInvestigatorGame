@@ -2,7 +2,6 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,86 +17,53 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
+/** CluePhoneController is the controller class for the Clue Phone scene. */
 public class CluePhoneController {
 
+  // Static fields
+  private static GameStateContext context = GameStateContext.getInstance();
+
+  // Static methods
+  // (None in this case)
+
+  // Instance fields
   @FXML private AnchorPane rootPane;
   @FXML private ImageView phoneImageView;
   @FXML private ImageView imageView;
-
-  // Declare arrowButton as a class-level variable
   @FXML private Button arrowButton;
-
   @FXML private Label label;
-
   @FXML private Label popUp;
+  @FXML private Pane labelPane;
+  @FXML private Label lbltimer;
 
-  // Start circles (left-hand side)
   private Circle startCircleRed;
   private Circle startCircleBlue;
   private Circle startCircleGreen;
 
-  // End circles (right-hand side)
   private Circle endCircleRed;
   private Circle endCircleBlue;
   private Circle endCircleGreen;
 
-  // Wires (lines)
   private Line redWire;
   private Line blueWire;
   private Line greenWire;
   private Line activeWire;
 
-  // Flags for each wire connection
   private boolean isRedWireConnected = false;
   private boolean isBlueWireConnected = false;
   private boolean isGreenWireConnected = false;
 
-  // Currently active circle for dragging
   private Circle activeStartCircle = null;
 
-  // Get timer
   private TimerModel countdownTimer;
-
-  private static GameStateContext context = GameStateContext.getInstance();
 
   @FXML
   private void initialize() {
-    // Create a Pane for the timer
-    Pane timerPane = new Pane();
-    timerPane.setPrefSize(101, 45); // Set the preferred size
-    timerPane.setOpacity(0.75); // Set the opacity
-    timerPane.setStyle(
-        "-fx-background-color: white;"
-            + "-fx-background-radius: 10px;"
-            + "-fx-border-radius: 10px;"
-            + "-fx-border-color: black;");
-
-    // Position the timerPane
-    AnchorPane.setLeftAnchor(timerPane, 10.0); // Set position using AnchorPane
-    AnchorPane.setTopAnchor(timerPane, 10.0); // Set top anchor
-
-    // Create a label for the timer
-    Label timerLabel = new Label();
-    timerLabel.setText("Label"); // Default text (will be updated by the timer)
-    timerLabel.setFont(new Font(24)); // Set font size
-    timerLabel.setAlignment(Pos.CENTER); // Align the text to the center
-    timerLabel.setLayoutX(21.0); // Set the label's X position inside the Pane
-    timerLabel.setLayoutY(8.0); // Set the label's Y position inside the Pane
-
-    // Bind the timerLabel to the countdown timer
-    countdownTimer = SharedTimerModel.getInstance().getTimer();
-    countdownTimer.start();
-    timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
-
-    // Add the label to the Pane
-    timerPane.getChildren().add(timerLabel);
-
-    // Add the timerPane to the rootPane
-    rootPane.getChildren().add(timerPane);
+    // Use the helper method to create and add the timer pane
+    createTimerPane();
 
     rootPane.getStylesheets().add(getClass().getResource("/css/button.css").toExternalForm());
 
@@ -462,7 +428,7 @@ public class CluePhoneController {
                   + "-fx-border-insets: 0;");
         });
 
-    timerPane.toFront();
+    labelPane.toFront();
   }
 
   private void handleArrowButtonClick() {
@@ -855,10 +821,18 @@ public class CluePhoneController {
     GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
   }
 
-  // Check if the drag ends on a valid end circle with the same color
+  /**
+   * Returns the matching end circle based on the start circle and the given coordinates.
+   *
+   * @param startCircle the starting circle
+   * @param x the x-coordinate to check
+   * @param y the y-coordinate to check
+   * @return the matching end circle, or null if no match is found
+   */
   private Circle getMatchingEndCircle(Circle startCircle, double x, double y) {
     Circle targetEndCircle = null;
 
+    // Check if the start circle and compare it to the end circle
     if (startCircle == startCircleRed && isInsideCircle(endCircleRed, x, y)) {
       targetEndCircle = endCircleRed;
     } else if (startCircle == startCircleBlue && isInsideCircle(endCircleBlue, x, y)) {
@@ -896,5 +870,15 @@ public class CluePhoneController {
   public void disableArrowButton() {
     arrowButton.setDisable(true);
     arrowButton.setOpacity(0.5); // lower the opacity to visually indicate it's disabled
+  }
+
+  /** Create a Pane to display the countdown timer. */
+  private void createTimerPane() {
+    // Bind the timerLabel to the countdown timer
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.start();
+
+    // Bind the timer label to the countdown timer
+    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
   }
 }

@@ -59,9 +59,9 @@
                </image>
             </ImageView>
             <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" stylesheets="@../css/confirmButton.css" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter an explanation for your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
+            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
                <font>
-                  <Font name="Courier New" size="8.0" />
+                  <Font name="Courier New" size="12.0" />
                </font>
             </TextField>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#324c57a1" height="36.0" layoutX="31.0" layoutY="86.0" stroke="#4278a8" strokeType="INSIDE" width="385.0" />
@@ -147,12 +147,12 @@
                   <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
-            <TextArea fx:id="feedbackField" editable="false" layoutX="67.0" layoutY="169.0" prefHeight="113.0" prefWidth="336.0" style="-fx-background-color: 'transparent'; -fx-border-color: '#8dbf3b'; -fx-control-inner-background: '#000000'; -fx-text-fill: white; -fx-prompt-text-fill: white;" visible="false" wrapText="true">
+            <TextArea fx:id="feedbackField" editable="false" layoutX="18.0" layoutY="169.0" prefHeight="131.0" prefWidth="428.0" style="-fx-background-color: 'transparent'; -fx-border-color: '#8dbf3b'; -fx-control-inner-background: '#000000'; -fx-text-fill: white; -fx-prompt-text-fill: white;" visible="false" wrapText="true">
                <font>
                   <Font name="Courier New" size="12.0" />
                </font>
             </TextArea>
-            <Button fx:id="btnReplay" layoutX="205.0" layoutY="292.0" mnemonicParsing="false" onAction="#onReplay" opacity="0.8" stylesheets="@../css/replayButton.css" text="REPLAY" visible="false" />
+            <Button fx:id="btnReplay" layoutX="205.0" layoutY="309.0" mnemonicParsing="false" onAction="#onReplay" opacity="0.8" prefHeight="31.0" prefWidth="71.0" stylesheets="@../css/replayButton.css" text="REPLAY" visible="false" />
          </children>
       </Pane>
    </children>

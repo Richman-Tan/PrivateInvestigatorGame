@@ -27,7 +27,7 @@ public class Guessing implements GameState {
    * @throws IOException if there is an I/O error
    */
   @Override
-  public void handleGuessClick() throws IOException {
+  public void onGuessClick() throws IOException {
     context.setState(context.getGameOverState());
   }
 }

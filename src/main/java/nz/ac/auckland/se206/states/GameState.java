@@ -13,5 +13,5 @@ public interface GameState {
    *
    * @throws IOException if there is an I/O error
    */
-  void handleGuessClick() throws IOException;
+  public void onGuessClick() throws IOException;
 }

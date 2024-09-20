@@ -8,7 +8,6 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -30,16 +29,24 @@ import nz.ac.auckland.se206.App;
 
 public class CutSceneController {
 
+  // Static fields
+  private static final String revealText = "THE WILL???"; // Text to display letter by letter
+
+  // Instance fields
   @FXML private AnchorPane rootPane;
-
+  @FXML private Pane labelPane; // Pane for the revealLabel
+  @FXML private Label timerLabel; // Label for the countdown timer
   private TimerModel countdownTimer;
-
   private MediaPlayer mediaPlayer; // Declare mediaPlayer as an instance variable
   private Label revealLabel; // Label for text reveal
-  private final String revealText = "THE WILL???"; // Text to display letter by letter
 
+  // Static methods
+  // No static methods for now
+
+  // Instance methods
+
+  // Initialize method called when the controller is created
   public void initialize() {
-
     // Load background video using the correct class reference for resource path
     String videoPath =
         CutSceneController.class
@@ -95,39 +102,12 @@ public class CutSceneController {
               }
             });
 
-    // Create a Pane for the timer
-    Pane timerPane = new Pane();
-    timerPane.setPrefSize(101, 45); // Set the preferred size
-    timerPane.setOpacity(0.75); // Set the opacity
-    timerPane.setStyle(
-        "-fx-background-color: white;"
-            + "-fx-background-radius: 10px;"
-            + "-fx-border-radius: 10px;"
-            + "-fx-border-color: black;");
-
-    // Position the timerPane
-    AnchorPane.setLeftAnchor(timerPane, 10.0); // Set position using AnchorPane
-    AnchorPane.setTopAnchor(timerPane, 10.0); // Set top anchor
-
-    // Create a label for the timer
-    Label timerLabel = new Label();
-    timerLabel.setText("Label"); // Default text (will be updated by the timer)
-    timerLabel.setFont(new Font(24)); // Set font size
-    timerLabel.setAlignment(Pos.CENTER); // Align the text to the center
-    timerLabel.setLayoutX(21.0); // Set the label's X position inside the Pane
-    timerLabel.setLayoutY(8.0); // Set the label's Y position inside the Pane
-
     // Bind the timerLabel to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
 
-    // Add the label to the Pane
-    timerPane.getChildren().add(timerLabel);
-
-    // Add the timerPane to the rootPane
-    rootPane.getChildren().add(timerPane);
-    // createImageView();
+    labelPane.toFront(); // Bring the labelPane to the front
   }
 
   // Method to dynamically create the label and center it
@@ -325,7 +305,7 @@ public class CutSceneController {
 
           // Set the dialogue text
           String dialogueText =
-              "Oh no! The will is missing! Who could've taken it? The FAMILY LAWER is coming in 5"
+              "Oh no! The will is missing! Who could've taken it? The FAMILY LAWYER is coming in 5"
                   + " minutes!!! If they come, and the will is gone, all his assets"
                   + " will disappear! QUICK call PI masters!";
 

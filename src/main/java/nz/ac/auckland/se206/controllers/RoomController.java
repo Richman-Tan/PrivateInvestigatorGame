@@ -4,6 +4,8 @@ import java.io.IOException;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -27,35 +29,39 @@ import nz.ac.auckland.se206.GameStateContext;
  */
 public class RoomController {
 
-  @FXML private Button btnGuess;
-  @FXML private Button btnMenu;
-  @FXML private Button btnCrimeScene;
-  @FXML private Button btnGrandma;
-  @FXML private Button btnGrandson;
-  @FXML private Button btnUncle;
+  // Inner Classes (if any would go here)
+
+  // Static Fields
+  private static GameStateContext context = GameStateContext.getInstance();
+
+  // Static Methods
+  // (If you have static methods, they would go here)
+
+  // Instance Fields
+  @FXML private Button menuButton;
+  @FXML private Button crimeSceneButton;
+  @FXML private Button grandmaButton;
+  @FXML private Button grandsonButton;
+  @FXML private Button uncleButton;
   @FXML private AnchorPane rootNode;
   @FXML private Button guessButton;
-
   @FXML private ImageView background;
-
   @FXML private Label lbltimer;
-
   @FXML private ImageView clue1;
-
   @FXML private ImageView clue2;
-
   @FXML private ImageView clue3;
+  @FXML private VBox viewBox;
 
-  @FXML private VBox vBox;
-
-  private static GameStateContext context = GameStateContext.getInstance();
   private boolean isFirstTimeInit = context.isFirstTimeInit();
-
   private TimerModel countdownTimer;
+
+  private boolean isatleastoncecluefound =
+      context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
 
   // Create a group node
   private Group drawGroup;
 
+  /** Initializes the room view. */
   @FXML
   public void initialize() {
     // Set the initial opacity of clue1 to 0 (hidden)
@@ -63,23 +69,28 @@ public class RoomController {
     clue2.setOpacity(0);
     clue3.setOpacity(0);
 
+    // Check if the guess button should be enabled
     checkGuessButton();
+
     // Check if the garden tool has been found
     if (context.isGardenToolFound()) {
       // If found, set the opacity of clue1 to 1 (visible)
       clue1.setOpacity(1);
     }
 
+    // Check if the phone has been found
     if (context.isPhoneFound()) {
       // If found, set the opacity of clue2 to 1 (visible)
       clue2.setOpacity(1);
     }
 
+    // Check if the note has been found
     if (context.isNoteFound()) {
       // If found, set the opacity of clue3 to 1 (visible)
       clue3.setOpacity(1);
     }
 
+    // Load the images
     final Image image1 =
         new Image(RoomController.class.getResource("/images/drawframe1.PNG").toString());
     final Image image2 =
@@ -92,15 +103,37 @@ public class RoomController {
         new Image(RoomController.class.getResource("/images/drawframe5.PNG").toString());
 
     // Other initialization (fade transition, timer, label updates, etc.)
-    if (isFirstTimeInit) {
-      rootNode.setOpacity(0);
-      FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), rootNode);
-      fadeTransition.setFromValue(0);
-      fadeTransition.setToValue(1);
-      fadeTransition.play();
-      context.setFirstTimeInit(false);
-      isFirstTimeInit = context.isFirstTimeInit();
-    }
+    Task<Void> task =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            if (isFirstTimeInit) {
+              Platform.runLater(
+                  () -> {
+                    // Fade in the root node
+                    rootNode.setOpacity(0);
+
+                    // Create a fade transition to fade in the root node
+                    FadeTransition fadeTransition =
+                        new FadeTransition(Duration.millis(1000), rootNode);
+
+                    // Set the opacity values
+                    fadeTransition.setFromValue(0);
+                    fadeTransition.setToValue(1);
+                    fadeTransition.play();
+                  });
+              // Set the first time initialization to false
+              context.setFirstTimeInit(false);
+              isFirstTimeInit = context.isFirstTimeInit();
+            }
+            return null;
+          }
+        };
+
+    // Create a new thread and start the task
+    Thread thread = new Thread(task);
+    thread.setDaemon(true); // Allows the application to exit even if the thread is running
+    thread.start();
 
     // Load background image
     Image backgroundImage =
@@ -126,12 +159,14 @@ public class RoomController {
     // Timer and other UI-related updates
     updateMenuVisibility();
 
+    // Load the images
     final ImageView file1 = createAndBindImageView(image1); // Displayed initially
     final ImageView file2 = createAndBindImageView(image2);
     final ImageView file3 = createAndBindImageView(image3);
     final ImageView file4 = createAndBindImageView(image4);
     final ImageView file5 = createAndBindImageView(image5);
 
+    // Apply the drop shadow effect to the images
     applyDropShadow(dropShadow, file1, file2, file3, file4, file5);
 
     // Instantiate an object called drawGroup and add the first image
@@ -144,7 +179,10 @@ public class RoomController {
     // Add the drawGroup to the AnchorPane (rootNode)
     rootNode.getChildren().addAll(backgroundImageView, drawGroup);
 
+    // Set the drawGroup to the back
     drawGroup.toBack();
+
+    // Set the background image to the back
     backgroundImageView.toBack();
 
     // Set hover effect
@@ -153,10 +191,14 @@ public class RoomController {
     // Set mouse click behavior to trigger the animation
     drawGroup.setOnMouseClicked(e -> playAnimation(file1, file2, file3, file4, file5));
 
+    // Apply the orange drop shadow effect to the drawGroup
     applyOrangeDropShadow(drawGroup);
 
+    // Timer and other UI-related updates
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
+
+    // Bind the timer label to the countdown timer
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
     // Load background image
@@ -210,6 +252,7 @@ public class RoomController {
     hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
     hoverShadow.setRadius(10); // Customize the shadow effect
 
+    // Apply hover effect
     phoneClueImageView.setOnMouseEntered(
         e -> {
           phoneClueImageView.setEffect(hoverShadow); // Apply hover effect when mouse enters
@@ -221,6 +264,7 @@ public class RoomController {
     phoneClueImageView.setOnMouseClicked(
         e -> {
           try {
+            // Handle the phone clue click event
             App.setRoot("cluephone");
           } catch (IOException e1) {
             e1.printStackTrace();
@@ -272,7 +316,7 @@ public class RoomController {
     paintingImageView.setOnMouseClicked(
         e -> {
           try {
-            onSafe();
+            handleSafeClick();
           } catch (IOException e1) {
             e1.printStackTrace();
           }
@@ -281,9 +325,15 @@ public class RoomController {
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(paintingImageView);
 
-    vBox.toFront();
+    // Load background image
+    viewBox.toFront();
   }
 
+  /**
+   * Adds a hover effect to a group.
+   *
+   * @param group
+   */
   private void addHoverEffect(Group group) {
     DropShadow hoverShadow = new DropShadow();
     hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
@@ -300,6 +350,15 @@ public class RoomController {
         });
   }
 
+  /**
+   * Plays the animation of the drawing.
+   *
+   * @param file1 the first image to display
+   * @param file2 the second image to display
+   * @param file3 the third image to display
+   * @param file4 the fourth image to display
+   * @param file5 the fifth image to display
+   */
   private void playAnimation(
       ImageView file1, ImageView file2, ImageView file3, ImageView file4, ImageView file5) {
     Timeline timeline = new Timeline();
@@ -338,6 +397,12 @@ public class RoomController {
         });
   }
 
+  /**
+   * Creates an ImageView and binds its width and height to the width and height of the AnchorPane.
+   *
+   * @param image the image to display in the ImageView
+   * @return the ImageView with the image and bound width and height
+   */
   private ImageView createAndBindImageView(Image image) {
     ImageView imageView = new ImageView(image);
     imageView
@@ -349,14 +414,71 @@ public class RoomController {
     return imageView;
   }
 
+  /**
+   * Replaces the current image in the file with the next image.
+   *
+   * @param file the file to replace the image in
+   * @param nextImage the next image to display
+   */
   private void showNextImage(Group file, ImageView nextImage) {
     file.getChildren().setAll(nextImage);
   }
 
+  /**
+   * Applies a drop shadow effect to a list of ImageViews.
+   *
+   * @param dropShadow the drop shadow effect to apply
+   * @param imageViews the list of ImageViews to apply the effect to
+   */
   private void applyDropShadow(DropShadow dropShadow, ImageView... imageViews) {
     for (ImageView imageView : imageViews) {
       imageView.setEffect(dropShadow);
     }
+  }
+
+  /**
+   * Applies an orange drop shadow effect to a node.
+   *
+   * @param node
+   */
+  private void applyOrangeDropShadow(Node node) {
+    DropShadow orangedropShadow = new DropShadow();
+    orangedropShadow.setOffsetX(0);
+    orangedropShadow.setOffsetY(0);
+    orangedropShadow.setRadius(10); // Adjust the radius for desired shadow spread
+    orangedropShadow.setColor(Color.ORANGE);
+    node.setEffect(orangedropShadow);
+  }
+
+  /**
+   * Updates the visibility of the menu buttons based on the isMenuVisible variable in the
+   * GameStateContext.
+   */
+  private void updateMenuVisibility() {
+    boolean isMenuVisible = context.isMenuVisible();
+
+    if (isMenuVisible) {
+      menuButton.setStyle(
+          "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
+              + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
+    } else {
+      menuButton.setStyle(
+          "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
+              + " -fx-background-insets: 0;");
+    }
+
+    // Set visibility and management of other buttons based on isMenuVisible
+    crimeSceneButton.setVisible(isMenuVisible);
+    crimeSceneButton.setManaged(isMenuVisible);
+
+    grandmaButton.setVisible(isMenuVisible);
+    grandmaButton.setManaged(isMenuVisible);
+
+    grandsonButton.setVisible(isMenuVisible);
+    grandsonButton.setManaged(isMenuVisible);
+
+    uncleButton.setVisible(isMenuVisible);
+    uncleButton.setManaged(isMenuVisible);
   }
 
   /**
@@ -386,13 +508,14 @@ public class RoomController {
    * @throws IOException if there is an I/O error
    */
   @FXML
-  private void handleGuessClick(ActionEvent event) throws IOException {
+  private void onGuessClick(ActionEvent event) throws IOException {
     GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
     App.setRoot("guessingScene");
-    context.handleGuessClick();
+    context.onGuessClick();
   }
 
-  private void onSafe() throws IOException {
+  @FXML
+  private void handleSafeClick() throws IOException {
     if (context.isNoteFound() || context.isSafeOpen()) {
       App.setRoot("cluesafeopened");
     } else {
@@ -400,37 +523,19 @@ public class RoomController {
     }
   }
 
-  /**
-   * Handles the inspect uncle button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onUncle(ActionEvent event) throws IOException {
+  private void onUncleButtonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect1room");
   }
 
-  /**
-   * Handles the inspect Grandmother button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onGrandmother(ActionEvent event) throws IOException {
+  private void onGrandmotherClick(ActionEvent event) throws IOException {
     context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
-  /**
-   * Handles the inspect Grandson button click event.
-   *
-   * @param event
-   * @throws IOException
-   */
   @FXML
-  private void onGrandson(ActionEvent event) throws IOException {
+  private void onGrandsonClick(ActionEvent event) throws IOException {
     App.setRoot("suspect3room");
   }
 
@@ -446,41 +551,12 @@ public class RoomController {
     updateMenuVisibility(); // Update the visibility in the UI
   }
 
-  /**
-   * Updates the visibility of the menu buttons based on the isMenuVisible variable in the
-   * GameStateContext.
-   */
-  private void updateMenuVisibility() {
-    boolean isMenuVisible = context.isMenuVisible();
-
-    if (isMenuVisible) {
-      btnMenu.setStyle(
-          "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
-              + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
-    } else {
-      btnMenu.setStyle(
-          "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
-              + " -fx-background-insets: 0;");
-    }
-
-    btnCrimeScene.setVisible(isMenuVisible);
-    btnCrimeScene.setManaged(isMenuVisible);
-
-    btnGrandma.setVisible(isMenuVisible);
-    btnGrandma.setManaged(isMenuVisible);
-
-    btnGrandson.setVisible(isMenuVisible);
-    btnGrandson.setManaged(isMenuVisible);
-
-    btnUncle.setVisible(isMenuVisible);
-    btnUncle.setManaged(isMenuVisible);
-  }
-
   @FXML
   private void checkGuessButton() {
     if (context.getListOfVisitors().contains("suspect1")
         && context.getListOfVisitors().contains("suspect2")
-        && context.getListOfVisitors().contains("suspect3")) {
+        && context.getListOfVisitors().contains("suspect3")
+        && isatleastoncecluefound) {
       // Enable the guess button
       guessButton.setOpacity(0.8);
       guessButton.setDisable(false);
@@ -489,14 +565,5 @@ public class RoomController {
       guessButton.setOpacity(0.3);
       guessButton.setDisable(true);
     }
-  }
-
-  private void applyOrangeDropShadow(Node node) {
-    DropShadow orangedropShadow = new DropShadow();
-    orangedropShadow.setOffsetX(0);
-    orangedropShadow.setOffsetY(0);
-    orangedropShadow.setRadius(10); // Adjust the radius for desired shadow spread
-    orangedropShadow.setColor(Color.ORANGE);
-    node.setEffect(orangedropShadow);
   }
 }

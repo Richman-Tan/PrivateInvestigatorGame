@@ -7,7 +7,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -42,12 +41,35 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
 
 public class UpdatedGuessingController {
-  // main pane
-  @FXML private AnchorPane rootPane;
 
+  private static final String confirmed =
+      GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
+  private static final String gameOver =
+      GameStarted.class.getClassLoader().getResource("sounds/gameover.mp3").toExternalForm();
+  private static final String culprit =
+      GameStarted.class.getClassLoader().getResource("sounds/clickOnCulprit.mp3").toExternalForm();
+  private static final String explanation =
+      GameStarted.class
+          .getClassLoader()
+          .getResource("sounds/provideExplanation.mp3")
+          .toExternalForm();
+  private static final String correctGuess =
+      GameStarted.class.getClassLoader().getResource("sounds/guessCorrectly.mp3").toExternalForm();
+  private static final String incorrectGuess =
+      GameStarted.class
+          .getClassLoader()
+          .getResource("sounds/guessIncorrectly.mp3")
+          .toExternalForm();
+
+  // Static methods
+  private static String loadTemplate(URI filePath) throws IOException {
+    return new String(Files.readAllBytes(Paths.get(filePath)));
+  }
+
+  // Instance fields
+  @FXML private AnchorPane rootPane;
   @FXML private Pane guessPhotoPane;
   @FXML private Pane verifyCulpritPane;
-
   @FXML private Rectangle recSuspect1;
   @FXML private Rectangle recSuspect2;
   @FXML private Rectangle recSuspect3;
@@ -59,77 +81,45 @@ public class UpdatedGuessingController {
   @FXML private ImageView clue3foundimg; // note
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
-  @FXML private ImageView staticlayer; // GIF image view created programmatically
+  @FXML private ImageView staticlayer;
   @FXML private TextField userExplanation;
   @FXML private Button btnReplay;
-
   @FXML private ProgressIndicator progressIndicator;
-
-  private boolean playedConfirmCulprit = false;
-  private boolean playedConfirmEx = false;
-
   @FXML private ImageView staticImage;
   @FXML private ImageView background;
-  private String text = "Who is the culprit . . .";
-  private ImageView staticimg1; // GIF image view created programmatically
-  private Timeline timeline;
   @FXML private Pane gameOverPane;
   @FXML private Rectangle gameOverRectangle;
-  @FXML private Rectangle gameOverRectangle2;
-  private int i = 0;
-  private int j = 0;
   @FXML private Label correctGuessLbl;
   @FXML private Label incorrectGuessLbl;
-  private ArrayList<Object> list;
   @FXML private Label lbltimer;
   @FXML private Label gameOverTxt;
   @FXML private Label reviewLbl;
   @FXML private TextArea feedbackField;
-  @FXML private Label lblStory; // The Label for displaying text
-  private boolean guess = false;
-  @FXML private Label incorrectGuessLbl2;
-
+  @FXML private Label lblStory;
   @FXML private Pane labelPane;
-
   @FXML private Button confirmExplanationButton;
-
   @FXML private Rectangle recSus1;
   @FXML private Rectangle recSus2;
   @FXML private Rectangle recSus3;
+  @FXML private Label incorrectGuessLbl2;
 
+  private boolean playedConfirmCulprit = false;
+  private boolean playedConfirmEx = false;
+  private String text = "Who is the culprit . . .";
+  private ImageView staticimg1;
+  private Timeline timeline;
+  private int i = 0;
+  private int j = 0;
+  private ArrayList<Object> list;
+  private boolean guess = false;
   private MediaPlayer mediaPlayer;
   private MediaPlayer gameOverPlayer;
   private MediaPlayer culpritPlayer;
   private MediaPlayer explanationPlayer;
   private MediaPlayer guessPlayer;
-
-
-  private final String confirmed =
-      GameStarted.class.getClassLoader().getResource("sounds/confirmed.mp3").toExternalForm();
-  private final String gameOver =
-      GameStarted.class.getClassLoader().getResource("sounds/gameover.mp3").toExternalForm();
-  private final String culprit =
-      GameStarted.class.getClassLoader().getResource("sounds/clickOnCulprit.mp3").toExternalForm();
-  private final String explanation =
-      GameStarted.class
-          .getClassLoader()
-          .getResource("sounds/provideExplanation.mp3")
-          .toExternalForm();
-  private final String correctGuess =
-      GameStarted.class.getClassLoader().getResource("sounds/guessCorrectly.mp3").toExternalForm();
-  private final String incorrectGuess =
-      GameStarted.class
-          .getClassLoader()
-          .getResource("sounds/guessIncorrectly.mp3")
-          .toExternalForm();
-
   private GameStateContext context = GameStateContext.getInstance();
-  private Label selectedLabel = new Label("");
-
   private TimerModel countdownTimer;
-
   private ChatCompletionRequest chatCompletionRequest;
-
   private String guessedsuspect;
 
   /**
@@ -158,29 +148,32 @@ public class UpdatedGuessingController {
     countdownTimer.start();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
 
-    //add listener for the label when it shows "over"
-    lbltimer.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (newValue.equals("Over!")){
-        countdownTimer.stop();
-        confirmCulpritButton.setDisable(true);
-        confirmCulpritButton.setOpacity(0.7);
-        confirmExplanationButton.setDisable(true);
-        confirmExplanationButton.setOpacity(0.7);
-        verifyCulpritPane.setVisible(false);
-        staticImage.setVisible(false);
-        guessPhotoPane.setVisible(false);
-        gameOverRectangle.setVisible(true);
-        gameOverPane.setVisible(true);
-        showGameOver();
-      }
-    });
+    // add listener for the label when it shows "over"
+    lbltimer
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.equals("Over!")) {
+                countdownTimer.stop();
+                confirmCulpritButton.setDisable(true);
+                confirmCulpritButton.setOpacity(0.7);
+                confirmExplanationButton.setDisable(true);
+                confirmExplanationButton.setOpacity(0.7);
+                verifyCulpritPane.setVisible(false);
+                staticImage.setVisible(false);
+                guessPhotoPane.setVisible(false);
+                gameOverRectangle.setVisible(true);
+                gameOverPane.setVisible(true);
+                showGameOver();
+              }
+            });
 
     // play the audio
     Media sound = new Media(culprit);
     culpritPlayer = new MediaPlayer(sound);
     culpritPlayer.play();
     warpText(); // Start the text animation
-createImageView(); // Create the ImageView and add it to the scene
+    createImageView(); // Create the ImageView and add it to the scene
   }
 
   @FXML
@@ -317,8 +310,11 @@ createImageView(); // Create the ImageView and add it to the scene
             gameOverRectangle.setVisible(true);
             gameOverPane.setVisible(true);
             showGameOver();
-            //remove the timer from the screen if user has been moved to game over state
+            // remove the timer from the screen if user has been moved to game over state
             labelPane.setVisible(false);
+
+            // stop the timer
+            countdownTimer.stop();
           });
     }
   }
@@ -381,13 +377,13 @@ createImageView(); // Create the ImageView and add it to the scene
                           timeline.stop();
                         }
                       }));
-
           timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
           timeline.play(); // Start the animation
-          if(!guess){
-            timeline.setOnFinished(e -> {
-              btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
-          });
+          if (!guess) {
+            timeline.setOnFinished(
+                e -> {
+                  btnReplay.setVisible(true); // Show the replay button when the timeline finishes
+                });
           }
         });
   }
@@ -431,7 +427,7 @@ createImageView(); // Create the ImageView and add it to the scene
     flashTimeline.setCycleCount(Timeline.INDEFINITE); // Keep flashing indefinitely
     flashTimeline.play(); // Start the flashing animation
   }
-  
+
   private void createImageView() {
     // Create the ImageView programmatically
     staticimg1 = new ImageView();
@@ -450,7 +446,9 @@ createImageView(); // Create the ImageView and add it to the scene
     // Load the GIF image once
     Image gifImage =
         new Image(
-            UpdatedGuessingController.class.getResource("/images/guessingimages/static.gif").toString(),
+            UpdatedGuessingController.class
+                .getResource("/images/guessingimages/static.gif")
+                .toString(),
             true // Enable background loading for smoother performance
             );
 
@@ -490,21 +488,33 @@ createImageView(); // Create the ImageView and add it to the scene
               });
       timeline.getKeyFrames().add(keyFrame);
     }
-    timeline.setOnFinished(e -> {
-      btnReplay.setVisible(true);  // Show the replay button when the timeline finishes
-  });
+    timeline.setOnFinished(
+        e -> {
+          btnReplay.setVisible(true); // Show the replay button when the timeline finishes
+        });
 
     // Play the timeline animation
     timeline.play();
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+
+    // Add the message to the request
     chatCompletionRequest.addMessage(msg);
     try {
+      // Execute the request and get the result
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+
+      // Get the first choice from the result
       Choice result = chatCompletionResult.getChoices().iterator().next();
+
+      // Add the result message to the request
       chatCompletionRequest.addMessage(result.getChatMessage());
+
+      // Append the result message to the chat
       appendChatMessage(result.getChatMessage());
+
+      // Return the result message
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
@@ -513,16 +523,23 @@ createImageView(); // Create the ImageView and add it to the scene
     }
   }
 
+  /** Method to handle when the send message button is clicked */
   private void onSendMessage() {
-
+    // Get the user's explanation message
     String message = userExplanation.getText().trim();
+
+    // Print the message to the console
     System.out.println("Message: " + message);
     if (message.isEmpty()) {
-      //Default feedback
-      appendChatMessage(new ChatMessage("system", "You did not provide an explanation, next time rely on clues rather than a hunch"));
+      // Default feedback
+      appendChatMessage(
+          new ChatMessage(
+              "system",
+              "You did not provide an explanation, next time rely on clues rather than a hunch"));
       return;
     }
 
+    // Clear the text area after sending the message
     userExplanation.clear();
 
     // Create a background task for the GPT request
@@ -571,6 +588,7 @@ createImageView(); // Create the ImageView and add it to the scene
           Throwable throwable = task.getException();
           Platform.runLater(
               () -> {
+                // Append an error message to the chat
                 appendChatMessage(new ChatMessage("system", "Error: " + throwable.getMessage()));
               });
           throwable.printStackTrace();
@@ -582,21 +600,11 @@ createImageView(); // Create the ImageView and add it to the scene
     thread.start();
   }
 
-  private static String loadTemplate(URI filePath) throws IOException {
-    return new String(Files.readAllBytes(Paths.get(filePath)));
-  }
-
-  // @FXML
-  // private void onEnterKey() {
-  //   confirmExplanationButton.setDisable(false);
-  //   confirmExplanationButton.setOpacity(1);
-  // }
-  
   /**
    * Method to initialise the scene again when Replay button is clicked
+   *
    * @param event
    * @throws IOException
-   * 
    */
   @FXML
   private void onReplay(ActionEvent event) throws IOException {
@@ -612,5 +620,4 @@ createImageView(); // Create the ImageView and add it to the scene
 
     App.setRoot("initialScene");
   }
-
 }

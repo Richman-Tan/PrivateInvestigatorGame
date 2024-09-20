@@ -16,28 +16,29 @@ import nz.ac.auckland.se206.states.Guessing;
  */
 public class GameStateContext {
 
+  private static GameStateContext instance;
+
+  // Static method to get the single instance of GameStateContext
+  public static GameStateContext getInstance() {
+    if (instance == null) {
+      instance = new GameStateContext();
+    }
+    return instance;
+  }
+
   private final GameStarted gameStartedState;
   private final Guessing guessingState;
   private final GameOver gameOverState;
+
   private GameState gameState;
   private List<String> listOfVisitors;
-
-  private static GameStateContext instance;
-  // Add this variable to manage first time initialization
   private boolean firstTimeInit;
-  // Add this variable to manage menu visibility
-  private boolean isMenuVisible;
-  // State of whether the garden tool shas been found
   private boolean isGardenToolFound;
-  // State of whether the note has been found
-  private boolean isNoteFound;
-  // State of whether the safe has been opened
-  private boolean isSafeOpen;
-  // State of wheter the phone has been found.
-  private boolean isPhoneFound;
-  // State of whether the guess has been pressed.
   private boolean isGuessPressed;
-
+  private boolean isMenuVisible;
+  private boolean isNoteFound;
+  private boolean isPhoneFound;
+  private boolean isSafeOpen;
   private TimerModel countdownTimer;
 
   /** Constructs a new GameStateContext and initializes the game states. */
@@ -56,14 +57,6 @@ public class GameStateContext {
     this.isSafeOpen = false;
     this.isPhoneFound = false;
     this.isGuessPressed = false;
-  }
-
-  // Static method to get the single instance of GameStateContext
-  public static GameStateContext getInstance() {
-    if (instance == null) {
-      instance = new GameStateContext();
-    }
-    return instance;
   }
 
   /**
@@ -107,8 +100,8 @@ public class GameStateContext {
    *
    * @throws IOException if there is an I/O error
    */
-  public void handleGuessClick() throws IOException {
-    gameState.handleGuessClick();
+  public void onGuessClick() throws IOException {
+    gameState.onGuessClick();
   }
 
   /**

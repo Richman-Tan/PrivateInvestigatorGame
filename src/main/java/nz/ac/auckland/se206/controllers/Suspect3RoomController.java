@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,42 +32,54 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class Suspect3RoomController {
 
-  @FXML private Button btnMenu;
-  @FXML private Button btnCrimeScene;
-  @FXML private Button btnGrandma;
-  @FXML private Button btnGrandson;
-  @FXML private Button btnUncle;
+  // Static fields
+  private static ChatCompletionRequest chatCompletionRequest;
+
+  private static String loadTemplate(URI filePath) throws IOException {
+    return new String(Files.readAllBytes(Paths.get(filePath)));
+  }
+
+  // Instance fields
+  @FXML private Button crimeSceneButton;
+  @FXML private Button grandmaButton;
+  @FXML private Button grandsonButton;
+  @FXML private Button menuButton;
+  @FXML private Button uncleButton;
   @FXML private TextField userChatBox;
   @FXML private TextArea suspect3ChatBox;
   @FXML private Circle sendButton;
-
   @FXML private Button guessButton;
-
   @FXML private AnchorPane rootNode;
-
   @FXML private Label lbltimer;
   @FXML private ImageView backgroundimg;
 
-  private ChatCompletionRequest chatCompletionRequest;
   private GameStateContext context = GameStateContext.getInstance();
   private boolean firstTime = true;
-
   private TimerModel countdownTimer;
 
-  /** Initializes the suspect 2 room view. */
+  private boolean isAtLeastOnceClueFound =
+      context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
+
+  /** Initializes the suspect 3 room view. */
   @FXML
   public void initialize() {
-    // Set initial visibility of the buttons
     updateMenuVisibility();
 
+    // Bind timer to label
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    // Load the chat messages
     Task<Void> task =
-        new Task<Void>() {
+        new Task<>() {
           @Override
           protected Void call() throws IOException, URISyntaxException {
             try {
+
+              // Record visit
               checkGuessButton();
+
+              // Load the GPT model configuration
               ApiProxyConfig config = ApiProxyConfig.readConfig();
               chatCompletionRequest =
                   new ChatCompletionRequest(config)
@@ -75,18 +88,20 @@ public class Suspect3RoomController {
                       .setTopP(0.5)
                       .setMaxTokens(100);
 
+              // Load the template for the chat message
               URL resourceUrl =
                   PromptEngineering.class.getClassLoader().getResource("prompts/grandson.txt");
               String template = loadTemplate(resourceUrl.toURI());
 
-              // Initial GPT system message
+              // Run GPT with the message
               ChatMessage systemMessage = new ChatMessage("system", template);
               runGpt(systemMessage);
-              if (firstTime == true) {
-                userChatBox.setPromptText("Begin interrogating...");
+
+              // Set the prompt text
+              if (firstTime) {
+                Platform.runLater(() -> userChatBox.setPromptText("Begin interrogating..."));
                 firstTime = false;
               }
-
             } catch (ApiProxyException | IOException | URISyntaxException e) {
               e.printStackTrace();
             }
@@ -94,164 +109,107 @@ public class Suspect3RoomController {
           }
         };
 
-    // Run the task in a separate thread
-    Thread thread = new Thread(task);
-    thread.setDaemon(true);
-    thread.start();
+    // Run task on a new thread
+    new Thread(task).start();
 
-    backgroundimg.setFitWidth(rootNode.getWidth());
-    backgroundimg.setFitHeight(rootNode.getHeight());
-
-    // Make sure the background resizes with the window
+    // Set the responsive background image
     backgroundimg.fitWidthProperty().bind(rootNode.widthProperty());
     backgroundimg.fitHeightProperty().bind(rootNode.heightProperty());
   }
 
-  /**
-   * Handles the event when the crime scene button is clicked.
-   *
-   * @throws IOException if the root cannot be set
-   */
+  /** Handles the guess button click event. */
   @FXML
-  private void onRoom() throws IOException {
-    App.setRoot("room");
+  private void onGuessClick(ActionEvent event) throws IOException {
+    // Set the guess button pressed
+    GameStateContext.getInstance().setGuessPressed(true);
+    App.setRoot("guessingScene");
+    context.onGuessClick();
   }
 
-  /**
-   * Handles the event when the uncle button is clicked.
-   *
-   * @param event the action event
-   * @throws IOException if the root cannot be set
-   */
-  @FXML
-  private void onUncle(ActionEvent event) throws IOException {
-    App.setRoot("suspect1room");
-  }
-
-  /**
-   * Handles the event when the grandma button is clicked.
-   *
-   * @param event the action event
-   * @throws IOException if the root cannot be set
-   */
-  @FXML
-  private void onGrandma(ActionEvent event) throws IOException {
-    App.setRoot("suspect2room");
-  }
-
-  /**
-   * Toggles the visibility of the menu and other buttons when the menu button is clicked.
-   *
-   * @param event the action event
-   */
+  /** Toggles the visibility of the menu and other buttons when the menu button is clicked. */
   @FXML
   private void onToggleMenu(ActionEvent event) {
-    context.toggleMenuVisibility(); // Toggle the visibility in the context
-    updateMenuVisibility(); // Update the visibility in the UI
+    // Toggle the menu visibility
+    context.toggleMenuVisibility();
+    updateMenuVisibility();
   }
 
-  /**
-   * Updates the visibility of the menu and other buttons based on the isMenuVisible variable in the
-   * GameStateContext.
-   */
+  /** Updates the visibility of the menu and other buttons. */
   private void updateMenuVisibility() {
+
+    // Get the menu visibility
     boolean isMenuVisible = context.isMenuVisible();
 
-    if (isMenuVisible) {
-      btnMenu.setStyle(
-          "-fx-background-radius: 10 0 0 10; -fx-border-color:  black transparent black black;"
-              + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
-    } else {
-      btnMenu.setStyle(
-          "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
-              + " -fx-background-insets: 0;");
-    }
+    // Update the menu button style based on visibility
+    String style =
+        isMenuVisible
+            ? "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
+                + " -fx-background-insets: 0;"
+            : "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
+                + " -fx-background-insets: 0;";
+    menuButton.setStyle(style);
 
-    // Set visibility and management of other buttons based on isMenuVisible
-    btnCrimeScene.setVisible(isMenuVisible);
-    btnCrimeScene.setManaged(isMenuVisible);
-
-    btnGrandma.setVisible(isMenuVisible);
-    btnGrandma.setManaged(isMenuVisible);
-
-    btnGrandson.setVisible(isMenuVisible);
-    btnGrandson.setManaged(isMenuVisible);
-
-    btnUncle.setVisible(isMenuVisible);
-    btnUncle.setManaged(isMenuVisible);
+    // Update visibility of all buttons
+    updateButtonVisibility(crimeSceneButton, isMenuVisible);
+    updateButtonVisibility(grandmaButton, isMenuVisible);
+    updateButtonVisibility(grandsonButton, isMenuVisible);
+    updateButtonVisibility(uncleButton, isMenuVisible);
   }
 
-  /**
-   * Handles the guess button click event.
-   *
-   * @param event the action event triggered by clicking the guess button
-   * @throws IOException if there is an I/O error
-   */
-  @FXML
-  private void handleGuessClick(ActionEvent event) throws IOException {
-    GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
-    App.setRoot("guessingScene");
-    context.handleGuessClick();
+  /** Helper method to update the visibility and management of buttons. */
+  private void updateButtonVisibility(Button button, boolean isVisible) {
+    button.setVisible(isVisible);
+    button.setManaged(isVisible);
   }
 
-  /**
-   * Runs the GPT model with a given chat message.
-   *
-   * @param msg the chat message to process
-   * @return the response chat message
-   * @throws ApiProxyException if there is an error communicating with the API proxy
-   */
+  /** Runs the GPT model with a given chat message. */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // Add the message to the chat completion request
     chatCompletionRequest.addMessage(msg);
-    disableSendButton(true); // Disable send button during processing
+    disableSendButton(true);
+
     try {
+      // Execute the chat completion request
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
+
+      // Add the chat message to the chat completion request
       chatCompletionRequest.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
+
+      // Return the chat message
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
       e.printStackTrace();
       return null;
     } finally {
-      disableSendButton(false); // Re-enable send button after processing
+      disableSendButton(false);
     }
   }
 
-  /**
-   * Appends a chat message to the chat text area.
-   *
-   * @param msg the chat message to append
-   */
+  /** Appends a chat message to the chat text area. */
   @FXML
   private void appendChatMessage(ChatMessage msg) {
-    suspect3ChatBox.clear();
-    suspect3ChatBox.appendText(msg.getContent() + "\n\n");
+    Platform.runLater(
+        () -> {
+          suspect3ChatBox.clear();
+          suspect3ChatBox.appendText(msg.getContent() + "\n\n");
+        });
   }
 
-  /**
-   * Sends a message to the GPT model.
-   *
-   * @param event the action event triggered by the send button
-   * @throws ApiProxyException if there is an error communicating with the API proxy
-   * @throws IOException if there is an I/O error
-   */
+  /** Sends a message to the GPT model. */
   @FXML
   private void onSend(MouseEvent event) throws ApiProxyException, IOException {
+    // Send the message to the GPT model
     sendMessageCode();
     recordVisit();
     checkGuessButton();
   }
 
-  /**
-   * Handles the key pressed event.
-   *
-   * @param event the key event
-   */
+  /** Handles the key pressed event (for enter key). */
   @FXML
   public void onKeyPressed(KeyEvent event) {
-    // Capture the ENTER key
     if (event.getCode() == KeyCode.ENTER) {
       try {
         sendMessageCode();
@@ -262,64 +220,80 @@ public class Suspect3RoomController {
   }
 
   private void sendMessageCode() throws ApiProxyException, IOException {
+    // Get the message from the user
     String message = userChatBox.getText().trim();
-    if (message.isEmpty()) {
-      return;
-    }
+    if (message.isEmpty()) return;
+
+    // Clear the chat box and set the prompt text
     userChatBox.clear();
     suspect3ChatBox.clear();
     userChatBox.setPromptText("Waiting for response...");
-    ChatMessage msg = new ChatMessage("user", message);
 
-    // Run the GPT model in a separate thread to avoid blocking the UI
-    Thread thread =
-        new Thread(
+    // Send the message to the GPT model
+    ChatMessage msg = new ChatMessage("user", message);
+    new Thread(
             () -> {
               try {
+                // Run the GPT model
                 runGpt(msg);
-                userChatBox.setPromptText("Ask another question...");
+                Platform.runLater(() -> userChatBox.setPromptText("Ask another question..."));
               } catch (ApiProxyException e) {
                 e.printStackTrace();
               }
-            });
-    thread.start(); // Start the GPT thread
+            })
+        .start();
   }
 
-  // Method to disable/enable send button
   private void disableSendButton(boolean disable) {
     sendButton.setDisable(disable);
   }
 
-  private static String loadTemplate(URI filePath) throws IOException {
-    return new String(Files.readAllBytes(Paths.get(filePath)));
+  /** Handles the event when the uncle button is clicked. */
+  @FXML
+  private void onUncleButtonClick(ActionEvent event) throws IOException {
+    // Set the root to the uncle room
+    App.setRoot("suspect1room");
+  }
+
+  /** Handles the event when the grandma button is clicked. */
+  @FXML
+  private void onGrandmotherClick(ActionEvent event) throws IOException {
+    App.setRoot("suspect2room");
   }
 
   private void recordVisit() {
-    if (GameStateContext.getInstance().getListOfVisitors().isEmpty()
-        || !GameStateContext.getInstance().getListOfVisitors().contains("suspect3")) {
+    if (!GameStateContext.getInstance().getListOfVisitors().contains("suspect3")) {
       GameStateContext.getInstance().addVisitor("suspect3");
     }
   }
 
+  /** Checks if the guess button should be enabled. */
   @FXML
   private void checkGuessButton() {
-    if (context.getListOfVisitors().contains("suspect1")
-        && context.getListOfVisitors().contains("suspect2")
-        && context.getListOfVisitors().contains("suspect3")) {
-      // Enable the guess button
-      guessButton.setOpacity(0.8);
-      guessButton.setDisable(false);
-    } else {
-      // Disable the guess button
-      guessButton.setOpacity(0.3);
-      guessButton.setDisable(true);
-    }
+    // Check if the guess button should be enabled
+    boolean canGuess =
+        context.getListOfVisitors().contains("suspect1")
+            && context.getListOfVisitors().contains("suspect2")
+            && context.getListOfVisitors().contains("suspect3")
+            && isAtLeastOnceClueFound;
+
+    // Set the guess button opacity and disable state
+    guessButton.setOpacity(canGuess ? 0.8 : 0.3);
+    guessButton.setDisable(!canGuess);
   }
 
+  /** Handles enter key event for sending messages. */
   @FXML
   private void onEnterKey(ActionEvent event) throws ApiProxyException, IOException {
+    // Send the message to the GPT model
     sendMessageCode();
     recordVisit();
     checkGuessButton();
+  }
+
+  /** Handles the event when the crime scene button is clicked. */
+  @FXML
+  private void onRoom() throws IOException {
+    App.setRoot("room");
   }
 }

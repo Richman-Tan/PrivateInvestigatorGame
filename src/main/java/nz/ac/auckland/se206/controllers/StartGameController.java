@@ -17,12 +17,10 @@ import nz.ac.auckland.se206.states.GameStarted;
 
 public class StartGameController {
 
-  @FXML private AnchorPane rootPane;
-  private MediaPlayer mediaPlayer;
-  private final String door =
+  // Static fields
+  private static final String door =
       GameStarted.class.getClassLoader().getResource("sounds/doorOpen.mp3").toExternalForm();
 
-  // Load images from the images folder
   static final Image image1 =
       new Image(BackstoryController.class.getResource("/images/initialDoor.jpg").toString());
   static final Image image2 =
@@ -42,9 +40,14 @@ public class StartGameController {
   static final Image image9 =
       new Image(BackstoryController.class.getResource("/images/doorframe9.PNG").toString());
 
-  // Create an ImageView to display the images
+  // Instance fields
+  @FXML private AnchorPane rootPane;
+  private MediaPlayer mediaPlayer;
   private ImageView imageView;
 
+  // Constructors
+
+  // Instance methods
   /** Initializes the start view. */
   @FXML
   public void initialize() {
@@ -80,7 +83,6 @@ public class StartGameController {
           try {
             mediaPlayer.seek(Duration.seconds(1));
             mediaPlayer.play();
-            // delay
             onPlay();
           } catch (IOException | ApiProxyException ex) {
             ex.printStackTrace();
@@ -89,8 +91,7 @@ public class StartGameController {
   }
 
   /*
-   * Handles the event when the image (acting as a button) is clicked. Transitions to the backstory view
-   * with image rotation.
+   * View with image rotation.
    */
   @FXML
   private void onPlay() throws IOException, ApiProxyException {
@@ -127,8 +128,7 @@ public class StartGameController {
     // After the timeline, add the fade transition to switch to the backstory view
     timeline.setOnFinished(
         e -> {
-          FadeTransition fadeTransition = new FadeTransition();
-          fadeTransition.setDuration(javafx.util.Duration.millis(1000));
+          FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000));
           fadeTransition.setNode(rootPane);
           fadeTransition.setFromValue(1);
           fadeTransition.setToValue(0);

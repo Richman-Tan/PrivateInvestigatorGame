@@ -3,7 +3,6 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,14 +11,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
-// import nz.ac.auckland.se206.GameStateContext;
-
 public class ClueSafeController {
 
+  // Inner classes (none in this case)
+
+  // Static fields
+  // (none in this case)
+
+  // Static methods
+  // (none in this case)
+
+  // Instance fields
   @FXML private AnchorPane anchorPane;
   @FXML private Label codeDisplay;
   @FXML private Group notes;
@@ -27,51 +32,28 @@ public class ClueSafeController {
   @FXML private Group note2;
   @FXML private Group note3;
   @FXML private Pane safecontent;
+  @FXML private Label timerLabel;
   private String line = "";
   private DropShadow permShadow = new DropShadow();
-  Button goBackButton = new Button("Go Back");
-
-  boolean middleNote = false;
-  boolean backNote = false;
+  private Button goBackButton = new Button("Go Back");
+  private boolean middleNote = false;
+  private boolean backNote = false;
 
   // Get timer
   private TimerModel countdownTimer;
 
+  // Constructors
+  // (default constructor is implied)
+
+  // Instance methods
+
+  /** Initializes the controller. */
   @FXML
   private void initialize() {
-
-    // Create a Pane for the timer
-    Pane timerPane = new Pane();
-    timerPane.setPrefSize(101, 45); // Set the preferred size
-    timerPane.setOpacity(0.75); // Set the opacity
-    timerPane.setStyle(
-        "-fx-background-color: white;"
-            + "-fx-background-radius: 10px;"
-            + "-fx-border-radius: 10px;"
-            + "-fx-border-color: black;");
-
-    // Position the timerPane
-    AnchorPane.setLeftAnchor(timerPane, 10.0); // Set position using AnchorPane
-    AnchorPane.setTopAnchor(timerPane, 10.0); // Set top anchor
-
-    // Create a label for the timer
-    Label timerLabel = new Label();
-    timerLabel.setText("Label"); // Default text (will be updated by the timer)
-    timerLabel.setFont(new Font(24)); // Set font size
-    timerLabel.setAlignment(Pos.CENTER); // Align the text to the center
-    timerLabel.setLayoutX(21.0); // Set the label's X position inside the Pane
-    timerLabel.setLayoutY(8.0); // Set the label's Y position inside the Pane
-
     // Bind the timerLabel to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
-
-    // Add the label to the Pane
-    timerPane.getChildren().add(timerLabel);
-
-    // Add the timerPane to the rootPane
-    anchorPane.getChildren().add(timerPane);
 
     if (GameStateContext.getInstance().isSafeOpen()) {
       safecontent.toFront();
@@ -107,6 +89,20 @@ public class ClueSafeController {
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
 
+    // Add hover effect to the button
+    goBackButton.setOnMouseEntered(
+        e -> {
+          goBackButton.setOpacity(0.7);
+          goBackButton.setCursor(javafx.scene.Cursor.HAND);
+        });
+
+    // Remove effect when mouse exits
+    goBackButton.setOnMouseExited( // Remove effect when mouse exits
+        e -> {
+          goBackButton.setOpacity(1);
+          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
+        });
+
     // Position the button at the bottom-right corner
     AnchorPane.setBottomAnchor(goBackButton, 10.0); // 10px from the bottom
     AnchorPane.setRightAnchor(goBackButton, 10.0); // 10px from the right
@@ -123,12 +119,37 @@ public class ClueSafeController {
             e.printStackTrace();
           }
         });
-
-    timerPane.toFront();
   }
 
+  /**
+   * Adds a hover effect to the image.
+   *
+   * @param image
+   */
+  private void addHoverEffect(Group image) {
+    DropShadow hoverShadow = new DropShadow();
+    hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
+    hoverShadow.setRadius(20); // Customize the shadow effect
+
+    image.setOnMouseEntered(
+        e -> {
+          image.setEffect(hoverShadow); // Apply hover effect when mouse enters
+        });
+
+    image.setOnMouseExited(
+        e -> {
+          image.setEffect(permShadow); // Remove effect when mouse exits
+        });
+  }
+
+  /**
+   * Handles the pin button clicks.
+   *
+   * @param event
+   */
   @FXML
   private void onPin(ActionEvent event) {
+    // Get the clicked pin
     Button clickedPin = (Button) event.getSource();
     String pinId = clickedPin.getId();
     if (line.length() < 3) {
@@ -167,11 +188,13 @@ public class ClueSafeController {
       codeDisplay.setText(line);
     }
 
+    // Check to delete code
     if (pinId.equals("delete")) {
       line = "";
       codeDisplay.setText("ENTER CODE");
     }
 
+    // Check if the entered code is correct
     if (pinId.equals("enter")) {
       if (line.equals("019")) {
         try {
@@ -188,22 +211,11 @@ public class ClueSafeController {
     }
   }
 
-  private void addHoverEffect(Group image) {
-    DropShadow hoverShadow = new DropShadow();
-    hoverShadow.setColor(Color.CORNFLOWERBLUE); // Customize the hover effect color
-    hoverShadow.setRadius(20); // Customize the shadow effect
-
-    image.setOnMouseEntered(
-        e -> {
-          image.setEffect(hoverShadow); // Apply hover effect when mouse enters
-        });
-
-    image.setOnMouseExited(
-        e -> {
-          image.setEffect(permShadow); // Remove effect when mouse exits
-        });
-  }
-
+  /**
+   * Handles the note click event.
+   *
+   * @param event
+   */
   @FXML
   private void onNote(MouseEvent event) {
     goBackButton.toBack();
@@ -213,6 +225,11 @@ public class ClueSafeController {
     GameStateContext.getInstance().setNoteFound(true); // Mark as found in the context
   }
 
+  /**
+   * Handles the page click event.
+   *
+   * @param event
+   */
   @FXML
   private void onPage(MouseEvent event) {
     // Set mouse click event to bring the notes to front
