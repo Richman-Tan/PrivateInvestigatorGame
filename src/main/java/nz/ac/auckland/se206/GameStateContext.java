@@ -217,4 +217,8 @@ public class GameStateContext {
     countdownTimer.stop();
     SharedTimerModel.getInstance().resetTimer();
   }
+
+  public boolean isAtLeastOneClueFound() {
+    return isGardenToolFound || isPhoneFound || isNoteFound;
+  }
 }
