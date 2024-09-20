@@ -58,7 +58,7 @@ public class Suspect1RoomController extends BaseRoomController {
   }
 
   @FXML
-  void onRoom(ActionEvent event) throws IOException {
+  protected void onRoom(ActionEvent event) throws IOException {
     // Your implementation to handle the room event
     App.setRoot("room");
   }

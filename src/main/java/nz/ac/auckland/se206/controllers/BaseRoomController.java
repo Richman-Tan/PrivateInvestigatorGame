@@ -57,18 +57,21 @@ public abstract class BaseRoomController {
   }
 
   protected void initializeGptModel() {
+    // Create a new task to initialize the GPT model
     Task<Void> task =
         new Task<>() {
           @Override
           protected Void call() throws IOException, URISyntaxException {
             try {
               setupGptRequest();
+              // Load the initial prompt
               loadGptPrompt(getInitialPrompt());
-
+              // Set the user chat box prompt with the initial prompt
               if (firstTime) {
                 setUserChatBoxPrompt("Begin interrogating...");
                 firstTime = false;
               }
+              // Error handling
             } catch (ApiProxyException | IOException | URISyntaxException e) {
               appendChatMessage(new ChatMessage("system", "Error: " + e.getMessage()));
             }
@@ -80,8 +83,10 @@ public abstract class BaseRoomController {
   }
 
   protected void setupGptRequest() throws IOException, ApiProxyException {
+    // Set up the GPT request
     ApiProxyConfig config = ApiProxyConfig.readConfig();
     chatCompletionRequest =
+        // Set the parameters for the GPT request
         new ChatCompletionRequest(config)
             .setN(1)
             .setTemperature(0.2)
@@ -132,9 +137,11 @@ public abstract class BaseRoomController {
   }
 
   protected Task<Void> createGptTask(ChatMessage msg) {
+    // Create a new task to run the GPT model
     return new Task<>() {
       @Override
       protected Void call() {
+        // Run the GPT model and alter the user chat box prompt
         try {
           runGpt(msg);
           setUserChatBoxPrompt("Ask another question...");
@@ -156,14 +163,17 @@ public abstract class BaseRoomController {
     chatCompletionRequest.addMessage(msg);
     disableSendButton(true);
 
+    // Send the message to GPT
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       ChatMessage response = chatCompletionResult.getChoices().iterator().next().getChatMessage();
       chatCompletionRequest.addMessage(response);
+      // Append the response to the chat box
       appendChatMessage(response);
 
       return response;
     } catch (ApiProxyException e) {
+      // Append an error message to the chat box if an exception occurs
       appendChatMessage(new ChatMessage("system", "Error during GPT call: " + e.getMessage()));
       return null;
     } finally {
