@@ -19,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -82,7 +81,7 @@ public class UpdatedGuessingController {
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer;
-  @FXML private TextField userExplanation;
+  @FXML private TextArea userExplanation;
   @FXML private Button btnReplay;
   @FXML private ProgressIndicator progressIndicator;
   @FXML private ImageView staticImage;
@@ -154,6 +153,7 @@ public class UpdatedGuessingController {
         .addListener(
             (observable, oldValue, newValue) -> {
               if (newValue.equals("Over!")) {
+                System.out.println("Game Over");
                 countdownTimer.stop();
                 confirmCulpritButton.setDisable(true);
                 confirmCulpritButton.setOpacity(0.7);

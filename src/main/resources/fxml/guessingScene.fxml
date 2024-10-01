@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -59,11 +58,11 @@
                </image>
             </ImageView>
             <Button fx:id="confirmExplanationButton" layoutX="144.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#confirmExplanation" stylesheets="@../css/confirmButton.css" text="CONFIRM EXPLANATION" />
-            <TextField fx:id="userExplanation" alignment="TOP_LEFT" layoutX="149.0" layoutY="130.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter your reasoning (&lt;50 words) " style="-fx-border-color: '#908E8E'; -fx-background-color: '#302C2B'; -fx-prompt-text-fill: white; -fx-text-fill: white; -fx-border-radius: 7px;">
+            <TextArea fx:id="userExplanation" layoutX="149.0" layoutY="132.0" prefHeight="120.0" prefWidth="256.0" promptText="Enter your reasoning (&lt;50 words) " style="-fx-border-radius: 7px; -fx-text-fill: white; -fx-prompt-text-fill: white; -fx-background-color: transparent; -fx-border-color: '#908E8E'; -fx-control-inner-background: '#302C2B';" wrapText="true">
                <font>
                   <Font name="Courier New" size="12.0" />
                </font>
-            </TextField>
+            </TextArea>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#324c57a1" height="36.0" layoutX="31.0" layoutY="86.0" stroke="#4278a8" strokeType="INSIDE" width="385.0" />
             <Label layoutX="47.0" layoutY="89.0" prefHeight="31.0" prefWidth="254.0" text="You have identified the culprit is: " textFill="WHITE">
                <font>
