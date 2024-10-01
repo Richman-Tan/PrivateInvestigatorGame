@@ -453,8 +453,8 @@ public class RoomController {
     DropShadow orangedropShadow = new DropShadow();
     orangedropShadow.setOffsetX(0);
     orangedropShadow.setOffsetY(0);
-    orangedropShadow.setRadius(10); // Adjust the radius for desired shadow spread
-    orangedropShadow.setColor(Color.ORANGE);
+    orangedropShadow.setRadius(15); // Adjust the radius for desired shadow spread
+    orangedropShadow.setColor(Color.GOLD);
     node.setEffect(orangedropShadow);
   }
 
