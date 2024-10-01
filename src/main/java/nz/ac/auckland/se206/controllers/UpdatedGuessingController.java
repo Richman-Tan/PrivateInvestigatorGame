@@ -337,6 +337,7 @@ public class UpdatedGuessingController {
     } else {
       list.add(incorrectGuessLbl);
       list.add(incorrectGuessLbl2);
+      list.add(btnReplay);
       Media sound = new Media(incorrectGuess);
       guessPlayer = new MediaPlayer(sound);
     }
@@ -378,13 +379,6 @@ public class UpdatedGuessingController {
                         }
                       }));
           timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
-          timeline.play(); // Start the animation
-          if (!guess) {
-            timeline.setOnFinished(
-                e -> {
-                  btnReplay.setVisible(true); // Show the replay button when the timeline finishes
-                });
-          }
         });
   }
 
@@ -527,6 +521,11 @@ public class UpdatedGuessingController {
   private void onSendMessage() {
     // Get the user's explanation message
     String message = userExplanation.getText().trim();
+
+    // fi the user has not guessed correctly then no need to proceed
+    if (!guess) {
+      return;
+    }
 
     // Print the message to the console
     System.out.println("Message: " + message);
