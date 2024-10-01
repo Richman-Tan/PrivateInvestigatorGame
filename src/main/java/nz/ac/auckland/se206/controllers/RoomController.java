@@ -111,6 +111,10 @@ public class RoomController {
             if (isFirstTimeInit) {
               Platform.runLater(
                   () -> {
+                    TextToSpeech.speak(
+                        "Guess the culprit once you've interrogated all the suspects and analysed"
+                            + " the clues in the crime scene");
+
                     // Fade in the root node
                     rootNode.setOpacity(0);
 
@@ -122,13 +126,6 @@ public class RoomController {
                     fadeTransition.setFromValue(0);
                     fadeTransition.setToValue(1);
                     fadeTransition.play();
-                  });
-
-              Platform.runLater(
-                  () -> {
-                    TextToSpeech.speak(
-                        "Guess the culprit once you've interrogated all the suspects and analysed"
-                            + " the clues in the crime scene");
                   });
               // Set the first time initialization to false
               context.setFirstTimeInit(false);

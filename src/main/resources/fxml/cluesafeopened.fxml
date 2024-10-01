@@ -74,9 +74,9 @@
                         <Image url="@../images/cluesafeimages/parchment.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="171.29019165039062" layoutY="30.63153839111328" prefHeight="175.0" prefWidth="177.0" rotate="17.0" text="They want it, I don't have much time, I know one of my closest are scheming to get my will. I know it, it has to be .............. " wrapText="true">
+                  <Label layoutX="171.29019165039062" layoutY="30.63153839111328" prefHeight="175.0" prefWidth="177.0" rotate="17.0" text="I don't have much time, I know one of my closest are scheming to get my will, I hear them always talking on the PHONE. " wrapText="true">
                      <font>
-                        <Font name="Script MT Bold" size="13.0" />
+                        <Font name="Script MT Bold" size="16.0" />
                      </font>
                   </Label>
                </children>
@@ -88,9 +88,9 @@
                         <Image url="@../images/cluesafeimages/parchment.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="171.29019165039062" layoutY="30.63153839111328" prefHeight="175.0" prefWidth="177.0" rotate="17.0" text="My fears have come true, I have found gambling debts and reciepts belonging to my grandson. I hope he's ok, he hasn't told me yet but I know. I just pray he'll be fine " wrapText="true">
+                  <Label layoutX="171.29019165039062" layoutY="30.63153839111328" prefHeight="175.0" prefWidth="177.0" rotate="17.0" text="My fears have come true, I have found gambling debts and reciepts belonging to my grandson. I hope he's ok, he hasn't told me yet but I know. I pray he'll be fine " wrapText="true">
                      <font>
-                        <Font name="Script MT Bold" size="13.0" />
+                        <Font name="Script MT Bold" size="15.0" />
                      </font>
                   </Label>
                </children>
@@ -102,14 +102,19 @@
                         <Image url="@../images/cluesafeimages/parchment.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="152.29019165039062" layoutY="15.631538391113281" prefHeight="318.0" prefWidth="177.0" rotate="17.0" text="My wife has been acting strange recently, she's been spouting on and on about our grandkids and how the way they will handle my inheritance. I've already told her to not worry so much as my eldest grandson is doing very well for himself. Its a shame I see him less and less, he's always out so late and looking so stressed on the phone, I just hope my wife does not do anything crazy. I worry her disdain for the future generation will lead to problems in the future." wrapText="true">
+                  <Label layoutX="218.0" layoutY="315.0" prefHeight="24.0" prefWidth="56.0" rotate="17.5" text="- Liang" wrapText="true">
                      <font>
                         <Font name="Script MT Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="218.0" layoutY="315.0" prefHeight="24.0" prefWidth="56.0" rotate="17.5" text="- Liang" wrapText="true">
+                  <Label layoutX="158.0" layoutY="52.0" prefHeight="145.0" prefWidth="186.0" rotate="17.5" text="My wife has been acting strange recently, she's been spouting on and on about our grandkids and how the way they will handle my inheritance. I'm worried for her, I hope she does not do anything crazy" wrapText="true">
                      <font>
-                        <Font name="Script MT Bold" size="13.0" />
+                        <Font name="Script MT Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="118.0" layoutY="172.0" prefHeight="160.0" prefWidth="177.0" rotate="17.5" text="I've already told her to not worry so much as my eldest grandson is doing very well for himself. Its a shame I see him less and less, he's always out so late. " wrapText="true">
+                     <font>
+                        <Font name="Script MT Bold" size="14.0" />
                      </font>
                   </Label>
                </children>
