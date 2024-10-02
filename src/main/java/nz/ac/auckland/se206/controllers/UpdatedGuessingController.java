@@ -274,7 +274,7 @@ public class UpdatedGuessingController {
     switch (guessedsuspect) {
       case "Uncle":
         confirmedSuspect1.setVisible(true);
-        culpritLabel.setText("The Uncle");
+        culpritLabel.setText("The Brother");
         break;
       case "Grandma":
         guess = true;
@@ -338,6 +338,8 @@ public class UpdatedGuessingController {
       list.add(incorrectGuessLbl);
       list.add(incorrectGuessLbl2);
       list.add(btnReplay);
+      System.out.println("List:" + list);
+
       Media sound = new Media(incorrectGuess);
       guessPlayer = new MediaPlayer(sound);
     }
@@ -379,6 +381,7 @@ public class UpdatedGuessingController {
                         }
                       }));
           timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
+          timeline.play(); // Start the animation
         });
   }
 
@@ -522,10 +525,10 @@ public class UpdatedGuessingController {
     // Get the user's explanation message
     String message = userExplanation.getText().trim();
 
-    // fi the user has not guessed correctly then no need to proceed
-    if (!guess) {
-      return;
-    }
+    // if the user has not guessed correctly then no need to proceed
+    // if (!guess) {
+    //   return;
+    // }
 
     // Print the message to the console
     System.out.println("Message: " + message);
