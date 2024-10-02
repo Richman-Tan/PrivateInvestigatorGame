@@ -78,7 +78,7 @@
       </Pane>
       <Pane fx:id="guessPhotoPane" layoutX="326.0" layoutY="52.0" prefHeight="396.0" prefWidth="476.0">
          <children>
-<Button fx:id="confirmCulpritButton" layoutX="156.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" opacity="0.5" stylesheets="@../css/confirmButton.css" text="CONFIRM CULPRIT" />
+<Button fx:id="confirmCulpritButton" layoutX="153.0" layoutY="299.0" mnemonicParsing="false" onMouseClicked="#confirmCulprit" opacity="0.5" stylesheets="@../css/confirmButton.css" text="CONFIRM CULPRIT" />
 
             <StackPane layoutX="-4.0" layoutY="123.0" prefHeight="150.0" prefWidth="456.0" visible="false" />
             <Label fx:id="lblStory" layoutX="74.0" layoutY="37.0" prefHeight="77.0" prefWidth="296.0" text="s" textFill="WHITE">
@@ -88,25 +88,25 @@
             </Label>
             <ImageView fx:id="suspect1" fitHeight="162.0" fitWidth="127.0" layoutX="21.0" layoutY="107.0" onMouseEntered="#hoverImageUncle" onMouseExited="#offHoverImageUncle" onMousePressed="#clickedImageUncle" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/updatedguessingimages/uncle.jpg" />
+                  <Image url="@../images/updatedguessingimages/brother.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="suspect3" fitHeight="177.0" fitWidth="127.0" layoutX="159.0" layoutY="107.0" onMouseEntered="#hoverImageSon" onMouseExited="#offHoverImageSon" onMousePressed="#clickedImageSon" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="suspect3" fitHeight="177.0" fitWidth="127.0" layoutX="158.0" layoutY="107.0" onMouseEntered="#hoverImageSon" onMouseExited="#offHoverImageSon" onMousePressed="#clickedImageSon" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/updatedguessingimages/son.png" />
+                  <Image url="@../images/updatedguessingimages/grandson.png" />
                </image>
             </ImageView>
             <ImageView fx:id="suspect2" fitHeight="165.0" fitWidth="127.0" layoutX="294.0" layoutY="107.0" onMouseEntered="#hoverImageGma" onMouseExited="#offHoverImageGma" onMousePressed="#clickedImageGma" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/updatedguessingimages/Gma.jpg" />
+                  <Image url="@../images/updatedguessingimages/Gma.png" />
                </image>
             </ImageView>
-            <Rectangle fx:id="recSuspect1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="161.0" layoutX="20.0" layoutY="107.0" opacity="0.4" stroke="#9e0000" strokeType="INSIDE" visible="false" width="128.0" />
-            <Rectangle fx:id="recSuspect2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="162.0" layoutX="294.0" layoutY="105.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
-            <Rectangle fx:id="recSuspect3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="159.0" layoutX="155.0" layoutY="107.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="131.0" />
-            <Rectangle fx:id="recSus1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="161.0" layoutX="21.0" layoutY="107.0" opacity="0.4" stroke="#9e0000" strokeType="INSIDE" visible="false" width="128.0" />
-            <Rectangle fx:id="recSus2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="162.0" layoutX="294.0" layoutY="107.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
-            <Rectangle fx:id="recSus3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="159.0" layoutX="159.0" layoutY="107.0" nodeOrientation="LEFT_TO_RIGHT" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="131.0" />
+            <Rectangle fx:id="recSuspect1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="163.0" layoutX="20.0" layoutY="107.0" opacity="0.4" stroke="#9e0000" strokeType="INSIDE" visible="false" width="128.0" />
+            <Rectangle fx:id="recSuspect2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="166.0" layoutX="294.0" layoutY="106.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
+            <Rectangle fx:id="recSuspect3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="166.0" layoutX="159.0" layoutY="107.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
+            <Rectangle fx:id="recSus1" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="163.0" layoutX="21.0" layoutY="107.0" opacity="0.4" stroke="#9e0000" strokeType="INSIDE" visible="false" width="128.0" />
+            <Rectangle fx:id="recSus2" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="165.0" layoutX="294.0" layoutY="107.0" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
+            <Rectangle fx:id="recSus3" arcHeight="5.0" arcWidth="5.0" fill="#750101" height="165.0" layoutX="159.0" layoutY="107.0" nodeOrientation="LEFT_TO_RIGHT" opacity="0.4" stroke="#9c0000" strokeType="INSIDE" visible="false" width="127.0" />
             <ProgressIndicator fx:id="progressIndicator" layoutX="200.0" layoutY="171.0" visible="false" />
          </children>
       </Pane>
