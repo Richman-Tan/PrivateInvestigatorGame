@@ -19,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -82,7 +81,7 @@ public class UpdatedGuessingController {
   @FXML private Label culpritLabel;
   @FXML private Button confirmCulpritButton;
   @FXML private ImageView staticlayer;
-  @FXML private TextField userExplanation;
+  @FXML private TextArea userExplanation;
   @FXML private Button btnReplay;
   @FXML private ProgressIndicator progressIndicator;
   @FXML private ImageView staticImage;
@@ -154,6 +153,7 @@ public class UpdatedGuessingController {
         .addListener(
             (observable, oldValue, newValue) -> {
               if (newValue.equals("Over!")) {
+                System.out.println("Game Over");
                 countdownTimer.stop();
                 confirmCulpritButton.setDisable(true);
                 confirmCulpritButton.setOpacity(0.7);
@@ -274,7 +274,7 @@ public class UpdatedGuessingController {
     switch (guessedsuspect) {
       case "Uncle":
         confirmedSuspect1.setVisible(true);
-        culpritLabel.setText("The Uncle");
+        culpritLabel.setText("The Brother");
         break;
       case "Grandma":
         guess = true;
@@ -337,6 +337,9 @@ public class UpdatedGuessingController {
     } else {
       list.add(incorrectGuessLbl);
       list.add(incorrectGuessLbl2);
+      list.add(btnReplay);
+      System.out.println("List:" + list);
+
       Media sound = new Media(incorrectGuess);
       guessPlayer = new MediaPlayer(sound);
     }
@@ -379,12 +382,6 @@ public class UpdatedGuessingController {
                       }));
           timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
           timeline.play(); // Start the animation
-          if (!guess) {
-            timeline.setOnFinished(
-                e -> {
-                  btnReplay.setVisible(true); // Show the replay button when the timeline finishes
-                });
-          }
         });
   }
 
@@ -527,6 +524,11 @@ public class UpdatedGuessingController {
   private void onSendMessage() {
     // Get the user's explanation message
     String message = userExplanation.getText().trim();
+
+    // if the user has not guessed correctly then no need to proceed
+    // if (!guess) {
+    //   return;
+    // }
 
     // Print the message to the console
     System.out.println("Message: " + message);
