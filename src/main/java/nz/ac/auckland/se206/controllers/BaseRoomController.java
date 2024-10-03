@@ -38,7 +38,6 @@ public abstract class BaseRoomController {
   @FXML protected Button grandsonButton;
   @FXML protected Button menuButton;
   @FXML protected Button uncleButton;
-  // @FXML protected TextField userChatField;
   @FXML protected TextArea userChatBox;
   @FXML protected TextArea suspectChatBox;
   @FXML protected Circle sendButton;

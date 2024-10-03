@@ -11,8 +11,6 @@ import nz.ac.auckland.se206.App;
 
 public class Suspect1RoomController extends BaseRoomController {
 
-  // @FXML private TextArea userChatBox;
-
   @Override
   protected String getInitialPrompt() {
     // This is the specific prompt for Suspect 1 (the uncle)
