@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -39,7 +38,7 @@ public abstract class BaseRoomController {
   @FXML protected Button grandsonButton;
   @FXML protected Button menuButton;
   @FXML protected Button uncleButton;
-  @FXML protected TextField userChatBox;
+  @FXML protected TextArea userChatBox;
   @FXML protected TextArea suspectChatBox;
   @FXML protected Circle sendButton;
   @FXML protected Button guessButton;
@@ -54,6 +53,24 @@ public abstract class BaseRoomController {
     initializeGptModel();
     setResponsiveBackground(backgroundimg, rootNode);
     checkGuessButton();
+
+    // Add key event handler for detecting Enter key
+    userChatBox.addEventFilter(
+        KeyEvent.KEY_PRESSED,
+        event -> {
+          if (event.getCode() == KeyCode.ENTER) {
+            event.consume();
+            // Handle the Enter key press action
+            ActionEvent actionEvent = new ActionEvent(event.getSource(), event.getTarget());
+            try {
+              onEnterKey(actionEvent);
+            } catch (IOException | ApiProxyException e) {
+              e.printStackTrace();
+            }
+            // Optionally, consume the event to prevent a new line from being added
+            // event.consume();
+          }
+        });
   }
 
   protected void initializeGptModel() {
