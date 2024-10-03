@@ -1,20 +1,37 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameStateContext;
 
 public class TornPhotographController {
 
+  // Static fields
+  private static final String revealText = "Oh???"; // Text to display letter by letter
+
+  private static GameStateContext context = GameStateContext.getInstance();
+
+  @FXML private Pane timerPane; // Pane to hold the timer
+
   @FXML private AnchorPane puzzlePane; // Pane to hold the puzzle pieces
+
+  @FXML private AnchorPane textbox;
 
   @FXML private ImageView backgroundwithgame; // ImageView element for the background image
 
@@ -25,6 +42,14 @@ public class TornPhotographController {
   @FXML private Button goBackButton;
 
   @FXML private Button flipButton; // Button to flip the image
+
+  @FXML private AnchorPane blackOverlay;
+
+  @FXML private ImageView banners;
+
+  @FXML private ImageView backofphotoimg;
+
+  @FXML private Label revealLabel; // Label for text reveal
 
   @FXML
   private ImageView piece1,
@@ -50,9 +75,6 @@ public class TornPhotographController {
   // Variables for drag offset
   private double offsetX, offsetY;
 
-  // State variable to track which side of the photo is visible
-  private boolean isFrontVisible = true;
-
   // Correct positions for each puzzle piece on the board (target coordinates)
   private double piece1TargetX = 515, piece1TargetY = 170; // done
   private double piece2TargetX = 480, piece2TargetY = 310; // done
@@ -77,6 +99,8 @@ public class TornPhotographController {
 
   // Threshold to snap pieces into place
   private final double SNAP_THRESHOLD = 200;
+
+  private TimerModel countdownTimer;
 
   @FXML
   public void initialize() {
@@ -137,23 +161,82 @@ public class TornPhotographController {
     // Assuming 'framebyitself' is your ImageView instance
     framebyitself.setOnMouseClicked(
         event -> {
-          // Perform actions when the image is clicked
+          // Show the black overlay and set it to cover the entire pane
+          blackOverlay.setVisible(true);
+          blackOverlay.toFront();
 
-          backgroundwithgame.setOpacity(1);
+          // Create a fade transition for the overlay to fade into black
+          FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), blackOverlay);
+          fadeTransition.setFromValue(0.0); // Start with fully transparent
+          fadeTransition.setToValue(1.0); // End with fully opaque (black screen)
+          fadeTransition.setOnFinished(
+              e -> {
+                // Hide framebyitself and imagebg after fading to black
+                framebyitself.setVisible(false);
+                imagebg.setVisible(false);
 
-          // Set the layout of the pieces
-          imagebg.toBack();
+                // Set up the game after the fade transition completes
+                setupGame();
 
-          // set up to front
-          framebyitself.toBack();
-
-          imagebg.setVisible(false);
-          framebyitself.setVisible(false);
-
-          setupGame();
+                // Fade the black overlay back out after setting up the game
+                FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), blackOverlay);
+                fadeOut.setFromValue(1.0); // Start with fully opaque
+                fadeOut.setToValue(0.0); // End with fully transparent
+                fadeOut.setOnFinished(
+                    ev -> blackOverlay.setVisible(false)); // Hide the overlay when done
+                fadeOut.play();
+              });
+          fadeTransition.play();
         });
 
     setupGoBackButton();
+    setupTimerPane();
+    textbox.toBack();
+  }
+
+  // Method to dynamically create the label and center it
+  private void createRevealLabel() {
+    revealLabel = new Label(); // Create the Label
+    revealLabel.setText(""); // Initially empty
+    revealLabel.setOpacity(1); // Initially invisible
+    revealLabel.setStyle(
+        "-fx-font-size: 40px; -fx-text-fill: red; -fx-font-weight: bold;"); // Style the label
+
+    // Center the label in the pane
+    revealLabel.setLayoutX((textbox.getWidth() - revealLabel.getWidth()) / 2 - 50);
+    revealLabel.setLayoutY((textbox.getHeight() - revealLabel.getHeight()) / 2 + 190);
+
+    // Add the label to the rootPane
+    textbox.getChildren().add(revealLabel);
+    revealLabel.toFront(); // Bring the label to the front
+  }
+
+  // Set up the timer pane
+  private void setupTimerPane() {
+    timerPane = new Pane();
+    timerPane.setPrefSize(101, 45);
+    timerPane.setOpacity(0.75);
+    timerPane.setStyle(
+        "-fx-background-color: white;"
+            + "-fx-background-radius: 10px;"
+            + "-fx-border-radius: 10px;"
+            + "-fx-border-color: black;");
+    AnchorPane.setLeftAnchor(timerPane, 10.0);
+    AnchorPane.setTopAnchor(timerPane, 10.0);
+
+    Label timerLabel = new Label();
+    timerLabel.setFont(new Font(24));
+    timerLabel.setAlignment(Pos.CENTER);
+    timerLabel.setLayoutX(21.0);
+    timerLabel.setLayoutY(8.0);
+
+    countdownTimer = SharedTimerModel.getInstance().getTimer();
+    countdownTimer.start();
+    timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
+
+    timerPane.getChildren().add(timerLabel);
+    puzzlePane.getChildren().add(timerPane);
+    timerPane.toFront();
   }
 
   private void togglevisabilityofpieces(boolean visible) {
@@ -332,15 +415,153 @@ public class TornPhotographController {
         && piece7Correct
         && piece8Correct
         && piece9Correct) {
-      // Create an alert to show the puzzle is complete
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Puzzle Completed");
-      alert.setHeaderText("Congratulations!");
-      alert.setContentText("You have successfully completed the puzzle.");
-      alert.showAndWait();
 
-      setupFlipButton();
+      // Create a delay
+      Thread thread =
+          new Thread(
+              () -> {
+                try {
+                  Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+              });
+
+      thread.start();
+
+      context.setGardenToolFound(true);
+      createAndBindImageView(banners);
+
+      // Assuming you have a TextField named textbox
+      textbox.toFront(); // Bring the TextBox to the front
+      textbox.setOpacity(0); // Make the TextBox visible
+
+      // Create a FadeTransition for the TextBox
+      FadeTransition fadeIn = new FadeTransition(Duration.millis(500), textbox);
+      fadeIn.setFromValue(0.0); // Start fully transparent
+      fadeIn.setToValue(1.0); // End fully opaque
+      fadeIn.setCycleCount(1); // Play once
+      fadeIn.setAutoReverse(false);
+
+      // Start the fade-in animation
+      fadeIn.play();
+
+      // set on finished
+      fadeIn.setOnFinished(
+          e -> {
+            createRevealLabel();
+            animatetext();
+          });
     }
+  }
+
+  // Method to start the text reveal animation and zoom effect
+  private void animatetext() {
+    Timeline timeline = new Timeline();
+    for (int i = 0; i < revealText.length(); i++) {
+      final int index = i;
+      KeyFrame keyFrame =
+          new KeyFrame(
+              Duration.millis(50 * i),
+              event -> {
+                // Append the next character to the label's text
+                revealLabel.setText(revealLabel.getText() + revealText.charAt(index));
+                System.out.println(revealText.charAt(index));
+              });
+      timeline.getKeyFrames().add(keyFrame);
+    }
+
+    // Play the animation
+    timeline.play();
+
+    // On finish
+    timeline.setOnFinished(
+        e -> {
+          System.out.println("done");
+
+          // Show the black overlay and set it to cover the entire pane
+          blackOverlay.setVisible(true);
+          blackOverlay.toFront();
+
+          // Create a fade transition for the overlay to fade into black
+          FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), blackOverlay);
+          fadeTransition.setFromValue(0.0); // Start with fully transparent
+          fadeTransition.setToValue(1.0); // End with fully opaque (black screen)
+
+          // Define what happens after fade-in completes
+          fadeTransition.setOnFinished(
+              event -> {
+                // Hide textbox and puzzle pieces
+                textbox.setVisible(false);
+                togglevisabilityofpieces(false);
+
+                // Create a fade-out transition
+                FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), blackOverlay);
+                fadeOut.setFromValue(1.0); // Start with fully opaque
+                fadeOut.setToValue(0.0); // End with fully transparent
+
+                // Hide the overlay when done
+                fadeOut.setOnFinished(
+                    ev -> {
+                      blackOverlay.setVisible(false); // Hide overlay after fading out
+
+                      // Set everything opacity to 0 before starting fade-in
+                      createAndBindImageView(backofphotoimg);
+                      backofphotoimg.toFront();
+                      goBackButton.toFront();
+                      timerPane.toFront();
+
+                      // Set opacity to 0 for fade-in
+                      backofphotoimg.setOpacity(0);
+                      goBackButton.setOpacity(0);
+                      timerPane.setOpacity(0);
+
+                      // Create a fade-in transition for backofphotoimg, goBackButton, and timerPane
+                      FadeTransition fadeIn = new FadeTransition(Duration.seconds(1));
+
+                      // Group all nodes to fade in together
+                      fadeIn.setNode(backofphotoimg);
+                      fadeIn.setFromValue(0.0); // Start with fully transparent
+                      fadeIn.setToValue(1.0); // End with fully opaque
+
+                      // Create a second fade-in transition for the other nodes
+                      FadeTransition fadeInButton =
+                          new FadeTransition(Duration.seconds(1), goBackButton);
+                      fadeInButton.setFromValue(0.0);
+                      fadeInButton.setToValue(1.0);
+
+                      FadeTransition fadeInTimer =
+                          new FadeTransition(Duration.seconds(1), timerPane);
+                      fadeInTimer.setFromValue(0.0);
+                      fadeInTimer.setToValue(1.0);
+
+                      // Start the fade-in transitions
+                      fadeIn.play();
+                      fadeInButton.play();
+                      fadeInTimer.play();
+
+                      // Optionally, define what happens after all fade-ins are done
+                      fadeIn.setOnFinished(
+                          even -> {
+                            System.out.println("Fade-in completed for backofphotoimg.");
+                          });
+                      fadeInButton.setOnFinished(
+                          even -> {
+                            System.out.println("Fade-in completed for goBackButton.");
+                          });
+                      fadeInTimer.setOnFinished(
+                          even -> {
+                            System.out.println("Fade-in completed for timerPane.");
+                          });
+                    });
+
+                // Start the fade-out transition
+                fadeOut.play();
+              });
+
+          // Start the fade-in transition
+          fadeTransition.play();
+        });
   }
 
   private void setupGoBackButton() {
@@ -377,38 +598,4 @@ public class TornPhotographController {
       e.printStackTrace();
     }
   }
-
-  private void setupFlipButton() {
-    // Create the flip button
-    flipButton = new Button("Flip Image");
-    flipButton.setStyle(
-        "-fx-background-radius: 10; "
-            + "-fx-border-radius: 10; "
-            + "-fx-border-color: black; "
-            + "-fx-background-color: white; "
-            + "-fx-text-fill: black; "
-            + "-fx-font-size: 14px;");
-    flipButton.setPrefWidth(100);
-    flipButton.setPrefHeight(40);
-    AnchorPane.setTopAnchor(flipButton, 10.0);
-    AnchorPane.setLeftAnchor(flipButton, 10.0);
-
-    flipButton.setOnAction(event -> flipPhoto());
-
-    flipButton.setOnMouseEntered(
-        e -> {
-          flipButton.setOpacity(0.7);
-          flipButton.setCursor(Cursor.HAND);
-        });
-
-    flipButton.setOnMouseExited(
-        e -> {
-          flipButton.setOpacity(1);
-          flipButton.setCursor(Cursor.DEFAULT);
-        });
-
-    puzzlePane.getChildren().add(flipButton);
-  }
-
-  private void flipPhoto() {}
 }

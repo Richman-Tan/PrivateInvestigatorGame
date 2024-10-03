@@ -5,6 +5,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="puzzlePane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.TornPhotographController">
+   <ImageView fx:id="backofphotoimg" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/cluedrawimages/backofphoto.png" />
+      </image>
+   </ImageView>
    <ImageView fx:id="imagebg" fitHeight="655.0" fitWidth="973.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../images/cluedrawimages/photoframebg.png" />
@@ -16,7 +21,7 @@
       </image>
    </ImageView>
     <!-- Background Image of the completed puzzle for visual guidance -->
-    <ImageView fx:id="backgroundwithgame" fitHeight="551.0" fitWidth="950.0" layoutY="1.0" opacity="0.0">
+    <ImageView fx:id="backgroundwithgame" fitHeight="551.0" fitWidth="950.0" layoutY="1.0" opacity="1.0">
         <image>
             <Image url="@../images/cluedrawimages/puzzlephoto.png" />
         </image>
@@ -106,4 +111,16 @@
       <image>
          <Image url="@../images/cluedrawimages/piecelarge9.PNG" />
       </image></ImageView>
+   <AnchorPane fx:id="textbox" prefHeight="200.0" prefWidth="200.0">
+      <children>
+         <ImageView fx:id="banners" fitHeight="559.0" fitWidth="973.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/cluedrawimages/textbubble.png" />
+            </image>
+         </ImageView>
+      </children>
+   </AnchorPane>
+
+                         <!-- Black overlay for transition effect -->
+    <AnchorPane fx:id="blackOverlay" layoutX="269.0" opacity="0.0" prefWidth="705.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>
