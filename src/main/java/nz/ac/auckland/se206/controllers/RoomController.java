@@ -394,7 +394,7 @@ public class RoomController {
           try {
             // 1 second delay
             Thread.sleep(10);
-            App.setRoot("cluedrawer");
+            App.setRoot("cluetornphotograph");
           } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
