@@ -111,10 +111,14 @@ public class RoomController {
             if (isFirstTimeInit) {
               Platform.runLater(
                   () -> {
+                    System.out.println("<------------------tts----------------->");
                     TextToSpeech.speak(
                         "Guess the culprit once you've interrogated all the suspects and analysed"
                             + " the clues in the crime scene");
+                  });
 
+              Platform.runLater(
+                  () -> {
                     // Fade in the root node
                     rootNode.setOpacity(0);
 
