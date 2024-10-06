@@ -18,11 +18,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
-import nz.ac.auckland.se206.speech.TextToSpeech;
+import nz.ac.auckland.se206.states.GameStarted;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -53,6 +55,11 @@ public class RoomController {
   @FXML private ImageView clue3;
   @FXML private VBox viewBox;
 
+  private static final String initialaudio =
+      GameStarted.class.getClassLoader().getResource("sounds/initialaudio.mp3").toExternalForm();
+
+  private MediaPlayer mediaPlayer;
+
   private boolean isFirstTimeInit = context.isFirstTimeInit();
   private TimerModel countdownTimer;
 
@@ -69,6 +76,9 @@ public class RoomController {
     clue1.setOpacity(0);
     clue2.setOpacity(0);
     clue3.setOpacity(0);
+
+    Media initial = new Media(initialaudio);
+    mediaPlayer = new MediaPlayer(initial);
 
     // Check if the guess button should be enabled
     checkGuessButton();
@@ -131,6 +141,12 @@ public class RoomController {
                     fadeTransition.setToValue(1);
                     fadeTransition.play();
                   });
+
+              Platform.runLater(
+                  () -> {
+                    mediaPlayer.play();
+                  });
+
               // Set the first time initialization to false
               context.setFirstTimeInit(false);
               isFirstTimeInit = context.isFirstTimeInit();
@@ -395,7 +411,7 @@ public class RoomController {
           try {
             // 1 second delay
             Thread.sleep(10);
-            App.setRoot("cluedrawer");
+            App.setRoot("cluetornphotograph");
           } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
