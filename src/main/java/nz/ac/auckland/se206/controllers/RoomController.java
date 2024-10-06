@@ -35,7 +35,11 @@ public class RoomController {
   // Inner Classes (if any would go here)
 
   // Static Fields
-  private static GameStateContext context = GameStateContext.getInstance();
+  private static final GameStateContext context = GameStateContext.getInstance();
+
+  public static String getInitialaudio() {
+    return initialaudio;
+  }
 
   // Static Methods
   // (If you have static methods, they would go here)
@@ -48,7 +52,6 @@ public class RoomController {
   @FXML private Button uncleButton;
   @FXML private AnchorPane rootNode;
   @FXML private Button guessButton;
-  @FXML private ImageView background;
   @FXML private Label lbltimer;
   @FXML private ImageView clue1;
   @FXML private ImageView clue2;
@@ -74,8 +77,19 @@ public class RoomController {
   public void initialize() {
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
+
+    // set anchorpane of clue 1 to 10px to the right
+    AnchorPane.setRightAnchor(clue1, 12.0);
+
     clue2.setOpacity(0);
+
+    // set anchorpane of clue 2 to 10px to the right
+    AnchorPane.setRightAnchor(clue2, 15.0);
+
     clue3.setOpacity(0);
+
+    // set anchorpane of clue 3 to 10px to the right
+    AnchorPane.setRightAnchor(clue3, 15.0);
 
     Media initial = new Media(initialaudio);
     mediaPlayer = new MediaPlayer(initial);
@@ -283,7 +297,6 @@ public class RoomController {
             // Handle the phone clue click event
             App.setRoot("cluephone");
           } catch (IOException e1) {
-            e1.printStackTrace();
           }
         });
 
@@ -334,7 +347,6 @@ public class RoomController {
           try {
             handleSafeClick();
           } catch (IOException e1) {
-            e1.printStackTrace();
           }
         });
 
@@ -343,6 +355,9 @@ public class RoomController {
 
     // Load background image
     viewBox.toFront();
+    clue1.toFront();
+    clue2.toFront();
+    clue3.toFront();
   }
 
   /**
@@ -403,12 +418,7 @@ public class RoomController {
             // 1 second delay
             Thread.sleep(10);
             App.setRoot("cluetornphotograph");
-          } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-          } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+          } catch (IOException | InterruptedException e1) {
           }
         });
   }
