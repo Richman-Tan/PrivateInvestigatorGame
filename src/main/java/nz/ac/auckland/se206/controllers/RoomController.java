@@ -119,13 +119,6 @@ public class RoomController {
           @Override
           protected Void call() throws Exception {
             if (isFirstTimeInit) {
-              Platform.runLater(
-                  () -> {
-                    System.out.println("<------------------tts----------------->");
-                    TextToSpeech.speak(
-                        "Guess the culprit once you've interrogated all the suspects and analysed"
-                            + " the clues in the crime scene");
-                  });
 
               Platform.runLater(
                   () -> {
@@ -292,7 +285,6 @@ public class RoomController {
             // Handle the phone clue click event
             App.setRoot("cluephone");
           } catch (IOException e1) {
-            e1.printStackTrace();
           }
         });
 
