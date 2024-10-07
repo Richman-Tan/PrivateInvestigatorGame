@@ -27,6 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
@@ -101,6 +102,9 @@ public class UpdatedGuessingController {
   @FXML private Rectangle recSus2;
   @FXML private Rectangle recSus3;
   @FXML private Label incorrectGuessLbl2;
+  @FXML protected SVGPath volumeOff;
+  @FXML protected SVGPath volumeUp;
+  @FXML protected SVGPath volumeUpStroke;
 
   private boolean playedConfirmCulprit = false;
   private boolean playedConfirmEx = false;
@@ -140,6 +144,11 @@ public class UpdatedGuessingController {
     }
     if (context.isNoteFound()) {
       clue3foundimg.setVisible(true);
+    }
+    try {
+      checkVolumeIcon();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
@@ -288,6 +297,30 @@ public class UpdatedGuessingController {
     }
   }
 
+  @FXML
+  protected void turnVolumeOff() throws IOException {
+    volumeOff.setVisible(true);
+    volumeUp.setVisible(false);
+    volumeUpStroke.setVisible(false);
+    SharedVolumeControl.getInstance().setVolumeSetting(false);
+  }
+
+  @FXML
+  protected void turnVolumeOn() throws IOException {
+    volumeOff.setVisible(false);
+    volumeUp.setVisible(true);
+    volumeUpStroke.setVisible(true);
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
+  }
+
+  private void checkVolumeIcon() throws IOException {
+    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
+      turnVolumeOn();
+    } else {
+      turnVolumeOff();
+    }
+  }
+
   /**
    * Method to handle when the confirm explanation button is clicked
    *
@@ -312,6 +345,7 @@ public class UpdatedGuessingController {
             showGameOver();
             // remove the timer from the screen if user has been moved to game over state
             labelPane.setVisible(false);
+            adjustVolumeButtonPosition();
 
             // stop the timer
             countdownTimer.stop();
@@ -621,5 +655,14 @@ public class UpdatedGuessingController {
     fadeOutTransition.play();
 
     App.setRoot("initialScene");
+  }
+
+  private void adjustVolumeButtonPosition() {
+    volumeUp.setLayoutX(15);
+    volumeUp.setLayoutY(8);
+    volumeUpStroke.setLayoutY(8);
+    volumeUpStroke.setLayoutX(22);
+    volumeOff.setLayoutX(15);
+    volumeOff.setLayoutY(8);
   }
 }
