@@ -25,9 +25,9 @@
             <Image url="@../images/updatedguessingimages/guessingBackground.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="clue1foundimg" fitHeight="513.0" fitWidth="1028.0" layoutX="18.0" layoutY="84.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="clue1foundimg" fitHeight="45.0" fitWidth="82.0" layoutX="169.0" layoutY="127.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../images/guessingimages/clue1found.png" />
+            <Image url="@../images/finalphotofound.png" />
          </image>
       </ImageView>
       <ImageView fx:id="clue3foundimg" fitHeight="60.0" fitWidth="82.0" layoutX="36.0" layoutY="392.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" visible="false">
