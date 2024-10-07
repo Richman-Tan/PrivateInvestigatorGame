@@ -5,6 +5,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -84,6 +85,13 @@ public class RoomController {
 
     Media initial = new Media(initialaudio);
     mediaPlayer = new MediaPlayer(initial);
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
+                .then(1.0) // Full volume when volume is on
+                .otherwise(0.0) // Mute when volume is off
+            );
 
     // Check if the guess button should be enabled
     checkGuessButton();
@@ -147,6 +155,9 @@ public class RoomController {
 
               Platform.runLater(
                   () -> {
+                    if (!SharedVolumeControl.getInstance().getVolumeSetting()) {
+                      mediaPlayer.setVolume(0);
+                    }
                     mediaPlayer.play();
                   });
 

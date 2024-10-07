@@ -11,6 +11,7 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.CacheHint;
@@ -209,6 +210,15 @@ public class BackstoryController {
     // Create the media player
     Media woosh = new Media(sound);
     mediaPlayer = new MediaPlayer(woosh);
+    // Play the sound effect
+    mediaPlayer.seek(Duration.seconds(1));
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
+                .then(1.0) // Full volume when volume is on
+                .otherwise(0.0) // Mute when volume is off
+            );
 
     // Set the on finished event handler
     fadeIn.setOnFinished(
@@ -385,7 +395,7 @@ public class BackstoryController {
    */
   private void zoomIn(ImageView imageView, String nextScene) {
 
-    // Play the sound effect
+    // Play the media player
     mediaPlayer.seek(Duration.seconds(1));
     mediaPlayer.play();
 

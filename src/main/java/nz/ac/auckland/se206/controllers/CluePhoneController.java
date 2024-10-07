@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
@@ -112,6 +114,13 @@ public class CluePhoneController {
               .toExternalForm(); // Convert the resource path to an external form
       Media media = new Media(videoPath);
       MediaPlayer mediaPlayer = new MediaPlayer(media);
+      mediaPlayer
+          .volumeProperty()
+          .bind(
+              Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
+                  .then(1.0) // Full volume when volume is on
+                  .otherwise(0.0) // Mute when volume is off
+              );
       MediaView mediaView = new MediaView(mediaPlayer);
 
       // Set whether to preserve the aspect ratio (optional)
@@ -203,7 +212,7 @@ public class CluePhoneController {
               (obs, oldVal, newVal) -> {
                 AnchorPane.setLeftAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2 + 10);
               });
-
+      mediaPlayer.seek(Duration.seconds(1));
       // Toggle between play and pause
       playPauseButton.setOnAction(
           e -> {
@@ -683,6 +692,14 @@ public class CluePhoneController {
       Media media = new Media(videoPath);
       MediaPlayer mediaPlayer = new MediaPlayer(media);
       MediaView mediaView = new MediaView(mediaPlayer);
+
+      mediaPlayer
+          .volumeProperty()
+          .bind(
+              Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
+                  .then(1.0) // Full volume when volume is on
+                  .otherwise(0.0) // Mute when volume is off
+              );
 
       // Set whether to preserve the aspect ratio (optional)
       mediaView.setPreserveRatio(false);

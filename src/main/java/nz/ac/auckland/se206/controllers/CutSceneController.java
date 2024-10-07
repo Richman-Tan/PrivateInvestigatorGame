@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -58,6 +59,13 @@ public class CutSceneController {
             .toExternalForm(); // Convert the resource path to an external form
     Media media = new Media(videoPath);
     mediaPlayer = new MediaPlayer(media);
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
+                .then(1.0) // Full volume when volume is on
+                .otherwise(0.0) // Mute when volume is off
+            );
     MediaView mediaView = new MediaView(mediaPlayer);
 
     mediaView.setPreserveRatio(false); // Don't preserve the video's aspect ratio
