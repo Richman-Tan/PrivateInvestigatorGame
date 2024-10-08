@@ -472,6 +472,10 @@ public class RoomController {
           // change cursor
           rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
           lblareastatus.setText("Open Menu?");
+
+          // expand
+          menuclosedimg.setScaleX(1.1);
+          menuclosedimg.setScaleY(1.1);
         });
 
     menuclosedimg.setOnMouseExited(
@@ -479,6 +483,10 @@ public class RoomController {
           // change cursor
           rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
           lblareastatus.setText("You are in the: Crime Scene");
+
+          // shrink
+          menuclosedimg.setScaleX(1);
+          menuclosedimg.setScaleY(1);
         });
 
     menuclosedimg.setOnMouseClicked(

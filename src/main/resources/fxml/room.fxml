@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="guessButton" mnemonicParsing="false" onAction="#onGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
+                  <Button fx:id="guessButton" mnemonicParsing="false" onAction="#onGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0; -fx-background-color: #c1b8b5;" stylesheets="@../css/button.css" text="Make a guess" />
                </children>
             </HBox>
          </children>
@@ -30,7 +30,7 @@
       </HBox>
       <VBox fx:id="viewBox" layoutX="659.0" layoutY="-11.0" opacity="0.75" prefHeight="403.0" prefWidth="143.0" AnchorPane.rightAnchor="6.0">
          <children>
-            <Pane opacity="0.75" prefHeight="23.0" prefWidth="91.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
+            <Pane opacity="0.75" prefHeight="23.0" prefWidth="91.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
@@ -38,17 +38,17 @@
                   <Text layoutX="28.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clues Found" wrappingWidth="78.14582848290627" />
                </children>
             </Pane>
-            <Pane opacity="0.75" prefHeight="100.0" prefWidth="123.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
+            <Pane opacity="0.75" prefHeight="100.0" prefWidth="123.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </Pane>
-            <Pane opacity="0.75" prefHeight="100.0" prefWidth="123.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
+            <Pane opacity="0.75" prefHeight="100.0" prefWidth="123.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </Pane>
-            <Pane opacity="0.75" prefHeight="100.0" prefWidth="80.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
+            <Pane opacity="0.75" prefHeight="100.0" prefWidth="80.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black; -fx-border-color: #3f2218; -fx-border-width: 4px;">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>

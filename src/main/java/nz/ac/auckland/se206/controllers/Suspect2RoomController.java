@@ -39,13 +39,13 @@ public class Suspect2RoomController extends BaseRoomController {
   }
 
   @FXML
-  private void onUncleButtonClick(ActionEvent event) throws IOException {
+  private void onUncleButtonClick() throws IOException {
     // Your implementation to handle the click event
     App.setRoot("suspect1room"); // Or whatever action you want to perform
   }
 
   @FXML
-  private void onGrandsonClick(ActionEvent event) throws IOException {
+  private void onGrandsonClick() throws IOException {
     // Your logic to switch to the grandson room or any other required action
     App.setRoot("suspect3room");
   }
