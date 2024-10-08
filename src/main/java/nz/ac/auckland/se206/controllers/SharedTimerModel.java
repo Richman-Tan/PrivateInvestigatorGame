@@ -3,12 +3,6 @@ package nz.ac.auckland.se206.controllers;
 public class SharedTimerModel {
 
   private static SharedTimerModel instance;
-  private TimerModel countdownTimer;
-
-  /** Constructs a new shared timer model. */
-  private SharedTimerModel() {
-    countdownTimer = new TimerModel(301); // Set the initial time
-  }
 
   /**
    * Gets the instance of the shared timer model.
@@ -20,6 +14,13 @@ public class SharedTimerModel {
       instance = new SharedTimerModel();
     }
     return instance;
+  }
+
+  private TimerModel countdownTimer;
+
+  /** Constructs a new shared timer model. */
+  private SharedTimerModel() {
+    countdownTimer = new TimerModel(301); // Set the initial time
   }
 
   /**

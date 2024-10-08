@@ -323,7 +323,9 @@ public abstract class BaseRoomController {
 
   /**
    * This method is called when the mouse clicks on the closed menu icon. It toggles the menu
-   * visibility
+   * visibility.
+   *
+   * @param event the mouse event
    */
   @FXML
   protected void onToggleMenu(MouseEvent event) {
@@ -348,6 +350,18 @@ public abstract class BaseRoomController {
     sendButton.toFront();
     lbltimer.toFront();
     crimesceneiconimg.toFront();
+  }
+
+  /**
+   * This method is called when an action event occurs on the closed menu icon. It toggles the menu
+   * visibility and updates its state.
+   *
+   * @param event the action event
+   */
+  @FXML
+  protected void onToggleMenu(ActionEvent event) {
+    context.toggleMenuVisibility();
+    updateMenuVisibility();
   }
 
   /**
@@ -527,6 +541,15 @@ public abstract class BaseRoomController {
    */
   @FXML
   protected void onSend(MouseEvent event) throws ApiProxyException, IOException {
+    handleSendMessage();
+  }
+
+  /**
+   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
+   * hand and expands the icon
+   */
+  @FXML
+  protected void onSend(ActionEvent event) throws ApiProxyException, IOException {
     handleSendMessage();
   }
 
@@ -775,16 +798,6 @@ public abstract class BaseRoomController {
    * hand and expands the icon
    */
   @FXML
-  protected void onToggleMenu(ActionEvent event) {
-    context.toggleMenuVisibility();
-    updateMenuVisibility();
-  }
-
-  /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
-   */
-  @FXML
   protected void onKeyPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.ENTER) {
       try {
@@ -812,15 +825,6 @@ public abstract class BaseRoomController {
    */
   @FXML
   protected void onEnterKey(ActionEvent event) throws IOException, ApiProxyException {
-    handleSendMessage();
-  }
-
-  /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
-   */
-  @FXML
-  protected void onSend(ActionEvent event) throws ApiProxyException, IOException {
     handleSendMessage();
   }
 }
