@@ -52,26 +52,25 @@ public class TornPhotographController {
 
   @FXML private Label revealLabel; // Label for text reveal
 
-  @FXML
-  private ImageView piece1,
-      piece2,
-      piece3,
-      piece4,
-      piece5,
-      piece6,
-      piece7,
-      piece8,
-      piece9; // ImageView elements for the torn pieces
-  @FXML
-  private ImageView outlinePiece1,
-      outlinePiece2,
-      outlinePiece3,
-      outlinePiece4,
-      outlinePiece5,
-      outlinePiece6,
-      outlinePiece7,
-      outlinePiece8,
-      outlinePiece9; // ImageView elements for the overlay pieces
+  @FXML private ImageView piece1;
+  @FXML private ImageView piece2;
+  @FXML private ImageView piece3;
+  @FXML private ImageView piece4;
+  @FXML private ImageView piece5;
+  @FXML private ImageView piece6;
+  @FXML private ImageView piece7;
+  @FXML private ImageView piece8;
+  @FXML private ImageView piece9;
+
+  @FXML private ImageView outlinePiece1;
+  @FXML private ImageView outlinePiece2;
+  @FXML private ImageView outlinePiece3;
+  @FXML private ImageView outlinePiece4;
+  @FXML private ImageView outlinePiece5;
+  @FXML private ImageView outlinePiece6;
+  @FXML private ImageView outlinePiece7;
+  @FXML private ImageView outlinePiece8;
+  @FXML private ImageView outlinePiece9;
 
   // Variables for drag offset
   private double offsetX, offsetY;
@@ -220,34 +219,47 @@ public class TornPhotographController {
 
   // Set up the timer pane
   private void setupTimerPane() {
+    // Create a new pane to hold the timer
     timerPane = new Pane();
+
+    // Set the size and style of the timer pane
     timerPane.setPrefSize(101, 45);
     timerPane.setOpacity(0.75);
+
+    // Set the style of the timer pane
     timerPane.setStyle(
         "-fx-background-color: white;"
             + "-fx-background-radius: 10px;"
             + "-fx-border-radius: 10px;"
             + "-fx-border-color: black;");
+
+    // Set the position of the timer pane
     AnchorPane.setLeftAnchor(timerPane, 10.0);
     AnchorPane.setTopAnchor(timerPane, 10.0);
 
+    // Create a label for the timer
     Label timerLabel = new Label();
     timerLabel.setFont(new Font(24));
     timerLabel.setAlignment(Pos.CENTER);
     timerLabel.setLayoutX(21.0);
     timerLabel.setLayoutY(8.0);
 
+    //  Bind the timer label to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
 
+    // Add the timer label to the timer pane
     timerPane.getChildren().add(timerLabel);
     puzzlePane.getChildren().add(timerPane);
     timerPane.toFront();
   }
 
   private void togglevisabilityofpieces(boolean visible) {
+    // Set the visibility of the pieces
     piece1.setVisible(visible);
+
+    // Set the visibility of the pieces
     piece2.setVisible(visible);
     piece3.setVisible(visible);
     piece4.setVisible(visible);
@@ -572,7 +584,10 @@ public class TornPhotographController {
   }
 
   private void setupGoBackButton() {
+    // Create a new button for the go back button
     goBackButton = new Button("Go Back");
+
+    // Set the style for the button
     goBackButton.setStyle(
         "-fx-background-radius: 10; "
             + "-fx-border-radius: 10; "
@@ -580,21 +595,33 @@ public class TornPhotographController {
             + "-fx-background-color: white; "
             + "-fx-text-fill: black; "
             + "-fx-font-size: 14px;");
+
+    // Set the size and position for the button
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
+
+    // Set the position of the button
     AnchorPane.setBottomAnchor(goBackButton, 10.0);
     AnchorPane.setRightAnchor(goBackButton, 10.0);
+
+    // Set the action for the button
     goBackButton.setOnAction(event -> goBackToRoom());
+
+    // Set the hover effect for the button
     goBackButton.setOnMouseEntered(
         e -> {
           goBackButton.setOpacity(0.7);
           goBackButton.setCursor(javafx.scene.Cursor.HAND);
         });
+
+    // Set the hover effect for the button
     goBackButton.setOnMouseExited(
         e -> {
           goBackButton.setOpacity(1);
           goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
         });
+
+    // Add the button to the pane
     puzzlePane.getChildren().add(goBackButton);
   }
 

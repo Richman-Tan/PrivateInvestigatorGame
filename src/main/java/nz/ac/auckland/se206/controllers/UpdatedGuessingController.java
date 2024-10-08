@@ -370,6 +370,7 @@ public class UpdatedGuessingController {
                 .then(1.0) // Full volume when volume is on
                 .otherwise(0.0) // Mute when volume is off
             );
+
     if (!playedConfirmEx) {
       // if (SharedVolumeControl.getInstance().getVolumeSetting()) {
       mediaPlayer.play();

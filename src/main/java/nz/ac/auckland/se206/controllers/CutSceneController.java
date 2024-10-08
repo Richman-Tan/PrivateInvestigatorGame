@@ -66,6 +66,7 @@ public class CutSceneController {
                 .then(1.0) // Full volume when volume is on
                 .otherwise(0.0) // Mute when volume is off
             );
+
     MediaView mediaView = new MediaView(mediaPlayer);
 
     mediaView.setPreserveRatio(false); // Don't preserve the video's aspect ratio

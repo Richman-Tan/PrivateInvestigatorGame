@@ -24,8 +24,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 import javafx.scene.shape.SVGPath;
+import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -294,14 +294,21 @@ public abstract class BaseRoomController {
 
   @FXML
   protected void onToggleMenu(MouseEvent event) {
+    // Toggle the menu visibility
     context.toggleMenuVisibility();
+
+    // Update the visibility of the menu
     basemapimg.toFront();
     topofmenubtn.toFront();
     lblareastatus.toFront();
     widowiconimg.toFront();
     grandsoniconimg.toFront();
     brothericonimg.toFront();
+
+    // Hide the closed menu icon behind everything else
     menuclosedimg.toBack();
+
+    // Set the opacity of the icons based on the controller
     userChatBox.toFront();
     suspectChatBox.toFront();
     guessButton.toFront();
@@ -476,7 +483,9 @@ public abstract class BaseRoomController {
 
   protected void sendMessageCode() throws ApiProxyException, IOException {
     String message = userChatBox.getText().trim();
-    if (message.isEmpty()) return;
+    if (message.isEmpty()) {
+      return;
+    }
 
     clearUserInput();
 
