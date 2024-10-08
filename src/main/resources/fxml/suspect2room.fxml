@@ -33,7 +33,7 @@
             </DropShadow>
          </effect>
       </ImageView>
-      <Pane layoutX="22.0" layoutY="25.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0">
+      <Pane layoutX="40.0" layoutY="21.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="40.0">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="8.0" text="Label" textFill="WHITE">
                <font>
