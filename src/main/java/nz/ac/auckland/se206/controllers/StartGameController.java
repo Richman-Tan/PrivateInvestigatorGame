@@ -5,6 +5,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -77,13 +78,19 @@ public class StartGameController {
     // Load the audio file
     Media sound = new Media(door);
     mediaPlayer = new MediaPlayer(sound);
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+
+    // Bind the mediaPlayer's volume property using a DoubleBinding
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get()
+                        ? 1.0
+                        : 0.0, // Use 1.0 for full volume if true, otherwise 0.0 for mute
+                volumeSettingProperty));
 
     // Set click action
     imageView.setOnMouseClicked(

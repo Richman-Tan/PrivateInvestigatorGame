@@ -2,6 +2,7 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -112,20 +113,25 @@ public class CluePhoneController {
 
       rootPane.getChildren().add(phoneRingingImageView);
 
-      // Load the MP4 video
+      // Load the media file path
       String videoPath =
           CluePhoneController.class
-              .getResource("/images/cluephoneimages/clueaudiofile.mp4") // Get the resource path
-              .toExternalForm(); // Convert the resource path to an external form
+              .getResource("/images/cluephoneimages/clueaudiofile.mp4")
+              .toExternalForm();
       Media media = new Media(videoPath);
+
+      // Create a media player for the media file
       MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+      // Bind the volume property of the media player to the shared volume control setting
       mediaPlayer
           .volumeProperty()
           .bind(
-              Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                  .then(1.0) // Full volume when volume is on
-                  .otherwise(0.0) // Mute when volume is off
-              );
+              Bindings.createDoubleBinding(
+                  () -> SharedVolumeControl.getInstance().volumeSettingProperty().get() ? 1.0 : 0.0,
+                  SharedVolumeControl.getInstance().volumeSettingProperty()));
+
+      // Create a MediaView to display the media content
       MediaView mediaView = new MediaView(mediaPlayer);
 
       // Set whether to preserve the aspect ratio (optional)
@@ -709,13 +715,10 @@ public class CluePhoneController {
       MediaPlayer mediaPlayer = new MediaPlayer(media);
       MediaView mediaView = new MediaView(mediaPlayer);
 
+      BooleanProperty isVolumeOn = SharedVolumeControl.getInstance().volumeSettingProperty();
       mediaPlayer
           .volumeProperty()
-          .bind(
-              Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                  .then(1.0) // Full volume when volume is on
-                  .otherwise(0.0) // Mute when volume is off
-              );
+          .bind(Bindings.createDoubleBinding(() -> isVolumeOn.get() ? 1.0 : 0.0, isVolumeOn));
 
       // Set whether to preserve the aspect ratio (optional)
       mediaView.setPreserveRatio(false);

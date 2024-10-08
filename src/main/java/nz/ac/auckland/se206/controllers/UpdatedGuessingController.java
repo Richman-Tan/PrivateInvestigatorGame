@@ -12,6 +12,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -126,6 +127,8 @@ public class UpdatedGuessingController {
   private TimerModel countdownTimer;
   private ChatCompletionRequest chatCompletionRequest;
   private String guessedsuspect;
+  private BooleanProperty volumeSettingProperty =
+      SharedVolumeControl.getInstance().volumeSettingProperty();
 
   /**
    * Initializes the chat view.
@@ -182,26 +185,24 @@ public class UpdatedGuessingController {
     // play the audio
     Media sound = new Media(culprit);
     culpritPlayer = new MediaPlayer(sound);
+    // Bind the volume property for culpritPlayer
     culpritPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () -> volumeSettingProperty.get() ? 1.0 : 0.0, volumeSettingProperty));
     culpritPlayer.play();
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
 
     Media confirmedSound = new Media(confirmed);
     mediaPlayer = new MediaPlayer(confirmedSound);
+    // Use a DoubleBinding to bind the mediaPlayer volume property
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () -> volumeSettingProperty.get() ? 1.0 : 0.0, volumeSettingProperty));
   }
 
   /**
@@ -334,23 +335,27 @@ public class UpdatedGuessingController {
   private void confirmCulprit(MouseEvent event) throws IOException {
     Media confirmedSound = new Media(confirmed);
     mediaPlayer = new MediaPlayer(confirmedSound);
+    // Use a DoubleBinding to bind the volume property
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get()
+                        ? 1.0
+                        : 0.0, // Use 1.0 for full volume and 0.0 for mute
+                volumeSettingProperty));
 
     Media sound2 = new Media(explanation);
     explanationPlayer = new MediaPlayer(sound2);
+    // Create a DoubleBinding and bind it to the explanationPlayer's volume property
     explanationPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get() ? 1.0 : 0.0, // Full volume if true, otherwise mute
+                volumeSettingProperty));
     if (!playedConfirmCulprit) {
       mediaPlayer.play();
       playedConfirmCulprit = true;
@@ -433,13 +438,14 @@ public class UpdatedGuessingController {
     // play sound
     Media confirmedSound = new Media(confirmed);
     mediaPlayer = new MediaPlayer(confirmedSound);
+    // Create a DoubleBinding and bind it to the mediaPlayer's volume property
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get() ? 1.0 : 0.0, // Full volume if true, otherwise mute
+                volumeSettingProperty));
 
     if (!playedConfirmEx) {
       // if (SharedVolumeControl.getInstance().getVolumeSetting()) {
@@ -501,13 +507,12 @@ public class UpdatedGuessingController {
       Media sound = new Media(incorrectGuess);
       guessPlayer = new MediaPlayer(sound);
     }
+    // Bind the volume property for guessPlayer
     guessPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () -> volumeSettingProperty.get() ? 1.0 : 0.0, volumeSettingProperty));
 
     // Run a seperate thread to play the sound
     new Thread(
@@ -524,19 +529,24 @@ public class UpdatedGuessingController {
 
     Media sound = new Media(gameOver);
     gameOverPlayer = new MediaPlayer(sound);
+
+    // Use a boolean binding to control the volume based on the shared volume setting
+    BooleanProperty isVolumeOn = SharedVolumeControl.getInstance().volumeSettingProperty();
     gameOverPlayer
         .volumeProperty()
-        .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+        .bind(Bindings.createDoubleBinding(() -> isVolumeOn.get() ? 1.0 : 0.0, isVolumeOn));
+
+    // Play the game over sound
     gameOverPlayer.play();
     gameOverTxt.setVisible(true);
+
+    // Set up an event handler for when the media ends
     gameOverPlayer.setOnEndOfMedia(
         () -> {
-          // play sound
+          // Play another sound once the game over sound ends
           guessPlayer.play();
+
+          // Create a timeline to control the visibility of nodes in the list
           timeline =
               new Timeline(
                   new KeyFrame(
@@ -549,10 +559,12 @@ public class UpdatedGuessingController {
                           }
                           j++;
                         } else {
-                          timeline.stop();
+                          timeline.stop(); // Stop the timeline when all elements are shown
                         }
                       }));
-          timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
+
+          // Set the timeline to run indefinitely until manually stopped
+          timeline.setCycleCount(Timeline.INDEFINITE);
           timeline.play(); // Start the animation
         });
   }

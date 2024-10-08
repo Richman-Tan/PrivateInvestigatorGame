@@ -323,7 +323,9 @@ public abstract class BaseRoomController {
 
   /**
    * This method is called when the mouse clicks on the closed menu icon. It toggles the menu
-   * visibility
+   * visibility.
+   *
+   * @param event the mouse event
    */
   @FXML
   protected void onToggleMenu(MouseEvent event) {
@@ -348,6 +350,18 @@ public abstract class BaseRoomController {
     sendButton.toFront();
     lbltimer.toFront();
     crimesceneiconimg.toFront();
+  }
+
+  /**
+   * This method is called when an action event occurs on the closed menu icon. It toggles the menu
+   * visibility and updates its state.
+   *
+   * @param event the action event
+   */
+  @FXML
+  protected void onToggleMenu(ActionEvent event) {
+    context.toggleMenuVisibility();
+    updateMenuVisibility();
   }
 
   /**
@@ -413,7 +427,9 @@ public abstract class BaseRoomController {
           e.printStackTrace();
         }
       }
-      default -> {}
+      default -> {
+        System.out.println("Invalid icon clicked");
+      }
     }
   }
 
@@ -529,6 +545,15 @@ public abstract class BaseRoomController {
   }
 
   /**
+   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
+   * hand and expands the icon
+   */
+  @FXML
+  protected void onSend(ActionEvent event) throws ApiProxyException, IOException {
+    handleSendMessage();
+  }
+
+  /**
    * Turn off Volume method. This method is called when the volume is turned off. It sets the volume
    * off icon to be visible and the volume up icon to be invisible
    */
@@ -583,16 +608,22 @@ public abstract class BaseRoomController {
    * @throws IOException
    */
   protected void sendMessageCode() throws ApiProxyException, IOException {
+    // Get the message from the user chat box
     String message = userChatBox.getText().trim();
+
+    // Check if the message is empy as to not send empty messages
     if (message.isEmpty()) {
       return;
     }
 
+    // Clear the user input
     clearUserInput();
 
+    // Append the message to the chat box
     ChatMessage msg = new ChatMessage("user", message);
     Task<Void> task = createGptTask(msg);
 
+    // Start the task in a new thread
     new Thread(task).start();
   }
 
@@ -767,16 +798,6 @@ public abstract class BaseRoomController {
    * hand and expands the icon
    */
   @FXML
-  protected void onToggleMenu(ActionEvent event) {
-    context.toggleMenuVisibility();
-    updateMenuVisibility();
-  }
-
-  /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
-   */
-  @FXML
   protected void onKeyPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.ENTER) {
       try {
@@ -804,15 +825,6 @@ public abstract class BaseRoomController {
    */
   @FXML
   protected void onEnterKey(ActionEvent event) throws IOException, ApiProxyException {
-    handleSendMessage();
-  }
-
-  /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
-   */
-  @FXML
-  protected void onSend(ActionEvent event) throws ApiProxyException, IOException {
     handleSendMessage();
   }
 }

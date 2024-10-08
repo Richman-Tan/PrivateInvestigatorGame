@@ -7,6 +7,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -63,13 +64,19 @@ public class CutSceneController {
             .toExternalForm(); // Convert the resource path to an external form
     Media media = new Media(videoPath);
     mediaPlayer = new MediaPlayer(media);
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+
+    // Bind the mediaPlayer's volume property using a DoubleBinding
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get()
+                        ? 1.0
+                        : 0.0, // Use 1.0 for full volume if true, otherwise 0.0 for mute
+                volumeSettingProperty));
 
     MediaView mediaView = new MediaView(mediaPlayer);
 

@@ -200,7 +200,6 @@ public class ClueDrawerController {
       makeDraggable(imageView);
     }
 
-    // Return the image view
     return imageView;
   }
 

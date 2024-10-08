@@ -7,6 +7,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,24 +37,21 @@ import nz.ac.auckland.se206.states.GameStarted;
  */
 public class RoomController {
 
-  // Inner Classes (if any would go here)
-
-  // Static Fields
   private static final GameStateContext context = GameStateContext.getInstance();
+  private static final String INITIAL_AUDIO =
+      GameStarted.class.getClassLoader().getResource("sounds/initialaudio.mp3").toExternalForm();
 
   /**
    * Returns the initial audio file path.
    *
-   * @return
+   * @return the initial audio file path
    */
   public static String getInitialaudio() {
-    return initialaudio;
+    return INITIAL_AUDIO;
   }
 
-  // Static Methods
-  // (If you have static methods, they would go here)
-
-  // Instance Fields
+  // 7. Instance Fields (Including FXML fields and other instance variables)
+  // FXML fields (usually UI controls)
   @FXML private AnchorPane rootNode;
   @FXML private Button guessButton;
   @FXML private Label lbltimer;
@@ -70,23 +68,19 @@ public class RoomController {
   @FXML private ImageView topofmenubtn;
   @FXML private Pane timerpane;
 
-  private static final String initialaudio =
-      GameStarted.class.getClassLoader().getResource("sounds/initialaudio.mp3").toExternalForm();
-
+  // Other instance fields
   private MediaPlayer mediaPlayer;
-
   private boolean isFirstTimeInit = context.isFirstTimeInit();
   protected TimerModel countdownTimer;
 
-  private boolean isatleastoncecluefound =
+  private final boolean isatleastoncecluefound =
       context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
 
-  // Create a group node
+  // Graphical components
   private Group drawGroup;
-
-  private SVGPath volumeUpStroke = new SVGPath();
-  private SVGPath volumeUp = new SVGPath();
-  private SVGPath volumeOff = new SVGPath();
+  private final SVGPath volumeUpStroke = new SVGPath();
+  private final SVGPath volumeUp = new SVGPath();
+  private final SVGPath volumeOff = new SVGPath();
 
   /** Initializes the room view. */
   @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -110,15 +104,21 @@ public class RoomController {
     // set anchorpane of clue 3 to 10px to the right
     AnchorPane.setRightAnchor(clue3, 15.0);
 
-    Media initial = new Media(initialaudio);
+    Media initial = new Media(INITIAL_AUDIO);
     mediaPlayer = new MediaPlayer(initial);
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+
+    // Bind the mediaPlayer's volume property using a DoubleBinding
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get()
+                        ? 1.0
+                        : 0.0, // Use 1.0 for full volume if true, otherwise 0.0 for mute
+                volumeSettingProperty));
 
     // Check if the guess button should be enabled
     checkGuessButton();
@@ -444,6 +444,7 @@ public class RoomController {
             // Handle the phone clue click event
             App.setRoot("cluephone");
           } catch (IOException e1) {
+            System.err.println("Error loading the phone clue scene");
           }
         });
 
@@ -494,6 +495,7 @@ public class RoomController {
           try {
             handleSafeClick();
           } catch (IOException e1) {
+            System.err.println("Error loading the safe clue scene");
           }
         });
 
@@ -612,6 +614,7 @@ public class RoomController {
             Thread.sleep(10);
             App.setRoot("cluetornphotograph");
           } catch (IOException | InterruptedException e1) {
+            System.err.println("Error loading the torn photograph clue scene");
           }
         });
   }

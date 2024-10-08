@@ -6,10 +6,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 public class SharedVolumeControl {
 
   private static SharedVolumeControl instance;
-  private BooleanProperty volumeSetting = new SimpleBooleanProperty(true);
-
-  /** Constructs a new shared volume control. */
-  private SharedVolumeControl() {}
 
   /**
    * Gets the instance of the shared volume control.
@@ -22,6 +18,11 @@ public class SharedVolumeControl {
     }
     return instance;
   }
+
+  private final BooleanProperty volumeSetting = new SimpleBooleanProperty(true);
+
+  /** Constructs a new shared volume control. */
+  private SharedVolumeControl() {}
 
   /**
    * Gets the volume control property.
@@ -38,11 +39,7 @@ public class SharedVolumeControl {
    * @return the volume control
    */
   public boolean getVolumeSetting() {
-    if (volumeSetting.get()) {
-      return true;
-    } else {
-      return false;
-    }
+    return volumeSetting.get();
   }
 
   /**
