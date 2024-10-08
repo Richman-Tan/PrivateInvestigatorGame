@@ -52,26 +52,25 @@ public class TornPhotographController {
 
   @FXML private Label revealLabel; // Label for text reveal
 
-  @FXML
-  private ImageView piece1,
-      piece2,
-      piece3,
-      piece4,
-      piece5,
-      piece6,
-      piece7,
-      piece8,
-      piece9; // ImageView elements for the torn pieces
-  @FXML
-  private ImageView outlinePiece1,
-      outlinePiece2,
-      outlinePiece3,
-      outlinePiece4,
-      outlinePiece5,
-      outlinePiece6,
-      outlinePiece7,
-      outlinePiece8,
-      outlinePiece9; // ImageView elements for the overlay pieces
+  @FXML private ImageView piece1;
+  @FXML private ImageView piece2;
+  @FXML private ImageView piece3;
+  @FXML private ImageView piece4;
+  @FXML private ImageView piece5;
+  @FXML private ImageView piece6;
+  @FXML private ImageView piece7;
+  @FXML private ImageView piece8;
+  @FXML private ImageView piece9;
+
+  @FXML private ImageView outlinePiece1;
+  @FXML private ImageView outlinePiece2;
+  @FXML private ImageView outlinePiece3;
+  @FXML private ImageView outlinePiece4;
+  @FXML private ImageView outlinePiece5;
+  @FXML private ImageView outlinePiece6;
+  @FXML private ImageView outlinePiece7;
+  @FXML private ImageView outlinePiece8;
+  @FXML private ImageView outlinePiece9;
 
   // Variables for drag offset
   private double offsetX, offsetY;
@@ -92,21 +91,22 @@ public class TornPhotographController {
   private SVGPath volumeOff = new SVGPath();
 
   // Boolean flags to check if pieces are correctly placed
-  private boolean piece1Correct,
-      piece2Correct,
-      piece3Correct,
-      piece4Correct,
-      piece5Correct,
-      piece6Correct,
-      piece7Correct,
-      piece8Correct,
-      piece9Correct;
+  private boolean piece1Correct;
+  private boolean piece2Correct;
+  private boolean piece3Correct;
+  private boolean piece4Correct;
+  private boolean piece5Correct;
+  private boolean piece6Correct;
+  private boolean piece7Correct;
+  private boolean piece8Correct;
+  private boolean piece9Correct;
 
   // Threshold to snap pieces into place
   private final double SNAP_THRESHOLD = 200;
 
   private TimerModel countdownTimer;
 
+  /** Initializes the torn photograph view. */
   @FXML
   public void initialize() {
     // Initialize flags for piece placement
@@ -201,7 +201,7 @@ public class TornPhotographController {
     showVolumeButton();
   }
 
-  // Method to dynamically create the label and center it
+  /** Method to create and bind the reveal label for the text animation. */
   private void createRevealLabel() {
     revealLabel = new Label(); // Create the Label
     revealLabel.setText(""); // Initially empty
@@ -218,36 +218,54 @@ public class TornPhotographController {
     revealLabel.toFront(); // Bring the label to the front
   }
 
-  // Set up the timer pane
+  /** Method to set up the timer pane. */
   private void setupTimerPane() {
+    // Create a new pane to hold the timer
     timerPane = new Pane();
+
+    // Set the size and style of the timer pane
     timerPane.setPrefSize(101, 45);
     timerPane.setOpacity(0.75);
+
+    // Set the style of the timer pane
     timerPane.setStyle(
         "-fx-background-color: white;"
             + "-fx-background-radius: 10px;"
             + "-fx-border-radius: 10px;"
             + "-fx-border-color: black;");
+
+    // Set the position of the timer pane
     AnchorPane.setLeftAnchor(timerPane, 10.0);
     AnchorPane.setTopAnchor(timerPane, 10.0);
 
+    // Create a label for the timer
     Label timerLabel = new Label();
     timerLabel.setFont(new Font(24));
     timerLabel.setAlignment(Pos.CENTER);
     timerLabel.setLayoutX(21.0);
     timerLabel.setLayoutY(8.0);
 
+    //  Bind the timer label to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
 
+    // Add the timer label to the timer pane
     timerPane.getChildren().add(timerLabel);
     puzzlePane.getChildren().add(timerPane);
     timerPane.toFront();
   }
 
+  /**
+   * Method to toggle the visibility of the puzzle pieces.
+   *
+   * @param visible
+   */
   private void togglevisabilityofpieces(boolean visible) {
+    // Set the visibility of the pieces
     piece1.setVisible(visible);
+
+    // Set the visibility of the pieces
     piece2.setVisible(visible);
     piece3.setVisible(visible);
     piece4.setVisible(visible);
@@ -258,6 +276,7 @@ public class TornPhotographController {
     piece9.setVisible(visible);
   }
 
+  /** Method to set up the game. */
   private void setupGame() {
 
     // Set the layout of the pieces
@@ -294,6 +313,11 @@ public class TornPhotographController {
     createAndBindImageView(outlinePiece9);
   }
 
+  /**
+   * Method to create and bind an ImageView to the pane.
+   *
+   * @param image
+   */
   private void createAndBindImageView(ImageView image) {
     // If it's outline piece 7, increase the size of the pane height and move it down
     if (image == outlinePiece7) {
@@ -328,22 +352,45 @@ public class TornPhotographController {
     image.fitHeightProperty().bind(puzzlePane.heightProperty());
   }
 
+  /**
+   * Method to set up drag and drop handlers for the puzzle pieces.
+   *
+   * @param piece
+   */
   private void setupDragAndDrop(ImageView piece) {
     piece.setOnMousePressed(event -> onPiecePressed(event, piece));
     piece.setOnMouseDragged(event -> onPieceDragged(event, piece));
     piece.setOnMouseReleased(event -> onPieceReleased(event, piece));
   }
 
+  /**
+   * Method to handle the mouse pressed event for the puzzle pieces.
+   *
+   * @param event
+   * @param piece
+   */
   private void onPiecePressed(MouseEvent event, ImageView piece) {
     offsetX = event.getSceneX() - piece.getLayoutX();
     offsetY = event.getSceneY() - piece.getLayoutY();
   }
 
+  /**
+   * Method to handle the mouse dragged event for the puzzle pieces.
+   *
+   * @param event
+   * @param piece
+   */
   private void onPieceDragged(MouseEvent event, ImageView piece) {
     piece.setLayoutX(event.getSceneX() - offsetX);
     piece.setLayoutY(event.getSceneY() - offsetY);
   }
 
+  /**
+   * Method to handle the mouse released event for the puzzle pieces.
+   *
+   * @param event
+   * @param piece
+   */
   private void onPieceReleased(MouseEvent event, ImageView piece) {
     // Check if the piece is close enough to its target position to snap into place
     if (piece == piece1 && isCloseToTarget(piece, piece1TargetX, piece1TargetY)) {
@@ -406,11 +453,20 @@ public class TornPhotographController {
     checkIfPuzzleComplete();
   }
 
+  /**
+   * Method to check if a puzzle piece is close to its target position.
+   *
+   * @param piece
+   * @param targetX
+   * @param targetY
+   * @return
+   */
   private boolean isCloseToTarget(ImageView piece, double targetX, double targetY) {
     return Math.abs(piece.getLayoutX() - targetX) < SNAP_THRESHOLD
         && Math.abs(piece.getLayoutY() - targetY) < SNAP_THRESHOLD;
   }
 
+  /** Method to check if the puzzle is complete. */
   private void checkIfPuzzleComplete() {
     // If all pieces are correctly placed, show a success message
     if (piece1Correct
@@ -462,7 +518,7 @@ public class TornPhotographController {
     }
   }
 
-  // Method to start the text reveal animation and zoom effect
+  /** Method to animate the text reveal. */
   private void animatetext() {
     Timeline timeline = new Timeline();
     for (int i = 0; i < revealText.length(); i++) {
@@ -571,8 +627,12 @@ public class TornPhotographController {
         });
   }
 
+  /** Method to set up the go back button. */
   private void setupGoBackButton() {
+    // Create a new button for the go back button
     goBackButton = new Button("Go Back");
+
+    // Set the style for the button
     goBackButton.setStyle(
         "-fx-background-radius: 10; "
             + "-fx-border-radius: 10; "
@@ -580,24 +640,37 @@ public class TornPhotographController {
             + "-fx-background-color: white; "
             + "-fx-text-fill: black; "
             + "-fx-font-size: 14px;");
+
+    // Set the size and position for the button
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
+
+    // Set the position of the button
     AnchorPane.setBottomAnchor(goBackButton, 10.0);
     AnchorPane.setRightAnchor(goBackButton, 10.0);
+
+    // Set the action for the button
     goBackButton.setOnAction(event -> goBackToRoom());
+
+    // Set the hover effect for the button
     goBackButton.setOnMouseEntered(
         e -> {
           goBackButton.setOpacity(0.7);
           goBackButton.setCursor(javafx.scene.Cursor.HAND);
         });
+
+    // Set the hover effect for the button
     goBackButton.setOnMouseExited(
         e -> {
           goBackButton.setOpacity(1);
           goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
         });
+
+    // Add the button to the pane
     puzzlePane.getChildren().add(goBackButton);
   }
 
+  /** Method to go back to the room. */
   private void goBackToRoom() {
     try {
       App.setRoot("room");

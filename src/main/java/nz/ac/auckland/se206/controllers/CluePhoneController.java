@@ -66,6 +66,7 @@ public class CluePhoneController {
 
   private TimerModel countdownTimer;
 
+  /** Initializes the CluePhoneController. */
   @FXML
   private void initialize() {
     // Use the helper method to create and add the timer pane
@@ -446,6 +447,7 @@ public class CluePhoneController {
     showVolumeButton();
   }
 
+  /** Handle arrow button click. */
   private void handleArrowButtonClick() {
     System.out.println("Arrow button clicked!");
 
@@ -505,6 +507,7 @@ public class CluePhoneController {
     setupGame();
   }
 
+  /** Sets up game */
   private void setupGame() {
     // Create start circles (left side)
     startCircleRed = createDraggableCircle(0, 0, Color.RED);
@@ -573,7 +576,14 @@ public class CluePhoneController {
             endCircleGreen);
   }
 
-  // Create start circle with dragging functionality
+  /**
+   * Create a draggable circle.
+   *
+   * @param x
+   * @param y
+   * @param color
+   * @return
+   */
   private Circle createDraggableCircle(double x, double y, Color color) {
     Circle circle = new Circle(x, y, 10, color);
     circle.setOnMousePressed(event -> onStartDrag(event, circle));

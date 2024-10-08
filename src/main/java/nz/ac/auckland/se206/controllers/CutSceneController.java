@@ -29,6 +29,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 
+/**
+ * Controller class for the cutscene view. This class is responsible for playing the cutscene video
+ * and displaying the text letter by letter.
+ */
 public class CutSceneController {
 
   // Static fields
@@ -50,7 +54,7 @@ public class CutSceneController {
 
   // Instance methods
 
-  // Initialize method called when the controller is created
+  /** Initializes the CutSceneController. */
   public void initialize() {
     // Load background video using the correct class reference for resource path
     String videoPath =
@@ -66,6 +70,7 @@ public class CutSceneController {
                 .then(1.0) // Full volume when volume is on
                 .otherwise(0.0) // Mute when volume is off
             );
+
     MediaView mediaView = new MediaView(mediaPlayer);
 
     mediaView.setPreserveRatio(false); // Don't preserve the video's aspect ratio
@@ -128,7 +133,10 @@ public class CutSceneController {
     volumeOff.toFront();
   }
 
-  // Method to dynamically create the label and center it
+  /**
+   * Creates the revealLabel and adds it to the rootPane. The label is initially invisible and
+   * empty.
+   */
   private void createRevealLabel() {
     revealLabel = new Label(); // Create the Label
     revealLabel.setText(""); // Initially empty
@@ -144,7 +152,9 @@ public class CutSceneController {
     rootPane.getChildren().add(revealLabel);
   }
 
-  // Center the label in the rootPane based on its size
+  /**
+   * Centers the revealLabel in the rootPane. This method should be called whenever the size of the
+   */
   private void centerLabel() {
     if (revealLabel.getScene() != null) {
       double centerX = (rootPane.getWidth() - revealLabel.getWidth()) / 2;
@@ -352,6 +362,9 @@ public class CutSceneController {
         });
   }
 
+  /**
+   * Method to handle the close request. This method is called when the window is closed. It stops
+   */
   private void handleExit() {
     // Check if mediaPlayer is not null before stopping and disposing
     if (mediaPlayer != null) {
@@ -367,6 +380,9 @@ public class CutSceneController {
     // Perform any additional cleanup here if needed
   }
 
+  /*
+   * Method to show the phone image
+   */
   private void showPhone() {
     ImageView phoneImg = new ImageView();
 

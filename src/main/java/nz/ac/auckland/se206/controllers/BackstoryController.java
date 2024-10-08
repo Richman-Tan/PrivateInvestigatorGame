@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -245,6 +246,7 @@ public class BackstoryController {
 
   // Static methods (if any)
 
+  /** Creates a timer pane and binds the countdown timer to the label. */
   private void createTimerPane() {
     // Create the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();

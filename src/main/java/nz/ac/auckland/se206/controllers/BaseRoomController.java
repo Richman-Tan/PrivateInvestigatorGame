@@ -24,8 +24,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 import javafx.scene.shape.SVGPath;
+import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -63,6 +63,7 @@ public abstract class BaseRoomController {
   @FXML private ImageView crimesceneiconimg;
   @FXML private Pane timerpane;
 
+  /** This method initializes the controller */
   @FXML
   public void initialize() {
     updateMenuVisibility();
@@ -143,6 +144,9 @@ public abstract class BaseRoomController {
         });
   }
 
+  /**
+   * This method is called when the timer reaches 1 minutes left. It starts the flashing animation
+   */
   private void checkiftimeris4minleft() {
     if (countdownTimer
         .timeStringProperty()
@@ -152,6 +156,11 @@ public abstract class BaseRoomController {
     }
   }
 
+  /**
+   * This method starts the flashing animation for a pane
+   *
+   * @param pane the pane to flash
+   */
   private void startFlashingAnimation(Pane pane) {
     // Store the existing style to restore it later after flashing
     String originalStyle = pane.getStyle();
@@ -235,6 +244,10 @@ public abstract class BaseRoomController {
     flashTimeline.play();
   }
 
+  /**
+   * This method is called when the mouse enters the top of the menu button. It changes the cursor
+   * to
+   */
   @FXML
   protected void onMouseEnteredTopOfMenu(MouseEvent event) {
     // change cursor
@@ -242,6 +255,10 @@ public abstract class BaseRoomController {
     lblareastatus.setText("Close Menu?");
   }
 
+  /**
+   * This method is called when the mouse exits the top of the menu button. It changes the cursor
+   * back to the default cursor
+   */
   @FXML
   protected void onMouseExitedTopOfMenu(MouseEvent event) {
     // change cursor
@@ -257,12 +274,20 @@ public abstract class BaseRoomController {
     }
   }
 
+  /**
+   * This method is called when the mouse clicks on the top of the menu button. It toggles the menu
+   * visibility
+   */
   @FXML
   protected void onToggleMenuOff(MouseEvent event) {
     context.toggleMenuVisibility();
     updateMenuVisibility();
   }
 
+  /**
+   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
+   * hand and expands the icon
+   */
   @FXML
   protected void onMouseEnteredMenuClosed(MouseEvent event) {
     // change cursor
@@ -274,6 +299,10 @@ public abstract class BaseRoomController {
     menuclosedimg.setScaleY(1.1);
   }
 
+  /**
+   * This method is called when the mouse exits the closed menu icon. It changes the cursor back to
+   * the default cursor and shrinks the icon
+   */
   @FXML
   protected void onMouseExitedMenuClosed(MouseEvent event) {
     // change cursor
@@ -292,16 +321,27 @@ public abstract class BaseRoomController {
     menuclosedimg.setScaleY(1);
   }
 
+  /**
+   * This method is called when the mouse clicks on the closed menu icon. It toggles the menu
+   * visibility
+   */
   @FXML
   protected void onToggleMenu(MouseEvent event) {
+    // Toggle the menu visibility
     context.toggleMenuVisibility();
+
+    // Update the visibility of the menu
     basemapimg.toFront();
     topofmenubtn.toFront();
     lblareastatus.toFront();
     widowiconimg.toFront();
     grandsoniconimg.toFront();
     brothericonimg.toFront();
+
+    // Hide the closed menu icon behind everything else
     menuclosedimg.toBack();
+
+    // Set the opacity of the icons based on the controller
     userChatBox.toFront();
     suspectChatBox.toFront();
     guessButton.toFront();
@@ -310,6 +350,10 @@ public abstract class BaseRoomController {
     crimesceneiconimg.toFront();
   }
 
+  /**
+   * This method is called when the mouse enters an icon. It changes the opacity of the icon and
+   * sets the status label
+   */
   @FXML
   protected void onMouseEnteredIcon(MouseEvent event) {
     ImageView icon = (ImageView) event.getSource();
@@ -324,6 +368,10 @@ public abstract class BaseRoomController {
     }
   }
 
+  /**
+   * This method is called when the mouse exits an icon. It restores the opacity of the icon and
+   * sets the status label
+   */
   @FXML
   protected void onMouseExitedIcon(MouseEvent event) {
     ImageView icon = (ImageView) event.getSource();
@@ -338,6 +386,7 @@ public abstract class BaseRoomController {
     }
   }
 
+  /** This method is called when an icon is clicked. It navigates to the corresponding room */
   @FXML
   protected void onIconClicked(MouseEvent event) {
     ImageView icon = (ImageView) event.getSource();
@@ -368,6 +417,7 @@ public abstract class BaseRoomController {
     }
   }
 
+  /** This method initializes the GPT model and loads the initial prompt */
   protected void initializeGptModel() {
     // Create a new task to initialize the GPT model
     Task<Void> task =
@@ -394,6 +444,12 @@ public abstract class BaseRoomController {
     new Thread(task).start();
   }
 
+  /**
+   * This method sets up the GPT request
+   *
+   * @throws IOException
+   * @throws ApiProxyException
+   */
   protected void setupGptRequest() throws IOException, ApiProxyException {
     // Set up the GPT request
     ApiProxyConfig config = ApiProxyConfig.readConfig();
@@ -406,6 +462,7 @@ public abstract class BaseRoomController {
             .setMaxTokens(100);
   }
 
+  /** This method binds the timer to the label */
   protected void bindTimerToLabel() {
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     System.out.println(
@@ -425,25 +482,56 @@ public abstract class BaseRoomController {
             });
   }
 
+  /**
+   * This method loads the initial prompt for the GPT model
+   *
+   * @param resourcePath the path to the resource file containing the initial prompt
+   * @throws URISyntaxException
+   * @throws IOException
+   * @throws ApiProxyException
+   */
   protected abstract String getInitialPrompt();
 
+  /**
+   * This method loads the initial prompt for the GPT model
+   *
+   * @param resourcePath the path to the resource file containing the initial prompt
+   * @throws URISyntaxException
+   * @throws IOException
+   * @throws ApiProxyException
+   */
   protected abstract void loadGptPrompt(String resourcePath)
       throws URISyntaxException, IOException, ApiProxyException;
 
+  /** This method sets the user chat box prompt */
   protected void setUserChatBoxPrompt(String text) {
     Platform.runLater(() -> userChatBox.setPromptText(text));
   }
 
+  /**
+   * This method appends a chat message to the suspect chat box
+   *
+   * @param msg the chat message to append
+   */
   @FXML
   protected void onRoom(MouseEvent event) throws IOException {
     App.setRoot("room");
   }
 
+  /**
+   * This method appends a chat message to the suspect chat box
+   *
+   * @param msg the chat message to append
+   */
   @FXML
   protected void onSend(MouseEvent event) throws ApiProxyException, IOException {
     handleSendMessage();
   }
 
+  /**
+   * Turn off Volume method. This method is called when the volume is turned off. It sets the volume
+   * off icon to be visible and the volume up icon to be invisible
+   */
   @FXML
   protected void turnVolumeOff() throws IOException {
     volumeOff.setVisible(true);
@@ -452,6 +540,10 @@ public abstract class BaseRoomController {
     SharedVolumeControl.getInstance().setVolumeSetting(false);
   }
 
+  /**
+   * Turn on Volume method. This method is called when the volume is turned on. It sets the volume
+   * off icon to be invisible and the volume up icon to be visible
+   */
   @FXML
   protected void turnVolumeOn() throws IOException {
     volumeOff.setVisible(false);
@@ -460,6 +552,10 @@ public abstract class BaseRoomController {
     SharedVolumeControl.getInstance().setVolumeSetting(true);
   }
 
+  /**
+   * This method checks the volume icon. If the volume is on, it calls the turnVolumeOn method. If
+   * the volume is off, it calls the turnVolumeOff method
+   */
   private void checkVolumeIcon() throws IOException {
     if (SharedVolumeControl.getInstance().getVolumeSetting()) {
       turnVolumeOn();
@@ -468,15 +564,29 @@ public abstract class BaseRoomController {
     }
   }
 
+  /**
+   * This method handles the sending of a message to the GPT model
+   *
+   * @throws ApiProxyException
+   * @throws IOException
+   */
   protected void handleSendMessage() throws ApiProxyException, IOException {
     sendMessageCode();
     recordVisit();
     checkGuessButton();
   }
 
+  /**
+   * This method sends a message to the GPT model
+   *
+   * @throws ApiProxyException
+   * @throws IOException
+   */
   protected void sendMessageCode() throws ApiProxyException, IOException {
     String message = userChatBox.getText().trim();
-    if (message.isEmpty()) return;
+    if (message.isEmpty()) {
+      return;
+    }
 
     clearUserInput();
 
@@ -486,6 +596,12 @@ public abstract class BaseRoomController {
     new Thread(task).start();
   }
 
+  /**
+   * This method creates a new task to run the GPT model
+   *
+   * @param msg
+   * @return
+   */
   protected Task<Void> createGptTask(ChatMessage msg) {
     // Create a new task to run the GPT model
     return new Task<>() {
@@ -503,12 +619,20 @@ public abstract class BaseRoomController {
     };
   }
 
+  /** This method clears the user input */
   protected void clearUserInput() {
     userChatBox.clear();
     suspectChatBox.clear();
     userChatBox.setPromptText("Waiting for response...");
   }
 
+  /**
+   * This method runs the GPT model
+   *
+   * @param msg
+   * @return
+   * @throws ApiProxyException
+   */
   protected ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
     chatCompletionRequest.addMessage(msg);
     disableSendButton(true);
@@ -531,20 +655,32 @@ public abstract class BaseRoomController {
     }
   }
 
+  /**
+   * This method appends a chat message to the suspect chat box
+   *
+   * @param msg the chat message to append
+   */
   @FXML
   protected void appendChatMessage(ChatMessage msg) {
     suspectChatBox.clear();
     suspectChatBox.appendText(msg.getContent() + "\n\n");
   }
 
+  /**
+   * This method disables the send button
+   *
+   * @param disable whether to disable the send button
+   */
   protected void disableSendButton(boolean disable) {
     sendButton.setDisable(disable);
   }
 
+  /** This method records the visit to the room */
   protected void recordVisit() {
     // Implement specific record-keeping logic in subclasses
   }
 
+  /** This method checks if the guess button should be enabled */
   @FXML
   protected void checkGuessButton() {
     // Enable the guess button if all suspects have been visited and at least one clue has been
@@ -560,12 +696,19 @@ public abstract class BaseRoomController {
     guessButton.setDisable(!canGuess);
   }
 
+  /**
+   * This method sets the background image to be responsive
+   *
+   * @param imageView
+   * @param pane
+   */
   protected void setResponsiveBackground(ImageView imageView, AnchorPane pane) {
     // Set the background image to be responsive
     imageView.fitWidthProperty().bind(pane.widthProperty());
     imageView.fitHeightProperty().bind(pane.heightProperty());
   }
 
+  /** This method updates the visibility of the menu */
   protected void updateMenuVisibility() {
     boolean isMenuVisible = context.isMenuVisible();
 
@@ -608,17 +751,31 @@ public abstract class BaseRoomController {
     }
   }
 
+  /**
+   * This method sets the visibility and managed properties of a button
+   *
+   * @param button the button to set the properties of
+   * @param isVisible whether the button should be visible
+   */
   protected void setVisibleAndManaged(Button button, boolean isVisible) {
     button.setVisible(isVisible);
     button.setManaged(isVisible);
   }
 
+  /**
+   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
+   * hand and expands the icon
+   */
   @FXML
   protected void onToggleMenu(ActionEvent event) {
     context.toggleMenuVisibility();
     updateMenuVisibility();
   }
 
+  /**
+   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
+   * hand and expands the icon
+   */
   @FXML
   protected void onKeyPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.ENTER) {
@@ -630,15 +787,30 @@ public abstract class BaseRoomController {
     }
   }
 
+  /**
+   * This method loads a template from a file
+   *
+   * @param filePath the path to the file containing the template
+   * @return the template as a string
+   * @throws IOException
+   */
   protected String loadTemplate(URI filePath) throws IOException {
     return new String(Files.readAllBytes(Paths.get(filePath)));
   }
 
+  /**
+   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
+   * hand and expands the icon
+   */
   @FXML
   protected void onEnterKey(ActionEvent event) throws IOException, ApiProxyException {
     handleSendMessage();
   }
 
+  /**
+   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
+   * hand and expands the icon
+   */
   @FXML
   protected void onSend(ActionEvent event) throws ApiProxyException, IOException {
     handleSendMessage();

@@ -41,6 +41,11 @@ public class RoomController {
   // Static Fields
   private static final GameStateContext context = GameStateContext.getInstance();
 
+  /**
+   * Returns the initial audio file path.
+   *
+   * @return
+   */
   public static String getInitialaudio() {
     return initialaudio;
   }
@@ -650,6 +655,7 @@ public class RoomController {
     }
   }
 
+  /** Checks if the timer is at 4 minutes left and starts the flashing animation. */
   private void checkiftimeris4minleft() {
     if (countdownTimer
         .timeStringProperty()
@@ -659,6 +665,11 @@ public class RoomController {
     }
   }
 
+  /**
+   * Starts the flashing animation on a pane.
+   *
+   * @param pane the pane to flash
+   */
   private void startFlashingAnimation(Pane pane) {
     // Store the existing style to restore it later after flashing
     String originalStyle = pane.getStyle();
@@ -789,6 +800,11 @@ public class RoomController {
     context.onGuessClick();
   }
 
+  /**
+   * Handles the phone clue click event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void handleSafeClick() throws IOException {
     if (context.isNoteFound() || context.isSafeOpen()) {
@@ -798,22 +814,42 @@ public class RoomController {
     }
   }
 
+  /**
+   * Handles the volume off event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void onUncleButtonClick() throws IOException {
     App.setRoot("suspect1room");
   }
 
+  /**
+   * Handles the volume off event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void onGrandmotherClick() throws IOException {
     context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
+  /**
+   * Handles the volume off event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void onGrandsonClick() throws IOException {
     App.setRoot("suspect3room");
   }
 
+  /**
+   * Handles the volume off event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void checkGuessButton() {
     if (context.getListOfVisitors().contains("suspect1")
