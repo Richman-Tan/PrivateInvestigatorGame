@@ -11,6 +11,7 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.CacheHint;
@@ -24,6 +25,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.states.GameStarted;
@@ -61,6 +63,9 @@ public class BackstoryController {
   private MediaPlayer mediaPlayer;
   private TimerModel countdownTimer;
   private Group file;
+  private SVGPath volumeUpStroke = new SVGPath();
+  private SVGPath volumeUp = new SVGPath();
+  private SVGPath volumeOff = new SVGPath();
 
   // Constructors (if any)
 
@@ -205,6 +210,15 @@ public class BackstoryController {
     // Create the media player
     Media woosh = new Media(sound);
     mediaPlayer = new MediaPlayer(woosh);
+    // Play the sound effect
+    mediaPlayer.seek(Duration.seconds(1));
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
+                .then(1.0) // Full volume when volume is on
+                .otherwise(0.0) // Mute when volume is off
+            );
 
     // Set the on finished event handler
     fadeIn.setOnFinished(
@@ -222,6 +236,9 @@ public class BackstoryController {
 
     // Create the timer pane
     createTimerPane();
+
+    // Add the volume button to the label pane and show it
+    showVolumeButton();
   }
 
   // Inner classes (if any)
@@ -378,7 +395,7 @@ public class BackstoryController {
    */
   private void zoomIn(ImageView imageView, String nextScene) {
 
-    // Play the sound effect
+    // Play the media player
     mediaPlayer.seek(Duration.seconds(1));
     mediaPlayer.play();
 
@@ -476,5 +493,122 @@ public class BackstoryController {
                   });
             })
         .start();
+  }
+
+  /*
+   * Method to initialise and show the volume button
+   */
+  private void showVolumeButton() {
+    // create new SVGPath for volume button
+    volumeUpStroke.setContent(
+        "M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0"
+            + " 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z");
+    volumeUp.setContent(
+        "M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025"
+            + " 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825"
+            + " 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06");
+    volumeOff.setContent(
+        "M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0"
+            + " 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207"
+            + " 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0"
+            + " 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0"
+            + " 0 1 .708 0");
+
+    // Set the size and position for the SVGPath
+    volumeUp.setScaleY(2.0);
+    volumeUp.setScaleX(2.0);
+    volumeUp.setScaleZ(2.0);
+    volumeUp.setLayoutX(13);
+    volumeUp.setLayoutY(53);
+    volumeUp.setStroke(Color.web("#473931"));
+    volumeUp.setFill(Color.web("#ffffff94"));
+    volumeUp.setStrokeWidth(0.5);
+    volumeUp.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    labelPane.getChildren().add(volumeUp);
+
+    // Set the size and position for the SVGPath
+    volumeUpStroke.setScaleY(2.0);
+    volumeUpStroke.setScaleX(2.0);
+    volumeUpStroke.setScaleZ(2.0);
+    volumeUpStroke.setLayoutX(19);
+    volumeUpStroke.setLayoutY(53);
+    volumeUpStroke.setStroke(Color.web("#473931"));
+    volumeUpStroke.setFill(Color.web("#ffffff94"));
+    volumeUpStroke.setStrokeWidth(0.5);
+    volumeUpStroke.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    labelPane.getChildren().add(volumeUpStroke);
+
+    // Set the size and position for the SVGPath
+    volumeOff.setScaleY(2.0);
+    volumeOff.setScaleX(2.0);
+    volumeOff.setScaleZ(2.0);
+    volumeOff.setLayoutX(13);
+    volumeOff.setLayoutY(53);
+    volumeOff.setStroke(Color.web("#473931"));
+    volumeOff.setFill(Color.web("#ffffff94"));
+    volumeOff.setStrokeWidth(0.5);
+    volumeOff.setVisible(false);
+    volumeOff.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOn();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    labelPane.getChildren().add(volumeOff);
+    // Check if the volume icon should be displayed
+    try {
+      checkVolumeIcon();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /*
+   * Method to turn the volume off
+   */
+  @FXML
+  protected void turnVolumeOff() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(false);
+    volumeOff.setVisible(true);
+    volumeUp.setVisible(false);
+    volumeUpStroke.setVisible(false);
+  }
+
+  /*
+   * Method to turn the volume on
+   */
+  @FXML
+  protected void turnVolumeOn() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
+    volumeOff.setVisible(false);
+    volumeUp.setVisible(true);
+    volumeUpStroke.setVisible(true);
+  }
+
+  /*
+   * Method to check if the volume icon should be displayed
+   */
+  private void checkVolumeIcon() throws IOException {
+    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
+      turnVolumeOn();
+    } else {
+      turnVolumeOff();
+    }
   }
 }
