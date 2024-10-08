@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -35,11 +36,6 @@ public abstract class BaseRoomController {
   protected TimerModel countdownTimer;
   protected SharedVolumeControl sharedVolumeControl;
 
-  @FXML protected Button crimeSceneButton;
-  @FXML protected Button grandmaButton;
-  @FXML protected Button grandsonButton;
-  @FXML protected Button menuButton;
-  @FXML protected Button uncleButton;
   @FXML protected TextArea userChatBox;
   @FXML protected TextArea suspectChatBox;
   @FXML protected Circle sendButton;
@@ -50,6 +46,15 @@ public abstract class BaseRoomController {
   @FXML protected SVGPath volumeOff;
   @FXML protected SVGPath volumeUp;
   @FXML protected SVGPath volumeUpStroke;
+
+  @FXML private ImageView basemapimg;
+  @FXML private Label lblareastatus;
+  @FXML private ImageView widowiconimg;
+  @FXML private ImageView menuclosedimg;
+  @FXML private ImageView brothericonimg;
+  @FXML private ImageView grandsoniconimg;
+  @FXML private ImageView topofmenubtn;
+  @FXML private ImageView crimesceneiconimg;
 
   @FXML
   public void initialize() {
@@ -63,6 +68,9 @@ public abstract class BaseRoomController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    // Set initial position of basemapimg off the screen (below)
+    basemapimg.setTranslateY(rootNode.getHeight()); // Set translateY to move it out of view
 
     // Add key event handler for detecting Enter key
     userChatBox.addEventFilter(
@@ -81,6 +89,177 @@ public abstract class BaseRoomController {
             // event.consume();
           }
         });
+
+    basemapimg.fitWidthProperty().bind(rootNode.widthProperty());
+    basemapimg.fitHeightProperty().bind(rootNode.heightProperty());
+
+    // Add mouse event handlers for icon ImageViews
+    widowiconimg.setOnMouseEntered(this::onMouseEnteredIcon);
+    widowiconimg.setOnMouseExited(this::onMouseExitedIcon);
+    widowiconimg.setOnMouseClicked(this::onIconClicked);
+
+    brothericonimg.setOnMouseEntered(this::onMouseEnteredIcon);
+    brothericonimg.setOnMouseExited(this::onMouseExitedIcon);
+    brothericonimg.setOnMouseClicked(this::onIconClicked);
+
+    grandsoniconimg.setOnMouseEntered(this::onMouseEnteredIcon);
+    grandsoniconimg.setOnMouseExited(this::onMouseExitedIcon);
+    grandsoniconimg.setOnMouseClicked(this::onIconClicked);
+
+    // Add mouse event handlers for the closed menu button
+    menuclosedimg.setOnMouseEntered(this::onMouseEnteredMenuClosed);
+    menuclosedimg.setOnMouseExited(this::onMouseExitedMenuClosed);
+    menuclosedimg.setOnMouseClicked(this::onToggleMenu);
+
+    // Add mouse event handlers for the top of menu button
+    topofmenubtn.setOnMouseEntered(this::onMouseEnteredTopOfMenu);
+    topofmenubtn.setOnMouseExited(this::onMouseExitedTopOfMenu);
+    topofmenubtn.setOnMouseClicked(this::onToggleMenuOff);
+
+    // Add mouse event handlers for the crime scene icon
+    crimesceneiconimg.setOnMouseEntered(this::onMouseEnteredIcon);
+    crimesceneiconimg.setOnMouseExited(this::onMouseExitedIcon);
+    crimesceneiconimg.setOnMouseClicked(
+        event -> {
+          try {
+            onRoom(event);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+  }
+
+  @FXML
+  protected void onMouseEnteredTopOfMenu(MouseEvent event) {
+    // change cursor
+    rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+    lblareastatus.setText("Close Menu?");
+  }
+
+  @FXML
+  protected void onMouseExitedTopOfMenu(MouseEvent event) {
+    // change cursor
+    rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+
+    // if its in the suspect1room controller set the status to the uncle
+    if (this instanceof Suspect1RoomController) {
+      lblareastatus.setText("You are in the: Uncle's Room");
+    } else if (this instanceof Suspect2RoomController) {
+      lblareastatus.setText("You are in the: Widow's Room");
+    } else if (this instanceof Suspect3RoomController) {
+      lblareastatus.setText("You are in the: Grandson's Room");
+    }
+  }
+
+  @FXML
+  protected void onToggleMenuOff(MouseEvent event) {
+    context.toggleMenuVisibility();
+    updateMenuVisibility();
+  }
+
+  @FXML
+  protected void onMouseEnteredMenuClosed(MouseEvent event) {
+    // change cursor
+    rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+    lblareastatus.setText("Open Menu?");
+
+    // expand
+    menuclosedimg.setScaleX(1.1);
+    menuclosedimg.setScaleY(1.1);
+  }
+
+  @FXML
+  protected void onMouseExitedMenuClosed(MouseEvent event) {
+    // change cursor
+    rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+
+    if (this instanceof Suspect1RoomController) {
+      lblareastatus.setText("You are in the: Uncle's Room");
+    } else if (this instanceof Suspect2RoomController) {
+      lblareastatus.setText("You are in the: Widow's Room");
+    } else if (this instanceof Suspect3RoomController) {
+      lblareastatus.setText("You are in the: Grandson's Room");
+    }
+
+    // shrink
+    menuclosedimg.setScaleX(1);
+    menuclosedimg.setScaleY(1);
+  }
+
+  @FXML
+  protected void onToggleMenu(MouseEvent event) {
+    context.toggleMenuVisibility();
+    basemapimg.toFront();
+    topofmenubtn.toFront();
+    lblareastatus.toFront();
+    widowiconimg.toFront();
+    grandsoniconimg.toFront();
+    brothericonimg.toFront();
+    menuclosedimg.toBack();
+    userChatBox.toFront();
+    suspectChatBox.toFront();
+    guessButton.toFront();
+    sendButton.toFront();
+    lbltimer.toFront();
+    crimesceneiconimg.toFront();
+  }
+
+  @FXML
+  protected void onMouseEnteredIcon(MouseEvent event) {
+    ImageView icon = (ImageView) event.getSource();
+    icon.setOpacity(0.7); // Change opacity on hover
+
+    if (icon.getId().equals("widowiconimg")) {
+      lblareastatus.setText("Visit the Widow");
+    } else if (icon.getId().equals("brothericonimg")) {
+      lblareastatus.setText("Visit the Uncle");
+    } else if (icon.getId().equals("grandsoniconimg")) {
+      lblareastatus.setText("Visit the Grandson");
+    }
+  }
+
+  @FXML
+  protected void onMouseExitedIcon(MouseEvent event) {
+    ImageView icon = (ImageView) event.getSource();
+    icon.setOpacity(1.0); // Restore opacity
+
+    if (this instanceof Suspect1RoomController) {
+      lblareastatus.setText("You are in the: Uncle's Room");
+    } else if (this instanceof Suspect2RoomController) {
+      lblareastatus.setText("You are in the: Widow's Room");
+    } else if (this instanceof Suspect3RoomController) {
+      lblareastatus.setText("You are in the: Grandson's Room");
+    }
+  }
+
+  @FXML
+  protected void onIconClicked(MouseEvent event) {
+    ImageView icon = (ImageView) event.getSource();
+    System.out.println("Clicked on: " + icon.getId()); // Replace with desired action
+    switch (icon.getId()) {
+      case "widowiconimg" -> {
+        try {
+          App.setRoot("suspect2room");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      case "brothericonimg" -> {
+        try {
+          App.setRoot("suspect1room");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      case "grandsoniconimg" -> {
+        try {
+          App.setRoot("suspect3room");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      default -> {}
+    }
   }
 
   protected void initializeGptModel() {
@@ -136,7 +315,7 @@ public abstract class BaseRoomController {
   }
 
   @FXML
-  protected void onRoom() throws IOException {
+  protected void onRoom(MouseEvent event) throws IOException {
     App.setRoot("room");
   }
 
@@ -269,24 +448,44 @@ public abstract class BaseRoomController {
 
   protected void updateMenuVisibility() {
     boolean isMenuVisible = context.isMenuVisible();
-    updateMenuButtonStyle(isMenuVisible);
-    setButtonVisibility(isMenuVisible);
-  }
 
-  protected void updateMenuButtonStyle(boolean isMenuVisible) {
-    // Update the style of the menu button based on the visibility of the menu
-    menuButton.setStyle(
-        isMenuVisible
-            ? "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
-            : "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;");
-  }
+    if (isMenuVisible) {
+      // Set z-order for visible menu
+      basemapimg.toFront();
+      lblareastatus.toFront();
+      widowiconimg.toFront();
+      brothericonimg.toFront();
+      grandsoniconimg.toFront();
+      topofmenubtn.toFront();
+      crimesceneiconimg.toFront();
 
-  protected void setButtonVisibility(boolean isVisible) {
-    // Set the visibility of the buttons based on the visibility of the menu
-    setVisibleAndManaged(crimeSceneButton, isVisible);
-    setVisibleAndManaged(grandmaButton, isVisible);
-    setVisibleAndManaged(grandsonButton, isVisible);
-    setVisibleAndManaged(uncleButton, isVisible);
+      // Check which controller it is in a set each icon to have a slightly lower opacity depending
+      // on which controller
+
+      System.out.println(this.getClass().getName());
+      if (this instanceof Suspect1RoomController) {
+        widowiconimg.setOpacity(0.7);
+      } else if (this instanceof Suspect2RoomController) {
+        brothericonimg.setOpacity(0.7);
+      } else if (this instanceof Suspect3RoomController) {
+        grandsoniconimg.setOpacity(0.7);
+      }
+
+      // Hide the closed menu icon behind everything else
+      menuclosedimg.toBack();
+    } else {
+      // If the menu is not visible, bring everything to the back except the closed menu icon
+      basemapimg.toBack();
+      lblareastatus.toBack();
+      widowiconimg.toBack();
+      brothericonimg.toBack();
+      grandsoniconimg.toBack();
+      topofmenubtn.toBack();
+      crimesceneiconimg.toBack();
+
+      // Bring the closed menu icon to the front
+      menuclosedimg.toFront();
+    }
   }
 
   protected void setVisibleAndManaged(Button button, boolean isVisible) {

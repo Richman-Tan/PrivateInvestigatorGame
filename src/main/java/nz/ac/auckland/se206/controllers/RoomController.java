@@ -37,25 +37,30 @@ public class RoomController {
   // Inner Classes (if any would go here)
 
   // Static Fields
-  private static GameStateContext context = GameStateContext.getInstance();
+  private static final GameStateContext context = GameStateContext.getInstance();
+
+  public static String getInitialaudio() {
+    return initialaudio;
+  }
 
   // Static Methods
   // (If you have static methods, they would go here)
 
   // Instance Fields
-  @FXML private Button menuButton;
-  @FXML private Button crimeSceneButton;
-  @FXML private Button grandmaButton;
-  @FXML private Button grandsonButton;
-  @FXML private Button uncleButton;
   @FXML private AnchorPane rootNode;
   @FXML private Button guessButton;
-  @FXML private ImageView background;
   @FXML private Label lbltimer;
   @FXML private ImageView clue1;
   @FXML private ImageView clue2;
   @FXML private ImageView clue3;
   @FXML private VBox viewBox;
+  @FXML private ImageView basemapimg;
+  @FXML private Label lblareastatus;
+  @FXML private ImageView widowiconimg;
+  @FXML private ImageView menuclosedimg;
+  @FXML private ImageView brothericonimg;
+  @FXML private ImageView grandsoniconimg;
+  @FXML private ImageView topofmenubtn;
 
   private static final String initialaudio =
       GameStarted.class.getClassLoader().getResource("sounds/initialaudio.mp3").toExternalForm();
@@ -76,12 +81,26 @@ public class RoomController {
   private SVGPath volumeOff = new SVGPath();
 
   /** Initializes the room view. */
-  @FXML
+  @FXML // This method is called by the FXMLLoader when initialization is complete
   public void initialize() {
+
+    lblareastatus.setText("You are in the: Crime Scene");
+
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
+
+    // set anchorpane of clue 1 to 10px to the right
+    AnchorPane.setRightAnchor(clue1, 12.0);
+
     clue2.setOpacity(0);
+
+    // set anchorpane of clue 2 to 10px to the right
+    AnchorPane.setRightAnchor(clue2, 15.0);
+
     clue3.setOpacity(0);
+
+    // set anchorpane of clue 3 to 10px to the right
+    AnchorPane.setRightAnchor(clue3, 15.0);
 
     Media initial = new Media(initialaudio);
     mediaPlayer = new MediaPlayer(initial);
@@ -187,6 +206,111 @@ public class RoomController {
     backgroundImageView.fitWidthProperty().bind(rootNode.widthProperty());
     backgroundImageView.fitHeightProperty().bind(rootNode.heightProperty());
 
+    basemapimg.fitWidthProperty().bind(rootNode.widthProperty());
+    basemapimg.fitHeightProperty().bind(rootNode.heightProperty());
+
+    widowiconimg.setOnMouseEntered(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag entered");
+            widowiconimg.setScaleX(1.1);
+            widowiconimg.setScaleY(1.1);
+            rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+            lblareastatus.setText("Go to Widow's Garden?");
+          }
+        });
+
+    widowiconimg.setOnMouseExited(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag exited");
+            widowiconimg.setScaleX(1);
+            widowiconimg.setScaleY(1);
+            rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+            lblareastatus.setText("You are in the: Crime Scene");
+          }
+        });
+    brothericonimg.setOnMouseEntered(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag entered");
+            // set a little grow
+            brothericonimg.setScaleX(1.1);
+            brothericonimg.setScaleY(1.1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+            lblareastatus.setText("Go to Brother's Room?");
+          }
+        });
+
+    brothericonimg.setOnMouseExited(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag exited");
+            // set a little grow
+            brothericonimg.setScaleX(1);
+            brothericonimg.setScaleY(1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+            lblareastatus.setText("You are in the: Crime Scene");
+          }
+        });
+
+    grandsoniconimg.setOnMouseEntered(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag entered");
+            // set a little grow
+            grandsoniconimg.setScaleX(1.1);
+            grandsoniconimg.setScaleY(1.1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+            lblareastatus.setText("Go to Grandson's Room?");
+          }
+        });
+
+    grandsoniconimg.setOnMouseExited(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag exited");
+            // set a little grow
+            grandsoniconimg.setScaleX(1);
+            grandsoniconimg.setScaleY(1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+            lblareastatus.setText("You are in the: Crime Scene");
+          }
+        });
+
+    topofmenubtn.setOnMouseEntered(
+        eh -> {
+          // change cursor
+          rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+          lblareastatus.setText("Close Menu?");
+        });
+
+    topofmenubtn.setOnMouseExited(
+        eh -> {
+          // change cursor
+          rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+          lblareastatus.setText("You are in the: Crime Scene");
+        });
+
+    topofmenubtn.setOnMouseClicked(
+        eh -> {
+          topofmenubtn.toBack();
+          basemapimg.toBack();
+          lblareastatus.toBack();
+          widowiconimg.toBack();
+          grandsoniconimg.toBack();
+          brothericonimg.toBack();
+          menuclosedimg.toFront();
+        });
+
     // Create a DropShadow effect
     DropShadow dropShadow = new DropShadow();
     dropShadow.setOffsetX(5); // Smaller offset
@@ -194,9 +318,6 @@ public class RoomController {
     dropShadow.setRadius(6); // Reduce blur radius
     dropShadow.setSpread(0.07); // Lower spread for less intensity
     dropShadow.setColor(Color.color(0, 0, 0, 0.4)); // Less opacity for lighter shadow
-
-    // Timer and other UI-related updates
-    updateMenuVisibility();
 
     // Load the images
     final ImageView file1 = createAndBindImageView(image1); // Displayed initially
@@ -232,6 +353,8 @@ public class RoomController {
 
     // Apply the orange drop shadow effect to the drawGroup
     applyOrangeDropShadow(drawGroup);
+
+    backgroundImageView.toBack();
 
     // Timer and other UI-related updates
     countdownTimer = SharedTimerModel.getInstance().getTimer();
@@ -356,15 +479,61 @@ public class RoomController {
           try {
             handleSafeClick();
           } catch (IOException e1) {
-            e1.printStackTrace();
           }
         });
 
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(paintingImageView);
 
+    menuclosedimg.setOnMouseEntered(
+        eh -> {
+          // change cursor
+          rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+          lblareastatus.setText("Open Menu?");
+
+          // expand
+          menuclosedimg.setScaleX(1.1);
+          menuclosedimg.setScaleY(1.1);
+        });
+
+    menuclosedimg.setOnMouseExited(
+        eh -> {
+          // change cursor
+          rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+          lblareastatus.setText("You are in the: Crime Scene");
+
+          // shrink
+          menuclosedimg.setScaleX(1);
+          menuclosedimg.setScaleY(1);
+        });
+
+    menuclosedimg.setOnMouseClicked(
+        eh -> {
+          basemapimg.toFront();
+          topofmenubtn.toFront();
+          lblareastatus.toFront();
+          widowiconimg.toFront();
+          grandsoniconimg.toFront();
+          brothericonimg.toFront();
+          menuclosedimg.toBack();
+          phoneClueImageView.toFront();
+          paintingImageView.toFront();
+        });
+
     // Load background image
+    menuclosedimg.toFront();
+    // Set the menu to hidden
+    basemapimg.toBack();
+    lblareastatus.toBack();
+    widowiconimg.toBack();
+    grandsoniconimg.toBack();
+    brothericonimg.toBack();
+    topofmenubtn.toBack();
+
     viewBox.toFront();
+    clue1.toFront();
+    clue2.toFront();
+    clue3.toFront();
   }
 
   /**
@@ -425,12 +594,7 @@ public class RoomController {
             // 1 second delay
             Thread.sleep(10);
             App.setRoot("cluetornphotograph");
-          } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-          } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+          } catch (IOException | InterruptedException e1) {
           }
         });
   }
@@ -489,37 +653,6 @@ public class RoomController {
   }
 
   /**
-   * Updates the visibility of the menu buttons based on the isMenuVisible variable in the
-   * GameStateContext.
-   */
-  private void updateMenuVisibility() {
-    boolean isMenuVisible = context.isMenuVisible();
-
-    if (isMenuVisible) {
-      menuButton.setStyle(
-          "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
-              + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
-    } else {
-      menuButton.setStyle(
-          "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
-              + " -fx-background-insets: 0;");
-    }
-
-    // Set visibility and management of other buttons based on isMenuVisible
-    crimeSceneButton.setVisible(isMenuVisible);
-    crimeSceneButton.setManaged(isMenuVisible);
-
-    grandmaButton.setVisible(isMenuVisible);
-    grandmaButton.setManaged(isMenuVisible);
-
-    grandsonButton.setVisible(isMenuVisible);
-    grandsonButton.setManaged(isMenuVisible);
-
-    uncleButton.setVisible(isMenuVisible);
-    uncleButton.setManaged(isMenuVisible);
-  }
-
-  /**
    * Handles the key pressed event.
    *
    * @param event the key event
@@ -562,31 +695,19 @@ public class RoomController {
   }
 
   @FXML
-  private void onUncleButtonClick(ActionEvent event) throws IOException {
+  private void onUncleButtonClick() throws IOException {
     App.setRoot("suspect1room");
   }
 
   @FXML
-  private void onGrandmotherClick(ActionEvent event) throws IOException {
+  private void onGrandmotherClick() throws IOException {
     context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
   @FXML
-  private void onGrandsonClick(ActionEvent event) throws IOException {
+  private void onGrandsonClick() throws IOException {
     App.setRoot("suspect3room");
-  }
-
-  /**
-   * Toggles the menu button when clicked.
-   *
-   * @param event
-   * @throws IOException
-   */
-  @FXML
-  private void onToggleMenu(ActionEvent event) {
-    context.toggleMenuVisibility(); // Toggle the visibility in the context
-    updateMenuVisibility(); // Update the visibility in the UI
   }
 
   @FXML
