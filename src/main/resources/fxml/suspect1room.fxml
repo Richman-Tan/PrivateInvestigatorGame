@@ -54,7 +54,7 @@
          </image>
       </ImageView>
       <TextArea fx:id="suspectChatBox" editable="false" layoutX="461.0" layoutY="124.0" prefHeight="98.0" prefWidth="273.0" promptText="The suspect is thinking..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: A28B71; -fx-text-fill: white; -fx-prompt-text-fill: white;" stylesheets="@../css/scrollBarSuspect1.css" wrapText="true" />
-      <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="632.0" layoutY="338.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" rotate="270.0">
+      <ImageView fitHeight="150.0" fitWidth="15.0" layoutX="648.0" layoutY="338.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" rotate="270.0">
          <image>
             <Image url="@../images/sendArrow.png" />
          </image>
