@@ -28,6 +28,7 @@ public class ClueDrawerController {
   private double startY;
   private TimerModel countdownTimer;
 
+  /** Initializes the ClueDrawerController. */
   @FXML
   private void initialize() {
     setupTimerPane();
@@ -46,7 +47,7 @@ public class ClueDrawerController {
     setupGoBackButton();
   }
 
-  // Set up the timer pane
+  /** Sets up the timer pane. */
   private void setupTimerPane() {
     // Create a timer pane
     Pane timerPane = new Pane();
@@ -88,7 +89,7 @@ public class ClueDrawerController {
     timerPane.toFront();
   }
 
-  // Load and bind the background image
+  /** Sets up the background image. */
   private void setupBackgroundImage() {
     Image backgroundImage =
         new Image(
@@ -122,6 +123,7 @@ public class ClueDrawerController {
         });
   }
 
+  /** Sets up the go back button. */
   private void setupGoBackButton() {
     // Create a go back button
     goBackButton = new Button("Go Back");
@@ -164,6 +166,7 @@ public class ClueDrawerController {
     anchorPane.getChildren().add(goBackButton);
   }
 
+  /** Goes back to the room scene. */
   private void goBackToRoom() {
     try {
       App.setRoot("room");
@@ -172,6 +175,13 @@ public class ClueDrawerController {
     }
   }
 
+  /**
+   * Creates an image view and binds it to the anchor pane.
+   *
+   * @param image
+   * @param draggable
+   * @return
+   */
   private ImageView createAndBindImageView(Image image, boolean draggable) {
     // Create an ImageView with the image and bind it to the anchor pane
     ImageView imageView = new ImageView(image);
@@ -194,6 +204,11 @@ public class ClueDrawerController {
     return imageView;
   }
 
+  /**
+   * Makes an image view draggable.
+   *
+   * @param imageView
+   */
   private void makeDraggable(ImageView imageView) {
     // Set up the image view to be draggable
     imageView.setOnMousePressed(
