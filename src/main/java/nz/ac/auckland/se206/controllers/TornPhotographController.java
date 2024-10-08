@@ -76,17 +76,34 @@ public class TornPhotographController {
   private double offsetX, offsetY;
 
   // Correct positions for each puzzle piece on the board (target coordinates)
-  private double piece1TargetX = 515, piece1TargetY = 170; // done
-  private double piece2TargetX = 480, piece2TargetY = 310; // done
-  private double piece3TargetX = 280, piece3TargetY = 160; // done
-  private double piece4TargetX = 200, piece4TargetY = 217; // done
-  private double piece5TargetX = 335, piece5TargetY = 170; // done
-  private double piece6TargetX = 334, piece6TargetY = 280; // done
-  private double piece7TargetX = 420, piece7TargetY = 200;
-  private double piece8TargetX = 584, piece8TargetY = 335; // done
-  private double piece9TargetX = 505, piece9TargetY = 236; // done
+  private final double piece1TargetX = 515;
+  private final double piece1TargetY = 170; // done
 
-  private SVGPath volumeUpStroke = new SVGPath();
+  private final double piece2TargetX = 480;
+  private final double piece2TargetY = 310; // done
+
+  private final double piece3TargetX = 280;
+  private final double piece3TargetY = 160; // done
+
+  private final double piece4TargetX = 200;
+  private final double piece4TargetY = 217; // done
+
+  private final double piece5TargetX = 335;
+  private final double piece5TargetY = 170; // done
+
+  private final double piece6TargetX = 334;
+  private final double piece6TargetY = 280; // done
+
+  private final double piece7TargetX = 420;
+  private final double piece7TargetY = 200;
+
+  private final double piece8TargetX = 584;
+  private final double piece8TargetY = 335; // done
+
+  private final double piece9TargetX = 505;
+  private final double piece9TargetY = 236; // done
+
+  private final SVGPath volumeUpStroke = new SVGPath();
   private SVGPath volumeUp = new SVGPath();
   private SVGPath volumeOff = new SVGPath();
 
@@ -794,5 +811,25 @@ public class TornPhotographController {
     } else {
       turnVolumeOff();
     }
+  }
+
+  /** Method to get volume up SVGPath. */
+  public SVGPath getVolumeUp() {
+    return volumeUp;
+  }
+
+  /** Method to set the volume up SVGPath. */
+  public void setVolumeUp(SVGPath volumeUp) {
+    this.volumeUp = volumeUp;
+  }
+
+  /** Method to get the volume up stroke SVGPath. */
+  public SVGPath getVolumeOff() {
+    return volumeOff;
+  }
+
+  /** Method to set the volume off SVGPath. */
+  public void setVolumeOff(SVGPath volumeOff) {
+    this.volumeOff = volumeOff;
   }
 }

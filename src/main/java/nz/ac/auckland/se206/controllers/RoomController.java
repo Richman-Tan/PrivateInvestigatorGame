@@ -7,6 +7,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -112,13 +113,19 @@ public class RoomController {
 
     Media initial = new Media(initialaudio);
     mediaPlayer = new MediaPlayer(initial);
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+
+    // Bind the mediaPlayer's volume property using a DoubleBinding
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get()
+                        ? 1.0
+                        : 0.0, // Use 1.0 for full volume if true, otherwise 0.0 for mute
+                volumeSettingProperty));
 
     // Check if the guess button should be enabled
     checkGuessButton();

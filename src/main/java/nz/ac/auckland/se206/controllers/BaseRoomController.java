@@ -413,7 +413,9 @@ public abstract class BaseRoomController {
           e.printStackTrace();
         }
       }
-      default -> {}
+      default -> {
+        System.out.println("Invalid icon clicked");
+      }
     }
   }
 

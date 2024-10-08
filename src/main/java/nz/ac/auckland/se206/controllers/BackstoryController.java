@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -13,6 +12,7 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.CacheHint;
@@ -213,13 +213,17 @@ public class BackstoryController {
     mediaPlayer = new MediaPlayer(woosh);
     // Play the sound effect
     mediaPlayer.seek(Duration.seconds(1));
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+
+    // Create a DoubleBinding to bind the volume property of mediaPlayer
     mediaPlayer
         .volumeProperty()
         .bind(
-            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
-                .then(1.0) // Full volume when volume is on
-                .otherwise(0.0) // Mute when volume is off
-            );
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get() ? 1.0 : 0.0, // Full volume if true, otherwise mute
+                volumeSettingProperty));
 
     // Set the on finished event handler
     fadeIn.setOnFinished(
