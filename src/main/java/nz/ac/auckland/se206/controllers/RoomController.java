@@ -52,7 +52,6 @@ public class RoomController {
   @FXML private ImageView clue2;
   @FXML private ImageView clue3;
   @FXML private VBox viewBox;
-  @FXML private ImageView clock;
   @FXML private ImageView basemapimg;
   @FXML private Label lblareastatus;
   @FXML private ImageView widowiconimg;
@@ -332,10 +331,6 @@ public class RoomController {
     // Apply the orange drop shadow effect to the drawGroup
     applyOrangeDropShadow(drawGroup);
 
-    clock.fitHeightProperty().bind(rootNode.heightProperty().multiply(1));
-    clock.fitWidthProperty().bind(rootNode.widthProperty().multiply(1));
-
-    clock.toBack();
     backgroundImageView.toBack();
 
     // Timer and other UI-related updates

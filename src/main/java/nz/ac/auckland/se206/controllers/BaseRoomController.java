@@ -50,7 +50,6 @@ public abstract class BaseRoomController {
   @FXML private ImageView grandsoniconimg;
   @FXML private ImageView topofmenubtn;
   @FXML private ImageView crimesceneiconimg;
-  @FXML private ImageView clock;
 
   @FXML
   public void initialize() {
@@ -83,9 +82,6 @@ public abstract class BaseRoomController {
 
     basemapimg.fitWidthProperty().bind(rootNode.widthProperty());
     basemapimg.fitHeightProperty().bind(rootNode.heightProperty());
-
-    clock.fitHeightProperty().bind(rootNode.heightProperty());
-    clock.fitWidthProperty().bind(rootNode.widthProperty());
 
     // Add mouse event handlers for icon ImageViews
     widowiconimg.setOnMouseEntered(this::onMouseEnteredIcon);
