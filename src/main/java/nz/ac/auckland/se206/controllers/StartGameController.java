@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -76,12 +77,22 @@ public class StartGameController {
     // Load the audio file
     Media sound = new Media(door);
     mediaPlayer = new MediaPlayer(sound);
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.when(SharedVolumeControl.getInstance().volumeSettingProperty())
+                .then(1.0) // Full volume when volume is on
+                .otherwise(0.0) // Mute when volume is off
+            );
 
     // Set click action
     imageView.setOnMouseClicked(
         e -> {
           try {
             mediaPlayer.seek(Duration.seconds(1));
+            if (!SharedVolumeControl.getInstance().getVolumeSetting()) {
+              mediaPlayer.setVolume(0);
+            }
             mediaPlayer.play();
             onPlay();
           } catch (IOException | ApiProxyException ex) {

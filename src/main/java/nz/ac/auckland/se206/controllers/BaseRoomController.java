@@ -19,6 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.SVGPath;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -33,6 +34,7 @@ public abstract class BaseRoomController {
   protected GameStateContext context = GameStateContext.getInstance();
   protected boolean firstTime = true;
   protected TimerModel countdownTimer;
+  protected SharedVolumeControl sharedVolumeControl;
 
   @FXML protected TextArea userChatBox;
   @FXML protected TextArea suspectChatBox;
@@ -41,6 +43,9 @@ public abstract class BaseRoomController {
   @FXML protected AnchorPane rootNode;
   @FXML protected ImageView backgroundimg;
   @FXML protected Label lbltimer;
+  @FXML protected SVGPath volumeOff;
+  @FXML protected SVGPath volumeUp;
+  @FXML protected SVGPath volumeUpStroke;
 
   @FXML private ImageView basemapimg;
   @FXML private Label lblareastatus;
@@ -58,6 +63,11 @@ public abstract class BaseRoomController {
     initializeGptModel();
     setResponsiveBackground(backgroundimg, rootNode);
     checkGuessButton();
+    try {
+      checkVolumeIcon();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     // Set initial position of basemapimg off the screen (below)
     basemapimg.setTranslateY(rootNode.getHeight()); // Set translateY to move it out of view
@@ -312,6 +322,30 @@ public abstract class BaseRoomController {
   @FXML
   protected void onSend(MouseEvent event) throws ApiProxyException, IOException {
     handleSendMessage();
+  }
+
+  @FXML
+  protected void turnVolumeOff() throws IOException {
+    volumeOff.setVisible(true);
+    volumeUp.setVisible(false);
+    volumeUpStroke.setVisible(false);
+    SharedVolumeControl.getInstance().setVolumeSetting(false);
+  }
+
+  @FXML
+  protected void turnVolumeOn() throws IOException {
+    volumeOff.setVisible(false);
+    volumeUp.setVisible(true);
+    volumeUpStroke.setVisible(true);
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
+  }
+
+  private void checkVolumeIcon() throws IOException {
+    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
+      turnVolumeOn();
+    } else {
+      turnVolumeOff();
+    }
   }
 
   protected void handleSendMessage() throws ApiProxyException, IOException {
