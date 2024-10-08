@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
@@ -51,57 +52,78 @@ public class TornPhotographController {
 
   @FXML private Label revealLabel; // Label for text reveal
 
-  @FXML
-  private ImageView piece1,
-      piece2,
-      piece3,
-      piece4,
-      piece5,
-      piece6,
-      piece7,
-      piece8,
-      piece9; // ImageView elements for the torn pieces
-  @FXML
-  private ImageView outlinePiece1,
-      outlinePiece2,
-      outlinePiece3,
-      outlinePiece4,
-      outlinePiece5,
-      outlinePiece6,
-      outlinePiece7,
-      outlinePiece8,
-      outlinePiece9; // ImageView elements for the overlay pieces
+  @FXML private ImageView piece1;
+  @FXML private ImageView piece2;
+  @FXML private ImageView piece3;
+  @FXML private ImageView piece4;
+  @FXML private ImageView piece5;
+  @FXML private ImageView piece6;
+  @FXML private ImageView piece7;
+  @FXML private ImageView piece8;
+  @FXML private ImageView piece9;
+
+  @FXML private ImageView outlinePiece1;
+  @FXML private ImageView outlinePiece2;
+  @FXML private ImageView outlinePiece3;
+  @FXML private ImageView outlinePiece4;
+  @FXML private ImageView outlinePiece5;
+  @FXML private ImageView outlinePiece6;
+  @FXML private ImageView outlinePiece7;
+  @FXML private ImageView outlinePiece8;
+  @FXML private ImageView outlinePiece9;
 
   // Variables for drag offset
   private double offsetX, offsetY;
 
   // Correct positions for each puzzle piece on the board (target coordinates)
-  private double piece1TargetX = 515, piece1TargetY = 170; // done
-  private double piece2TargetX = 480, piece2TargetY = 310; // done
-  private double piece3TargetX = 280, piece3TargetY = 160; // done
-  private double piece4TargetX = 200, piece4TargetY = 217; // done
-  private double piece5TargetX = 335, piece5TargetY = 170; // done
-  private double piece6TargetX = 334, piece6TargetY = 280; // done
-  private double piece7TargetX = 420, piece7TargetY = 200;
-  private double piece8TargetX = 584, piece8TargetY = 335; // done
-  private double piece9TargetX = 505, piece9TargetY = 236; // done
+  private final double piece1TargetX = 515;
+  private final double piece1TargetY = 170; // done
+
+  private final double piece2TargetX = 480;
+  private final double piece2TargetY = 310; // done
+
+  private final double piece3TargetX = 280;
+  private final double piece3TargetY = 160; // done
+
+  private final double piece4TargetX = 200;
+  private final double piece4TargetY = 217; // done
+
+  private final double piece5TargetX = 335;
+  private final double piece5TargetY = 170; // done
+
+  private final double piece6TargetX = 334;
+  private final double piece6TargetY = 280; // done
+
+  private final double piece7TargetX = 420;
+  private final double piece7TargetY = 200;
+
+  private final double piece8TargetX = 584;
+  private final double piece8TargetY = 335; // done
+
+  private final double piece9TargetX = 505;
+  private final double piece9TargetY = 236; // done
+
+  private final SVGPath volumeUpStroke = new SVGPath();
+  private SVGPath volumeUp = new SVGPath();
+  private SVGPath volumeOff = new SVGPath();
 
   // Boolean flags to check if pieces are correctly placed
-  private boolean piece1Correct,
-      piece2Correct,
-      piece3Correct,
-      piece4Correct,
-      piece5Correct,
-      piece6Correct,
-      piece7Correct,
-      piece8Correct,
-      piece9Correct;
+  private boolean piece1Correct;
+  private boolean piece2Correct;
+  private boolean piece3Correct;
+  private boolean piece4Correct;
+  private boolean piece5Correct;
+  private boolean piece6Correct;
+  private boolean piece7Correct;
+  private boolean piece8Correct;
+  private boolean piece9Correct;
 
   // Threshold to snap pieces into place
   private final double SNAP_THRESHOLD = 200;
 
   private TimerModel countdownTimer;
 
+  /** Initializes the torn photograph view. */
   @FXML
   public void initialize() {
     // Initialize flags for piece placement
@@ -192,13 +214,15 @@ public class TornPhotographController {
     setupGoBackButton();
     setupTimerPane();
     textbox.toBack();
+    // Add the volume button to the label pane and show it
+    showVolumeButton();
   }
 
-  // Method to dynamically create the label and center it
+  /** Method to create and bind the reveal label for the text animation. */
   private void createRevealLabel() {
-    revealLabel = new Label(); // Create the Label
-    revealLabel.setText(""); // Initially empty
-    revealLabel.setOpacity(1); // Initially invisible
+    revealLabel = new Label();
+    revealLabel.setText("");
+    revealLabel.setOpacity(1);
     revealLabel.setStyle(
         "-fx-font-size: 40px; -fx-text-fill: red; -fx-font-weight: bold;"); // Style the label
 
@@ -208,39 +232,57 @@ public class TornPhotographController {
 
     // Add the label to the rootPane
     textbox.getChildren().add(revealLabel);
-    revealLabel.toFront(); // Bring the label to the front
+    revealLabel.toFront();
   }
 
-  // Set up the timer pane
+  /** Method to set up the timer pane. */
   private void setupTimerPane() {
+    // Create a new pane to hold the timer
     timerPane = new Pane();
+
+    // Set the size and style of the timer pane
     timerPane.setPrefSize(101, 45);
     timerPane.setOpacity(0.75);
+
+    // Set the style of the timer pane
     timerPane.setStyle(
         "-fx-background-color: white;"
             + "-fx-background-radius: 10px;"
             + "-fx-border-radius: 10px;"
             + "-fx-border-color: black;");
+
+    // Set the position of the timer pane
     AnchorPane.setLeftAnchor(timerPane, 10.0);
     AnchorPane.setTopAnchor(timerPane, 10.0);
 
+    // Create a label for the timer
     Label timerLabel = new Label();
     timerLabel.setFont(new Font(24));
     timerLabel.setAlignment(Pos.CENTER);
     timerLabel.setLayoutX(21.0);
     timerLabel.setLayoutY(8.0);
 
+    //  Bind the timer label to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
 
+    // Add the timer label to the timer pane
     timerPane.getChildren().add(timerLabel);
     puzzlePane.getChildren().add(timerPane);
     timerPane.toFront();
   }
 
+  /**
+   * Method to toggle the visibility of the puzzle pieces.
+   *
+   * @param visible
+   */
   private void togglevisabilityofpieces(boolean visible) {
+    // Set the visibility of the pieces
     piece1.setVisible(visible);
+
+    // Set the visibility of the pieces
     piece2.setVisible(visible);
     piece3.setVisible(visible);
     piece4.setVisible(visible);
@@ -251,6 +293,7 @@ public class TornPhotographController {
     piece9.setVisible(visible);
   }
 
+  /** Method to set up the game. */
   private void setupGame() {
 
     // Set the layout of the pieces
@@ -287,6 +330,11 @@ public class TornPhotographController {
     createAndBindImageView(outlinePiece9);
   }
 
+  /**
+   * Method to create and bind an ImageView to the pane.
+   *
+   * @param image
+   */
   private void createAndBindImageView(ImageView image) {
     // If it's outline piece 7, increase the size of the pane height and move it down
     if (image == outlinePiece7) {
@@ -321,22 +369,45 @@ public class TornPhotographController {
     image.fitHeightProperty().bind(puzzlePane.heightProperty());
   }
 
+  /**
+   * Method to set up drag and drop handlers for the puzzle pieces.
+   *
+   * @param piece
+   */
   private void setupDragAndDrop(ImageView piece) {
     piece.setOnMousePressed(event -> onPiecePressed(event, piece));
     piece.setOnMouseDragged(event -> onPieceDragged(event, piece));
     piece.setOnMouseReleased(event -> onPieceReleased(event, piece));
   }
 
+  /**
+   * Method to handle the mouse pressed event for the puzzle pieces.
+   *
+   * @param event
+   * @param piece
+   */
   private void onPiecePressed(MouseEvent event, ImageView piece) {
     offsetX = event.getSceneX() - piece.getLayoutX();
     offsetY = event.getSceneY() - piece.getLayoutY();
   }
 
+  /**
+   * Method to handle the mouse dragged event for the puzzle pieces.
+   *
+   * @param event
+   * @param piece
+   */
   private void onPieceDragged(MouseEvent event, ImageView piece) {
     piece.setLayoutX(event.getSceneX() - offsetX);
     piece.setLayoutY(event.getSceneY() - offsetY);
   }
 
+  /**
+   * Method to handle the mouse released event for the puzzle pieces.
+   *
+   * @param event
+   * @param piece
+   */
   private void onPieceReleased(MouseEvent event, ImageView piece) {
     // Check if the piece is close enough to its target position to snap into place
     if (piece == piece1 && isCloseToTarget(piece, piece1TargetX, piece1TargetY)) {
@@ -399,11 +470,20 @@ public class TornPhotographController {
     checkIfPuzzleComplete();
   }
 
+  /**
+   * Method to check if a puzzle piece is close to its target position.
+   *
+   * @param piece
+   * @param targetX
+   * @param targetY
+   * @return
+   */
   private boolean isCloseToTarget(ImageView piece, double targetX, double targetY) {
     return Math.abs(piece.getLayoutX() - targetX) < SNAP_THRESHOLD
         && Math.abs(piece.getLayoutY() - targetY) < SNAP_THRESHOLD;
   }
 
+  /** Method to check if the puzzle is complete. */
   private void checkIfPuzzleComplete() {
     // If all pieces are correctly placed, show a success message
     if (piece1Correct
@@ -455,7 +535,7 @@ public class TornPhotographController {
     }
   }
 
-  // Method to start the text reveal animation and zoom effect
+  /** Method to animate the text reveal. */
   private void animatetext() {
     Timeline timeline = new Timeline();
     for (int i = 0; i < revealText.length(); i++) {
@@ -564,8 +644,12 @@ public class TornPhotographController {
         });
   }
 
+  /** Method to set up the go back button. */
   private void setupGoBackButton() {
+    // Create a new button for the go back button
     goBackButton = new Button("Go Back");
+
+    // Set the style for the button
     goBackButton.setStyle(
         "-fx-background-radius: 10; "
             + "-fx-border-radius: 10; "
@@ -573,29 +657,179 @@ public class TornPhotographController {
             + "-fx-background-color: white; "
             + "-fx-text-fill: black; "
             + "-fx-font-size: 14px;");
+
+    // Set the size and position for the button
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
+
+    // Set the position of the button
     AnchorPane.setBottomAnchor(goBackButton, 10.0);
     AnchorPane.setRightAnchor(goBackButton, 10.0);
+
+    // Set the action for the button
     goBackButton.setOnAction(event -> goBackToRoom());
+
+    // Set the hover effect for the button
     goBackButton.setOnMouseEntered(
         e -> {
           goBackButton.setOpacity(0.7);
-          goBackButton.setCursor(javafx.scene.Cursor.HAND);
+          goBackButton.setCursor(Cursor.HAND);
         });
+
+    // Set the hover effect for the button
     goBackButton.setOnMouseExited(
         e -> {
           goBackButton.setOpacity(1);
-          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
+          goBackButton.setCursor(Cursor.DEFAULT);
         });
+
+    // Add the button to the pane
     puzzlePane.getChildren().add(goBackButton);
   }
 
+  /** Method to go back to the room. */
   private void goBackToRoom() {
     try {
       App.setRoot("room");
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /*
+   * Method to initialise and show the volume button
+   */
+  private void showVolumeButton() {
+    // create new SVGPath for volume button
+    volumeUpStroke.setContent(
+        "M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0"
+            + " 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z");
+    volumeUp.setContent(
+        "M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025"
+            + " 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825"
+            + " 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06");
+    volumeOff.setContent(
+        "M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0"
+            + " 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207"
+            + " 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0"
+            + " 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0"
+            + " 0 1 .708 0");
+
+    // Set the size and position for the SVGPath
+    volumeUp.setScaleY(2.0);
+    volumeUp.setScaleX(2.0);
+    volumeUp.setScaleZ(2.0);
+    volumeUp.setLayoutX(13);
+    volumeUp.setLayoutY(53);
+    volumeUp.setStroke(Color.web("#473931"));
+    volumeUp.setFill(Color.web("#ffffff94"));
+    volumeUp.setStrokeWidth(0.5);
+    volumeUp.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    timerPane.getChildren().add(volumeUp);
+
+    // Set the size and position for the SVGPath
+    volumeUpStroke.setScaleY(2.0);
+    volumeUpStroke.setScaleX(2.0);
+    volumeUpStroke.setScaleZ(2.0);
+    volumeUpStroke.setLayoutX(19);
+    volumeUpStroke.setLayoutY(53);
+    volumeUpStroke.setStroke(Color.web("#473931"));
+    volumeUpStroke.setFill(Color.web("#ffffff94"));
+    volumeUpStroke.setStrokeWidth(0.5);
+    volumeUpStroke.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    timerPane.getChildren().add(volumeUpStroke);
+
+    // Set the size and position for the SVGPath
+    volumeOff.setScaleY(2.0);
+    volumeOff.setScaleX(2.0);
+    volumeOff.setScaleZ(2.0);
+    volumeOff.setLayoutX(13);
+    volumeOff.setLayoutY(53);
+    volumeOff.setStroke(Color.web("#473931"));
+    volumeOff.setFill(Color.web("#ffffff94"));
+    volumeOff.setStrokeWidth(0.5);
+    volumeOff.setVisible(false);
+    volumeOff.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOn();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    timerPane.getChildren().add(volumeOff);
+    // Check if the volume icon should be displayed
+    try {
+      checkVolumeIcon();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /*
+   * Method to turn the volume off
+   */
+  @FXML
+  protected void turnVolumeOff() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(false);
+    volumeOff.setVisible(true);
+    volumeUp.setVisible(false);
+    volumeUpStroke.setVisible(false);
+  }
+
+  /*
+   * Method to turn the volume on
+   */
+  @FXML
+  protected void turnVolumeOn() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
+    volumeOff.setVisible(false);
+    volumeUp.setVisible(true);
+    volumeUpStroke.setVisible(true);
+  }
+
+  /*
+   * Method to check if the volume icon should be displayed
+   */
+  private void checkVolumeIcon() throws IOException {
+    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
+      turnVolumeOn();
+    } else {
+      turnVolumeOff();
+    }
+  }
+
+  /** Method to get volume up SVGPath. */
+  public SVGPath getVolumeUp() {
+    return volumeUp;
+  }
+
+  /** Method to set the volume up SVGPath. */
+  public void setVolumeUp(SVGPath volumeUp) {
+    this.volumeUp = volumeUp;
+  }
+
+  /** Method to get the volume up stroke SVGPath. */
+  public SVGPath getVolumeOff() {
+    return volumeOff;
+  }
+
+  /** Method to set the volume off SVGPath. */
+  public void setVolumeOff(SVGPath volumeOff) {
+    this.volumeOff = volumeOff;
   }
 }

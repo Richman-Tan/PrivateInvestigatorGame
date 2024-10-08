@@ -11,6 +11,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
@@ -39,6 +42,7 @@ import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
 
+/** Controller for the guessing scene. */
 public class UpdatedGuessingController {
 
   private static final String confirmed =
@@ -101,6 +105,9 @@ public class UpdatedGuessingController {
   @FXML private Rectangle recSus2;
   @FXML private Rectangle recSus3;
   @FXML private Label incorrectGuessLbl2;
+  @FXML protected SVGPath volumeOff;
+  @FXML protected SVGPath volumeUp;
+  @FXML protected SVGPath volumeUpStroke;
 
   private boolean playedConfirmCulprit = false;
   private boolean playedConfirmEx = false;
@@ -120,6 +127,8 @@ public class UpdatedGuessingController {
   private TimerModel countdownTimer;
   private ChatCompletionRequest chatCompletionRequest;
   private String guessedsuspect;
+  private BooleanProperty volumeSettingProperty =
+      SharedVolumeControl.getInstance().volumeSettingProperty();
 
   /**
    * Initializes the chat view.
@@ -140,6 +149,11 @@ public class UpdatedGuessingController {
     }
     if (context.isNoteFound()) {
       clue3foundimg.setVisible(true);
+    }
+    try {
+      checkVolumeIcon();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     countdownTimer = SharedTimerModel.getInstance().getTimer();
@@ -171,44 +185,101 @@ public class UpdatedGuessingController {
     // play the audio
     Media sound = new Media(culprit);
     culpritPlayer = new MediaPlayer(sound);
+    // Bind the volume property for culpritPlayer
+    culpritPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () -> volumeSettingProperty.get() ? 1.0 : 0.0, volumeSettingProperty));
     culpritPlayer.play();
     warpText(); // Start the text animation
     createImageView(); // Create the ImageView and add it to the scene
+
+    Media confirmedSound = new Media(confirmed);
+    mediaPlayer = new MediaPlayer(confirmedSound);
+    // Use a DoubleBinding to bind the mediaPlayer volume property
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () -> volumeSettingProperty.get() ? 1.0 : 0.0, volumeSettingProperty));
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void hoverImageGma(MouseEvent event) throws IOException {
     recSuspect2.setVisible(true);
     recSuspect2.setMouseTransparent(true);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void hoverImageUncle(MouseEvent event) throws IOException {
     recSuspect1.setVisible(true);
     recSuspect1.setMouseTransparent(true);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void hoverImageSon(MouseEvent event) throws IOException {
     recSuspect3.setVisible(true);
     recSuspect3.setMouseTransparent(true);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect is off
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void offHoverImageSon(MouseEvent event) {
     recSuspect3.setVisible(false);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect is off
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void offHoverImageGma(MouseEvent event) {
     recSuspect2.setVisible(false);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect is off
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void offHoverImageUncle(MouseEvent event) {
     recSuspect1.setVisible(false);
   }
 
+  /**
+   * Method to handle when the image of the suspect is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void clickedImageUncle(MouseEvent event) throws IOException {
     guessedsuspect = "Uncle";
@@ -220,6 +291,12 @@ public class UpdatedGuessingController {
     confirmCulpritButton.setOpacity(1);
   }
 
+  /**
+   * Method to handle when the image of the suspect is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void clickedImageSon(MouseEvent event) throws IOException {
     guessedsuspect = "Grandson";
@@ -231,6 +308,12 @@ public class UpdatedGuessingController {
     confirmCulpritButton.setOpacity(1);
   }
 
+  /**
+   * Method to handle when the image of the suspect is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void clickedImageGma(MouseEvent event) throws IOException {
     guessedsuspect = "Grandma";
@@ -250,12 +333,29 @@ public class UpdatedGuessingController {
    */
   @FXML
   private void confirmCulprit(MouseEvent event) throws IOException {
-    // play sound
-    Media sound = new Media(confirmed);
-    mediaPlayer = new MediaPlayer(sound);
+    Media confirmedSound = new Media(confirmed);
+    mediaPlayer = new MediaPlayer(confirmedSound);
+    // Use a DoubleBinding to bind the volume property
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get()
+                        ? 1.0
+                        : 0.0, // Use 1.0 for full volume and 0.0 for mute
+                volumeSettingProperty));
 
     Media sound2 = new Media(explanation);
     explanationPlayer = new MediaPlayer(sound2);
+    // Create a DoubleBinding and bind it to the explanationPlayer's volume property
+    explanationPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get() ? 1.0 : 0.0, // Full volume if true, otherwise mute
+                volumeSettingProperty));
     if (!playedConfirmCulprit) {
       mediaPlayer.play();
       playedConfirmCulprit = true;
@@ -289,6 +389,45 @@ public class UpdatedGuessingController {
   }
 
   /**
+   * Method to handle when the volume is turned off
+   *
+   * @throws IOException if there is an error loading the FXML file
+   */
+  @FXML
+  protected void turnVolumeOff() throws IOException {
+    volumeOff.setVisible(true);
+    volumeUp.setVisible(false);
+    volumeUpStroke.setVisible(false);
+    SharedVolumeControl.getInstance().setVolumeSetting(false);
+  }
+
+  /**
+   * Method to handle when the volume is turned on
+   *
+   * @throws IOException if there is an error loading the FXML file
+   */
+  @FXML
+  protected void turnVolumeOn() throws IOException {
+    volumeOff.setVisible(false);
+    volumeUp.setVisible(true);
+    volumeUpStroke.setVisible(true);
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
+  }
+
+  /**
+   * Method to adjust the position of the volume button
+   *
+   * @throws IOException if there is an error loading the FXML file
+   */
+  private void checkVolumeIcon() throws IOException {
+    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
+      turnVolumeOn();
+    } else {
+      turnVolumeOff();
+    }
+  }
+
+  /**
    * Method to handle when the confirm explanation button is clicked
    *
    * @param event the mouse event
@@ -297,9 +436,19 @@ public class UpdatedGuessingController {
   @FXML
   private void confirmExplanation(MouseEvent event) throws IOException {
     // play sound
-    Media sound = new Media(confirmed);
-    mediaPlayer = new MediaPlayer(sound);
+    Media confirmedSound = new Media(confirmed);
+    mediaPlayer = new MediaPlayer(confirmedSound);
+    // Create a DoubleBinding and bind it to the mediaPlayer's volume property
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get() ? 1.0 : 0.0, // Full volume if true, otherwise mute
+                volumeSettingProperty));
+
     if (!playedConfirmEx) {
+      // if (SharedVolumeControl.getInstance().getVolumeSetting()) {
       mediaPlayer.play();
       playedConfirmEx = true;
       mediaPlayer.setOnEndOfMedia(
@@ -312,10 +461,25 @@ public class UpdatedGuessingController {
             showGameOver();
             // remove the timer from the screen if user has been moved to game over state
             labelPane.setVisible(false);
+            adjustVolumeButtonPosition();
 
             // stop the timer
             countdownTimer.stop();
           });
+      // } else {
+      //   // open new pane to confirm explanation
+      //   verifyCulpritPane.setVisible(false);
+      //   staticimg1.setVisible(false);
+      //   gameOverRectangle.setVisible(true);
+      //   gameOverPane.setVisible(true);
+      //   showGameOver();
+      //   // remove the timer from the screen if user has been moved to game over state
+      //   labelPane.setVisible(false);
+      //   adjustVolumeButtonPosition();
+
+      //   // stop the timer
+      //   countdownTimer.stop();
+      // }
     }
   }
 
@@ -343,6 +507,12 @@ public class UpdatedGuessingController {
       Media sound = new Media(incorrectGuess);
       guessPlayer = new MediaPlayer(sound);
     }
+    // Bind the volume property for guessPlayer
+    guessPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () -> volumeSettingProperty.get() ? 1.0 : 0.0, volumeSettingProperty));
 
     // Run a seperate thread to play the sound
     new Thread(
@@ -359,12 +529,24 @@ public class UpdatedGuessingController {
 
     Media sound = new Media(gameOver);
     gameOverPlayer = new MediaPlayer(sound);
+
+    // Use a boolean binding to control the volume based on the shared volume setting
+    BooleanProperty isVolumeOn = SharedVolumeControl.getInstance().volumeSettingProperty();
+    gameOverPlayer
+        .volumeProperty()
+        .bind(Bindings.createDoubleBinding(() -> isVolumeOn.get() ? 1.0 : 0.0, isVolumeOn));
+
+    // Play the game over sound
     gameOverPlayer.play();
     gameOverTxt.setVisible(true);
+
+    // Set up an event handler for when the media ends
     gameOverPlayer.setOnEndOfMedia(
         () -> {
-          // play sound
+          // Play another sound once the game over sound ends
           guessPlayer.play();
+
+          // Create a timeline to control the visibility of nodes in the list
           timeline =
               new Timeline(
                   new KeyFrame(
@@ -377,14 +559,22 @@ public class UpdatedGuessingController {
                           }
                           j++;
                         } else {
-                          timeline.stop();
+                          timeline.stop(); // Stop the timeline when all elements are shown
                         }
                       }));
-          timeline.setCycleCount(Timeline.INDEFINITE); // Loop until all text is shown
+
+          // Set the timeline to run indefinitely until manually stopped
+          timeline.setCycleCount(Timeline.INDEFINITE);
           timeline.play(); // Start the animation
         });
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void warpText() {
     timeline =
         new Timeline(
@@ -404,6 +594,12 @@ public class UpdatedGuessingController {
     timeline.play(); // Start the animation
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void flashLastDot() {
     // Create a new Timeline for flashing the last '.'
     Timeline flashTimeline =
@@ -425,6 +621,12 @@ public class UpdatedGuessingController {
     flashTimeline.play(); // Start the flashing animation
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void createImageView() {
     // Create the ImageView programmatically
     staticimg1 = new ImageView();
@@ -439,6 +641,12 @@ public class UpdatedGuessingController {
     rootPane.getChildren().add(staticimg1);
   }
 
+  /**
+   * Method to play the gif
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void playgif() {
     // Load the GIF image once
     Image gifImage =
@@ -458,6 +666,12 @@ public class UpdatedGuessingController {
     staticimg1.setOpacity(0.75); // Adjust opacity as needed
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void appendChatMessage(ChatMessage msg) {
     // Clear the text area before showing the new message
     feedbackField.clear();
@@ -494,6 +708,13 @@ public class UpdatedGuessingController {
     timeline.play();
   }
 
+  /**
+   * Method to run the GPT model
+   *
+   * @param msg the chat message
+   * @return the chat message
+   * @throws ApiProxyException if there is an error communicating with the API proxy
+   */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
 
     // Add the message to the request
@@ -524,11 +745,6 @@ public class UpdatedGuessingController {
   private void onSendMessage() {
     // Get the user's explanation message
     String message = userExplanation.getText().trim();
-
-    // if the user has not guessed correctly then no need to proceed
-    // if (!guess) {
-    //   return;
-    // }
 
     // Print the message to the console
     System.out.println("Message: " + message);
@@ -619,7 +835,18 @@ public class UpdatedGuessingController {
     fadeOutTransition.setFromValue(1.0);
     fadeOutTransition.setToValue(0.0);
     fadeOutTransition.play();
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
 
     App.setRoot("initialScene");
+  }
+
+  /** Method to adjust the position of the volume button */
+  private void adjustVolumeButtonPosition() {
+    volumeUp.setLayoutX(15);
+    volumeUp.setLayoutY(8);
+    volumeUpStroke.setLayoutY(8);
+    volumeUpStroke.setLayoutX(22);
+    volumeOff.setLayoutX(15);
+    volumeOff.setLayoutY(8);
   }
 }

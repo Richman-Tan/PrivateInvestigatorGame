@@ -1,6 +1,8 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -16,7 +18,9 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
@@ -38,6 +42,9 @@ public class CluePhoneController {
   @FXML private Label popUp;
   @FXML private Pane labelPane;
   @FXML private Label lbltimer;
+  private SVGPath volumeUpStroke = new SVGPath();
+  private SVGPath volumeUp = new SVGPath();
+  private SVGPath volumeOff = new SVGPath();
 
   private Circle startCircleRed;
   private Circle startCircleBlue;
@@ -60,6 +67,7 @@ public class CluePhoneController {
 
   private TimerModel countdownTimer;
 
+  /** Initializes the CluePhoneController. */
   @FXML
   private void initialize() {
     // Use the helper method to create and add the timer pane
@@ -105,13 +113,25 @@ public class CluePhoneController {
 
       rootPane.getChildren().add(phoneRingingImageView);
 
-      // Load the MP4 video
+      // Load the media file path
       String videoPath =
           CluePhoneController.class
-              .getResource("/images/cluephoneimages/clueaudiofile.mp4") // Get the resource path
-              .toExternalForm(); // Convert the resource path to an external form
+              .getResource("/images/cluephoneimages/clueaudiofile.mp4")
+              .toExternalForm();
       Media media = new Media(videoPath);
+
+      // Create a media player for the media file
       MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+      // Bind the volume property of the media player to the shared volume control setting
+      mediaPlayer
+          .volumeProperty()
+          .bind(
+              Bindings.createDoubleBinding(
+                  () -> SharedVolumeControl.getInstance().volumeSettingProperty().get() ? 1.0 : 0.0,
+                  SharedVolumeControl.getInstance().volumeSettingProperty()));
+
+      // Create a MediaView to display the media content
       MediaView mediaView = new MediaView(mediaPlayer);
 
       // Set whether to preserve the aspect ratio (optional)
@@ -203,7 +223,7 @@ public class CluePhoneController {
               (obs, oldVal, newVal) -> {
                 AnchorPane.setLeftAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2 + 10);
               });
-
+      mediaPlayer.seek(Duration.seconds(1));
       // Toggle between play and pause
       playPauseButton.setOnAction(
           e -> {
@@ -429,8 +449,11 @@ public class CluePhoneController {
         });
 
     labelPane.toFront();
+    // Add the volume button to the label pane and show it
+    showVolumeButton();
   }
 
+  /** Handle arrow button click. */
   private void handleArrowButtonClick() {
     System.out.println("Arrow button clicked!");
 
@@ -490,6 +513,7 @@ public class CluePhoneController {
     setupGame();
   }
 
+  /** Sets up game */
   private void setupGame() {
     // Create start circles (left side)
     startCircleRed = createDraggableCircle(0, 0, Color.RED);
@@ -558,7 +582,14 @@ public class CluePhoneController {
             endCircleGreen);
   }
 
-  // Create start circle with dragging functionality
+  /**
+   * Create a draggable circle.
+   *
+   * @param x
+   * @param y
+   * @param color
+   * @return
+   */
   private Circle createDraggableCircle(double x, double y, Color color) {
     Circle circle = new Circle(x, y, 10, color);
     circle.setOnMousePressed(event -> onStartDrag(event, circle));
@@ -683,6 +714,11 @@ public class CluePhoneController {
       Media media = new Media(videoPath);
       MediaPlayer mediaPlayer = new MediaPlayer(media);
       MediaView mediaView = new MediaView(mediaPlayer);
+
+      BooleanProperty isVolumeOn = SharedVolumeControl.getInstance().volumeSettingProperty();
+      mediaPlayer
+          .volumeProperty()
+          .bind(Bindings.createDoubleBinding(() -> isVolumeOn.get() ? 1.0 : 0.0, isVolumeOn));
 
       // Set whether to preserve the aspect ratio (optional)
       mediaView.setPreserveRatio(false);
@@ -880,5 +916,122 @@ public class CluePhoneController {
 
     // Bind the timer label to the countdown timer
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+  }
+
+  /*
+   * Method to initialise and show the volume button
+   */
+  private void showVolumeButton() {
+    // create new SVGPath for volume button
+    volumeUpStroke.setContent(
+        "M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0"
+            + " 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z");
+    volumeUp.setContent(
+        "M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025"
+            + " 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825"
+            + " 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06");
+    volumeOff.setContent(
+        "M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0"
+            + " 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207"
+            + " 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0"
+            + " 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0"
+            + " 0 1 .708 0");
+
+    // Set the size and position for the SVGPath
+    volumeUp.setScaleY(2.0);
+    volumeUp.setScaleX(2.0);
+    volumeUp.setScaleZ(2.0);
+    volumeUp.setLayoutX(13);
+    volumeUp.setLayoutY(53);
+    volumeUp.setStroke(Color.web("#473931"));
+    volumeUp.setFill(Color.web("#ffffff94"));
+    volumeUp.setStrokeWidth(0.5);
+    volumeUp.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    labelPane.getChildren().add(volumeUp);
+
+    // Set the size and position for the SVGPath
+    volumeUpStroke.setScaleY(2.0);
+    volumeUpStroke.setScaleX(2.0);
+    volumeUpStroke.setScaleZ(2.0);
+    volumeUpStroke.setLayoutX(19);
+    volumeUpStroke.setLayoutY(53);
+    volumeUpStroke.setStroke(Color.web("#473931"));
+    volumeUpStroke.setFill(Color.web("#ffffff94"));
+    volumeUpStroke.setStrokeWidth(0.5);
+    volumeUpStroke.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    labelPane.getChildren().add(volumeUpStroke);
+
+    // Set the size and position for the SVGPath
+    volumeOff.setScaleY(2.0);
+    volumeOff.setScaleX(2.0);
+    volumeOff.setScaleZ(2.0);
+    volumeOff.setLayoutX(13);
+    volumeOff.setLayoutY(53);
+    volumeOff.setStroke(Color.web("#473931"));
+    volumeOff.setFill(Color.web("#ffffff94"));
+    volumeOff.setStrokeWidth(0.5);
+    volumeOff.setVisible(false);
+    volumeOff.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOn();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    labelPane.getChildren().add(volumeOff);
+    // Check if the volume icon should be displayed
+    try {
+      checkVolumeIcon();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /*
+   * Method to turn the volume off
+   */
+  @FXML
+  protected void turnVolumeOff() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(false);
+    volumeOff.setVisible(true);
+    volumeUp.setVisible(false);
+    volumeUpStroke.setVisible(false);
+  }
+
+  /*
+   * Method to turn the volume on
+   */
+  @FXML
+  protected void turnVolumeOn() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
+    volumeOff.setVisible(false);
+    volumeUp.setVisible(true);
+    volumeUpStroke.setVisible(true);
+  }
+
+  /*
+   * Method to check if the volume icon should be displayed
+   */
+  private void checkVolumeIcon() throws IOException {
+    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
+      turnVolumeOn();
+    } else {
+      turnVolumeOff();
+    }
   }
 }

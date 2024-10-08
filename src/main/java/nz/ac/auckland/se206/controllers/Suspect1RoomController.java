@@ -9,6 +9,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 
+/** Controller for the room of Suspect 1 (the uncle). */
 public class Suspect1RoomController extends BaseRoomController {
 
   @Override
@@ -40,19 +41,19 @@ public class Suspect1RoomController extends BaseRoomController {
   }
 
   @FXML
-  private void onGrandmotherClick(ActionEvent event) throws IOException {
+  private void onGrandmotherClick() throws IOException {
     // Your implementation to handle the click event
     App.setRoot("suspect2room"); // Or whatever action you want to perform
   }
 
   @FXML
-  private void onGrandsonClick(ActionEvent event) throws IOException {
+  private void onGrandsonClick() throws IOException {
     // Your logic to switch to the grandson room or any other required action
     App.setRoot("suspect3room");
   }
 
   @FXML
-  private void onGuessClick(ActionEvent event) throws IOException {
+  private void onGuessClick() throws IOException {
     // Implement the logic for what should happen when the "Guess" button is clicked.
     App.setRoot("guessingScene"); // Navigates to the guessing scene, for example
   }

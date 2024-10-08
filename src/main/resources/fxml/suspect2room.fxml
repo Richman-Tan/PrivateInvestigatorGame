@@ -4,13 +4,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="590.0" prefWidth="1067" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect2RoomController">
@@ -20,48 +22,7 @@
         <Image url="@../images/grandmotherPic.jpg" />
     </image>
   </ImageView>
-      <HBox alignment="CENTER" layoutX="21.0" layoutY="20.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
-         <children>
-            <Button fx:id="menuButton" maxHeight="10.0" mnemonicParsing="false" onAction="#onToggleMenu" opacity="0.8" prefHeight="60.0" prefWidth="31.0" style="-fx-background-radius: 10 0 0 10; -fx-border-radius: 10 0 0 10; -fx-border-color: black transparent black black; -fx-background-insets: 0;" stylesheets="@../css/button.css">
-               <graphic>
-                  <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/exiticon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="crimeSceneButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRoom" opacity="0.8" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-padding: 0; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Go to Crime Scene">
-               <HBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="grandmaButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.5" prefHeight="45.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandma">
-               <HBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="grandsonButton" maxHeight="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGrandsonClick" opacity="0.8" prefHeight="60.0" prefWidth="200.0" style="-fx-background-radius: 0 0 0 0; -fx-border-color: black transparent black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Grandson">
-               <HBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="uncleButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUncleButtonClick" opacity="0.8" prefHeight="60.0" prefWidth="200.0" style="-fx-background-radius: 0 10 10 0; -fx-border-radius: 0 10 10 0; -fx-border-color: black black black transparent; -fx-background-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Investigate Uncle">
-               <HBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button fx:id="guessButton" mnemonicParsing="false" onAction="#onGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0;" stylesheets="@../css/button.css" text="Make a guess" />
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-      <Pane layoutX="22.0" layoutY="25.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <Pane fx:id="timerpane" layoutX="22.0" layoutY="25.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #3f2218; -fx-border-width: 4px;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="8.0" text="Label">
                <font>
@@ -70,6 +31,18 @@
             </Label>
          </children>
       </Pane>
+      <HBox alignment="CENTER" layoutX="21.0" layoutY="20.0" prefHeight="67.0" prefWidth="770.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="guessButton" mnemonicParsing="false" onAction="#onGuessClick" opacity="0.8" prefHeight="28.0" prefWidth="121.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-background-insets: 0; -fx-border-image-insets: 0; -fx-border-insets: 0; -fx-border-color: #3f2218; -fx-border-width: 4px;" stylesheets="@../css/button.css" text="Make a guess" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
       <ImageView fitHeight="333.0" fitWidth="410.0" layoutX="-31.0" layoutY="123.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/userChatBoxS2.png" />
@@ -88,5 +61,98 @@
       </ImageView>
       <TextArea fx:id="userChatBox" layoutX="56.0" layoutY="169.0" prefHeight="86.0" prefWidth="227.0" promptText="You are waiting for a response..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: transparent; -fx-text-fill: white; -fx-prompt-text-fill: white;" stylesheets="@../css/textArea.css" wrapText="true" />
       <Circle fx:id="sendButton" fill="#1f93ff00" layoutX="296.0" layoutY="247.0" onMouseClicked="#onSend" radius="11.0" stroke="#4d6543" strokeType="INSIDE" />
+      <ImageView fx:id="basemapimg" fitHeight="480.0" fitWidth="780.0" layoutX="21.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <image>
+            <Image url="@../images/basemap2.png" />
+         </image>
+         <effect>
+            <DropShadow height="137.45" radius="71.53999999999999" width="150.71">
+               <color>
+                  <Color red="1.0" green="1.0" blue="1.0" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <Label fx:id="lblareastatus" layoutX="132.0" layoutY="286.0" text="Label" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="widowiconimg" fitHeight="45.0" fitWidth="46.0" layoutX="190.0" layoutY="481.0" pickOnBounds="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="170.0">
+         <image>
+            <Image url="@../images/widowiconimg.png" />
+         </image>
+         <effect>
+            <DropShadow height="59.7" radius="30.73" width="65.22">
+               <color>
+                  <Color red="1.0" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="grandsoniconimg" fitHeight="52.0" fitWidth="48.0" layoutX="76.0" layoutY="448.0" onMouseClicked="#onGrandsonClick" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="80.0">
+         <image>
+            <Image url="@../images/grandsoniconimg.png" />
+         </image>
+         <effect>
+            <DropShadow height="59.7" radius="30.73" width="65.22">
+               <color>
+                  <Color red="1.0" green="1.0" blue="1.0" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="brothericonimg" fitHeight="40.0" fitWidth="46.0" layoutX="278.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="270.0">
+         <image>
+            <Image url="@../images/brothericonimg.png" />
+         </image>
+         <effect>
+            <DropShadow height="54.17" radius="29.3475" width="65.22">
+               <color>
+                  <Color red="1.0" green="1.0" blue="1.0" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="menuclosedimg" fitHeight="82.0" fitWidth="348.0" layoutX="18.0" layoutY="432.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="12.0">
+         <image>
+            <Image url="@../images/menuclosed.png" />
+         </image>
+         <effect>
+            <DropShadow height="72.59" radius="25.1075" width="29.84">
+               <color>
+                  <Color red="1.0" green="1.0" blue="1.0" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="topofmenubtn" fitHeight="111.0" fitWidth="380.0" layoutX="18.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/topofmenu.png" />
+         </image>
+         <effect>
+            <DropShadow height="29.84" radius="14.42" width="29.84">
+               <color>
+                  <Color red="1.0" green="1.0" blue="1.0" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="crimesceneiconimg" fitHeight="58.0" fitWidth="67.0" layoutX="127.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="351.0">
+         <image>
+            <Image url="@../images/crimescenebtn.png" />
+         </image>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="1.0" green="1.0" blue="1.0" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <SVGPath fx:id="volumeOff" content="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0" fill="#ffffff94" layoutX="23.0" layoutY="63.0" onMouseClicked="#turnVolumeOn" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#4a3b33" strokeWidth="0.5" visible="false" />
+      <SVGPath fx:id="volumeUpStroke" content="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z" fill="#ffffff94" layoutX="29.0" layoutY="63.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
+      <SVGPath fx:id="volumeUp" content="M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06" fill="#ffffff94" layoutX="23.0" layoutY="63.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
+       <Circle fx:id="sendButton" fill="#1f93ff00" layoutX="296.0" layoutY="247.0" onMouseClicked="#onSend" radius="11.0" stroke="#4d6543" strokeType="INSIDE" />
    </children>
 </AnchorPane>

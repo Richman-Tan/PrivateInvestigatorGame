@@ -3,8 +3,11 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,10 +20,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
@@ -32,53 +37,88 @@ import nz.ac.auckland.se206.states.GameStarted;
  */
 public class RoomController {
 
-  // Inner Classes (if any would go here)
+  private static final GameStateContext context = GameStateContext.getInstance();
+  private static final String INITIAL_AUDIO =
+      GameStarted.class.getClassLoader().getResource("sounds/initialaudio.mp3").toExternalForm();
 
-  // Static Fields
-  private static GameStateContext context = GameStateContext.getInstance();
+  /**
+   * Returns the initial audio file path.
+   *
+   * @return the initial audio file path
+   */
+  public static String getInitialaudio() {
+    return INITIAL_AUDIO;
+  }
 
-  // Static Methods
-  // (If you have static methods, they would go here)
-
-  // Instance Fields
-  @FXML private Button menuButton;
-  @FXML private Button crimeSceneButton;
-  @FXML private Button grandmaButton;
-  @FXML private Button grandsonButton;
-  @FXML private Button uncleButton;
+  // 7. Instance Fields (Including FXML fields and other instance variables)
+  // FXML fields (usually UI controls)
   @FXML private AnchorPane rootNode;
   @FXML private Button guessButton;
-  @FXML private ImageView background;
   @FXML private Label lbltimer;
   @FXML private ImageView clue1;
   @FXML private ImageView clue2;
   @FXML private ImageView clue3;
   @FXML private VBox viewBox;
+  @FXML private ImageView basemapimg;
+  @FXML private Label lblareastatus;
+  @FXML private ImageView widowiconimg;
+  @FXML private ImageView menuclosedimg;
+  @FXML private ImageView brothericonimg;
+  @FXML private ImageView grandsoniconimg;
+  @FXML private ImageView topofmenubtn;
+  @FXML private Pane timerpane;
 
-  private static final String initialaudio =
-      GameStarted.class.getClassLoader().getResource("sounds/initialaudio.mp3").toExternalForm();
-
+  // Other instance fields
   private MediaPlayer mediaPlayer;
-
   private boolean isFirstTimeInit = context.isFirstTimeInit();
-  private TimerModel countdownTimer;
+  protected TimerModel countdownTimer;
 
-  private boolean isatleastoncecluefound =
+  private final boolean isatleastoncecluefound =
       context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
 
-  // Create a group node
+  // Graphical components
   private Group drawGroup;
+  private final SVGPath volumeUpStroke = new SVGPath();
+  private final SVGPath volumeUp = new SVGPath();
+  private final SVGPath volumeOff = new SVGPath();
 
   /** Initializes the room view. */
-  @FXML
+  @FXML // This method is called by the FXMLLoader when initialization is complete
   public void initialize() {
+
+    lblareastatus.setText("You are in the: Crime Scene");
+
     // Set the initial opacity of clue1 to 0 (hidden)
     clue1.setOpacity(0);
+
+    // set anchorpane of clue 1 to 10px to the right
+    AnchorPane.setRightAnchor(clue1, 12.0);
+
     clue2.setOpacity(0);
+
+    // set anchorpane of clue 2 to 10px to the right
+    AnchorPane.setRightAnchor(clue2, 15.0);
+
     clue3.setOpacity(0);
 
-    Media initial = new Media(initialaudio);
+    // set anchorpane of clue 3 to 10px to the right
+    AnchorPane.setRightAnchor(clue3, 15.0);
+
+    Media initial = new Media(INITIAL_AUDIO);
     mediaPlayer = new MediaPlayer(initial);
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+
+    // Bind the mediaPlayer's volume property using a DoubleBinding
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get()
+                        ? 1.0
+                        : 0.0, // Use 1.0 for full volume if true, otherwise 0.0 for mute
+                volumeSettingProperty));
 
     // Check if the guess button should be enabled
     checkGuessButton();
@@ -100,6 +140,11 @@ public class RoomController {
       // If found, set the opacity of clue3 to 1 (visible)
       clue3.setOpacity(1);
     }
+
+    showVolumeButton();
+    volumeOff.toFront();
+    volumeUp.toFront();
+    volumeUpStroke.toFront();
 
     // Load the images
     final Image image1 =
@@ -137,6 +182,9 @@ public class RoomController {
 
               Platform.runLater(
                   () -> {
+                    if (!SharedVolumeControl.getInstance().getVolumeSetting()) {
+                      mediaPlayer.setVolume(0);
+                    }
                     mediaPlayer.play();
                   });
 
@@ -166,6 +214,111 @@ public class RoomController {
     backgroundImageView.fitWidthProperty().bind(rootNode.widthProperty());
     backgroundImageView.fitHeightProperty().bind(rootNode.heightProperty());
 
+    basemapimg.fitWidthProperty().bind(rootNode.widthProperty());
+    basemapimg.fitHeightProperty().bind(rootNode.heightProperty());
+
+    widowiconimg.setOnMouseEntered(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag entered");
+            widowiconimg.setScaleX(1.1);
+            widowiconimg.setScaleY(1.1);
+            rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+            lblareastatus.setText("Go to Widow's Garden?");
+          }
+        });
+
+    widowiconimg.setOnMouseExited(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag exited");
+            widowiconimg.setScaleX(1);
+            widowiconimg.setScaleY(1);
+            rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+            lblareastatus.setText("You are in the: Crime Scene");
+          }
+        });
+    brothericonimg.setOnMouseEntered(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag entered");
+            // set a little grow
+            brothericonimg.setScaleX(1.1);
+            brothericonimg.setScaleY(1.1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+            lblareastatus.setText("Go to Brother's Room?");
+          }
+        });
+
+    brothericonimg.setOnMouseExited(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag exited");
+            // set a little grow
+            brothericonimg.setScaleX(1);
+            brothericonimg.setScaleY(1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+            lblareastatus.setText("You are in the: Crime Scene");
+          }
+        });
+
+    grandsoniconimg.setOnMouseEntered(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag entered");
+            // set a little grow
+            grandsoniconimg.setScaleX(1.1);
+            grandsoniconimg.setScaleY(1.1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+            lblareastatus.setText("Go to Grandson's Room?");
+          }
+        });
+
+    grandsoniconimg.setOnMouseExited(
+        eh -> {
+          if (rootNode.getScene() != null) {
+            System.out.println("Drag exited");
+            // set a little grow
+            grandsoniconimg.setScaleX(1);
+            grandsoniconimg.setScaleY(1);
+
+            // change cursor
+            rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+            lblareastatus.setText("You are in the: Crime Scene");
+          }
+        });
+
+    topofmenubtn.setOnMouseEntered(
+        eh -> {
+          // change cursor
+          rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+          lblareastatus.setText("Close Menu?");
+        });
+
+    topofmenubtn.setOnMouseExited(
+        eh -> {
+          // change cursor
+          rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+          lblareastatus.setText("You are in the: Crime Scene");
+        });
+
+    topofmenubtn.setOnMouseClicked(
+        eh -> {
+          topofmenubtn.toBack();
+          basemapimg.toBack();
+          lblareastatus.toBack();
+          widowiconimg.toBack();
+          grandsoniconimg.toBack();
+          brothericonimg.toBack();
+          menuclosedimg.toFront();
+        });
+
     // Create a DropShadow effect
     DropShadow dropShadow = new DropShadow();
     dropShadow.setOffsetX(5); // Smaller offset
@@ -173,9 +326,6 @@ public class RoomController {
     dropShadow.setRadius(6); // Reduce blur radius
     dropShadow.setSpread(0.07); // Lower spread for less intensity
     dropShadow.setColor(Color.color(0, 0, 0, 0.4)); // Less opacity for lighter shadow
-
-    // Timer and other UI-related updates
-    updateMenuVisibility();
 
     // Load the images
     final ImageView file1 = createAndBindImageView(image1); // Displayed initially
@@ -212,12 +362,21 @@ public class RoomController {
     // Apply the orange drop shadow effect to the drawGroup
     applyOrangeDropShadow(drawGroup);
 
+    backgroundImageView.toBack();
+
     // Timer and other UI-related updates
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
 
     // Bind the timer label to the countdown timer
     lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+
+    countdownTimer
+        .timeStringProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              checkiftimeris4minleft();
+            });
 
     // Load background image
     Image phoneClueImage =
@@ -285,6 +444,7 @@ public class RoomController {
             // Handle the phone clue click event
             App.setRoot("cluephone");
           } catch (IOException e1) {
+            System.err.println("Error loading the phone clue scene");
           }
         });
 
@@ -335,15 +495,64 @@ public class RoomController {
           try {
             handleSafeClick();
           } catch (IOException e1) {
-            e1.printStackTrace();
+            System.err.println("Error loading the safe clue scene");
           }
         });
 
     // Add the ImageView to the root node
     rootNode.getChildren().addAll(paintingImageView);
 
+    menuclosedimg.setOnMouseEntered(
+        eh -> {
+          // change cursor
+          rootNode.getScene().setCursor(javafx.scene.Cursor.HAND);
+          lblareastatus.setText("Open Menu?");
+
+          // expand
+          menuclosedimg.setScaleX(1.1);
+          menuclosedimg.setScaleY(1.1);
+        });
+
+    menuclosedimg.setOnMouseExited(
+        eh -> {
+          // change cursor
+          if (rootNode.getScene() != null) {
+            rootNode.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+          }
+          lblareastatus.setText("You are in the: Crime Scene");
+
+          // shrink
+          menuclosedimg.setScaleX(1);
+          menuclosedimg.setScaleY(1);
+        });
+
+    menuclosedimg.setOnMouseClicked(
+        eh -> {
+          basemapimg.toFront();
+          topofmenubtn.toFront();
+          lblareastatus.toFront();
+          widowiconimg.toFront();
+          grandsoniconimg.toFront();
+          brothericonimg.toFront();
+          menuclosedimg.toBack();
+          phoneClueImageView.toFront();
+          paintingImageView.toFront();
+        });
+
     // Load background image
+    menuclosedimg.toFront();
+    // Set the menu to hidden
+    basemapimg.toBack();
+    lblareastatus.toBack();
+    widowiconimg.toBack();
+    grandsoniconimg.toBack();
+    brothericonimg.toBack();
+    topofmenubtn.toBack();
+
     viewBox.toFront();
+    clue1.toFront();
+    clue2.toFront();
+    clue3.toFront();
   }
 
   /**
@@ -404,12 +613,8 @@ public class RoomController {
             // 1 second delay
             Thread.sleep(10);
             App.setRoot("cluetornphotograph");
-          } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-          } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+          } catch (IOException | InterruptedException e1) {
+            System.err.println("Error loading the torn photograph clue scene");
           }
         });
   }
@@ -453,6 +658,104 @@ public class RoomController {
     }
   }
 
+  /** Checks if the timer is at 4 minutes left and starts the flashing animation. */
+  private void checkiftimeris4minleft() {
+    if (countdownTimer
+        .timeStringProperty()
+        .get()
+        .equals("01:00")) { // When the time reaches 1 minute left
+      startFlashingAnimation(timerpane);
+    }
+  }
+
+  /**
+   * Starts the flashing animation on a pane.
+   *
+   * @param pane the pane to flash
+   */
+  private void startFlashingAnimation(Pane pane) {
+    // Store the existing style to restore it later after flashing
+    String originalStyle = pane.getStyle();
+
+    // Create a Timeline to flash the pane between styles
+    Timeline flashTimeline = new Timeline();
+
+    // Define the CSS styles to use during the animation
+    String flashOnStyle =
+        "-fx-background-color: #FF0000; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-width: 4px; -fx-border-color: #FF0000;";
+    String flashOffStyle =
+        "-fx-background-color: #ADD8E6; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-width: 4px; -fx-border-color: #ADD8E6;";
+
+    // Alternate between red and light blue with border and background radius
+    KeyFrame flashOn =
+        new KeyFrame(
+            Duration.seconds(0),
+            new KeyValue(pane.styleProperty(), flashOnStyle) // Set the style to flash on
+            );
+    KeyFrame flashOff =
+        new KeyFrame(
+            Duration.seconds(0.5),
+            new KeyValue(pane.styleProperty(), flashOffStyle) // Set the style to flash off
+            );
+    KeyFrame flashOnAgain =
+        new KeyFrame(
+            Duration.seconds(1),
+            new KeyValue(pane.styleProperty(), flashOnStyle) // Set the style to flash on again
+            );
+    KeyFrame flashOffAgain =
+        new KeyFrame(
+            Duration.seconds(1.5),
+            new KeyValue(pane.styleProperty(), flashOffStyle) // Set the style to flash off again
+            );
+
+    // Add keyframes to the timeline
+    flashTimeline.getKeyFrames().addAll(flashOn, flashOff, flashOnAgain, flashOffAgain);
+
+    // Repeat the flash sequence for 3 cycles
+    flashTimeline.setCycleCount(2);
+
+    // Create a Timeline for the shaking effect
+    Timeline shakeTimeline = new Timeline();
+
+    // Create shake keyframes for horizontal movement
+    KeyFrame moveRight =
+        new KeyFrame(Duration.millis(50), new KeyValue(pane.translateXProperty(), 10));
+    KeyFrame moveLeft =
+        new KeyFrame(Duration.millis(100), new KeyValue(pane.translateXProperty(), -10));
+    KeyFrame moveCenter =
+        new KeyFrame(Duration.millis(150), new KeyValue(pane.translateXProperty(), 0));
+
+    // Add keyframes to the shake timeline and set it to repeat during the flashing duration
+    shakeTimeline.getKeyFrames().addAll(moveRight, moveLeft, moveCenter);
+    shakeTimeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+
+    // Create a DropShadow effect for the glowing red border
+    DropShadow redGlow = new DropShadow();
+    redGlow.setColor(Color.RED);
+    redGlow.setRadius(30); // Set the glow radius
+    redGlow.setSpread(0.7); // How much the color spreads out
+
+    // Add the glowing effect before starting the animation
+    pane.setEffect(redGlow);
+    rootNode.setEffect(redGlow);
+
+    // Play the shake timeline in parallel with the flash timeline
+    flashTimeline.setOnFinished(
+        event -> {
+          pane.setStyle(originalStyle); // Restore the original pane style
+          pane.setEffect(null); // Remove the glow effect
+          rootNode.setEffect(null); // Remove the glow effect
+          shakeTimeline.stop(); // Stop shaking after the flash ends
+          pane.setTranslateX(0); // Reset the pane's position
+        });
+
+    // Start the shake and flash animations
+    shakeTimeline.play();
+    flashTimeline.play();
+  }
+
   /**
    * Applies an orange drop shadow effect to a node.
    *
@@ -465,37 +768,6 @@ public class RoomController {
     orangedropShadow.setRadius(15); // Adjust the radius for desired shadow spread
     orangedropShadow.setColor(Color.GOLD);
     node.setEffect(orangedropShadow);
-  }
-
-  /**
-   * Updates the visibility of the menu buttons based on the isMenuVisible variable in the
-   * GameStateContext.
-   */
-  private void updateMenuVisibility() {
-    boolean isMenuVisible = context.isMenuVisible();
-
-    if (isMenuVisible) {
-      menuButton.setStyle(
-          "-fx-background-radius: 10 0 0 10; -fx-border-color: black transparent black black;"
-              + " -fx-border-radius: 10 0 0 10; -fx-background-insets: 0;");
-    } else {
-      menuButton.setStyle(
-          "-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;"
-              + " -fx-background-insets: 0;");
-    }
-
-    // Set visibility and management of other buttons based on isMenuVisible
-    crimeSceneButton.setVisible(isMenuVisible);
-    crimeSceneButton.setManaged(isMenuVisible);
-
-    grandmaButton.setVisible(isMenuVisible);
-    grandmaButton.setManaged(isMenuVisible);
-
-    grandsonButton.setVisible(isMenuVisible);
-    grandsonButton.setManaged(isMenuVisible);
-
-    uncleButton.setVisible(isMenuVisible);
-    uncleButton.setManaged(isMenuVisible);
   }
 
   /**
@@ -531,6 +803,11 @@ public class RoomController {
     context.onGuessClick();
   }
 
+  /**
+   * Handles the phone clue click event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void handleSafeClick() throws IOException {
     if (context.isNoteFound() || context.isSafeOpen()) {
@@ -540,34 +817,42 @@ public class RoomController {
     }
   }
 
+  /**
+   * Handles the volume off event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
-  private void onUncleButtonClick(ActionEvent event) throws IOException {
+  private void onUncleButtonClick() throws IOException {
     App.setRoot("suspect1room");
   }
 
+  /**
+   * Handles the volume off event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
-  private void onGrandmotherClick(ActionEvent event) throws IOException {
+  private void onGrandmotherClick() throws IOException {
     context.setMenuVisible(true); // Toggle the visibility in the context
     App.setRoot("suspect2room");
   }
 
+  /**
+   * Handles the volume off event.
+   *
+   * @throws IOException if there is an I/O error
+   */
   @FXML
-  private void onGrandsonClick(ActionEvent event) throws IOException {
+  private void onGrandsonClick() throws IOException {
     App.setRoot("suspect3room");
   }
 
   /**
-   * Toggles the menu button when clicked.
+   * Handles the volume off event.
    *
-   * @param event
-   * @throws IOException
+   * @throws IOException if there is an I/O error
    */
-  @FXML
-  private void onToggleMenu(ActionEvent event) {
-    context.toggleMenuVisibility(); // Toggle the visibility in the context
-    updateMenuVisibility(); // Update the visibility in the UI
-  }
-
   @FXML
   private void checkGuessButton() {
     if (context.getListOfVisitors().contains("suspect1")
@@ -581,6 +866,122 @@ public class RoomController {
       // Disable the guess button
       guessButton.setOpacity(0.3);
       guessButton.setDisable(true);
+    }
+  }
+
+  /*
+   * Method to initialise and show the volume button
+   */
+  private void showVolumeButton() {
+    // create new SVGPath for volume button
+    volumeUpStroke.setContent(
+        "M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0"
+            + " 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z");
+    volumeUp.setContent(
+        "M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025"
+            + " 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825"
+            + " 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06");
+    volumeOff.setContent(
+        "M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0"
+            + " 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207"
+            + " 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0"
+            + " 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0"
+            + " 0 1 .708 0");
+
+    // Set the size and position for the SVGPath
+    volumeUp.setScaleY(2.0);
+    volumeUp.setScaleX(2.0);
+    volumeUp.setScaleZ(2.0);
+    volumeUp.setLayoutX(23);
+    volumeUp.setLayoutY(63);
+    volumeUp.setStroke(Color.web("#473931"));
+    volumeUp.setFill(Color.web("#ffffff94"));
+    volumeUp.setStrokeWidth(0.5);
+    volumeUp.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    rootNode.getChildren().add(volumeUp);
+
+    // Set the size and position for the SVGPath
+    volumeUpStroke.setScaleY(2.0);
+    volumeUpStroke.setScaleX(2.0);
+    volumeUpStroke.setScaleZ(2.0);
+    volumeUpStroke.setLayoutX(29);
+    volumeUpStroke.setLayoutY(63);
+    volumeUpStroke.setStroke(Color.web("#473931"));
+    volumeUpStroke.setFill(Color.web("#ffffff94"));
+    volumeUpStroke.setStrokeWidth(0.5);
+    volumeUpStroke.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOff();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    rootNode.getChildren().add(volumeUpStroke);
+
+    // Set the size and position for the SVGPath
+    volumeOff.setScaleY(2.0);
+    volumeOff.setScaleX(2.0);
+    volumeOff.setScaleZ(2.0);
+    volumeOff.setLayoutX(23);
+    volumeOff.setLayoutY(63);
+    volumeOff.setStroke(Color.web("#473931"));
+    volumeOff.setFill(Color.web("#ffffff94"));
+    volumeOff.setStrokeWidth(0.5);
+    volumeOff.setVisible(false);
+    volumeOff.setOnMouseClicked(
+        event -> {
+          try {
+            turnVolumeOn();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    rootNode.getChildren().add(volumeOff);
+    try {
+      checkVolumeIcon();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /*
+   * Method to turn the volume off
+   */
+  @FXML
+  protected void turnVolumeOff() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(false);
+    volumeOff.setVisible(true);
+    volumeUp.setVisible(false);
+    volumeUpStroke.setVisible(false);
+  }
+
+  /*
+   * Method to turn the volume on
+   */
+  @FXML
+  protected void turnVolumeOn() throws IOException {
+    SharedVolumeControl.getInstance().setVolumeSetting(true);
+    volumeOff.setVisible(false);
+    volumeUp.setVisible(true);
+    volumeUpStroke.setVisible(true);
+  }
+
+  /*
+   * Method to check if the volume should be on or off
+   */
+  private void checkVolumeIcon() throws IOException {
+    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
+      turnVolumeOn();
+    } else {
+      turnVolumeOff();
     }
   }
 }

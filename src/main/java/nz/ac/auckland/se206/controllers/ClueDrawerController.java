@@ -28,6 +28,7 @@ public class ClueDrawerController {
   private double startY;
   private TimerModel countdownTimer;
 
+  /** Initializes the ClueDrawerController. */
   @FXML
   private void initialize() {
     setupTimerPane();
@@ -46,35 +47,49 @@ public class ClueDrawerController {
     setupGoBackButton();
   }
 
-  // Set up the timer pane
+  /** Sets up the timer pane. */
   private void setupTimerPane() {
+    // Create a timer pane
     Pane timerPane = new Pane();
+
+    // Set the size and style of the timer pane
     timerPane.setPrefSize(101, 45);
     timerPane.setOpacity(0.75);
+
+    // Set the style of the timer pane
     timerPane.setStyle(
         "-fx-background-color: white;"
             + "-fx-background-radius: 10px;"
             + "-fx-border-radius: 10px;"
             + "-fx-border-color: black;");
+
+    // Set the position of the timer pane
     AnchorPane.setLeftAnchor(timerPane, 10.0);
     AnchorPane.setTopAnchor(timerPane, 10.0);
 
+    // Create a label for the timer
     Label timerLabel = new Label();
     timerLabel.setFont(new Font(24));
     timerLabel.setAlignment(Pos.CENTER);
     timerLabel.setLayoutX(21.0);
     timerLabel.setLayoutY(8.0);
 
+    // Bind the timer label to the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     countdownTimer.start();
     timerLabel.textProperty().bind(countdownTimer.timeStringProperty());
 
+    // Add the timer label to the timer pane
     timerPane.getChildren().add(timerLabel);
+
+    // Add the timer pane to the anchor pane
     anchorPane.getChildren().add(timerPane);
+
+    // Bring the timer pane to the front
     timerPane.toFront();
   }
 
-  // Load and bind the background image
+  /** Sets up the background image. */
   private void setupBackgroundImage() {
     Image backgroundImage =
         new Image(
@@ -99,6 +114,8 @@ public class ClueDrawerController {
           photoFrameImageView.setOpacity(0.7);
           photoFrameImageView.setCursor(javafx.scene.Cursor.HAND);
         });
+
+    // set on mouse exited effects
     photoFrameImageView.setOnMouseExited(
         e -> {
           photoFrameImageView.setOpacity(1);
@@ -106,8 +123,12 @@ public class ClueDrawerController {
         });
   }
 
+  /** Sets up the go back button. */
   private void setupGoBackButton() {
+    // Create a go back button
     goBackButton = new Button("Go Back");
+
+    // Set the style of the go back button
     goBackButton.setStyle(
         "-fx-background-radius: 10; "
             + "-fx-border-radius: 10; "
@@ -115,24 +136,37 @@ public class ClueDrawerController {
             + "-fx-background-color: white; "
             + "-fx-text-fill: black; "
             + "-fx-font-size: 14px;");
+
+    // Set the position of the go back button
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
+
+    // Set the position of the go back button
     AnchorPane.setBottomAnchor(goBackButton, 10.0);
     AnchorPane.setRightAnchor(goBackButton, 10.0);
+
+    // Set the action of the go back button
     goBackButton.setOnAction(event -> goBackToRoom());
+
+    // Set the hover effects of the go back button
     goBackButton.setOnMouseEntered(
         e -> {
           goBackButton.setOpacity(0.7);
           goBackButton.setCursor(javafx.scene.Cursor.HAND);
         });
+
+    // Set the hover effects of the go back button
     goBackButton.setOnMouseExited(
         e -> {
           goBackButton.setOpacity(1);
           goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
         });
+
+    // Add the go back button to the anchor pane
     anchorPane.getChildren().add(goBackButton);
   }
 
+  /** Goes back to the room scene. */
   private void goBackToRoom() {
     try {
       App.setRoot("room");
@@ -141,25 +175,47 @@ public class ClueDrawerController {
     }
   }
 
+  /**
+   * Creates an image view and binds it to the anchor pane.
+   *
+   * @param image
+   * @param draggable
+   * @return
+   */
   private ImageView createAndBindImageView(Image image, boolean draggable) {
+    // Create an ImageView with the image and bind it to the anchor pane
     ImageView imageView = new ImageView(image);
+
+    // Set the image to take up the whole screen
     imageView.setFitWidth(anchorPane.getWidth());
     imageView.setFitHeight(anchorPane.getHeight());
+
+    // Bind the image to the anchor pane
     imageView.fitWidthProperty().bind(anchorPane.widthProperty());
     imageView.fitHeightProperty().bind(anchorPane.heightProperty());
     anchorPane.getChildren().add(imageView);
+
+    // Make the image draggable if required
     if (draggable) {
       makeDraggable(imageView);
     }
+
     return imageView;
   }
 
+  /**
+   * Makes an image view draggable.
+   *
+   * @param imageView
+   */
   private void makeDraggable(ImageView imageView) {
+    // Set up the image view to be draggable
     imageView.setOnMousePressed(
         event -> {
           startX = event.getSceneX() - imageView.getX();
           startY = event.getSceneY() - imageView.getY();
         });
+    // Set up the image view to be draggable
     imageView.setOnMouseDragged(
         event -> {
           imageView.setX(event.getSceneX() - startX);
