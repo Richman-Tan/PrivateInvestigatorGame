@@ -23,6 +23,11 @@ public class SharedVolumeControl {
     return instance;
   }
 
+  /**
+   * Gets the volume control property.
+   *
+   * @return the volume control property
+   */
   public BooleanProperty volumeSettingProperty() {
     return volumeSetting;
   }
@@ -40,6 +45,11 @@ public class SharedVolumeControl {
     }
   }
 
+  /**
+   * Sets the volume control.
+   *
+   * @param volumeOn the volume control
+   */
   public void setVolumeSetting(boolean volumeOn) {
     this.volumeSetting.set(volumeOn);
   }

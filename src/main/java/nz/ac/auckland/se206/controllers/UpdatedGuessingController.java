@@ -41,6 +41,7 @@ import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
 
+/** Controller for the guessing scene. */
 public class UpdatedGuessingController {
 
   private static final String confirmed =
@@ -203,39 +204,81 @@ public class UpdatedGuessingController {
             );
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void hoverImageGma(MouseEvent event) throws IOException {
     recSuspect2.setVisible(true);
     recSuspect2.setMouseTransparent(true);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void hoverImageUncle(MouseEvent event) throws IOException {
     recSuspect1.setVisible(true);
     recSuspect1.setMouseTransparent(true);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void hoverImageSon(MouseEvent event) throws IOException {
     recSuspect3.setVisible(true);
     recSuspect3.setMouseTransparent(true);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect is off
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void offHoverImageSon(MouseEvent event) {
     recSuspect3.setVisible(false);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect is off
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void offHoverImageGma(MouseEvent event) {
     recSuspect2.setVisible(false);
   }
 
+  /**
+   * Method to handle when the hover over the image of the suspect is off
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void offHoverImageUncle(MouseEvent event) {
     recSuspect1.setVisible(false);
   }
 
+  /**
+   * Method to handle when the image of the suspect is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void clickedImageUncle(MouseEvent event) throws IOException {
     guessedsuspect = "Uncle";
@@ -247,6 +290,12 @@ public class UpdatedGuessingController {
     confirmCulpritButton.setOpacity(1);
   }
 
+  /**
+   * Method to handle when the image of the suspect is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void clickedImageSon(MouseEvent event) throws IOException {
     guessedsuspect = "Grandson";
@@ -258,6 +307,12 @@ public class UpdatedGuessingController {
     confirmCulpritButton.setOpacity(1);
   }
 
+  /**
+   * Method to handle when the image of the suspect is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   private void clickedImageGma(MouseEvent event) throws IOException {
     guessedsuspect = "Grandma";
@@ -328,6 +383,11 @@ public class UpdatedGuessingController {
     }
   }
 
+  /**
+   * Method to handle when the volume is turned off
+   *
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   protected void turnVolumeOff() throws IOException {
     volumeOff.setVisible(true);
@@ -336,6 +396,11 @@ public class UpdatedGuessingController {
     SharedVolumeControl.getInstance().setVolumeSetting(false);
   }
 
+  /**
+   * Method to handle when the volume is turned on
+   *
+   * @throws IOException if there is an error loading the FXML file
+   */
   @FXML
   protected void turnVolumeOn() throws IOException {
     volumeOff.setVisible(false);
@@ -344,6 +409,11 @@ public class UpdatedGuessingController {
     SharedVolumeControl.getInstance().setVolumeSetting(true);
   }
 
+  /**
+   * Method to adjust the position of the volume button
+   *
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void checkVolumeIcon() throws IOException {
     if (SharedVolumeControl.getInstance().getVolumeSetting()) {
       turnVolumeOn();
@@ -487,6 +557,12 @@ public class UpdatedGuessingController {
         });
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void warpText() {
     timeline =
         new Timeline(
@@ -506,6 +582,12 @@ public class UpdatedGuessingController {
     timeline.play(); // Start the animation
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void flashLastDot() {
     // Create a new Timeline for flashing the last '.'
     Timeline flashTimeline =
@@ -527,6 +609,12 @@ public class UpdatedGuessingController {
     flashTimeline.play(); // Start the flashing animation
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void createImageView() {
     // Create the ImageView programmatically
     staticimg1 = new ImageView();
@@ -541,6 +629,12 @@ public class UpdatedGuessingController {
     rootPane.getChildren().add(staticimg1);
   }
 
+  /**
+   * Method to play the gif
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void playgif() {
     // Load the GIF image once
     Image gifImage =
@@ -560,6 +654,12 @@ public class UpdatedGuessingController {
     staticimg1.setOpacity(0.75); // Adjust opacity as needed
   }
 
+  /**
+   * Method to handle when the replay button is clicked
+   *
+   * @param event the mouse event
+   * @throws IOException if there is an error loading the FXML file
+   */
   private void appendChatMessage(ChatMessage msg) {
     // Clear the text area before showing the new message
     feedbackField.clear();
@@ -596,6 +696,13 @@ public class UpdatedGuessingController {
     timeline.play();
   }
 
+  /**
+   * Method to run the GPT model
+   *
+   * @param msg the chat message
+   * @return the chat message
+   * @throws ApiProxyException if there is an error communicating with the API proxy
+   */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
 
     // Add the message to the request
@@ -721,6 +828,7 @@ public class UpdatedGuessingController {
     App.setRoot("initialScene");
   }
 
+  /** Method to adjust the position of the volume button */
   private void adjustVolumeButtonPosition() {
     volumeUp.setLayoutX(15);
     volumeUp.setLayoutY(8);

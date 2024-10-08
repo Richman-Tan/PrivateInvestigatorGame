@@ -9,6 +9,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 
+/** Controller for the room of Suspect 2 (the grandma). */
 public class Suspect3RoomController extends BaseRoomController {
 
   @Override
