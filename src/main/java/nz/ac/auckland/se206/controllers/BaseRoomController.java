@@ -208,12 +208,14 @@ public abstract class BaseRoomController {
 
     // Add the glowing effect before starting the animation
     pane.setEffect(redGlow);
+    rootNode.setEffect(redGlow);
 
     // Play the shake timeline in parallel with the flash timeline
     flashTimeline.setOnFinished(
         event -> {
           pane.setStyle(originalStyle); // Restore the original pane style
           pane.setEffect(null); // Remove the glow effect
+          rootNode.setEffect(null); // Remove the glow effect
           shakeTimeline.stop(); // Stop shaking after the flash ends
           pane.setTranslateX(0); // Reset the pane's position
         });
