@@ -444,6 +444,7 @@ public class RoomController {
             // Handle the phone clue click event
             App.setRoot("cluephone");
           } catch (IOException e1) {
+            System.err.println("Error loading the phone clue scene");
           }
         });
 
@@ -494,6 +495,7 @@ public class RoomController {
           try {
             handleSafeClick();
           } catch (IOException e1) {
+            System.err.println("Error loading the safe clue scene");
           }
         });
 
@@ -612,6 +614,7 @@ public class RoomController {
             Thread.sleep(10);
             App.setRoot("cluetornphotograph");
           } catch (IOException | InterruptedException e1) {
+            System.err.println("Error loading the torn photograph clue scene");
           }
         });
   }

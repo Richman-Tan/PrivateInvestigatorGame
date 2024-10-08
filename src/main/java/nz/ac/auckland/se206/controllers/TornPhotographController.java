@@ -673,14 +673,14 @@ public class TornPhotographController {
     goBackButton.setOnMouseEntered(
         e -> {
           goBackButton.setOpacity(0.7);
-          goBackButton.setCursor(javafx.scene.Cursor.HAND);
+          goBackButton.setCursor(Cursor.HAND);
         });
 
     // Set the hover effect for the button
     goBackButton.setOnMouseExited(
         e -> {
           goBackButton.setOpacity(1);
-          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
+          goBackButton.setCursor(Cursor.DEFAULT);
         });
 
     // Add the button to the pane
