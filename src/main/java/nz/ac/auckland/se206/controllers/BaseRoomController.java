@@ -5,7 +5,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -13,12 +15,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -50,6 +56,7 @@ public abstract class BaseRoomController {
   @FXML private ImageView grandsoniconimg;
   @FXML private ImageView topofmenubtn;
   @FXML private ImageView crimesceneiconimg;
+  @FXML private Pane timerpane;
 
   @FXML
   public void initialize() {
@@ -61,6 +68,13 @@ public abstract class BaseRoomController {
 
     // Set initial position of basemapimg off the screen (below)
     basemapimg.setTranslateY(rootNode.getHeight()); // Set translateY to move it out of view
+
+    countdownTimer
+        .timeStringProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              checkiftimeris4minleft();
+            });
 
     // Add key event handler for detecting Enter key
     userChatBox.addEventFilter(
@@ -117,6 +131,96 @@ public abstract class BaseRoomController {
             e.printStackTrace();
           }
         });
+  }
+
+  private void checkiftimeris4minleft() {
+    if (countdownTimer
+        .timeStringProperty()
+        .get()
+        .equals("01:00")) { // When the time reaches 1 minute left
+      startFlashingAnimation(timerpane);
+    }
+  }
+
+  private void startFlashingAnimation(Pane pane) {
+    // Store the existing style to restore it later after flashing
+    String originalStyle = pane.getStyle();
+
+    // Create a Timeline to flash the pane between styles
+    Timeline flashTimeline = new Timeline();
+
+    // Define the CSS styles to use during the animation
+    String flashOnStyle =
+        "-fx-background-color: #FF0000; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-width: 4px; -fx-border-color: #FF0000;";
+    String flashOffStyle =
+        "-fx-background-color: #ADD8E6; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-width: 4px; -fx-border-color: #ADD8E6;";
+
+    // Alternate between red and light blue with border and background radius
+    KeyFrame flashOn =
+        new KeyFrame(
+            Duration.seconds(0),
+            new KeyValue(pane.styleProperty(), flashOnStyle) // Set the style to flash on
+            );
+    KeyFrame flashOff =
+        new KeyFrame(
+            Duration.seconds(0.5),
+            new KeyValue(pane.styleProperty(), flashOffStyle) // Set the style to flash off
+            );
+    KeyFrame flashOnAgain =
+        new KeyFrame(
+            Duration.seconds(1),
+            new KeyValue(pane.styleProperty(), flashOnStyle) // Set the style to flash on again
+            );
+    KeyFrame flashOffAgain =
+        new KeyFrame(
+            Duration.seconds(1.5),
+            new KeyValue(pane.styleProperty(), flashOffStyle) // Set the style to flash off again
+            );
+
+    // Add keyframes to the timeline
+    flashTimeline.getKeyFrames().addAll(flashOn, flashOff, flashOnAgain, flashOffAgain);
+
+    // Repeat the flash sequence for 3 cycles
+    flashTimeline.setCycleCount(2);
+
+    // Create a Timeline for the shaking effect
+    Timeline shakeTimeline = new Timeline();
+
+    // Create shake keyframes for horizontal movement
+    KeyFrame moveRight =
+        new KeyFrame(Duration.millis(50), new KeyValue(pane.translateXProperty(), 10));
+    KeyFrame moveLeft =
+        new KeyFrame(Duration.millis(100), new KeyValue(pane.translateXProperty(), -10));
+    KeyFrame moveCenter =
+        new KeyFrame(Duration.millis(150), new KeyValue(pane.translateXProperty(), 0));
+
+    // Add keyframes to the shake timeline and set it to repeat during the flashing duration
+    shakeTimeline.getKeyFrames().addAll(moveRight, moveLeft, moveCenter);
+    shakeTimeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+
+    // Create a DropShadow effect for the glowing red border
+    DropShadow redGlow = new DropShadow();
+    redGlow.setColor(Color.RED);
+    redGlow.setRadius(30); // Set the glow radius
+    redGlow.setSpread(0.7); // How much the color spreads out
+
+    // Add the glowing effect before starting the animation
+    pane.setEffect(redGlow);
+
+    // Play the shake timeline in parallel with the flash timeline
+    flashTimeline.setOnFinished(
+        event -> {
+          pane.setStyle(originalStyle); // Restore the original pane style
+          pane.setEffect(null); // Remove the glow effect
+          shakeTimeline.stop(); // Stop shaking after the flash ends
+          pane.setTranslateX(0); // Reset the pane's position
+        });
+
+    // Start the shake and flash animations
+    shakeTimeline.play();
+    flashTimeline.play();
   }
 
   @FXML
@@ -292,7 +396,21 @@ public abstract class BaseRoomController {
 
   protected void bindTimerToLabel() {
     countdownTimer = SharedTimerModel.getInstance().getTimer();
-    lbltimer.textProperty().bind(countdownTimer.timeStringProperty());
+    System.out.println(
+        "Countdown Timer initialized: "
+            + (countdownTimer != null)); // Check if countdownTimer is null
+
+    lbltimer
+        .textProperty()
+        .bind(countdownTimer.timeStringProperty()); // Ensure this binding is correct
+
+    // Attach listener
+    countdownTimer
+        .timeStringProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              checkiftimeris4minleft();
+            });
   }
 
   protected abstract String getInitialPrompt();
