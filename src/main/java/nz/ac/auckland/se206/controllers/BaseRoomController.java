@@ -585,16 +585,22 @@ public abstract class BaseRoomController {
    * @throws IOException
    */
   protected void sendMessageCode() throws ApiProxyException, IOException {
+    // Get the message from the user chat box
     String message = userChatBox.getText().trim();
+
+    // Check if the message is empy as to not send empty messages
     if (message.isEmpty()) {
       return;
     }
 
+    // Clear the user input
     clearUserInput();
 
+    // Append the message to the chat box
     ChatMessage msg = new ChatMessage("user", message);
     Task<Void> task = createGptTask(msg);
 
+    // Start the task in a new thread
     new Thread(task).start();
   }
 

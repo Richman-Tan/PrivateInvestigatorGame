@@ -220,9 +220,9 @@ public class TornPhotographController {
 
   /** Method to create and bind the reveal label for the text animation. */
   private void createRevealLabel() {
-    revealLabel = new Label(); // Create the Label
-    revealLabel.setText(""); // Initially empty
-    revealLabel.setOpacity(1); // Initially invisible
+    revealLabel = new Label();
+    revealLabel.setText("");
+    revealLabel.setOpacity(1);
     revealLabel.setStyle(
         "-fx-font-size: 40px; -fx-text-fill: red; -fx-font-weight: bold;"); // Style the label
 
@@ -232,7 +232,7 @@ public class TornPhotographController {
 
     // Add the label to the rootPane
     textbox.getChildren().add(revealLabel);
-    revealLabel.toFront(); // Bring the label to the front
+    revealLabel.toFront();
   }
 
   /** Method to set up the timer pane. */
