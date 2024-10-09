@@ -749,45 +749,17 @@ public abstract class BaseRoomController {
 
   /** This method updates the visibility of the menu */
   protected void updateMenuVisibility() {
-    boolean isMenuVisible = context.isMenuVisible();
+    // If the menu is not visible, bring everything to the back except the closed menu icon
+    basemapimg.toBack();
+    lblareastatus.toBack();
+    widowiconimg.toBack();
+    brothericonimg.toBack();
+    grandsoniconimg.toBack();
+    topofmenubtn.toBack();
+    crimesceneiconimg.toBack();
 
-    if (isMenuVisible) {
-      // Set z-order for visible menu
-      basemapimg.toFront();
-      lblareastatus.toFront();
-      widowiconimg.toFront();
-      brothericonimg.toFront();
-      grandsoniconimg.toFront();
-      topofmenubtn.toFront();
-      crimesceneiconimg.toFront();
-
-      // Check which controller it is in a set each icon to have a slightly lower opacity depending
-      // on which controller
-
-      System.out.println(this.getClass().getName());
-      if (this instanceof Suspect1RoomController) {
-        widowiconimg.setOpacity(0.7);
-      } else if (this instanceof Suspect2RoomController) {
-        brothericonimg.setOpacity(0.7);
-      } else if (this instanceof Suspect3RoomController) {
-        grandsoniconimg.setOpacity(0.7);
-      }
-
-      // Hide the closed menu icon behind everything else
-      menuclosedimg.toBack();
-    } else {
-      // If the menu is not visible, bring everything to the back except the closed menu icon
-      basemapimg.toBack();
-      lblareastatus.toBack();
-      widowiconimg.toBack();
-      brothericonimg.toBack();
-      grandsoniconimg.toBack();
-      topofmenubtn.toBack();
-      crimesceneiconimg.toBack();
-
-      // Bring the closed menu icon to the front
-      menuclosedimg.toFront();
-    }
+    // Bring the closed menu icon to the front
+    menuclosedimg.toFront();
   }
 
   /**
