@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -176,11 +177,15 @@ public class ClueDrawerController {
   }
 
   /**
-   * Creates an image view and binds it to the anchor pane.
+   * Creates an ImageView with the specified image and binds it to the anchor pane.
    *
-   * @param image
-   * @param draggable
-   * @return
+   * <p>This method initializes an ImageView with the provided image, sets its dimensions to match
+   * the anchor pane, and binds its properties accordingly. If specified, the ImageView can also be
+   * made draggable.
+   *
+   * @param image the Image to be displayed in the ImageView.
+   * @param draggable a boolean indicating whether the ImageView should be draggable.
+   * @return the created ImageView instance bound to the anchor pane.
    */
   private ImageView createAndBindImageView(Image image, boolean draggable) {
     // Create an ImageView with the image and bind it to the anchor pane

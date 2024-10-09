@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -121,7 +122,7 @@ public class TornPhotographController {
   private boolean piece9Correct;
 
   // Threshold to snap pieces into place
-  private final double SNAP_THRESHOLD = 200;
+  private final double snapDistanceThreshold = 180;
 
   private TimerModel countdownTimer;
 
@@ -482,8 +483,8 @@ public class TornPhotographController {
    * @return
    */
   private boolean isCloseToTarget(ImageView piece, double targetX, double targetY) {
-    return Math.abs(piece.getLayoutX() - targetX) < SNAP_THRESHOLD
-        && Math.abs(piece.getLayoutY() - targetY) < SNAP_THRESHOLD;
+    return Math.abs(piece.getLayoutX() - targetX) < snapDistanceThreshold
+        && Math.abs(piece.getLayoutY() - targetY) < snapDistanceThreshold;
   }
 
   /** Method to check if the puzzle is complete. */

@@ -114,8 +114,8 @@ public class UpdatedGuessingController {
   private String text = "Who is the culprit . . .";
   private ImageView staticimg1;
   private Timeline timeline;
-  private int i = 0;
-  private int j = 0;
+  private int textIndex = 0;
+  private int visibleNodeIndex = 0;
   private ArrayList<Object> list;
   private boolean guess = false;
   private MediaPlayer mediaPlayer;
@@ -552,12 +552,12 @@ public class UpdatedGuessingController {
                   new KeyFrame(
                       Duration.seconds(0.7),
                       event -> {
-                        if (j < list.size()) {
-                          Object obj = list.get(j);
+                        if (visibleNodeIndex < list.size()) {
+                          Object obj = list.get(visibleNodeIndex);
                           if (obj instanceof Node) {
                             ((Node) obj).setVisible(true); // Make the current element visible
                           }
-                          j++;
+                          visibleNodeIndex++;
                         } else {
                           timeline.stop(); // Stop the timeline when all elements are shown
                         }
@@ -581,9 +581,9 @@ public class UpdatedGuessingController {
             new KeyFrame(
                 Duration.seconds(0.2),
                 event -> {
-                  if (i < text.length()) {
-                    lblStory.setText(text.substring(0, i + 1));
-                    i++;
+                  if (textIndex < text.length()) {
+                    lblStory.setText(text.substring(0, textIndex + 1));
+                    textIndex++;
                   } else {
                     timeline.stop();
                     flashLastDot(); // Start flashing the last dot
@@ -840,7 +840,7 @@ public class UpdatedGuessingController {
     App.setRoot("initialScene");
   }
 
-  /** Method to adjust the position of the volume button */
+  /** Method to adjust the position of the volume button. */
   private void adjustVolumeButtonPosition() {
     volumeUp.setLayoutX(15);
     volumeUp.setLayoutY(8);

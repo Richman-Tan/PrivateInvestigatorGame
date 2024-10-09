@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -403,8 +404,11 @@ public abstract class BaseRoomController {
   /** This method is called when an icon is clicked. It navigates to the corresponding room */
   @FXML
   protected void onIconClicked(MouseEvent event) {
+    // Get the icon that was clicked
     ImageView icon = (ImageView) event.getSource();
     System.out.println("Clicked on: " + icon.getId()); // Replace with desired action
+
+    // Navigate to the corresponding room based on the icon clicked
     switch (icon.getId()) {
       case "widowiconimg" -> {
         try {
@@ -461,10 +465,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method sets up the GPT request
+   * Sets up the GPT request with the specified parameters.
    *
-   * @throws IOException
-   * @throws ApiProxyException
+   * <p>This method initializes the chat completion request by reading the API configuration and
+   * setting the required parameters for the GPT request, such as the number of responses,
+   * temperature, top-p value, and maximum tokens.
+   *
+   * @throws IOException if there is an error reading the API configuration file.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
    */
   protected void setupGptRequest() throws IOException, ApiProxyException {
     // Set up the GPT request

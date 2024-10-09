@@ -3,6 +3,7 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -104,8 +105,14 @@ public class TimerModel {
     }
   }
 
-  /*
-   * Resets the timer.
+  /**
+   * Resets the timer to a specified duration.
+   *
+   * <p>This method stops the current timer, sets the timer duration to the provided time in
+   * seconds, and updates the time string display.
+   *
+   * @param newTimeInSeconds the new duration for the timer in seconds. This value must be a
+   *     non-negative integer; if a negative value is provided, the timer will not be reset.
    */
   public void reset(int newTimeInSeconds) {
     stop();

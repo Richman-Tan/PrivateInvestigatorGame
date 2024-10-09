@@ -77,7 +77,7 @@ public class StartGameController {
     // Load and play the background music
     Media backgroundSound = new Media(backgroundMusic);
     backgroundPlayer = new MediaPlayer(backgroundSound);
-    backgroundPlayer.setVolume(0.1); // Set volume to 50%
+    backgroundPlayer.setVolume(0.4); // Set volume to 50%
     BooleanProperty volumeSettingProperty =
         SharedVolumeControl.getInstance().volumeSettingProperty();
     backgroundPlayer
@@ -85,7 +85,7 @@ public class StartGameController {
         .bind(
             Bindings.createDoubleBinding(
                 () ->
-                    volumeSettingProperty.get() ? 0.1 : 0.0, // Full volume or mute based on setting
+                    volumeSettingProperty.get() ? 0.4 : 0.0, // Full volume or mute based on setting
                 volumeSettingProperty));
     backgroundPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the background music
     backgroundPlayer.play();
