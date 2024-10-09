@@ -52,6 +52,8 @@ public class TornPhotographController {
 
   @FXML private Label revealLabel; // Label for text reveal
 
+  @FXML private ImageView photoframeimg;
+
   @FXML private ImageView piece1;
   @FXML private ImageView piece2;
   @FXML private ImageView piece3;
@@ -304,6 +306,7 @@ public class TornPhotographController {
 
     // Load and bind the background image
     createAndBindImageView(backgroundwithgame);
+    createAndBindImageView(photoframeimg);
 
     togglevisabilityofpieces(true);
 

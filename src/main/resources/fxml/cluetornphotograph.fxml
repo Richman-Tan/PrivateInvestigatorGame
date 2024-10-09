@@ -21,11 +21,21 @@
       </image>
    </ImageView>
     <!-- Background Image of the completed puzzle for visual guidance -->
-    <ImageView fx:id="backgroundwithgame" fitHeight="551.0" fitWidth="950.0" layoutY="1.0" opacity="1.0">
+    <ImageView fx:id="backgroundwithgame1" fitHeight="551.0" fitWidth="950.0" layoutY="1.0" opacity="1.0">
         <image>
             <Image url="@../images/cluedrawimages/puzzlephoto.png" />
         </image>
     </ImageView>
+   <ImageView fx:id="backgroundwithgame" fitHeight="562.0" fitWidth="975.0" pickOnBounds="true">
+      <image>
+         <Image url="@../images/cluedrawimages/table.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="photoframeimg" fitHeight="597.0" fitWidth="972.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/cluedrawimages/justphotoframeimg.png" />
+      </image>
+   </ImageView>
 
     <!-- Outline ImageViews for each puzzle piece -->
     <ImageView fx:id="outlinePiece1" fitHeight="553.0" fitWidth="952.0" layoutX="-2.0" layoutY="-1.0" opacity="0.0">
