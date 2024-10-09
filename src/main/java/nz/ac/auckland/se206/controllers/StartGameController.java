@@ -1,9 +1,15 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.util.Random;
+
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
@@ -12,6 +18,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
@@ -84,6 +92,9 @@ public class StartGameController {
 
     // Set up imageView as a button
     setupImageViewAsButton();
+
+    // Create and animate the snow falling effect
+    createSnowFallingEffect();
   }
 
   /** Sets up the ImageView to act as a button. */
@@ -126,6 +137,66 @@ public class StartGameController {
             ex.printStackTrace();
           }
         });
+  }
+
+  /**
+   * Creates an enhanced snow falling effect by generating snowflake nodes and animating them with
+   * various properties such as size, speed, direction, and rotation.
+   */
+  private void createSnowFallingEffect() {
+    Random random = new Random();
+
+    // Create a Timeline for generating snowflakes
+    Timeline snowTimeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.millis(300),
+                event -> {
+                  // Create a snowflake with a random size between 2 and 7
+                  double radius = random.nextDouble() * 5 + 2;
+                  Circle snowflake = new Circle(radius);
+
+                  // Randomly choose a color for the snowflake (white, light blue, or light gray)
+                  snowflake.setFill(
+                      Color.rgb(
+                          255 - random.nextInt(20), // Light variations of white
+                          255 - random.nextInt(20),
+                          255 - random.nextInt(20),
+                          random.nextDouble() * 0.7 + 0.3)); // Opacity between 0.3 and 1.0
+
+                  snowflake.setLayoutX(
+                      random.nextDouble() * rootPane.getWidth()); // Set random x-position
+                  snowflake.setLayoutY(0); // Start at the top of the screen
+
+                  // Animate the snowflake falling down with random speed and slight left/right
+                  // motion
+                  TranslateTransition fallTransition =
+                      new TranslateTransition(
+                          Duration.seconds(5 + random.nextDouble() * 5), snowflake);
+                  fallTransition.setByY(rootPane.getHeight());
+                  fallTransition.setByX(
+                      random.nextDouble() * 40 - 20); // Drift slightly left or right
+
+                  // Rotate the snowflake as it falls
+                  RotateTransition rotateTransition =
+                      new RotateTransition(
+                          Duration.seconds(5 + random.nextDouble() * 5), snowflake);
+                  rotateTransition.setByAngle(360);
+                  rotateTransition.setInterpolator(Interpolator.LINEAR);
+                  rotateTransition.setCycleCount(1);
+
+                  // Combine both transitions
+                  ParallelTransition parallelTransition =
+                      new ParallelTransition(fallTransition, rotateTransition);
+                  parallelTransition.setOnFinished(
+                      e -> rootPane.getChildren().remove(snowflake)); // Remove when done
+
+                  rootPane.getChildren().add(snowflake);
+                  parallelTransition.play();
+                }));
+
+    snowTimeline.setCycleCount(Timeline.INDEFINITE); // Generate snowflakes continuously
+    snowTimeline.play();
   }
 
   /*
