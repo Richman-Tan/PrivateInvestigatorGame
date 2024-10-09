@@ -49,6 +49,7 @@ public class CutSceneController {
   private SVGPath volumeUpStroke = new SVGPath();
   private SVGPath volumeUp = new SVGPath();
   private SVGPath volumeOff = new SVGPath();
+  private MediaPlayer gaspPlayer;
 
   // Static methods
   // No static methods for now
@@ -175,6 +176,12 @@ public class CutSceneController {
   private void startTextRevealAnimation() {
     revealLabel.setOpacity(1); // Make the label visible
 
+    // Create a new MediaPlayer instance for the gasp sound
+    Media gaspSound =
+        new Media(getClass().getClassLoader().getResource("sounds/gasp.mp3").toExternalForm());
+    gaspPlayer = new MediaPlayer(gaspSound);
+    gaspPlayer.play(); // Play the gasp sound
+
     Timeline timeline = new Timeline();
     for (int i = 0; i < revealText.length(); i++) {
       final int index = i;
@@ -212,7 +219,7 @@ public class CutSceneController {
     zoomOut.setToY(1.0);
 
     // Pause for 1 second after zooming in
-    PauseTransition pause = new PauseTransition(Duration.seconds(1));
+    PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
 
     // Play zoom in, pause, then zoom out
     zoomIn.setOnFinished(event -> pause.play());

@@ -22,6 +22,8 @@ public class StartGameController {
   // Static fields
   private static final String door =
       GameStarted.class.getClassLoader().getResource("sounds/doorOpen.mp3").toExternalForm();
+  private static final String backgroundMusic =
+      GameStarted.class.getClassLoader().getResource("sounds/start.mp3").toExternalForm();
 
   static final Image image1 =
       new Image(BackstoryController.class.getResource("/images/initialDoor.jpg").toString());
@@ -46,6 +48,7 @@ public class StartGameController {
   @FXML private AnchorPane rootPane;
   private MediaPlayer mediaPlayer;
   private ImageView imageView;
+  private MediaPlayer backgroundPlayer;
 
   // Constructors
 
@@ -62,6 +65,22 @@ public class StartGameController {
 
     // Add the imageView to the rootPane
     rootPane.getChildren().add(imageView);
+
+    // Load and play the background music
+    Media backgroundSound = new Media(backgroundMusic);
+    backgroundPlayer = new MediaPlayer(backgroundSound);
+    backgroundPlayer.setVolume(0.1); // Set volume to 50%
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+    backgroundPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get() ? 0.1 : 0.0, // Full volume or mute based on setting
+                volumeSettingProperty));
+    backgroundPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the background music
+    backgroundPlayer.play();
 
     // Set up imageView as a button
     setupImageViewAsButton();
@@ -94,13 +113,14 @@ public class StartGameController {
 
     // Set click action
     imageView.setOnMouseClicked(
-        e -> {
+        (var e) -> {
           try {
-            mediaPlayer.seek(Duration.seconds(1));
+            mediaPlayer.seek(Duration.seconds(1)); // Seek to start of door sound
             if (!SharedVolumeControl.getInstance().getVolumeSetting()) {
               mediaPlayer.setVolume(0);
             }
             mediaPlayer.play();
+            backgroundPlayer.stop(); // Stop background music when door sound plays
             onPlay();
           } catch (IOException | ApiProxyException ex) {
             ex.printStackTrace();
