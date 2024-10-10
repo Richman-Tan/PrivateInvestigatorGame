@@ -127,7 +127,7 @@
          </children>
       </Pane>
       <Label layoutX="468.0" layoutY="57.0" prefHeight="17.0" prefWidth="111.0" text="〇 一 九" />
-      <Pane fx:id="labelPane" layoutX="52.0" layoutY="55.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <Pane fx:id="labelPane" layoutX="52.0" layoutY="55.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #3f2218; -fx-border-width: 4px;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label">
                <font>
