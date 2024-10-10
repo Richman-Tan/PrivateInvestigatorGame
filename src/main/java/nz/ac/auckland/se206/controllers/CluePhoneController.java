@@ -762,10 +762,12 @@ public class CluePhoneController {
 
   // Helper method to set opacity of all wires and circles
   private void setOpacityAllCirclesAndWires(double opacity) {
+    // setting the opacity of the wires
     redWire.setOpacity(opacity);
     blueWire.setOpacity(opacity);
     greenWire.setOpacity(opacity);
 
+    // setting the opacity of the start and end circles
     startCircleRed.setOpacity(opacity);
     startCircleBlue.setOpacity(opacity);
     startCircleGreen.setOpacity(opacity);
@@ -786,6 +788,7 @@ public class CluePhoneController {
 
   // Helper method to create and configure a MediaPlayer
   private MediaPlayer createAndConfigureMediaPlayer(String videoPath) {
+    // Load the media file and bind the volume to the shared volume control setting
     Media media = new Media(CluePhoneController.class.getResource(videoPath).toExternalForm());
     MediaPlayer mediaPlayer = new MediaPlayer(media);
     BooleanProperty isVolumeOn = SharedVolumeControl.getInstance().volumeSettingProperty();
@@ -810,6 +813,7 @@ public class CluePhoneController {
     AnchorPane.setLeftAnchor(mediaView, (rootPane.getWidth() - mediaView.getFitWidth()) / 2 + 10);
     AnchorPane.setTopAnchor(mediaView, (rootPane.getHeight() - mediaView.getFitHeight()) / 2 - 10);
 
+    // Add listeners to ensure the width stays centered when resized
     rootPane
         .widthProperty()
         .addListener(
@@ -817,7 +821,7 @@ public class CluePhoneController {
               double centerX = (newVal.doubleValue() - mediaView.getFitWidth()) / 2 + 10;
               AnchorPane.setLeftAnchor(mediaView, centerX);
             });
-
+    // Add listeners to ensure the height stays centered when resized
     rootPane
         .heightProperty()
         .addListener(
@@ -869,12 +873,14 @@ public class CluePhoneController {
 
   // Helper method to make the button responsive to rootPane size changes
   private void configureButtonResponsiveness(Button button, Pane rootPane) {
+    // Making the height responsive
     rootPane
         .heightProperty()
         .addListener(
             (obs, oldVal, newVal) -> {
               AnchorPane.setTopAnchor(button, (newVal.doubleValue() - button.getPrefHeight()) / 2);
             });
+    // making the width responsive
     rootPane
         .widthProperty()
         .addListener(
