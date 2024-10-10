@@ -341,9 +341,9 @@ public class CluePhoneController {
             popUp = new Label("Click the button to turn the phone around");
             popUp.setStyle(
                 "-fx-font-size: 14px; -fx-background-color: c1b8b5; -fx-background-radius: 10px;"
-                    + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: 3f2218;"
-                    + " -fx-text-fill: #775E55; -fx-border-width: 2px;");
-            popUp.setPrefWidth(260);
+                    + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: #3f2218;"
+                    + " -fx-text-fill: #775E55; -fx-border-width: 3px;");
+            popUp.setPrefWidth(266);
             popUp.setPrefHeight(50);
             // Bind the label to the rootPane
             AnchorPane.setBottomAnchor(popUp, 10.0);
@@ -468,9 +468,9 @@ public class CluePhoneController {
     label = new Label("Connect the wires to unlock the phone! (From left to right)");
     label.setStyle(
         "-fx-font-size: 14px; -fx-background-color: c1b8b5; -fx-background-radius: 10px;"
-            + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: 3f2218;"
-            + " -fx-text-fill: #775E55; -fx-border-width: 2px;");
-    label.setPrefWidth(358);
+            + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: #3f2218;"
+            + " -fx-text-fill: #775E55; -fx-border-width: 3px;");
+    label.setPrefWidth(364);
     label.setPrefHeight(50);
 
     // Bind the label to the rootPane

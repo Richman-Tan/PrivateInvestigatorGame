@@ -51,12 +51,12 @@
                   <Image url="@../images/updatedguessingimages/uncle.jpg" />
                </image>
             </ImageView>
-            <ImageView fx:id="confirmedSuspect3" fitHeight="123.0" fitWidth="95.0" layoutX="42.0" layoutY="134.0" preserveRatio="true" visible="false">
+            <ImageView fx:id="confirmedSuspect3" fitHeight="123.0" fitWidth="93.0" layoutX="42.0" layoutY="134.0" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/updatedguessingimages/son.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="confirmedSuspect2" fitHeight="122.0" fitWidth="95.0" layoutX="42.0" layoutY="134.0" preserveRatio="true" visible="false">
+            <ImageView fx:id="confirmedSuspect2" fitHeight="122.0" fitWidth="93.0" layoutX="42.0" layoutY="134.0" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/updatedguessingimages/Gma.jpg" />
                </image>
@@ -78,6 +78,7 @@
                   <Font name="Courier New Bold" size="12.0" />
                </font>
             </Label>
+            <Rectangle arcHeight="5.0" arcWidth="10.0" fill="#f0f0f000" height="120.0" layoutX="40.0" layoutY="132.0" stroke="#1a6272" strokeType="INSIDE" strokeWidth="4.0" width="95.0" />
          </children>
       </Pane>
       <Pane fx:id="guessPhotoPane" layoutX="326.0" layoutY="52.0" prefHeight="396.0" prefWidth="476.0">
@@ -114,9 +115,9 @@
             <ProgressIndicator fx:id="progressIndicator" layoutX="200.0" layoutY="171.0" visible="false" />
          </children>
       </Pane>
-      <Pane fx:id="labelPane" layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+      <Pane fx:id="labelPane" layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #214145; -fx-border-width:4px;">
          <children>
-            <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label">
+            <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label" textFill="#214145">
                <font>
                   <Font size="24.0" />
                </font>
