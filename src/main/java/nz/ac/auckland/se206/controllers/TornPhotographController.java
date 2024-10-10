@@ -246,10 +246,8 @@ public class TornPhotographController {
 
     // Set the style of the timer pane
     timerPane.setStyle(
-        "-fx-background-color: white;"
-            + "-fx-background-radius: 10px;"
-            + "-fx-border-radius: 10px;"
-            + "-fx-border-color: black;");
+        "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-color: #3f2218; -fx-border-width: 4px;");
 
     // Set the position of the timer pane
     AnchorPane.setLeftAnchor(timerPane, 10.0);
@@ -608,12 +606,12 @@ public class TornPhotographController {
                       FadeTransition fadeInButton =
                           new FadeTransition(Duration.seconds(1), goBackButton);
                       fadeInButton.setFromValue(0.0);
-                      fadeInButton.setToValue(1.0);
+                      fadeInButton.setToValue(0.75);
 
                       FadeTransition fadeInTimer =
                           new FadeTransition(Duration.seconds(1), timerPane);
                       fadeInTimer.setFromValue(0.0);
-                      fadeInTimer.setToValue(1.0);
+                      fadeInTimer.setToValue(0.75);
 
                       // Start the fade-in transitions
                       fadeIn.play();
@@ -649,14 +647,13 @@ public class TornPhotographController {
     // Create a new button for the go back button
     goBackButton = new Button("Go Back");
 
+    goBackButton.setOpacity(0.75);
+
     // Set the style for the button
     goBackButton.setStyle(
-        "-fx-background-radius: 10; "
-            + "-fx-border-radius: 10; "
-            + "-fx-border-color: black; "
-            + "-fx-background-color: white; "
-            + "-fx-text-fill: black; "
-            + "-fx-font-size: 14px;");
+        "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+            + " #775E55;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets: 0;");
 
     // Set the size and position for the button
     goBackButton.setPrefWidth(100);
@@ -672,15 +669,26 @@ public class TornPhotographController {
     // Set the hover effect for the button
     goBackButton.setOnMouseEntered(
         e -> {
-          goBackButton.setOpacity(0.7);
-          goBackButton.setCursor(Cursor.HAND);
+          goBackButton.setStyle(
+              " -fx-background-color: #775E55; -fx-background-radius:"
+                  + " 10px; -fx-border-radius: 10px; -fx-border-color: #3f2218;"
+                  + " -fx-border-width: 4px;-fx-padding: 5; -fx-border-width: 3; -fx-cursor:"
+                  + " hand; -fx-text-fill: #c1b8b5;"
+                  + "-fx-font-size: 14px; "
+                  + "-fx-background-insets: 0; "
+                  + "-fx-border-insets: 0;");
+          goBackButton.setOpacity(0.75);
         });
 
     // Set the hover effect for the button
     goBackButton.setOnMouseExited(
         e -> {
-          goBackButton.setOpacity(1);
-          goBackButton.setCursor(Cursor.DEFAULT);
+          goBackButton.setStyle(
+              "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+                  + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+                  + " #775E55;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
+                  + " 0; -fx-padding: 5; -fx-border-width: 3; -fx-cursor: default;");
+          goBackButton.setOpacity(0.75);
         });
 
     // Add the button to the pane
