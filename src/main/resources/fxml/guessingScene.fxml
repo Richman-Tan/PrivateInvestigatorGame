@@ -41,9 +41,9 @@
             <Image url="@../images/cluephoneimages/phoneinteraction.png" />
          </image>
       </ImageView>
-      <SVGPath fx:id="volumeOff" content="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0" fill="#ffffff94" layoutX="41.0" layoutY="85.0" onMouseClicked="#turnVolumeOn" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#4a3b33" strokeWidth="0.5" visible="false" />
-      <SVGPath fx:id="volumeUpStroke" content="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z" fill="#ffffff94" layoutX="48.0" layoutY="86.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
-      <SVGPath fx:id="volumeUp" content="M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06" fill="#ffffff94" layoutX="41.0" layoutY="85.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
+      <SVGPath fx:id="volumeOff" content="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0" fill="#ffffff94" layoutX="20.0" layoutY="60.0" onMouseClicked="#turnVolumeOn" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#4a3b33" strokeWidth="0.5" visible="false" />
+      <SVGPath fx:id="volumeUpStroke" content="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z" fill="#ffffff94" layoutX="27.0" layoutY="60.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
+      <SVGPath fx:id="volumeUp" content="M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06" fill="#ffffff94" layoutX="20.0" layoutY="60.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
       <Pane fx:id="verifyCulpritPane" layoutX="325.0" layoutY="38.0" prefHeight="396.0" prefWidth="476.0" visible="false">
          <children>
             <ImageView fx:id="confirmedSuspect1" fitHeight="117.0" fitWidth="120.0" layoutX="41.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -115,7 +115,7 @@
             <ProgressIndicator fx:id="progressIndicator" layoutX="200.0" layoutY="171.0" visible="false" />
          </children>
       </Pane>
-      <Pane fx:id="labelPane" layoutX="32.0" layoutY="35.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #214145; -fx-border-width:4px;">
+      <Pane fx:id="labelPane" layoutX="11.0" layoutY="10.0" opacity="0.75" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #214145; -fx-border-width:4px;">
          <children>
             <Label fx:id="lbltimer" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="36.0" prefWidth="82.0" text="Label" textFill="#214145">
                <font>
