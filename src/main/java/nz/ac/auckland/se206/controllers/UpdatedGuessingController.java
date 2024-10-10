@@ -42,7 +42,14 @@ import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
 
-/** Controller for the guessing scene. */
+/**
+ * Controller class for the updated guessing scene.
+ *
+ * <p>This class is responsible for handling user input and updating the view for the updated
+ * guessing scene. It manages the user interface components and responds to user interactions in the
+ * updated guessing scene, including the selection of the culprit and the provision of an
+ * explanation for the guess.
+ */
 public class UpdatedGuessingController {
 
   private static final String confirmed =
@@ -131,11 +138,17 @@ public class UpdatedGuessingController {
       SharedVolumeControl.getInstance().volumeSettingProperty();
 
   /**
-   * Initializes the chat view.
+   * Initializes the guessing view when the controller is loaded.
    *
-   * @throws URISyntaxException
-   * @throws IOException
-   * @throws ApiProxyException if there is an error communicating with the API proxy
+   * <p>This method sets up the initial state of the chat interface, including disabling the confirm
+   * culprit button. It also checks for specific conditions in the game state, such as whether a
+   * garden tool has been found, and updates the visibility of relevant UI elements accordingly.
+   * This method is called automatically by the JavaFX framework when the associated FXML file is
+   * loaded.
+   *
+   * @throws URISyntaxException if the URI syntax is incorrect during initialization.
+   * @throws IOException if there is an error loading resources or files.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
    */
   @FXML
   public void initialize() {
@@ -326,10 +339,16 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the confirm culprit button is clicked
+   * Handles the action when the confirm culprit button is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * <p>This method is triggered by a mouse event and initiates the confirmation process for the
+   * selected culprit. It plays a confirmation sound and performs any necessary updates or
+   * transitions related to the culprit confirmation. Additionally, it manages the volume settings
+   * for the audio playback.
+   *
+   * @param event the mouse event that triggered the confirmation action.
+   * @throws IOException if there is an error loading the FXML file or other resources required for
+   *     the confirmation process.
    */
   @FXML
   private void confirmCulprit(MouseEvent event) throws IOException {
@@ -630,10 +649,11 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the replay button is clicked
+   * Creates and configures an ImageView to be displayed in the root pane.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * <p>This method programmatically initializes an {@code ImageView} instance, sets its dimensions
+   * and position, and adds it to the specified {@code rootPane}. The size and layout properties are
+   * set to ensure that the image view is displayed correctly within the application interface.
    */
   private void createImageView() {
     // Create the ImageView programmatically
@@ -827,10 +847,15 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to initialise the scene again when Replay button is clicked
+   * Reinitializes the scene when the Replay button is clicked.
    *
-   * @param event
-   * @throws IOException
+   * <p>This method is called when the user clicks the Replay button. It resets the game state
+   * context and transitions the application to the initial scene, allowing the player to start the
+   * game anew. Any necessary cleanup or preparation for a new game session should be handled within
+   * this method.
+   *
+   * @param event the action event triggered by the Replay button click
+   * @throws IOException if there is an error loading the initial scene
    */
   @FXML
   private void onReplay(ActionEvent event) throws IOException {

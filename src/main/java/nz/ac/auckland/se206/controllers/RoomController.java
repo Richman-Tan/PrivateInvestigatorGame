@@ -563,9 +563,14 @@ public class RoomController {
   }
 
   /**
-   * Adds a hover effect to a group.
+   * Adds a hover effect to the specified group.
    *
-   * @param group
+   * <p>This method applies a drop shadow effect with a cornflower blue color to the given {@code
+   * Group} when the mouse pointer enters its area. When the mouse exits, it reverts the effect by
+   * applying an orange drop shadow instead. This creates a visual cue for user interaction and
+   * enhances the overall user experience.
+   *
+   * @param group the {@code Group} to which the hover effect will be applied.
    */
   private void addHoverEffect(Group group) {
     DropShadow hoverShadow = new DropShadow();
@@ -764,9 +769,14 @@ public class RoomController {
   }
 
   /**
-   * Applies an orange drop shadow effect to a node.
+   * Applies an orange drop shadow effect to the specified node.
    *
-   * @param node
+   * <p>This method creates a {@code DropShadow} effect with an orange color and applies it to the
+   * given {@code Node}. The shadow's offset and radius can be adjusted to customize its appearance.
+   * This effect enhances the visual presentation of the node, making it stand out in the user
+   * interface.
+   *
+   * @param node the {@code Node} to which the drop shadow effect will be applied.
    */
   private void applyOrangeDropShadow(Node node) {
     DropShadow orangedropShadow = new DropShadow();

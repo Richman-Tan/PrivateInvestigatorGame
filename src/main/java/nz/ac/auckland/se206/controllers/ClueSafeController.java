@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -109,11 +108,11 @@ public class ClueSafeController {
           goBackButton.setCursor(javafx.scene.Cursor.HAND);
         });
 
-    // Remove effect when mouse exits
-    goBackButton.setOnMouseExited( // Remove effect when mouse exits
+    // Set up mouse exit effect for the goBack button
+    goBackButton.setOnMouseExited(
         e -> {
-          goBackButton.setOpacity(1);
-          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
+          goBackButton.setOpacity(1); // Reset opacity to 1
+          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
         });
 
     // Position the button at the bottom-right corner
@@ -139,9 +138,15 @@ public class ClueSafeController {
   }
 
   /**
-   * Adds a hover effect to the image.
+   * Adds a hover effect to the specified image group.
    *
-   * @param image
+   * <p>This method applies a drop shadow effect to the given {@code Group} when the mouse pointer
+   * enters the area of the image. The shadow's color and radius can be customized to create a
+   * visually appealing hover effect, enhancing user interaction. The effect is removed when the
+   * mouse pointer exits the area of the image.
+   *
+   * @param image the {@code Group} representing the image to which the hover effect will be
+   *     applied.
    */
   private void addHoverEffect(Group image) {
     DropShadow hoverShadow = new DropShadow();
@@ -160,9 +165,13 @@ public class ClueSafeController {
   }
 
   /**
-   * Handles the pin button clicks.
+   * Handles the pin button clicks within the user interface.
    *
-   * @param event
+   * <p>This method is invoked when a pin button is clicked. It retrieves the clicked button,
+   * determines its identifier, and processes the action associated with that specific pin. This
+   * allows for dynamic interactions with the user interface based on which pin was activated.
+   *
+   * @param event the action event triggered by clicking a pin button.
    */
   @FXML
   private void onPin(ActionEvent event) {
@@ -229,9 +238,14 @@ public class ClueSafeController {
   }
 
   /**
-   * Handles the note click event.
+   * Handles the note click event within the user interface.
    *
-   * @param event
+   * <p>This method is triggered when a note is clicked. It manages the visibility of various UI
+   * elements by sending them to the back of the scene, effectively hiding them from view.
+   * Additionally, it logs a message to the console and updates the game state to indicate that the
+   * note has been found.
+   *
+   * @param event the mouse event triggered by clicking the note.
    */
   @FXML
   private void onNote(MouseEvent event) {
@@ -243,9 +257,14 @@ public class ClueSafeController {
   }
 
   /**
-   * Handles the page click event.
+   * Handles the page click event within the user interface.
    *
-   * @param event
+   * <p>This method is triggered when a page (or note) is clicked. It identifies which page was
+   * clicked and updates the corresponding state flags. The clicked page is brought to the front of
+   * the scene, ensuring that it is visible to the user. If both the middle note and the back note
+   * are clicked, the "Go Back" button is also brought to the front.
+   *
+   * @param event the mouse event triggered by clicking on a page.
    */
   @FXML
   private void onPage(MouseEvent event) {
