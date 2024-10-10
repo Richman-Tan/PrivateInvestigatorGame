@@ -42,7 +42,14 @@ import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.states.GameStarted;
 
-/** Controller for the guessing scene. */
+/**
+ * Controller class for the updated guessing scene.
+ *
+ * <p>This class is responsible for handling user input and updating the view for the updated
+ * guessing scene. It manages the user interface components and responds to user interactions in the
+ * updated guessing scene, including the selection of the culprit and the provision of an
+ * explanation for the guess.
+ */
 public class UpdatedGuessingController {
 
   private static final String confirmed =
@@ -131,11 +138,17 @@ public class UpdatedGuessingController {
       SharedVolumeControl.getInstance().volumeSettingProperty();
 
   /**
-   * Initializes the chat view.
+   * Initializes the guessing view when the controller is loaded.
    *
-   * @throws URISyntaxException
-   * @throws IOException
-   * @throws ApiProxyException if there is an error communicating with the API proxy
+   * <p>This method sets up the initial state of the chat interface, including disabling the confirm
+   * culprit button. It also checks for specific conditions in the game state, such as whether a
+   * garden tool has been found, and updates the visibility of relevant UI elements accordingly.
+   * This method is called automatically by the JavaFX framework when the associated FXML file is
+   * loaded.
+   *
+   * @throws URISyntaxException if the URI syntax is incorrect during initialization.
+   * @throws IOException if there is an error loading resources or files.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
    */
   @FXML
   public void initialize() {
@@ -834,10 +847,15 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to initialise the scene again when Replay button is clicked
+   * Reinitializes the scene when the Replay button is clicked.
    *
-   * @param event
-   * @throws IOException
+   * <p>This method is called when the user clicks the Replay button. It resets the game state
+   * context and transitions the application to the initial scene, allowing the player to start the
+   * game anew. Any necessary cleanup or preparation for a new game session should be handled within
+   * this method.
+   *
+   * @param event the action event triggered by the Replay button click
+   * @throws IOException if there is an error loading the initial scene
    */
   @FXML
   private void onReplay(ActionEvent event) throws IOException {
