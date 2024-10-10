@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="599.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.Suspect3RoomController">
@@ -60,9 +59,6 @@
          </image>
       </ImageView>
       <TextArea fx:id="userChatBox" layoutX="62.0" layoutY="179.0" prefHeight="86.0" prefWidth="227.0" promptText="You are waiting for a response..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-control-inner-background: transparent; -fx-text-fill: white; -fx-prompt-text-fill: white;" stylesheets="@../css/textArea.css" wrapText="true" />
-      <SVGPath fx:id="volumeOff" content="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0" fill="#ffffff94" layoutX="23.0" layoutY="63.0" onMouseClicked="#turnVolumeOn" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#4a3b33" strokeWidth="0.5" visible="false" />
-      <SVGPath fx:id="volumeUpStroke" content="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z" fill="#ffffff94" layoutX="29.0" layoutY="63.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
-      <SVGPath fx:id="volumeUp" content="M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06" fill="#ffffff94" layoutX="23.0" layoutY="63.0" onMouseClicked="#turnVolumeOff" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="#473931" strokeWidth="0.5" />
       <Circle fx:id="sendButton" fill="#1f93ff00" layoutX="306.0" layoutY="257.0" onMouseClicked="#onSend" radius="11.0" stroke="#4d6543" strokeType="INSIDE" />
       <ImageView fx:id="basemapimg" fitHeight="480.0" fitWidth="780.0" layoutX="11.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <image>

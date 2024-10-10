@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -33,6 +34,7 @@ import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.utils.VolumeControlUtil;
 
 /**
  * Base class for room controllers that provides common functionality and UI elements.
@@ -51,6 +53,7 @@ public abstract class BaseRoomController {
   protected boolean firstTime = true;
   protected TimerModel countdownTimer;
   protected SharedVolumeControl sharedVolumeControl;
+  private VolumeControlUtil volumeControlUtil;
 
   @FXML protected TextArea userChatBox;
   @FXML protected TextArea suspectChatBox;
@@ -88,11 +91,12 @@ public abstract class BaseRoomController {
     initializeGptModel();
     setResponsiveBackground(backgroundimg, rootNode);
     checkGuessButton();
-    try {
-      checkVolumeIcon();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+
+    // Set up the volume control
+    // Add the volume button to the label pane and show it
+    volumeControlUtil =
+        new VolumeControlUtil(timerpane); // Initialize the VolumeControlUtil with the timerPane
+    volumeControlUtil.showVolumeButton(); // Show the volume button
 
     // Set initial position of basemapimg off the screen (below)
     basemapimg.setTranslateY(rootNode.getHeight()); // Set translateY to move it out of view
@@ -700,42 +704,6 @@ public abstract class BaseRoomController {
   @FXML
   protected void onSend(ActionEvent event) throws ApiProxyException, IOException {
     handleSendMessage();
-  }
-
-  /**
-   * Turn off Volume method. This method is called when the volume is turned off. It sets the volume
-   * off icon to be visible and the volume up icon to be invisible.
-   */
-  @FXML
-  protected void turnVolumeOff() throws IOException {
-    volumeOff.setVisible(true);
-    volumeUp.setVisible(false);
-    volumeUpStroke.setVisible(false);
-    SharedVolumeControl.getInstance().setVolumeSetting(false);
-  }
-
-  /**
-   * Turn on Volume method. This method is called when the volume is turned on. It sets the volume
-   * off icon to be invisible and the volume up icon to be visible.
-   */
-  @FXML
-  protected void turnVolumeOn() throws IOException {
-    volumeOff.setVisible(false);
-    volumeUp.setVisible(true);
-    volumeUpStroke.setVisible(true);
-    SharedVolumeControl.getInstance().setVolumeSetting(true);
-  }
-
-  /**
-   * This method checks the volume icon. If the volume is on, it calls the turnVolumeOn method. If
-   * the volume is off, it calls the turnVolumeOff method.
-   */
-  private void checkVolumeIcon() throws IOException {
-    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
-      turnVolumeOn();
-    } else {
-      turnVolumeOff();
-    }
   }
 
   /**
