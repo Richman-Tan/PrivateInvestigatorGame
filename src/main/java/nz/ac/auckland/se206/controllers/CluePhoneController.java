@@ -433,7 +433,14 @@ public class CluePhoneController {
     showVolumeButton();
   }
 
-  /** Handle arrow button click. */
+  /**
+   * Handles the action when the arrow button is clicked.
+   *
+   * <p>This method is invoked in response to a click event on the arrow button. It currently logs a
+   * message to the console indicating that the button has been clicked. This method can be extended
+   * to include additional functionality such as navigating to another screen or updating the user
+   * interface based on the button's action.
+   */
   private void handleArrowButtonClick() {
     System.out.println("Arrow button clicked!");
 

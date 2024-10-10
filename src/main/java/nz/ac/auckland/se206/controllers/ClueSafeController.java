@@ -15,6 +15,14 @@ import javafx.scene.shape.SVGPath;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
+/**
+ * Controller class for the ClueSafe view.
+ *
+ * <p>This class is responsible for managing the user interface and interactions within the ClueSafe
+ * view. It handles user input, processes events, and updates the game state based on the user's
+ * actions. The controller is associated with the "cluesafe.fxml" FXML file, which defines the
+ * layout and appearance of the ClueSafe view.
+ */
 public class ClueSafeController {
 
   // Inner classes (none in this case)
@@ -121,8 +129,8 @@ public class ClueSafeController {
                   + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
                   + " 0; -fx-padding: 5; -fx-border-width: 3; -fx-cursor: default;");
           goBackButton.setOpacity(0.75);
-          //goBackButton.setOpacity(1); // Reset opacity to 1
-          //goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
+          // goBackButton.setOpacity(1); // Reset opacity to 1
+          // goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
         });
 
     // Position the button at the bottom-right corner

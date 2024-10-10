@@ -31,6 +31,14 @@ import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.states.GameStarted;
 
+/**
+ * Controller class for the backstory view.
+ *
+ * <p>This class is responsible for managing the user interface and logic of the backstory view. It
+ * displays the backstory of the game through a series of images and transitions to the next scene
+ * after a set period. The controller also handles user interactions, such as zooming in on images
+ * and managing the volume setting.
+ */
 public class BackstoryController {
 
   // Static fields

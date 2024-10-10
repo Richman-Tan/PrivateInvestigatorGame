@@ -34,6 +34,16 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
+/**
+ * Base class for room controllers that provides common functionality and UI elements.
+ *
+ * <p>This class serves as the base class for all room controllers in the application. It provides
+ * common functionality and UI elements that are shared across different rooms, such as chat boxes,
+ * buttons, and icons. The base room controller also handles the initialization of the GPT model,
+ * countdown timer, and volume control. Subclasses can extend this base class to implement specific
+ * functionality for each room while leveraging the shared components and features provided by the
+ * base controller.
+ */
 public abstract class BaseRoomController {
 
   protected ChatCompletionRequest chatCompletionRequest;
@@ -169,9 +179,9 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method starts the flashing animation for a pane
+   * This method starts the flashing animation for a pane.
    *
-   * @param pane the pane to flash
+   * @param pane the pane to flash.
    */
   private void startFlashingAnimation(Pane pane) {
     // Store the existing style to restore it later after flashing
@@ -402,7 +412,7 @@ public abstract class BaseRoomController {
    * This method is called when an action event occurs on the closed menu icon. It toggles the menu
    * visibility and updates its state.
    *
-   * @param event the action event
+   * @param event the action event.
    */
   @FXML
   protected void onToggleMenu(ActionEvent event) {
@@ -694,7 +704,7 @@ public abstract class BaseRoomController {
 
   /**
    * Turn off Volume method. This method is called when the volume is turned off. It sets the volume
-   * off icon to be visible and the volume up icon to be invisible
+   * off icon to be visible and the volume up icon to be invisible.
    */
   @FXML
   protected void turnVolumeOff() throws IOException {
@@ -706,7 +716,7 @@ public abstract class BaseRoomController {
 
   /**
    * Turn on Volume method. This method is called when the volume is turned on. It sets the volume
-   * off icon to be invisible and the volume up icon to be visible
+   * off icon to be invisible and the volume up icon to be visible.
    */
   @FXML
   protected void turnVolumeOn() throws IOException {
@@ -718,7 +728,7 @@ public abstract class BaseRoomController {
 
   /**
    * This method checks the volume icon. If the volume is on, it calls the turnVolumeOn method. If
-   * the volume is off, it calls the turnVolumeOff method
+   * the volume is off, it calls the turnVolumeOff method.
    */
   private void checkVolumeIcon() throws IOException {
     if (SharedVolumeControl.getInstance().getVolumeSetting()) {
@@ -858,9 +868,9 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method appends a chat message to the suspect chat box
+   * This method appends a chat message to the suspect chat box.
    *
-   * @param msg the chat message to append
+   * @param msg the chat message to append.
    */
   @FXML
   protected void appendChatMessage(ChatMessage msg) {
@@ -869,20 +879,25 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method disables the send button
+   * This method disables the send button.
    *
-   * @param disable whether to disable the send button
+   * @param disable whether to disable the send button.
    */
   protected void disableSendButton(boolean disable) {
     sendButton.setDisable(disable);
   }
 
-  /** This method records the visit to the room */
+  /** This method records the visit to the room. */
   protected void recordVisit() {
     // Implement specific record-keeping logic in subclasses
   }
 
-  /** This method checks if the guess button should be enabled */
+  /**
+   * This method checks if the guess button should be enabled.
+   *
+   * <p>The guess button is enabled if all suspects have been visited and at least one clue has been
+   * found.
+   */
   @FXML
   protected void checkGuessButton() {
     // Enable the guess button if all suspects have been visited and at least one clue has been
@@ -933,10 +948,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method sets the visibility and managed properties of a button
+   * Sets the visibility and managed properties of a button.
    *
-   * @param button the button to set the properties of
-   * @param isVisible whether the button should be visible
+   * <p>This method sets the visibility and managed properties of a button based on the specified
+   * visibility flag. If the flag is {@code true}, the button is set to be visible and managed;
+   * otherwise, it is set to be invisible and unmanaged.
+   *
+   * @param button the button to set the visibility and managed properties for.
+   * @param isVisible the flag indicating whether the button should be visible and managed.
    */
   protected void setVisibleAndManaged(Button button, boolean isVisible) {
     button.setVisible(isVisible);
