@@ -2,7 +2,6 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.util.Random;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -25,6 +24,13 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.states.GameStarted;
 
+/**
+ * Controller class for the start view.
+ *
+ * <p>This class is responsible for handling user input and updating the view for the start scene.
+ * It is used to manage the user interface components and respond to user interactions in the start
+ * scene.
+ */
 public class StartGameController {
 
   // Static fields

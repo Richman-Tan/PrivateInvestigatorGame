@@ -16,6 +16,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 
+/**
+ * Controller class for the ClueDrawer scene.
+ *
+ * <p>This class is responsible for handling user input and updating the view for the ClueDrawer
+ * scene. It is used to manage the user interface components and respond to user interactions in the
+ * ClueDrawer scene.
+ */
 public class ClueDrawerController {
 
   @FXML private AnchorPane anchorPane;
@@ -216,9 +223,14 @@ public class ClueDrawerController {
   }
 
   /**
-   * Makes an image view draggable.
+   * Makes the specified ImageView draggable within the scene.
    *
-   * @param imageView
+   * <p>This method sets up mouse event handlers for the given {@code ImageView}, allowing the user
+   * to click and drag the image view to move it around the scene. The method captures the initial
+   * position of the mouse when the drag starts and updates the position of the image view based on
+   * the current mouse coordinates while dragging.
+   *
+   * @param imageView the {@code ImageView} to be made draggable.
    */
   private void makeDraggable(ImageView imageView) {
     // Set up the image view to be draggable

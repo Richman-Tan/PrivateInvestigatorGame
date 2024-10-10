@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -257,7 +256,14 @@ public class BackstoryController {
 
   // Static methods (if any)
 
-  /** Creates a timer pane and binds the countdown timer to the label. */
+  /**
+   * Creates a timer pane and binds the countdown timer to the display label.
+   *
+   * <p>This method initializes the countdown timer by retrieving it from the {@code
+   * SharedTimerModel}, starting the timer, and binding its time string property to the {@code
+   * lbltimer} label for display. It ensures that the timer is displayed in the user interface and
+   * brings the label pane to the front of the view hierarchy for visibility.
+   */
   private void createTimerPane() {
     // Create the countdown timer
     countdownTimer = SharedTimerModel.getInstance().getTimer();
@@ -268,11 +274,15 @@ public class BackstoryController {
   }
 
   /**
-   * Creates an ImageView and binds its width and height to the width and height of the anchorPane.
-   * The ImageView is then returned.
+   * Creates an {@code ImageView} for the specified image and binds its width and height to the
+   * dimensions of the provided anchor pane.
    *
-   * @param image
-   * @return
+   * <p>The method initializes an {@code ImageView} instance with the given image, sets its
+   * dimensions to be responsive by binding them to the width and height of the {@code anchorPane},
+   * scaling the image accordingly. The method returns the created {@code ImageView} instance.
+   *
+   * @param image the {@code Image} to be displayed in the {@code ImageView}.
+   * @return the newly created {@code ImageView} bound to the anchor pane dimensions.
    */
   private ImageView createAndBindImageView(Image image) {
     // Create an ImageView
@@ -292,10 +302,15 @@ public class BackstoryController {
   }
 
   /**
-   * Applies a drop shadow effect to the specified imageViews.
+   * Applies a drop shadow effect to the specified {@code ImageView} instances.
    *
-   * @param dropShadow
-   * @param imageViews
+   * <p>This method iterates through the provided array of {@code ImageView} objects and applies the
+   * given {@code DropShadow} effect to each one. This is useful for enhancing the visual appearance
+   * of images by adding depth through shadows.
+   *
+   * @param dropShadow the {@code DropShadow} effect to be applied to the image views.
+   * @param imageViews the {@code ImageView} instances to which the drop shadow effect will be
+   *     applied.
    */
   private void applyDropShadow(DropShadow dropShadow, ImageView... imageViews) {
     // Apply the drop shadow effect to the image views
@@ -305,10 +320,14 @@ public class BackstoryController {
   }
 
   /**
-   * Shows the next image in the file.
+   * Displays the next image in the specified group.
    *
-   * @param file
-   * @param nextImage
+   * <p>This method updates the provided {@code Group} by replacing its current children with the
+   * specified {@code ImageView} representing the next image. After setting the next image, it also
+   * centers the image within the view to ensure it is properly positioned for display.
+   *
+   * @param file the {@code Group} that contains the images to be displayed.
+   * @param nextImage the {@code ImageView} representing the next image to show.
    */
   private void showNextImage(Group file, ImageView nextImage) {
     // Set the next image in the file
@@ -317,9 +336,13 @@ public class BackstoryController {
   }
 
   /**
-   * Recenters the current image in the file.
+   * Recenters the current image within the specified group.
    *
-   * @param file
+   * <p>This method checks if the first child of the provided {@code Group} is an {@code ImageView}.
+   * If it is, the method calls the {@code centerImage} function to recenter the image in the view.
+   * This is useful for ensuring that the image is displayed correctly within its parent container.
+   *
+   * @param file the {@code Group} containing the image to be recentered.
    */
   private void recenterCurrentImage(Group file) {
     // Recenter the current image in the file
@@ -329,10 +352,15 @@ public class BackstoryController {
   }
 
   /**
-   * Updates the position of the additional and enlarged image views.
+   * Updates the position of the additional and enlarged image views within the anchor pane.
    *
-   * @param additionalImageView
-   * @param enlargedImageView
+   * <p>This method calculates and sets the layout positions of the provided {@code ImageView}
+   * instances for the additional and enlarged images. The positions are adjusted based on the width
+   * and height of the {@code anchorPane}, ensuring that the images are displayed correctly with
+   * specified margins.
+   *
+   * @param additionalImageView the {@code ImageView} representing the additional image.
+   * @param enlargedImageView the {@code ImageView} representing the enlarged image.
    */
   private void updateImagePosition(ImageView additionalImageView, ImageView enlargedImageView) {
     // Update the position of the additional and enlarged image views
@@ -397,9 +425,13 @@ public class BackstoryController {
   }
 
   /**
-   * Centers the specified image view in the anchor pane.
+   * Centers the specified {@code ImageView} within the anchor pane.
    *
-   * @param imageView
+   * <p>This method calculates the appropriate X and Y coordinates to position the given {@code
+   * ImageView} in the center of the {@code anchorPane}. The image view's position is adjusted based
+   * on its width and height to ensure it appears centered visually within the pane.
+   *
+   * @param imageView the {@code ImageView} to be centered in the anchor pane.
    */
   private void centerImage(ImageView imageView) {
     // Center the image view in the anchor pane
@@ -410,8 +442,14 @@ public class BackstoryController {
   /**
    * Zooms in on the specified image view and transitions to the next scene.
    *
-   * @param imageView
-   * @param nextScene
+   * <p>This method animates a zoom-in effect on the provided {@code ImageView} and then transitions
+   * to the specified next scene. The zoom effect enhances the visual experience, drawing the user's
+   * attention to the image before navigating to a different part of the application.
+   *
+   * @param imageView the {@code ImageView} to zoom in on, which will be visually enlarged during
+   *     the transition.
+   * @param nextScene the identifier of the next scene to transition to after the zoom effect is
+   *     complete.
    */
   private void zoomIn(ImageView imageView, String nextScene) {
 
@@ -515,8 +553,13 @@ public class BackstoryController {
         .start();
   }
 
-  /*
-   * Method to initialise and show the volume button
+  /**
+   * Initializes and displays the volume button in the user interface.
+   *
+   * <p>This method creates and configures the SVG paths for the volume button's different states
+   * (volume up, volume off). It sets the appropriate graphical content for each state, allowing the
+   * button to visually represent its functionality within the application. The volume button is
+   * then made visible in the UI for user interaction.
    */
   private void showVolumeButton() {
     // create new SVGPath for volume button
@@ -599,8 +642,15 @@ public class BackstoryController {
     }
   }
 
-  /*
-   * Method to turn the volume off
+  /**
+   * Turns the volume off in the application.
+   *
+   * <p>This method updates the volume settings to mute the audio by setting the volume to off in
+   * the {@code SharedVolumeControl}. It also updates the visibility of the volume button states,
+   * making the "volume off" indicator visible while hiding the "volume up" indicator and its
+   * corresponding stroke. This provides a visual cue to the user that the volume is muted.
+   *
+   * @throws IOException if there is an error during input or output operations.
    */
   @FXML
   protected void turnVolumeOff() throws IOException {
@@ -610,8 +660,15 @@ public class BackstoryController {
     volumeUpStroke.setVisible(false);
   }
 
-  /*
-   * Method to turn the volume on
+  /**
+   * Turns the volume on in the application.
+   *
+   * <p>This method updates the volume settings to enable audio by setting the volume to on in the
+   * {@code SharedVolumeControl}. It also updates the visibility of the volume button states, making
+   * the "volume up" indicator visible while hiding the "volume off" indicator and its corresponding
+   * stroke. This provides a visual cue to the user that the volume is active.
+   *
+   * @throws IOException if there is an error during input or output operations.
    */
   @FXML
   protected void turnVolumeOn() throws IOException {
@@ -621,8 +678,16 @@ public class BackstoryController {
     volumeUpStroke.setVisible(true);
   }
 
-  /*
-   * Method to check if the volume icon should be displayed
+  /**
+   * Checks the current volume setting and updates the volume icon accordingly.
+   *
+   * <p>This method retrieves the current volume setting from the {@code SharedVolumeControl}. Based
+   * on whether the volume is enabled or disabled, it calls the appropriate method to either turn
+   * the volume on or off, updating the visibility of the corresponding volume icon in the user
+   * interface.
+   *
+   * @throws IOException if there is an error during input or output operations when updating the
+   *     volume icon state.
    */
   private void checkVolumeIcon() throws IOException {
     if (SharedVolumeControl.getInstance().getVolumeSetting()) {
