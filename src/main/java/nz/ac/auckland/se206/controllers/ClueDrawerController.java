@@ -29,7 +29,14 @@ public class ClueDrawerController {
   private double startY;
   private TimerModel countdownTimer;
 
-  /** Initializes the ClueDrawerController. */
+  /**
+   * Initializes the ClueDrawerController after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically invoked by the JavaFX framework when the FXML file is loaded.
+   * It sets up the initial state of the ClueDrawer controller, including configuring UI components,
+   * binding properties, and initializing any necessary data structures or event listeners that are
+   * essential for the controller's functionality.
+   */
   @FXML
   private void initialize() {
     setupTimerPane();

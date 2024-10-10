@@ -402,9 +402,14 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the volume is turned on
+   * Handles the action of turning the volume on.
    *
-   * @throws IOException if there is an error loading the FXML file
+   * <p>This method updates the visibility of the volume control icons to reflect that the volume
+   * has been turned on. It hides the volume-off icon and shows the volume-on icon, ensuring that
+   * the user's settings are properly reflected.
+   *
+   * @throws IOException if there is an error loading the FXML file associated with the volume
+   *     control.
    */
   @FXML
   protected void turnVolumeOn() throws IOException {
@@ -570,10 +575,13 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the replay button is clicked
+   * Animates the display of text by revealing it one character at a time.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * <p>This method creates a timeline that progressively updates the text displayed in the {@code
+   * lblStory} label. Each character is revealed at a specified interval, and once the full text is
+   * displayed, the animation stops and begins to flash the last dot.
+   *
+   * @throws IOException if there is an error loading related resources (if applicable).
    */
   private void warpText() {
     timeline =

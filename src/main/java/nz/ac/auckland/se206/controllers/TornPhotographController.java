@@ -126,7 +126,14 @@ public class TornPhotographController {
 
   private TimerModel countdownTimer;
 
-  /** Initializes the torn photograph view. */
+  /**
+   * Initializes the photograph after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the photo
+   * view is loaded. It sets up the initial state of the photo controller by configuring UI
+   * components, binding properties, and initializing any necessary data structures or event
+   * listeners required for the controller's functionality.
+   */
   @FXML
   public void initialize() {
     // Initialize flags for piece placement

@@ -61,7 +61,14 @@ public class StartGameController {
   // Constructors
 
   // Instance methods
-  /** Initializes the start view. */
+  /**
+   * Initializes the start after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the start
+   * view is loaded. It sets up the initial state of the start controller by configuring UI
+   * components, binding properties, and initializing any necessary data structures or event
+   * listeners required for the controller's functionality.
+   */
   @FXML
   public void initialize() {
     // Initialize the ImageView with image1 and set it to take up the whole screen

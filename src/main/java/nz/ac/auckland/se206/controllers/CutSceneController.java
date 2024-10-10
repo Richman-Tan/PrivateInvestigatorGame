@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -56,7 +57,14 @@ public class CutSceneController {
 
   // Instance methods
 
-  /** Initializes the CutSceneController. */
+  /**
+   * Initializes the Cutscene after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the
+   * cutscnene view is loaded. It sets up the initial state of the cutscene controller by
+   * configuring UI components, binding properties, and initializing any necessary data structures
+   * or event listeners required for the controller's functionality.
+   */
   public void initialize() {
     // Load background video using the correct class reference for resource path
     String videoPath =
