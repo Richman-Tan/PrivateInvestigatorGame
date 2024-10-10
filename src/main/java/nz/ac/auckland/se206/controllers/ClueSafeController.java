@@ -85,7 +85,7 @@ public class ClueSafeController {
     goBackButton.setStyle(
         "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
             + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
-            + " #775E55;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets: 0;");
+            + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets: 0;");
     goBackButton.setOpacity(0.75);
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
@@ -111,7 +111,7 @@ public class ClueSafeController {
           goBackButton.setStyle(
               "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
                   + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
-                  + " #775E55;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
+                  + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
                   + " 0; -fx-padding: 5; -fx-border-width: 3; -fx-cursor: default;");
           goBackButton.setOpacity(0.75);
         });
