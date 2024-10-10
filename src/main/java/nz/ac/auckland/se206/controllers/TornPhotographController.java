@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -76,7 +75,8 @@ public class TornPhotographController {
   @FXML private ImageView outlinePiece9;
 
   // Variables for drag offset
-  private double offsetX, offsetY;
+  private double offsetX;
+  private double offsetY;
 
   // Correct positions for each puzzle piece on the board (target coordinates)
   private final double piece1TargetX = 515;

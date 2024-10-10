@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -109,11 +108,11 @@ public class ClueSafeController {
           goBackButton.setCursor(javafx.scene.Cursor.HAND);
         });
 
-    // Remove effect when mouse exits
-    goBackButton.setOnMouseExited( // Remove effect when mouse exits
+    // Set up mouse exit effect for the goBack button
+    goBackButton.setOnMouseExited(
         e -> {
-          goBackButton.setOpacity(1);
-          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT);
+          goBackButton.setOpacity(1); // Reset opacity to 1
+          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
         });
 
     // Position the button at the bottom-right corner
