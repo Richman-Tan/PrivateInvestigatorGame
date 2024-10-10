@@ -7,6 +7,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import nz.ac.auckland.se206.controllers.SharedVolumeControl;
 
+/**
+ * Utility class for handling volume control functionality in a JavaFX application. This class
+ * manages the display and behavior of volume buttons.
+ */
 public class VolumeControlUtil {
 
   private SVGPath volumeUpStroke;
@@ -14,6 +18,11 @@ public class VolumeControlUtil {
   private SVGPath volumeOff;
   private Pane timerPane;
 
+  /**
+   * Constructs a VolumeControlUtil instance.
+   *
+   * @param timerPane the Pane where the volume buttons will be displayed.
+   */
   public VolumeControlUtil(Pane timerPane) {
     this.timerPane = timerPane;
     volumeUpStroke = new SVGPath();
@@ -21,8 +30,9 @@ public class VolumeControlUtil {
     volumeOff = new SVGPath();
   }
 
-  /*
-   * Method to initialise and show the volume button
+  /**
+   * Initializes and displays the volume buttons. This method sets up the SVG paths for the volume
+   * icons and adds them to the specified Pane.
    */
   public void showVolumeButton() {
     // Create new SVGPath for volume button
@@ -49,6 +59,14 @@ public class VolumeControlUtil {
     checkVolumeIcon();
   }
 
+  /**
+   * Sets up the appearance and behavior of a volume button.
+   *
+   * @param volumeButton the SVGPath representing the volume button.
+   * @param layoutX the x-coordinate for the button's layout position.
+   * @param layoutY the y-coordinate for the button's layout position.
+   * @param onClick the event handler for mouse click events on the button.
+   */
   private void setupVolumeButton(
       SVGPath volumeButton, double layoutX, double layoutY, EventHandler<MouseEvent> onClick) {
     volumeButton.setScaleY(2.0);
@@ -63,9 +81,7 @@ public class VolumeControlUtil {
     timerPane.getChildren().add(volumeButton);
   }
 
-  /*
-   * Method to turn the volume off
-   */
+  /** Turns the volume off and updates the visibility of the volume buttons accordingly. */
   public void turnVolumeOff() {
     SharedVolumeControl.getInstance().setVolumeSetting(false);
     volumeOff.setVisible(true);
@@ -73,9 +89,7 @@ public class VolumeControlUtil {
     volumeUpStroke.setVisible(false);
   }
 
-  /*
-   * Method to turn the volume on
-   */
+  /** Turns the volume on and updates the visibility of the volume buttons accordingly. */
   public void turnVolumeOn() {
     SharedVolumeControl.getInstance().setVolumeSetting(true);
     volumeOff.setVisible(false);
@@ -83,9 +97,7 @@ public class VolumeControlUtil {
     volumeUpStroke.setVisible(true);
   }
 
-  /*
-   * Method to check if the volume icon should be displayed
-   */
+  /** Checks the current volume setting and updates the visibility of the volume buttons. */
   private void checkVolumeIcon() {
     if (SharedVolumeControl.getInstance().getVolumeSetting()) {
       turnVolumeOn();
