@@ -11,6 +11,15 @@ import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
+/**
+ * Model class for the countdown timer.
+ *
+ * <p>This class is responsible for managing the countdown timer used in the game. It provides
+ * methods to start, stop, and reset the timer, as well as to retrieve the current time in seconds
+ * as a formatted string. The timer is implemented using a {@link Timer} object that decrements the
+ * time every second until it reaches zero. When the timer expires, it updates the user interface to
+ * indicate that the time is over and may navigate to the guessing scene after a brief pause.
+ */
 public class TimerModel {
 
   // Static fields
@@ -39,8 +48,14 @@ public class TimerModel {
     this.timeString = new SimpleStringProperty(formatTime(initialTimeInSeconds));
   }
 
-  /*
-   * Starts the timer.
+  /**
+   * Starts the countdown timer.
+   *
+   * <p>This method cancels any existing timer and initializes a new timer that decrements the time
+   * in seconds every second. When the timer reaches zero, it updates the user interface to indicate
+   * that the time is over. Depending on the game state, it may also navigate to the guessing scene
+   * after a brief pause. This ensures that the application reacts appropriately to time expiration
+   * while managing the timer's lifecycle.
    */
   public void start() {
     stop(); // Ensure any existing timer is cancelled before starting a new one
