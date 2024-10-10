@@ -77,307 +77,26 @@ public class CluePhoneController {
   private void initialize() {
     // Use the helper method to create and add the timer pane
     createTimerPane();
-
-    rootPane.getStylesheets().add(getClass().getResource("/css/button.css").toExternalForm());
-
-    // Load background
-    Image backgroundImage =
-        new Image(
-            CluePhoneController.class
-                .getResource("/images/cluephoneimages/Phonecluebg.png")
-                .toString());
-
-    createAndBindImageView(backgroundImage);
-
-    System.out.println(context.isPhoneFound());
+    createBackground();
 
     if (context.isPhoneFound()) {
-      // Load the phone ringing image
-      Image phoneRingingImage =
-          new Image(
-              CluePhoneController.class
-                  .getResource("/images/cluephoneimages/phonewvidimg.png")
-                  .toString());
-      ImageView phoneRingingImageView = new ImageView(phoneRingingImage);
-
-      // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
-      phoneRingingImageView.setFitWidth(rootPane.getWidth());
-      phoneRingingImageView.setFitHeight(rootPane.getHeight());
-
-      // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
-      // rootPane width)
-      double horizontalScaleFactor = 1; // Change this value to adjust the horizontal size
-      phoneRingingImageView
-          .fitWidthProperty()
-          .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
-      phoneRingingImageView.fitHeightProperty().bind(rootPane.heightProperty());
-
-      // Use AnchorPane constraints to position the ImageView
-      double rightMargin = 0.0; // Increase this value to move further from the right
-      AnchorPane.setRightAnchor(phoneRingingImageView, rightMargin); // Move it 100px from the right
-
-      rootPane.getChildren().add(phoneRingingImageView);
-
-      // Load the media file path
-      String videoPath =
-          CluePhoneController.class
-              .getResource("/images/cluephoneimages/clueaudiofile.mp4")
-              .toExternalForm();
-      Media media = new Media(videoPath);
-
-      // Create a media player for the media file
-      MediaPlayer mediaPlayer = new MediaPlayer(media);
-
-      // Bind the volume property of the media player to the shared volume control setting
-      mediaPlayer
-          .volumeProperty()
-          .bind(
-              Bindings.createDoubleBinding(
-                  () -> SharedVolumeControl.getInstance().volumeSettingProperty().get() ? 1.0 : 0.0,
-                  SharedVolumeControl.getInstance().volumeSettingProperty()));
-
-      // Create a MediaView to display the media content
-      MediaView mediaView = new MediaView(mediaPlayer);
-
-      // Set whether to preserve the aspect ratio (optional)
-      mediaView.setPreserveRatio(false);
-
-      // Bind the MediaView's fitWidth and fitHeight to a percentage of the rootPane's width and
-      // height
-      double mediaHorizontalScaleFactor = 0.2; // Adjust this value to control horizontal size
-      double mediaVerticalScaleFactor = 0.75; // Adjust this value to control vertical size
-      mediaView
-          .fitWidthProperty()
-          .bind(rootPane.widthProperty().multiply(mediaHorizontalScaleFactor));
-      mediaView
-          .fitHeightProperty()
-          .bind(rootPane.heightProperty().multiply(mediaVerticalScaleFactor));
-
-      // Center the MediaView horizontally and vertically
-      // Center the MediaView when the screen loads
-      double initialCenterX = (rootPane.getWidth() - mediaView.getFitWidth()) / 2 + 10;
-      double initialCenterY = (rootPane.getHeight() - mediaView.getFitHeight()) / 2 - 10;
-      AnchorPane.setLeftAnchor(mediaView, initialCenterX);
-      AnchorPane.setTopAnchor(mediaView, initialCenterY);
-
-      // Add listeners to ensure it stays centered when resized
-      rootPane
-          .widthProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                double centerX = (newVal.doubleValue() - mediaView.getFitWidth()) / 2 + 10;
-                AnchorPane.setLeftAnchor(mediaView, centerX);
-              });
-
-      rootPane
-          .heightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                double centerY = (newVal.doubleValue() - mediaView.getFitHeight()) / 2 - 10;
-                AnchorPane.setTopAnchor(mediaView, centerY);
-              });
-
-      // Add the MediaView to the rootPane
-      rootPane.getChildren().add(mediaView);
-
-      // Load the phone ringing image
-      Image overlay =
-          new Image(
-              CluePhoneController.class
-                  .getResource("/images/cluephoneimages/overlay.png")
-                  .toString());
-      ImageView overlayImageView = new ImageView(overlay);
-
-      // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
-      overlayImageView.setFitWidth(rootPane.getWidth());
-      overlayImageView.setFitHeight(rootPane.getHeight());
-
-      // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
-      // rootPane width)
-      overlayImageView
-          .fitWidthProperty()
-          .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
-      overlayImageView.fitHeightProperty().bind(rootPane.heightProperty());
-
-      AnchorPane.setRightAnchor(overlayImageView, rightMargin); // Move it 100px from the right
-
-      rootPane.getChildren().add(overlayImageView);
-
-      // Create a circular play/pause button
-      Button playPauseButton = new Button("▶");
-      playPauseButton.setStyle(
-          "-fx-background-radius: 200px; -fx-background-color: #FFFFFF; -fx-font-size: 18px;");
-      playPauseButton.setPrefSize(50, 50); // Set size for circular button
-
-      playPauseButton.setOpacity(0.8);
-
-      // Position the button in the center of the media
-      AnchorPane.setTopAnchor(playPauseButton, (rootPane.getHeight() - 50) / 2);
-      AnchorPane.setLeftAnchor(playPauseButton, (rootPane.getWidth() - 50) / 2 + 10);
-
-      // Make the button responsive to the rootPane size changes
-      rootPane
-          .heightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setTopAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2);
-              });
-      rootPane
-          .widthProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setLeftAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2 + 10);
-              });
-      mediaPlayer.seek(Duration.seconds(1));
-      // Toggle between play and pause
-      playPauseButton.setOnAction(
-          e -> {
-            if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-              mediaPlayer.pause();
-              playPauseButton.setText("▶"); // Change button text to "Play"
-            } else {
-              mediaPlayer.play();
-              playPauseButton.setText("⏸"); // Change button text to "Pause"
-            }
-          });
-
-      // Initially show the button
-      playPauseButton.setVisible(true);
-
-      // Show the play/pause button when the video is paused
-      mediaPlayer.setOnPaused(() -> playPauseButton.setVisible(true));
-      mediaPlayer.setOnEndOfMedia(
-          () -> {
-            playPauseButton.setText("⟳"); // Change button text to replay symbol
-            playPauseButton.setOnAction(
-                e -> {
-                  mediaPlayer.seek(mediaPlayer.getStartTime()); // Reset to start of video
-                  mediaPlayer.play();
-                  playPauseButton.setText("⏸"); // Change button back to "Pause" during replay
-                });
-          });
-
-      // Add the play/pause button to the rootPane
-      rootPane.getChildren().add(playPauseButton);
-
+      ifphoneisalreadyFound();
     } else {
-      Image phoneImage =
-          new Image(
-              CluePhoneController.class
-                  .getResource("/images/cluephoneimages/phoneinteraction.gif")
-                  .toString());
-      phoneImageView = new ImageView(phoneImage);
-      // Apply a scaling factor (e.g., 0.14 for 14% of the root node size)
-      double scaleFactor = 1;
-      phoneImageView.setFitWidth(rootPane.getWidth() * scaleFactor);
-      phoneImageView.setFitHeight(rootPane.getHeight() * scaleFactor);
-
-      // Make sure the background resizes with the window, but maintain the scaling
-      phoneImageView.fitWidthProperty().bind(rootPane.widthProperty().multiply(scaleFactor));
-      phoneImageView.fitHeightProperty().bind(rootPane.heightProperty().multiply(scaleFactor));
-
-      // Use AnchorPane constraints to position the ImageView
-      double rightMargin = 0.0; // Increase this value to move further from the right
-      double verticalOffset = 50.0; // Move it slightly further down from the center
-
-      AnchorPane.setRightAnchor(phoneImageView, rightMargin); // Move it 100px from the right
-      AnchorPane.setTopAnchor(
-          phoneImageView,
-          (rootPane.getHeight() - phoneImageView.getFitHeight()) / 2
-              + verticalOffset); // Vertically slightly lower
-
-      // Bind TopAnchor to keep the image vertically responsive as the window resizes
-      phoneImageView
-          .fitHeightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setTopAnchor(
-                    phoneImageView,
-                    (rootPane.getHeight() - newVal.doubleValue()) / 2 + verticalOffset);
-              });
-
-      // Enlarge image and change cursor on hover
-      phoneImageView.setOnMouseEntered(
-          e -> {
-            phoneImageView.setScaleX(1.05); // Enlarge by 10%
-            phoneImageView.setScaleY(1.05);
-            phoneImageView.setCursor(Cursor.HAND); // Change to pointer cursor
-          });
-
-      phoneImageView.setOnMouseExited(
-          e -> {
-            phoneImageView.setScaleX(1.0); // Return to original size
-            phoneImageView.setScaleY(1.0);
-            phoneImageView.setCursor(Cursor.DEFAULT); // Reset cursor to default
-          });
-
-      phoneImageView.setOnMousePressed(
-          e -> {
-            // Set the initial position of the phone image
-            handleArrowButtonClick();
-          });
-
-      rootPane.getChildren().add(phoneImageView);
-
-      // Create arrow button on the left side of the phoneImage
-      arrowButton = new Button("?"); // Unicode left arrow, you can also use an image
-      arrowButton.setStyle(
-          "-fx-background-color: #c1b8b5; -fx-background-radius: 50px; -fx-border-radius: 50px;"
-              + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
-              + " black;-fx-font-size: 14px;"); // Larger font and clear border for visibility
-      arrowButton.setPrefWidth(30); // Set a fixed width
-      arrowButton.setPrefHeight(30); // Set a fixed height
-
-      // Position the button on the left side
-      AnchorPane.setTopAnchor(arrowButton, 20.0); // Set 20px from the left
-      AnchorPane.setRightAnchor(arrowButton, 20.0); // Center the button vertically
-
-      arrowButton.setOnMouseEntered(
-          e -> {
-            // Apply custom styles for hover
-            arrowButton.setStyle(
-                " -fx-background-color: #775E55; -fx-background-radius:"
-                    + " 50px; -fx-border-radius: 50px; -fx-border-color: #3f2218;"
-                    + " -fx-border-width: 4px; -fx-cursor:"
-                    + " hand; -fx-text-fill: #c1b8b5;"
-                    + "-fx-font-size: 14px; ");
-
-            // Pop up of a label to show the user what to do
-            popUp = new Label("Click the button to turn the phone around");
-            popUp.setStyle(
-                "-fx-font-size: 14px; -fx-background-color: c1b8b5; -fx-background-radius: 10px;"
-                    + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: #3f2218;"
-                    + " -fx-text-fill: #775E55; -fx-border-width: 3px;");
-            popUp.setPrefWidth(266);
-            popUp.setPrefHeight(50);
-            // Bind the label to the rootPane
-            AnchorPane.setBottomAnchor(popUp, 10.0);
-            // Set center
-            AnchorPane.setLeftAnchor(popUp, (rootPane.getWidth() - popUp.getPrefWidth()) / 2);
-            popUp.setOpacity(0.8);
-            // Add the label to the rootPane
-            rootPane.getChildren().add(popUp);
-          });
-
-      // Reset styles on mouse exit
-      arrowButton.setOnMouseExited(
-          e -> {
-            // Reset the button style when the mouse exits
-            arrowButton.setStyle(
-                "-fx-background-color: #c1b8b5; -fx-background-radius: 50px; -fx-border-radius:"
-                    + " 50px; -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
-                    + " black;-fx-font-size: 14px;"
-                    + " -fx-cursor: default;");
-            // Remove the pop up label
-            rootPane.getChildren().remove(popUp);
-          });
-
-      arrowButton.getStyleClass().add("button"); // Apply the style class from CSS
-      arrowButton.setOpacity(0.8);
-
-      rootPane.getChildren().add(arrowButton); // Add the button to the rootPane
+      ifphoneisnotFound();
     }
 
+    labelPane.toFront();
+    // Add the volume button to the label pane and show it
+    // Add the volume button to the label pane and show it
+    volumeControlUtil =
+        new VolumeControlUtil(labelPane); // Initialize the VolumeControlUtil with the timerPane
+    volumeControlUtil.showVolumeButton(); // Show the volume button
+
+    // set up go back button
+    setupGoBackButton();
+  }
+
+  private void setupGoBackButton() {
     Button goBackButton = new Button("Go Back");
     goBackButton.setStyle(
         "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
@@ -425,13 +144,305 @@ public class CluePhoneController {
                   + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
                   + " 0; -fx-padding: 5; -fx-border-width: 3; -fx-cursor: default;");
         });
+  }
 
-    labelPane.toFront();
-    // Add the volume button to the label pane and show it
-    // Add the volume button to the label pane and show it
-    volumeControlUtil =
-        new VolumeControlUtil(labelPane); // Initialize the VolumeControlUtil with the timerPane
-    volumeControlUtil.showVolumeButton(); // Show the volume button
+  private void ifphoneisnotFound() {
+    Image phoneImage =
+        new Image(
+            CluePhoneController.class
+                .getResource("/images/cluephoneimages/phoneinteraction.gif")
+                .toString());
+    phoneImageView = new ImageView(phoneImage);
+    // Apply a scaling factor (e.g., 0.14 for 14% of the root node size)
+    double scaleFactor = 1;
+    phoneImageView.setFitWidth(rootPane.getWidth() * scaleFactor);
+    phoneImageView.setFitHeight(rootPane.getHeight() * scaleFactor);
+
+    // Make sure the background resizes with the window, but maintain the scaling
+    phoneImageView.fitWidthProperty().bind(rootPane.widthProperty().multiply(scaleFactor));
+    phoneImageView.fitHeightProperty().bind(rootPane.heightProperty().multiply(scaleFactor));
+
+    // Use AnchorPane constraints to position the ImageView
+    double rightMargin = 0.0; // Increase this value to move further from the right
+    double verticalOffset = 50.0; // Move it slightly further down from the center
+
+    AnchorPane.setRightAnchor(phoneImageView, rightMargin); // Move it 100px from the right
+    AnchorPane.setTopAnchor(
+        phoneImageView,
+        (rootPane.getHeight() - phoneImageView.getFitHeight()) / 2
+            + verticalOffset); // Vertically slightly lower
+
+    // Bind TopAnchor to keep the image vertically responsive as the window resizes
+    phoneImageView
+        .fitHeightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              AnchorPane.setTopAnchor(
+                  phoneImageView,
+                  (rootPane.getHeight() - newVal.doubleValue()) / 2 + verticalOffset);
+            });
+
+    // Enlarge image and change cursor on hover
+    phoneImageView.setOnMouseEntered(
+        e -> {
+          phoneImageView.setScaleX(1.05); // Enlarge by 10%
+          phoneImageView.setScaleY(1.05);
+          phoneImageView.setCursor(Cursor.HAND); // Change to pointer cursor
+        });
+
+    phoneImageView.setOnMouseExited(
+        e -> {
+          phoneImageView.setScaleX(1.0); // Return to original size
+          phoneImageView.setScaleY(1.0);
+          phoneImageView.setCursor(Cursor.DEFAULT); // Reset cursor to default
+        });
+
+    phoneImageView.setOnMousePressed(
+        e -> {
+          // Set the initial position of the phone image
+          handleArrowButtonClick();
+        });
+
+    rootPane.getChildren().add(phoneImageView);
+
+    // Create arrow button on the left side of the phoneImage
+    arrowButton = new Button("?"); // Unicode left arrow, you can also use an image
+    arrowButton.setStyle(
+        "-fx-background-color: #c1b8b5; -fx-background-radius: 50px; -fx-border-radius: 50px;"
+            + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+            + " black;-fx-font-size: 14px;"); // Larger font and clear border for visibility
+    arrowButton.setPrefWidth(30); // Set a fixed width
+    arrowButton.setPrefHeight(30); // Set a fixed height
+
+    // Position the button on the left side
+    AnchorPane.setTopAnchor(arrowButton, 20.0); // Set 20px from the left
+    AnchorPane.setRightAnchor(arrowButton, 20.0); // Center the button vertically
+
+    arrowButton.setOnMouseEntered(
+        e -> {
+          // Apply custom styles for hover
+          arrowButton.setStyle(
+              " -fx-background-color: #775E55; -fx-background-radius:"
+                  + " 50px; -fx-border-radius: 50px; -fx-border-color: #3f2218;"
+                  + " -fx-border-width: 4px; -fx-cursor:"
+                  + " hand; -fx-text-fill: #c1b8b5;"
+                  + "-fx-font-size: 14px; ");
+
+          // Pop up of a label to show the user what to do
+          popUp = new Label("Click the button to turn the phone around");
+          popUp.setStyle(
+              "-fx-font-size: 14px; -fx-background-color: c1b8b5; -fx-background-radius: 10px;"
+                  + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: #3f2218;"
+                  + " -fx-text-fill: #775E55; -fx-border-width: 3px;");
+          popUp.setPrefWidth(266);
+          popUp.setPrefHeight(50);
+          // Bind the label to the rootPane
+          AnchorPane.setBottomAnchor(popUp, 10.0);
+          // Set center
+          AnchorPane.setLeftAnchor(popUp, (rootPane.getWidth() - popUp.getPrefWidth()) / 2);
+          popUp.setOpacity(0.8);
+          // Add the label to the rootPane
+          rootPane.getChildren().add(popUp);
+        });
+
+    // Reset styles on mouse exit
+    arrowButton.setOnMouseExited(
+        e -> {
+          // Reset the button style when the mouse exits
+          arrowButton.setStyle(
+              "-fx-background-color: #c1b8b5; -fx-background-radius: 50px; -fx-border-radius:"
+                  + " 50px; -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+                  + " black;-fx-font-size: 14px;"
+                  + " -fx-cursor: default;");
+          // Remove the pop up label
+          rootPane.getChildren().remove(popUp);
+        });
+
+    arrowButton.getStyleClass().add("button"); // Apply the style class from CSS
+    arrowButton.setOpacity(0.8);
+
+    rootPane.getChildren().add(arrowButton); // Add the button to the rootPane
+  }
+
+  private void ifphoneisalreadyFound() {
+    // Load the phone ringing image
+    Image phoneRingingImage =
+        new Image(
+            CluePhoneController.class
+                .getResource("/images/cluephoneimages/phonewvidimg.png")
+                .toString());
+    ImageView phoneRingingImageView = new ImageView(phoneRingingImage);
+
+    // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
+    phoneRingingImageView.setFitWidth(rootPane.getWidth());
+    phoneRingingImageView.setFitHeight(rootPane.getHeight());
+
+    // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
+    // rootPane width)
+    double horizontalScaleFactor = 1; // Change this value to adjust the horizontal size
+    phoneRingingImageView
+        .fitWidthProperty()
+        .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
+    phoneRingingImageView.fitHeightProperty().bind(rootPane.heightProperty());
+
+    // Use AnchorPane constraints to position the ImageView
+    double rightMargin = 0.0; // Increase this value to move further from the right
+    AnchorPane.setRightAnchor(phoneRingingImageView, rightMargin); // Move it 100px from the right
+
+    rootPane.getChildren().add(phoneRingingImageView);
+
+    // Load the media file path
+    String videoPath =
+        CluePhoneController.class
+            .getResource("/images/cluephoneimages/clueaudiofile.mp4")
+            .toExternalForm();
+    Media media = new Media(videoPath);
+
+    // Create a media player for the media file
+    MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+    // Bind the volume property of the media player to the shared volume control setting
+    mediaPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () -> SharedVolumeControl.getInstance().volumeSettingProperty().get() ? 1.0 : 0.0,
+                SharedVolumeControl.getInstance().volumeSettingProperty()));
+
+    // Create a MediaView to display the media content
+    MediaView mediaView = new MediaView(mediaPlayer);
+
+    // Set whether to preserve the aspect ratio (optional)
+    mediaView.setPreserveRatio(false);
+
+    // Bind the MediaView's fitWidth and fitHeight to a percentage of the rootPane's width and
+    // height
+    double mediaHorizontalScaleFactor = 0.2; // Adjust this value to control horizontal size
+    double mediaVerticalScaleFactor = 0.75; // Adjust this value to control vertical size
+    mediaView
+        .fitWidthProperty()
+        .bind(rootPane.widthProperty().multiply(mediaHorizontalScaleFactor));
+    mediaView
+        .fitHeightProperty()
+        .bind(rootPane.heightProperty().multiply(mediaVerticalScaleFactor));
+
+    // Center the MediaView horizontally and vertically
+    // Center the MediaView when the screen loads
+    double initialCenterX = (rootPane.getWidth() - mediaView.getFitWidth()) / 2 + 10;
+    double initialCenterY = (rootPane.getHeight() - mediaView.getFitHeight()) / 2 - 10;
+    AnchorPane.setLeftAnchor(mediaView, initialCenterX);
+    AnchorPane.setTopAnchor(mediaView, initialCenterY);
+
+    // Add listeners to ensure it stays centered when resized
+    rootPane
+        .widthProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              double centerX = (newVal.doubleValue() - mediaView.getFitWidth()) / 2 + 10;
+              AnchorPane.setLeftAnchor(mediaView, centerX);
+            });
+
+    rootPane
+        .heightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              double centerY = (newVal.doubleValue() - mediaView.getFitHeight()) / 2 - 10;
+              AnchorPane.setTopAnchor(mediaView, centerY);
+            });
+
+    // Add the MediaView to the rootPane
+    rootPane.getChildren().add(mediaView);
+
+    // Load the phone ringing image
+    Image overlay =
+        new Image(
+            CluePhoneController.class
+                .getResource("/images/cluephoneimages/overlay.png")
+                .toString());
+    ImageView overlayImageView = new ImageView(overlay);
+
+    // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
+    overlayImageView.setFitWidth(rootPane.getWidth());
+    overlayImageView.setFitHeight(rootPane.getHeight());
+
+    // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
+    // rootPane width)
+    overlayImageView
+        .fitWidthProperty()
+        .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
+    overlayImageView.fitHeightProperty().bind(rootPane.heightProperty());
+
+    AnchorPane.setRightAnchor(overlayImageView, rightMargin); // Move it 100px from the right
+
+    rootPane.getChildren().add(overlayImageView);
+
+    // Create a circular play/pause button
+    Button playPauseButton = new Button("▶");
+    playPauseButton.setStyle(
+        "-fx-background-radius: 200px; -fx-background-color: #FFFFFF; -fx-font-size: 18px;");
+    playPauseButton.setPrefSize(50, 50); // Set size for circular button
+
+    playPauseButton.setOpacity(0.8);
+
+    // Position the button in the center of the media
+    AnchorPane.setTopAnchor(playPauseButton, (rootPane.getHeight() - 50) / 2);
+    AnchorPane.setLeftAnchor(playPauseButton, (rootPane.getWidth() - 50) / 2 + 10);
+
+    // Make the button responsive to the rootPane size changes
+    rootPane
+        .heightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              AnchorPane.setTopAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2);
+            });
+    rootPane
+        .widthProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              AnchorPane.setLeftAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2 + 10);
+            });
+    mediaPlayer.seek(Duration.seconds(1));
+    // Toggle between play and pause
+    playPauseButton.setOnAction(
+        e -> {
+          if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            mediaPlayer.pause();
+            playPauseButton.setText("▶"); // Change button text to "Play"
+          } else {
+            mediaPlayer.play();
+            playPauseButton.setText("⏸"); // Change button text to "Pause"
+          }
+        });
+
+    // Initially show the button
+    playPauseButton.setVisible(true);
+
+    // Show the play/pause button when the video is paused
+    mediaPlayer.setOnPaused(() -> playPauseButton.setVisible(true));
+    mediaPlayer.setOnEndOfMedia(
+        () -> {
+          playPauseButton.setText("⟳"); // Change button text to replay symbol
+          playPauseButton.setOnAction(
+              e -> {
+                mediaPlayer.seek(mediaPlayer.getStartTime()); // Reset to start of video
+                mediaPlayer.play();
+                playPauseButton.setText("⏸"); // Change button back to "Pause" during replay
+              });
+        });
+
+    // Add the play/pause button to the rootPane
+    rootPane.getChildren().add(playPauseButton);
+  }
+
+  private void createBackground() {
+    // Load background
+    Image backgroundImage =
+        new Image(
+            CluePhoneController.class
+                .getResource("/images/cluephoneimages/Phonecluebg.png")
+                .toString());
+
+    createAndBindImageView(backgroundImage);
   }
 
   /**
@@ -709,193 +720,177 @@ public class CluePhoneController {
       System.out.println("All wires are connected!");
 
       // Set a 0.5 second delay before the phone rings
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+      delayExecution(100);
 
-      // Set opacity of all wires to 0 when all are connected
-      imageView.setOpacity(0);
+      // Set the opacity of all wires and labels to 0
+      setOpacityAll(0);
 
-      // set opacity of label to 0
-      label.setOpacity(0);
-
-      // Load the phone ringing image
-      Image phoneRingingImage =
-          new Image(
-              CluePhoneController.class
-                  .getResource("/images/cluephoneimages/phonewvidimg.png")
-                  .toString());
-      ImageView phoneRingingImageView = new ImageView(phoneRingingImage);
-
-      // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
-      phoneRingingImageView.setFitWidth(rootPane.getWidth());
-      phoneRingingImageView.setFitHeight(rootPane.getHeight());
-
-      // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
-      // rootPane width)
-      double horizontalScaleFactor = 1; // Change this value to adjust the horizontal size
-      phoneRingingImageView
-          .fitWidthProperty()
-          .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
-      phoneRingingImageView.fitHeightProperty().bind(rootPane.heightProperty());
-
-      // Use AnchorPane constraints to position the ImageView
-      double rightMargin = 0.0; // Increase this value to move further from the right
-      AnchorPane.setRightAnchor(phoneRingingImageView, rightMargin); // Move it 100px from the right
-
+      // Load and display the phone ringing image
+      ImageView phoneRingingImageView =
+          createImageView("/images/cluephoneimages/phonewvidimg.png", 1, 1);
       rootPane.getChildren().add(phoneRingingImageView);
 
-      // Load the MP4 video
-      String videoPath =
-          CluePhoneController.class
-              .getResource("/images/cluephoneimages/clueaudiofile.mp4") // Get the resource path
-              .toExternalForm(); // Convert the resource path to an external form
-      Media media = new Media(videoPath);
-      MediaPlayer mediaPlayer = new MediaPlayer(media);
-      MediaView mediaView = new MediaView(mediaPlayer);
-
-      BooleanProperty isVolumeOn = SharedVolumeControl.getInstance().volumeSettingProperty();
-      mediaPlayer
-          .volumeProperty()
-          .bind(Bindings.createDoubleBinding(() -> isVolumeOn.get() ? 1.0 : 0.0, isVolumeOn));
-
-      // Set whether to preserve the aspect ratio (optional)
-      mediaView.setPreserveRatio(false);
-
-      // Bind the MediaView's fitWidth and fitHeight to a percentage of the rootPane's width and
-      // height
-      double mediaHorizontalScaleFactor = 0.2; // Adjust this value to control horizontal size
-      double mediaVerticalScaleFactor = 0.75; // Adjust this value to control vertical size
-      mediaView
-          .fitWidthProperty()
-          .bind(rootPane.widthProperty().multiply(mediaHorizontalScaleFactor));
-      mediaView
-          .fitHeightProperty()
-          .bind(rootPane.heightProperty().multiply(mediaVerticalScaleFactor));
-
-      // Center the MediaView horizontally and vertically
-      // Center the MediaView when the screen loads
-      double initialCenterX = (rootPane.getWidth() - mediaView.getFitWidth()) / 2 + 10;
-      double initialCenterY = (rootPane.getHeight() - mediaView.getFitHeight()) / 2 - 10;
-      AnchorPane.setLeftAnchor(mediaView, initialCenterX);
-      AnchorPane.setTopAnchor(mediaView, initialCenterY);
-
-      // Add listeners to ensure it stays centered when resized
-      rootPane
-          .widthProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                double centerX = (newVal.doubleValue() - mediaView.getFitWidth()) / 2 + 10;
-                AnchorPane.setLeftAnchor(mediaView, centerX);
-              });
-
-      rootPane
-          .heightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                double centerY = (newVal.doubleValue() - mediaView.getFitHeight()) / 2 - 10;
-                AnchorPane.setTopAnchor(mediaView, centerY);
-              });
-
-      // Add the MediaView to the rootPane
+      // Load and play the video
+      MediaPlayer mediaPlayer =
+          createAndConfigureMediaPlayer("/images/cluephoneimages/clueaudiofile.mp4");
+      MediaView mediaView = createMediaView(mediaPlayer, 0.2, 0.75);
+      configureMediaViewAnchors(mediaView);
       rootPane.getChildren().add(mediaView);
 
-      // Load the phone ringing image
-      Image overlay =
-          new Image(
-              CluePhoneController.class
-                  .getResource("/images/cluephoneimages/overlay.png")
-                  .toString());
-      ImageView overlayImageView = new ImageView(overlay);
-
-      // Bind the ImageView's fitWidth and fitHeight to the rootPane's width and height properties
-      overlayImageView.setFitWidth(rootPane.getWidth());
-      overlayImageView.setFitHeight(rootPane.getHeight());
-
-      // Bind the ImageView's fitWidth to a percentage of the rootPane's width (e.g., 80% of the
-      // rootPane width)
-      overlayImageView
-          .fitWidthProperty()
-          .bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
-      overlayImageView.fitHeightProperty().bind(rootPane.heightProperty());
-
-      AnchorPane.setRightAnchor(overlayImageView, rightMargin); // Move it 100px from the right
-
+      // Load and display the overlay image
+      ImageView overlayImageView = createImageView("/images/cluephoneimages/overlay.png", 1, 1);
       rootPane.getChildren().add(overlayImageView);
 
-      // Create a circular play/pause button
-      Button playPauseButton = new Button("▶");
-      playPauseButton.setStyle(
-          "-fx-background-radius: 200px; -fx-background-color: #FFFFFF; -fx-font-size: 18px;");
-      playPauseButton.setPrefSize(50, 50); // Set size for circular button
-
-      playPauseButton.setOpacity(0.8);
-
-      // Position the button in the center of the media
-      AnchorPane.setTopAnchor(playPauseButton, (rootPane.getHeight() - 50) / 2);
-      AnchorPane.setLeftAnchor(playPauseButton, (rootPane.getWidth() - 50) / 2 + 10);
-
-      // Make the button responsive to the rootPane size changes
-      rootPane
-          .heightProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setTopAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2);
-              });
-      rootPane
-          .widthProperty()
-          .addListener(
-              (obs, oldVal, newVal) -> {
-                AnchorPane.setLeftAnchor(playPauseButton, (newVal.doubleValue() - 50) / 2 + 10);
-              });
-
-      // Toggle between play and pause
-      playPauseButton.setOnAction(
-          e -> {
-            if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-              mediaPlayer.pause();
-              playPauseButton.setText("▶"); // Change button text to "Play"
-            } else {
-              mediaPlayer.play();
-              playPauseButton.setText("⏸"); // Change button text to "Pause"
-            }
-          });
-
-      // Initially show the button
-      playPauseButton.setVisible(true);
-
-      // Show the play/pause button when the video is paused
-      mediaPlayer.setOnPaused(() -> playPauseButton.setVisible(true));
-      mediaPlayer.setOnEndOfMedia(
-          () -> {
-            playPauseButton.setText("⟳"); // Change button text to replay symbol
-            playPauseButton.setOnAction(
-                e -> {
-                  mediaPlayer.seek(mediaPlayer.getStartTime()); // Reset to start of video
-                  mediaPlayer.play();
-                  playPauseButton.setText("⏸"); // Change button back to "Pause" during replay
-                });
-          });
-
-      // Add the play/pause button to the rootPane
+      // Create and add the circular play/pause button
+      Button playPauseButton = createPlayPauseButton(mediaPlayer, 50, 50);
+      positionButton(playPauseButton, rootPane.getWidth(), rootPane.getHeight());
+      configureButtonResponsiveness(playPauseButton, rootPane);
       rootPane.getChildren().add(playPauseButton);
 
-      // Set opacity of all wires to 0 when all are connected
-      redWire.setOpacity(0);
-      blueWire.setOpacity(0);
-      greenWire.setOpacity(0);
+      // Set opacity of all wires and circles to 0
+      setOpacityAllCirclesAndWires(0);
 
-      // Set opacity of all circles to 0 when all are connected
-      startCircleRed.setOpacity(0);
-      startCircleBlue.setOpacity(0);
-      startCircleGreen.setOpacity(0);
-      endCircleRed.setOpacity(0);
-      endCircleBlue.setOpacity(0);
-      endCircleGreen.setOpacity(0);
+      GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
     }
-    GameStateContext.getInstance().setPhoneFound(true); // Mark as found in the context
+  }
+
+  // Helper method to set opacity of wires and label
+  private void setOpacityAll(double opacity) {
+    imageView.setOpacity(opacity);
+    label.setOpacity(opacity);
+  }
+
+  // Helper method to set opacity of all wires and circles
+  private void setOpacityAllCirclesAndWires(double opacity) {
+    redWire.setOpacity(opacity);
+    blueWire.setOpacity(opacity);
+    greenWire.setOpacity(opacity);
+
+    startCircleRed.setOpacity(opacity);
+    startCircleBlue.setOpacity(opacity);
+    startCircleGreen.setOpacity(opacity);
+    endCircleRed.setOpacity(opacity);
+    endCircleBlue.setOpacity(opacity);
+    endCircleGreen.setOpacity(opacity);
+  }
+
+  // Helper method to create and configure an ImageView
+  private ImageView createImageView(
+      String imagePath, double horizontalScaleFactor, double verticalScaleFactor) {
+    Image image = new Image(CluePhoneController.class.getResource(imagePath).toString());
+    ImageView imageView = new ImageView(image);
+    imageView.fitWidthProperty().bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
+    imageView.fitHeightProperty().bind(rootPane.heightProperty().multiply(verticalScaleFactor));
+    return imageView;
+  }
+
+  // Helper method to create and configure a MediaPlayer
+  private MediaPlayer createAndConfigureMediaPlayer(String videoPath) {
+    Media media = new Media(CluePhoneController.class.getResource(videoPath).toExternalForm());
+    MediaPlayer mediaPlayer = new MediaPlayer(media);
+    BooleanProperty isVolumeOn = SharedVolumeControl.getInstance().volumeSettingProperty();
+    mediaPlayer
+        .volumeProperty()
+        .bind(Bindings.createDoubleBinding(() -> isVolumeOn.get() ? 1.0 : 0.0, isVolumeOn));
+    return mediaPlayer;
+  }
+
+  // Helper method to create and configure a MediaView
+  private MediaView createMediaView(
+      MediaPlayer mediaPlayer, double horizontalScaleFactor, double verticalScaleFactor) {
+    MediaView mediaView = new MediaView(mediaPlayer);
+    mediaView.setPreserveRatio(false);
+    mediaView.fitWidthProperty().bind(rootPane.widthProperty().multiply(horizontalScaleFactor));
+    mediaView.fitHeightProperty().bind(rootPane.heightProperty().multiply(verticalScaleFactor));
+    return mediaView;
+  }
+
+  // Helper method to configure anchors for MediaView
+  private void configureMediaViewAnchors(MediaView mediaView) {
+    AnchorPane.setLeftAnchor(mediaView, (rootPane.getWidth() - mediaView.getFitWidth()) / 2 + 10);
+    AnchorPane.setTopAnchor(mediaView, (rootPane.getHeight() - mediaView.getFitHeight()) / 2 - 10);
+
+    rootPane
+        .widthProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              double centerX = (newVal.doubleValue() - mediaView.getFitWidth()) / 2 + 10;
+              AnchorPane.setLeftAnchor(mediaView, centerX);
+            });
+
+    rootPane
+        .heightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              double centerY = (newVal.doubleValue() - mediaView.getFitHeight()) / 2 - 10;
+              AnchorPane.setTopAnchor(mediaView, centerY);
+            });
+  }
+
+  // Helper method to create the circular play/pause button
+  private Button createPlayPauseButton(MediaPlayer mediaPlayer, double width, double height) {
+    Button playPauseButton = new Button("▶");
+    playPauseButton.setStyle(
+        "-fx-background-radius: 200px; -fx-background-color: #FFFFFF; -fx-font-size: 18px;");
+    playPauseButton.setPrefSize(width, height);
+    playPauseButton.setOpacity(0.8);
+
+    playPauseButton.setOnAction(
+        e -> {
+          if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            mediaPlayer.pause();
+            playPauseButton.setText("▶"); // Change button text to "Play"
+          } else {
+            mediaPlayer.play();
+            playPauseButton.setText("⏸"); // Change button text to "Pause"
+          }
+        });
+
+    mediaPlayer.setOnPaused(() -> playPauseButton.setVisible(true));
+    mediaPlayer.setOnEndOfMedia(
+        () -> {
+          playPauseButton.setText("⟳"); // Change button text to replay symbol
+          playPauseButton.setOnAction(
+              e -> {
+                mediaPlayer.seek(mediaPlayer.getStartTime()); // Reset to start of video
+                mediaPlayer.play();
+                playPauseButton.setText("⏸"); // Change button back to "Pause" during replay
+              });
+        });
+
+    return playPauseButton;
+  }
+
+  // Helper method to position the button in the center
+  private void positionButton(Button button, double parentWidth, double parentHeight) {
+    AnchorPane.setTopAnchor(button, (parentHeight - button.getPrefHeight()) / 2);
+    AnchorPane.setLeftAnchor(button, (parentWidth - button.getPrefWidth()) / 2 + 10);
+  }
+
+  // Helper method to make the button responsive to rootPane size changes
+  private void configureButtonResponsiveness(Button button, Pane rootPane) {
+    rootPane
+        .heightProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              AnchorPane.setTopAnchor(button, (newVal.doubleValue() - button.getPrefHeight()) / 2);
+            });
+    rootPane
+        .widthProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              AnchorPane.setLeftAnchor(
+                  button, (newVal.doubleValue() - button.getPrefWidth()) / 2 + 10);
+            });
+  }
+
+  // Helper method to add a delay
+  private void delayExecution(int milliseconds) {
+    try {
+      Thread.sleep(milliseconds);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   /**

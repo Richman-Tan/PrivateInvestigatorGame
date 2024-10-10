@@ -69,6 +69,7 @@ public class VolumeControlUtil {
    */
   private void setupVolumeButton(
       SVGPath volumeButton, double layoutX, double layoutY, EventHandler<MouseEvent> onClick) {
+    // Set up the appearance and behavior of the volume button
     volumeButton.setScaleY(2.0);
     volumeButton.setScaleX(2.0);
     volumeButton.setScaleZ(2.0);
@@ -78,6 +79,8 @@ public class VolumeControlUtil {
     volumeButton.setFill(Color.web("#ffffff94"));
     volumeButton.setStrokeWidth(0.5);
     volumeButton.setOnMouseClicked(onClick);
+
+    // Add the volume button to the timer pane
     timerPane.getChildren().add(volumeButton);
   }
 

@@ -11,7 +11,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.utils.VolumeControlUtil;
@@ -49,9 +48,6 @@ public class ClueSafeController {
   private Button goBackButton = new Button("Go Back");
   private boolean middleNote = false;
   private boolean backNote = false;
-  private SVGPath volumeUpStroke = new SVGPath();
-  private SVGPath volumeUp = new SVGPath();
-  private SVGPath volumeOff = new SVGPath();
 
   // Get timer
   private TimerModel countdownTimer;
