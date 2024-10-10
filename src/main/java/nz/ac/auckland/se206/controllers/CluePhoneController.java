@@ -597,12 +597,16 @@ public class CluePhoneController {
   }
 
   /**
-   * Create a draggable circle.
+   * Creates a draggable circle at the specified coordinates with the given color.
    *
-   * @param x
-   * @param y
-   * @param color
-   * @return
+   * <p>This method initializes a {@code Circle} object with a specified position and color. It also
+   * sets up mouse event handlers to make the circle draggable within the scene. The circle's size
+   * is fixed, and it will respond to mouse actions for dragging.
+   *
+   * @param x the x-coordinate of the circle's center.
+   * @param y the y-coordinate of the circle's center.
+   * @param color the {@code Color} of the circle.
+   * @return the created {@code Circle} object that can be dragged around the scene.
    */
   private Circle createDraggableCircle(double x, double y, Color color) {
     Circle circle = new Circle(x, y, 10, color);
@@ -612,13 +616,35 @@ public class CluePhoneController {
     return circle;
   }
 
-  // Create fixed end circle (no dragging)
+  /**
+   * Creates a fixed circle at the specified coordinates with the given color.
+   *
+   * <p>This method initializes a {@code Circle} object with a specified position and color. The
+   * circle is fixed in place and does not respond to mouse events for dragging, making it suitable
+   * for use as a static element in the scene.
+   *
+   * @param x the x-coordinate of the circle's center.
+   * @param y the y-coordinate of the circle's center.
+   * @param color the {@code Color} of the circle.
+   * @return the created {@code Circle} object that is fixed in the scene.
+   */
   private Circle createFixedCircle(double x, double y, Color color) {
     Circle circle = new Circle(x, y, 10, color);
     return circle;
   }
 
-  // Called when dragging starts
+  /**
+   * Called when dragging of the specified circle starts.
+   *
+   * <p>This method initializes the dragging process by setting the currently active circle to be
+   * dragged. It creates a new {@code Line} object that visually represents the wire connected to
+   * the circle while dragging. The line's properties, such as stroke width and color, are set
+   * according to the circle's attributes. The line's starting point is set to the center of the
+   * circle, and it is added to the root pane for visual representation.
+   *
+   * @param event the mouse event triggered when the dragging starts.
+   * @param circle the {@code Circle} that is currently being dragged.
+   */
   private void onStartDrag(MouseEvent event, Circle circle) {
     activeStartCircle = circle;
 
@@ -634,7 +660,16 @@ public class CluePhoneController {
     rootPane.getChildren().add(activeWire);
   }
 
-  // Called while dragging
+  /**
+   * Called while the dragging of the circle is in progress.
+   *
+   * <p>This method updates the endpoint of the active wire representation based on the current
+   * mouse position. If an active wire exists, its endpoint is set to the coordinates of the mouse
+   * event, visually connecting the wire to the position of the mouse cursor while dragging the
+   * circle.
+   *
+   * @param event the mouse event triggered during the dragging action.
+   */
   private void onDrag(MouseEvent event) {
     if (activeWire != null) {
       activeWire.setEndX(event.getX());
@@ -642,7 +677,17 @@ public class CluePhoneController {
     }
   }
 
-  // Called when dragging ends
+  /**
+   * Called when the dragging of the circle ends.
+   *
+   * <p>This method finalizes the dragging action by determining if the dragged circle was dropped
+   * onto a valid end circle. If a valid end circle is found, the method snaps the active wire to
+   * the center of that end circle and updates the connection flags for the corresponding wires. If
+   * the drop location is invalid, the active wire is removed from the scene. The method also checks
+   * if all wire connections are complete and resets the active wire and circle references.
+   *
+   * @param event the mouse event triggered when the dragging ends.
+   */
   private void onEndDrag(MouseEvent event) {
     if (activeWire != null && activeStartCircle != null) {
       // Check if the user dropped on a valid end circle
@@ -894,7 +939,18 @@ public class CluePhoneController {
     return targetEndCircle;
   }
 
-  // Helper to check if a point (x, y) is inside a circle
+  /**
+   * Checks if a given point is inside the specified circle.
+   *
+   * <p>This method calculates the distance between the center of the circle and the provided
+   * coordinates (x, y). It determines if the point lies within the circle's radius, returning
+   * {@code true} if it does and {@code false} otherwise.
+   *
+   * @param circle the {@code Circle} object used for the check.
+   * @param x the x-coordinate of the point to check.
+   * @param y the y-coordinate of the point to check.
+   * @return {@code true} if the point is inside the circle; {@code false} otherwise.
+   */
   private boolean isInsideCircle(Circle circle, double x, double y) {
     double dx = x - circle.getCenterX();
     double dy = y - circle.getCenterY();
@@ -902,8 +958,16 @@ public class CluePhoneController {
     return distance <= circle.getRadius();
   }
 
-  /*
-   * Creating and binding background images
+  /**
+   * Creates an ImageView for the specified image and binds its dimensions to the root pane.
+   *
+   * <p>This method initializes an {@code ImageView} with the provided image, setting its initial
+   * width and height to match the dimensions of the root pane. It also establishes bindings for the
+   * width and height properties of the image view to ensure that the image resizes responsively
+   * when the root pane is resized. Finally, the image view is added to the root pane's children for
+   * display.
+   *
+   * @param image the {@code Image} to be displayed in the ImageView.
    */
   private void createAndBindImageView(Image image) {
     ImageView imageView = new ImageView(image);

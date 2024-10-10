@@ -95,8 +95,12 @@ public class TimerModel {
     timer.scheduleAtFixedRate(task, 0, 1000);
   }
 
-  /*
-   * Stops the timer.
+  /**
+   * Stops the timer if it is currently running.
+   *
+   * <p>This method checks if the timer instance is not null and, if so, cancels the timer to stop
+   * its operation. This is typically used to halt the countdown or any ongoing timing processes
+   * associated with the timer.
    */
   public void stop() {
     if (timer != null) {

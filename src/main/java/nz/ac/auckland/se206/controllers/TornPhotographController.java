@@ -392,10 +392,15 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to handle the mouse pressed event for the puzzle pieces.
+   * Handles the mouse pressed event for puzzle pieces.
    *
-   * @param event
-   * @param piece
+   * <p>This method is triggered when the mouse is pressed on a puzzle piece. It calculates the
+   * offsets between the current mouse position and the position of the puzzle piece, storing them
+   * in {@code offsetX} and {@code offsetY}. This information is used to allow smooth dragging of
+   * the piece when the mouse is moved.
+   *
+   * @param event the mouse event containing information about the mouse action.
+   * @param piece the {@code ImageView} representing the puzzle piece that is being pressed.
    */
   private void onPiecePressed(MouseEvent event, ImageView piece) {
     offsetX = event.getSceneX() - piece.getLayoutX();
@@ -403,10 +408,14 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to handle the mouse dragged event for the puzzle pieces.
+   * Handles the mouse dragged event for puzzle pieces.
    *
-   * @param event
-   * @param piece
+   * <p>This method updates the position of the specified puzzle piece as the mouse is dragged. It
+   * calculates the new layout coordinates of the piece based on the current mouse position,
+   * adjusting for any predefined offset to ensure smooth dragging.
+   *
+   * @param event the mouse event containing the current mouse coordinates.
+   * @param piece the {@code ImageView} representing the puzzle piece being dragged.
    */
   private void onPieceDragged(MouseEvent event, ImageView piece) {
     piece.setLayoutX(event.getSceneX() - offsetX);
@@ -414,10 +423,15 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to handle the mouse released event for the puzzle pieces.
+   * Handles the mouse released event for puzzle pieces.
    *
-   * @param event
-   * @param piece
+   * <p>This method is triggered when the mouse is released after dragging a puzzle piece. It checks
+   * if the released piece is close enough to its target position, allowing it to snap into place.
+   * If the piece is positioned correctly, its layout coordinates are updated, and its correctness
+   * state is marked as true.
+   *
+   * @param event the mouse event containing information about the mouse action.
+   * @param piece the {@code ImageView} representing the puzzle piece that is being released.
    */
   private void onPieceReleased(MouseEvent event, ImageView piece) {
     // Check if the piece is close enough to its target position to snap into place
@@ -482,12 +496,18 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to check if a puzzle piece is close to its target position.
+   * Checks if a puzzle piece is close to its target position within a specified threshold.
    *
-   * @param piece
-   * @param targetX
-   * @param targetY
-   * @return
+   * <p>This method determines whether the provided {@code ImageView} piece is within a specified
+   * distance from its target position, defined by the coordinates {@code targetX} and {@code
+   * targetY}. It uses the {@code snapDistanceThreshold} to define how close the piece needs to be
+   * to snap into place.
+   *
+   * @param piece the {@code ImageView} representing the puzzle piece to check.
+   * @param targetX the X-coordinate of the target position.
+   * @param targetY the Y-coordinate of the target position.
+   * @return {@code true} if the piece is within the snap distance of the target position; {@code
+   *     false} otherwise.
    */
   private boolean isCloseToTarget(ImageView piece, double targetX, double targetY) {
     return Math.abs(piece.getLayoutX() - targetX) < snapDistanceThreshold

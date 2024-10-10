@@ -326,10 +326,16 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the confirm culprit button is clicked
+   * Handles the action when the confirm culprit button is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * <p>This method is triggered by a mouse event and initiates the confirmation process for the
+   * selected culprit. It plays a confirmation sound and performs any necessary updates or
+   * transitions related to the culprit confirmation. Additionally, it manages the volume settings
+   * for the audio playback.
+   *
+   * @param event the mouse event that triggered the confirmation action.
+   * @throws IOException if there is an error loading the FXML file or other resources required for
+   *     the confirmation process.
    */
   @FXML
   private void confirmCulprit(MouseEvent event) throws IOException {
@@ -630,10 +636,11 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the replay button is clicked
+   * Creates and configures an ImageView to be displayed in the root pane.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * <p>This method programmatically initializes an {@code ImageView} instance, sets its dimensions
+   * and position, and adds it to the specified {@code rootPane}. The size and layout properties are
+   * set to ensure that the image view is displayed correctly within the application interface.
    */
   private void createImageView() {
     // Create the ImageView programmatically
