@@ -25,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
@@ -80,9 +79,6 @@ public class RoomController {
 
   // Graphical components
   private Group drawGroup;
-  private final SVGPath volumeUpStroke = new SVGPath();
-  private final SVGPath volumeUp = new SVGPath();
-  private final SVGPath volumeOff = new SVGPath();
 
   /**
    * Initializes the room after the associated FXML has been loaded.

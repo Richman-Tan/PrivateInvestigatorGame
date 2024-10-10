@@ -670,10 +670,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to play the gif
+   * Method to play the gif.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   private void playgif() {
     // Load the GIF image once
@@ -769,7 +769,7 @@ public class UpdatedGuessingController {
     }
   }
 
-  /** Method to handle when the send message button is clicked */
+  /** Method to handle when the send message button is clicked. */
   private void onSendMessage() {
     // Get the user's explanation message
     String message = userExplanation.getText().trim();

@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -900,7 +899,7 @@ public abstract class BaseRoomController {
     imageView.fitHeightProperty().bind(pane.heightProperty());
   }
 
-  /** This method updates the visibility of the menu */
+  /** This method updates the visibility of the menu. */
   protected void updateMenuVisibility() {
     // If the menu is not visible, bring everything to the back except the closed menu icon
     basemapimg.toBack();
