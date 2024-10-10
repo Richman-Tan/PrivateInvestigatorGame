@@ -49,6 +49,7 @@ public class CutSceneController {
   private SVGPath volumeUpStroke = new SVGPath();
   private SVGPath volumeUp = new SVGPath();
   private SVGPath volumeOff = new SVGPath();
+  private BorderPane dialogPane; // BorderPane for the dialog
   private MediaPlayer gaspPlayer;
 
   // Static methods
@@ -238,9 +239,11 @@ public class CutSceneController {
           rootPane.getChildren().remove(revealLabel);
 
           // Main dialog pane (background)
-          BorderPane dialogPane = new BorderPane();
+          dialogPane = new BorderPane();
+          dialogPane.setOpacity(0.75);
           dialogPane.setStyle(
-              "-fx-border-color: black; -fx-border-radius: 20; -fx-border-width: 3;");
+              "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+                  + " -fx-border-color: #3f2218; -fx-border-width: 4px;");
           dialogPane.setBackground(
               new Background(
                   new BackgroundFill(
@@ -250,11 +253,10 @@ public class CutSceneController {
           // Label for character name
           Label nameLabel = new Label("?????");
           nameLabel.setFont(new Font("Arial", 18));
-          nameLabel.setTextFill(Color.BLACK); // Setting the pink color for the name
+          nameLabel.setTextFill(Color.BLACK);
           nameLabel.setStyle(
-              "-fx-font-weight: bold; -fx-background-color: white; -fx-border-color: black;"
-                  + " -fx-border-radius: 20; -fx-padding: 5; -fx-border-width: 3;"
-                  + " -fx-background-radius: 20;");
+              "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+                  + " -fx-border-color: #3f2218; -fx-border-width: 4px;");
 
           // Label for dialogue text
           Label dialogueLabel = new Label("");
@@ -280,9 +282,9 @@ public class CutSceneController {
 
           Button nextButton = new Button("CALL PI MASTERS");
           nextButton.setStyle(
-              "-fx-font-weight: bold; -fx-background-color: #B9CAC0; -fx-border-color: black;"
+              "-fx-font-weight: bold; -fx-background-color: #775E55; -fx-border-color: #3f2218;"
                   + " -fx-border-radius: 20; -fx-padding: 5; -fx-border-width: 3;"
-                  + " -fx-background-radius: 20;");
+                  + " -fx-background-radius: 20; -fx-text-fill: #c1b8b5;");
           nextButton.setOnAction(
               e -> {
                 // Handle the next button action
@@ -307,19 +309,19 @@ public class CutSceneController {
           nextButton.setOnMouseEntered(
               e -> {
                 nextButton.setStyle(
-                    "-fx-font-weight: bold; -fx-background-color: #CDD8D1; -fx-border-color: black;"
-                        + " -fx-border-radius: 20; -fx-padding: 5; -fx-border-width: 3;"
-                        + " -fx-background-radius: 20;"
-                        + "-fx-cursor: hand;");
+                    "-fx-font-weight: bold; -fx-background-color: #c1b8b5; -fx-background-radius:"
+                        + " 20px; -fx-border-radius: 20px; -fx-border-color: #3f2218;"
+                        + " -fx-border-width: 4px;-fx-padding: 5; -fx-border-width: 3; -fx-cursor:"
+                        + " hand; -fx-text-fill: #775E55;");
               }); // Change to pointer on hover
 
           nextButton.setOnMouseExited(
               e -> {
                 nextButton.setStyle(
-                    "-fx-font-weight: bold; -fx-background-color: #B9CAC0; -fx-border-color: black;"
-                        + " -fx-border-radius: 20; -fx-padding: 5; -fx-border-width: 3;"
-                        + " -fx-background-radius: 20;"
-                        + "-fx-cursor: default;");
+                    "-fx-font-weight: bold; -fx-background-color: #775E55; -fx-background-radius:"
+                        + " 20px; -fx-border-radius: 20px; -fx-border-color: #3f2218;"
+                        + " -fx-border-width: 4px;-fx-padding: 5; -fx-border-width: 3; -fx-cursor:"
+                        + " default; -fx-text-fill: #c1b8b5;");
                 nextButton.setOpacity(1);
               }); // Restore to default on exit
 
@@ -337,7 +339,7 @@ public class CutSceneController {
           // Create a fade-in transition for the dialog pane
           FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), dialogPane);
           fadeIn.setFromValue(0); // Start fully transparent
-          fadeIn.setToValue(1); // End fully visible
+          fadeIn.setToValue(0.75); // End fully visible
           fadeIn.play();
 
           // Create a fade-in transition for the name label

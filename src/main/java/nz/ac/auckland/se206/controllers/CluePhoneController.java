@@ -324,14 +324,9 @@ public class CluePhoneController {
       // Create arrow button on the left side of the phoneImage
       arrowButton = new Button("?"); // Unicode left arrow, you can also use an image
       arrowButton.setStyle(
-          "-fx-background-radius: 50; "
-              + "-fx-border-radius: 50; "
-              + "-fx-border-color: black; "
-              + "-fx-background-color: white; "
-              + "-fx-text-fill: black; "
-              + "-fx-font-size: 14px; "
-              + "-fx-background-insets: 0; "
-              + "-fx-border-insets: 0;"); // Larger font and clear border for visibility
+          "-fx-background-color: #c1b8b5; -fx-background-radius: 50px; -fx-border-radius: 50px;"
+              + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+              + " black;-fx-font-size: 14px;"); // Larger font and clear border for visibility
       arrowButton.setPrefWidth(30); // Set a fixed width
       arrowButton.setPrefHeight(30); // Set a fixed height
 
@@ -343,24 +338,19 @@ public class CluePhoneController {
           e -> {
             // Apply custom styles for hover
             arrowButton.setStyle(
-                "-fx-background-color: #5e5548; "
-                    + // Change background color
-                    "-fx-border-color: #5e5548; "
-                    + // Change border color
-                    "-fx-cursor: hand;" // Change cursor to hand
-                    + "-fx-background-radius: 50; "
-                    + "-fx-border-radius: 50; "
-                    + "-fx-text-fill: black; "
-                    + "-fx-font-size: 14px; "
-                    + "-fx-background-insets: 0; "
-                    + "-fx-border-insets: 0;");
+                " -fx-background-color: #775E55; -fx-background-radius:"
+                    + " 50px; -fx-border-radius: 50px; -fx-border-color: #3f2218;"
+                    + " -fx-border-width: 4px; -fx-cursor:"
+                    + " hand; -fx-text-fill: #c1b8b5;"
+                    + "-fx-font-size: 14px; ");
 
             // Pop up of a label to show the user what to do
             popUp = new Label("Click the button to turn the phone around");
             popUp.setStyle(
-                "-fx-font-size: 14px; -fx-background-color: white; -fx-background-radius: 10px;"
-                    + " -fx-border-radius: 10px; -fx-padding: 5px; -fx-border-color: black;");
-            popUp.setPrefWidth(360);
+                "-fx-font-size: 14px; -fx-background-color: c1b8b5; -fx-background-radius: 10px;"
+                    + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: #3f2218;"
+                    + " -fx-text-fill: #775E55; -fx-border-width: 3px;");
+            popUp.setPrefWidth(266);
             popUp.setPrefHeight(50);
             // Bind the label to the rootPane
             AnchorPane.setBottomAnchor(popUp, 10.0);
@@ -376,14 +366,10 @@ public class CluePhoneController {
           e -> {
             // Reset the button style when the mouse exits
             arrowButton.setStyle(
-                "-fx-background-radius: 50; "
-                    + "-fx-border-radius: 50; "
-                    + "-fx-border-color: black; "
-                    + "-fx-background-color: white; "
-                    + "-fx-text-fill: black; "
-                    + "-fx-font-size: 14px; "
-                    + "-fx-background-insets: 0; "
-                    + "-fx-border-insets: 0;");
+                "-fx-background-color: #c1b8b5; -fx-background-radius: 50px; -fx-border-radius:"
+                    + " 50px; -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+                    + " black;-fx-font-size: 14px;"
+                    + " -fx-cursor: default;");
             // Remove the pop up label
             rootPane.getChildren().remove(popUp);
           });
@@ -396,14 +382,9 @@ public class CluePhoneController {
 
     Button goBackButton = new Button("Go Back");
     goBackButton.setStyle(
-        "-fx-background-radius: 10; "
-            + "-fx-border-radius: 10; "
-            + "-fx-border-color: black; "
-            + "-fx-background-color: white; "
-            + "-fx-text-fill: black; "
-            + "-fx-font-size: 14px; "
-            + "-fx-background-insets: 0; "
-            + "-fx-border-insets: 0;");
+        "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+            + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets: 0;");
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
 
@@ -429,14 +410,10 @@ public class CluePhoneController {
         e -> {
           // Apply custom styles for hover
           goBackButton.setStyle(
-              "-fx-background-color: #5e5548; "
-                  + // Change background color
-                  "-fx-border-color: #5e5548; "
-                  + // Change border color
-                  "-fx-cursor: hand;" // Change cursor to hand
-                  + "-fx-background-radius: 10; "
-                  + "-fx-border-radius: 10; "
-                  + "-fx-text-fill: black; "
+              " -fx-background-color: #775E55; -fx-background-radius:"
+                  + " 10px; -fx-border-radius: 10px; -fx-border-color: #3f2218;"
+                  + " -fx-border-width: 4px;-fx-padding: 5; -fx-border-width: 3; -fx-cursor:"
+                  + " hand; -fx-text-fill: #c1b8b5;"
                   + "-fx-font-size: 14px; "
                   + "-fx-background-insets: 0; "
                   + "-fx-border-insets: 0;");
@@ -445,14 +422,10 @@ public class CluePhoneController {
         e -> {
           // Reset the button style when the mouse exits
           goBackButton.setStyle(
-              "-fx-background-radius: 10; "
-                  + "-fx-border-radius: 10; "
-                  + "-fx-border-color: black; "
-                  + "-fx-background-color: white; "
-                  + "-fx-text-fill: black; "
-                  + "-fx-font-size: 14px; "
-                  + "-fx-background-insets: 0; "
-                  + "-fx-border-insets: 0;");
+              "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+                  + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+                  + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
+                  + " 0; -fx-padding: 5; -fx-border-width: 3; -fx-cursor: default;");
         });
 
     labelPane.toFront();
@@ -501,9 +474,10 @@ public class CluePhoneController {
     // Create a new label
     label = new Label("Connect the wires to unlock the phone! (From left to right)");
     label.setStyle(
-        "-fx-font-size: 14px; -fx-background-color: white; -fx-background-radius: 10px;"
-            + " -fx-border-radius: 10px; -fx-padding: 5px; -fx-border-color: black;");
-    label.setPrefWidth(360);
+        "-fx-font-size: 14px; -fx-background-color: c1b8b5; -fx-background-radius: 10px;"
+            + " -fx-border-radius: 10px; -fx-padding: 10px; -fx-border-color: #3f2218;"
+            + " -fx-text-fill: #775E55; -fx-border-width: 3px;");
+    label.setPrefWidth(364);
     label.setPrefHeight(50);
 
     // Bind the label to the rootPane

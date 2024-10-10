@@ -90,29 +90,39 @@ public class ClueSafeController {
 
     // Add the "Go Back" button
     goBackButton.setStyle(
-        "-fx-background-radius: 10; "
-            + "-fx-border-radius: 10; "
-            + "-fx-border-color: black; "
-            + "-fx-background-color: white; "
-            + "-fx-text-fill: black; "
-            + "-fx-font-size: 14px; "
-            + "-fx-background-insets: 0; "
-            + "-fx-border-insets: 0;");
+        "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+            + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+            + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets: 0;");
+    goBackButton.setOpacity(0.75);
     goBackButton.setPrefWidth(100);
     goBackButton.setPrefHeight(40);
 
     // Add hover effect to the button
     goBackButton.setOnMouseEntered(
         e -> {
-          goBackButton.setOpacity(0.7);
-          goBackButton.setCursor(javafx.scene.Cursor.HAND);
+          // Apply custom styles for hover
+          goBackButton.setStyle(
+              " -fx-background-color: #775E55; -fx-background-radius:"
+                  + " 10px; -fx-border-radius: 10px; -fx-border-color: #3f2218;"
+                  + " -fx-border-width: 4px;-fx-padding: 5; -fx-border-width: 3; -fx-cursor:"
+                  + " hand; -fx-text-fill: #c1b8b5;"
+                  + "-fx-font-size: 14px; "
+                  + "-fx-background-insets: 0; "
+                  + "-fx-border-insets: 0;");
+          goBackButton.setOpacity(0.75);
         });
 
     // Set up mouse exit effect for the goBack button
     goBackButton.setOnMouseExited(
         e -> {
-          goBackButton.setOpacity(1); // Reset opacity to 1
-          goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
+          goBackButton.setStyle(
+              "-fx-background-color: #c1b8b5; -fx-background-radius: 10px; -fx-border-radius: 10px;"
+                  + " -fx-border-color: #3f2218; -fx-border-width: 4px; -fx-text-fill:"
+                  + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
+                  + " 0; -fx-padding: 5; -fx-border-width: 3; -fx-cursor: default;");
+          goBackButton.setOpacity(0.75);
+          //goBackButton.setOpacity(1); // Reset opacity to 1
+          //goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
         });
 
     // Position the button at the bottom-right corner
