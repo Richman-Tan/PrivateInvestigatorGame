@@ -3,6 +3,7 @@ package nz.ac.auckland.se206;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import nz.ac.auckland.se206.controllers.SharedTimerModel;
 import nz.ac.auckland.se206.controllers.TimerModel;
 import nz.ac.auckland.se206.states.GameOver;
@@ -114,9 +115,13 @@ public class GameStateContext {
   }
 
   /**
-   * Sets the isMenuVisible variable.
+   * Sets the visibility state of the menu.
    *
-   * @param menuVisible
+   * <p>This method updates the {@code isMenuVisible} variable to reflect the desired visibility
+   * state of the menu. A value of {@code true} indicates that the menu should be visible, while
+   * {@code false} hides the menu.
+   *
+   * @param menuVisible {@code true} to make the menu visible; {@code false} to hide it.
    */
   public void setMenuVisible(boolean menuVisible) {
     this.isMenuVisible = menuVisible;

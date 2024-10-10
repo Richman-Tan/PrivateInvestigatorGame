@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -71,7 +72,13 @@ public class BackstoryController {
   // Constructors (if any)
 
   // Instance methods
-  /** Initializes the backstory view. */
+  /**
+   * Initializes the backstory view when the FXML component is loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework after the FXML file has been
+   * loaded. It sets up the initial state of the backstory view, including any necessary UI
+   * components, event listeners, and data bindings required for the view's functionality.
+   */
   @FXML
   public void initialize() {
 
@@ -339,10 +346,17 @@ public class BackstoryController {
   }
 
   /**
-   * Sets the hover handlers for the additional and enlarged image views.
+   * Sets the hover handlers for the specified additional and enlarged image views.
    *
-   * @param additionalImageView
-   * @param enlargedImageView
+   * <p>This method configures mouse hover behavior for the {@code additionalImageView} and {@code
+   * enlargedImageView}. When the mouse enters the additional image view, its opacity is set to 0
+   * (making it invisible), and the enlarged image view's opacity is set to 1 (making it visible).
+   * Conversely, when the mouse exits the additional image view, the opacity of the additional image
+   * view is restored to 1 (visible), and the enlarged image view's opacity is set back to 0
+   * (invisible).
+   *
+   * @param additionalImageView the image view that will become invisible on hover.
+   * @param enlargedImageView the image view that will become visible on hover.
    */
   private void setHoverHandlers(ImageView additionalImageView, ImageView enlargedImageView) {
 

@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
@@ -67,7 +68,14 @@ public class CluePhoneController {
 
   private TimerModel countdownTimer;
 
-  /** Initializes the CluePhoneController. */
+  /**
+   * Initializes the CluePhoneController after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the
+   * CluePhone view is loaded. It sets up the initial state of the CluePhone controller by
+   * configuring UI components, binding properties, and initializing any necessary data structures
+   * or event listeners required for the controller's functionality.
+   */
   @FXML
   private void initialize() {
     // Use the helper method to create and add the timer pane
@@ -513,7 +521,14 @@ public class CluePhoneController {
     setupGame();
   }
 
-  /** Sets up game */
+  /**
+   * Sets up the game by creating and positioning draggable start circles and fixed end circles.
+   *
+   * <p>This method initializes three start circles (red, blue, green) that are draggable and three
+   * corresponding end circles that are fixed in position. The positions of the circles are bound to
+   * the size and position of an associated image view, ensuring that they adjust dynamically.
+   * Finally, all circles are added to the root pane for rendering.
+   */
   private void setupGame() {
     // Create start circles (left side)
     startCircleRed = createDraggableCircle(0, 0, Color.RED);

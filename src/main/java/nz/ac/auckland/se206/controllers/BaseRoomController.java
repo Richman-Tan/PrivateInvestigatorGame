@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -63,7 +64,14 @@ public abstract class BaseRoomController {
   @FXML private ImageView crimesceneiconimg;
   @FXML private Pane timerpane;
 
-  /** This method initializes the controller */
+  /**
+   * Initializes the controller after the FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the associated FXML file is
+   * loaded. It sets up the initial state of the controller, including configuring UI components,
+   * binding properties, and initializing data necessary for the view's functionality. Any event
+   * listeners or default settings can also be set within this method.
+   */
   @FXML
   public void initialize() {
     updateMenuVisibility();
@@ -403,8 +411,11 @@ public abstract class BaseRoomController {
   /** This method is called when an icon is clicked. It navigates to the corresponding room */
   @FXML
   protected void onIconClicked(MouseEvent event) {
+    // Get the icon that was clicked
     ImageView icon = (ImageView) event.getSource();
     System.out.println("Clicked on: " + icon.getId()); // Replace with desired action
+
+    // Navigate to the corresponding room based on the icon clicked
     switch (icon.getId()) {
       case "widowiconimg" -> {
         try {
@@ -461,10 +472,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method sets up the GPT request
+   * Sets up the GPT request with the specified parameters.
    *
-   * @throws IOException
-   * @throws ApiProxyException
+   * <p>This method initializes the chat completion request by reading the API configuration and
+   * setting the required parameters for the GPT request, such as the number of responses,
+   * temperature, top-p value, and maximum tokens.
+   *
+   * @throws IOException if there is an error reading the API configuration file.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
    */
   protected void setupGptRequest() throws IOException, ApiProxyException {
     // Set up the GPT request
@@ -478,7 +493,15 @@ public abstract class BaseRoomController {
             .setMaxTokens(100);
   }
 
-  /** This method binds the timer to the label */
+  /**
+   * Binds the countdown timer to the label for display.
+   *
+   * <p>This method retrieves the countdown timer instance from the shared timer model and binds its
+   * time string property to the {@code lbltimer} label, ensuring that the label updates
+   * automatically as the timer changes. Additionally, it attaches a listener to the timer's time
+   * string property to perform actions when the timer's value changes, specifically checking if
+   * there are four minutes left.
+   */
   protected void bindTimerToLabel() {
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     System.out.println(
@@ -509,25 +532,46 @@ public abstract class BaseRoomController {
   protected abstract String getInitialPrompt();
 
   /**
-   * This method loads the initial prompt for the GPT model
+   * Loads the initial prompt for the GPT model from a specified resource file.
    *
-   * @param resourcePath the path to the resource file containing the initial prompt
-   * @throws URISyntaxException
-   * @throws IOException
-   * @throws ApiProxyException
+   * <p>This abstract method is intended to be implemented by subclasses to define how the initial
+   * prompt is loaded into the GPT model. It takes the path to the resource file containing the
+   * prompt as an input. The implementation must handle the loading of the prompt while managing
+   * potential errors that may arise during the process.
+   *
+   * @param resourcePath the path to the resource file containing the initial prompt. This path
+   *     should be accessible and valid to ensure successful loading.
+   * @throws URISyntaxException if the provided resource path cannot be converted into a URI.
+   * @throws IOException if there is an error reading from the resource file.
+   * @throws ApiProxyException if there is an error communicating with the API proxy or if the
+   *     loaded prompt parameters are invalid.
    */
   protected abstract void loadGptPrompt(String resourcePath)
       throws URISyntaxException, IOException, ApiProxyException;
 
-  /** This method sets the user chat box prompt */
+  /**
+   * Sets the prompt text for the user chat box.
+   *
+   * <p>This method updates the prompt displayed in the user chat box to provide guidance or
+   * instructions to the user. The update is performed on the JavaFX Application Thread using {@code
+   * Platform.runLater}, ensuring that UI changes are made safely and without threading issues.
+   *
+   * @param text the text to be set as the prompt for the user chat box. This should provide clear
+   *     guidance to the user about what to enter.
+   */
   protected void setUserChatBoxPrompt(String text) {
     Platform.runLater(() -> userChatBox.setPromptText(text));
   }
 
   /**
-   * This method appends a chat message to the suspect chat box
+   * Handles the mouse event to transition to the room scene.
    *
-   * @param msg the chat message to append
+   * <p>This method is triggered when a mouse event occurs. It changes the current scene to the
+   * "room" view, allowing the user to interact with the room interface. The method uses the App
+   * class to set the root of the application to the specified scene.
+   *
+   * @param event the mouse event that triggered the scene change.
+   * @throws IOException if there is an error loading the FXML file for the room scene.
    */
   @FXML
   protected void onRoom(MouseEvent event) throws IOException {
@@ -590,10 +634,17 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method handles the sending of a message to the GPT model
+   * Handles the process of sending a message to the GPT model.
    *
-   * @throws ApiProxyException
-   * @throws IOException
+   * <p>This method orchestrates the actions required to send a message to the GPT model, including
+   * executing the message sending logic, recording the visit for tracking purposes, and updating
+   * the state of the guess button based on the current context. It ensures that the necessary
+   * procedures are followed for effective communication with the model.
+   *
+   * @throws ApiProxyException if there is an error communicating with the API proxy or if the
+   *     request parameters are invalid.
+   * @throws IOException if there is an error during input or output operations, such as reading
+   *     from or writing to a file.
    */
   protected void handleSendMessage() throws ApiProxyException, IOException {
     sendMessageCode();
@@ -741,45 +792,17 @@ public abstract class BaseRoomController {
 
   /** This method updates the visibility of the menu */
   protected void updateMenuVisibility() {
-    boolean isMenuVisible = context.isMenuVisible();
+    // If the menu is not visible, bring everything to the back except the closed menu icon
+    basemapimg.toBack();
+    lblareastatus.toBack();
+    widowiconimg.toBack();
+    brothericonimg.toBack();
+    grandsoniconimg.toBack();
+    topofmenubtn.toBack();
+    crimesceneiconimg.toBack();
 
-    if (isMenuVisible) {
-      // Set z-order for visible menu
-      basemapimg.toFront();
-      lblareastatus.toFront();
-      widowiconimg.toFront();
-      brothericonimg.toFront();
-      grandsoniconimg.toFront();
-      topofmenubtn.toFront();
-      crimesceneiconimg.toFront();
-
-      // Check which controller it is in a set each icon to have a slightly lower opacity depending
-      // on which controller
-
-      System.out.println(this.getClass().getName());
-      if (this instanceof Suspect1RoomController) {
-        widowiconimg.setOpacity(0.7);
-      } else if (this instanceof Suspect2RoomController) {
-        brothericonimg.setOpacity(0.7);
-      } else if (this instanceof Suspect3RoomController) {
-        grandsoniconimg.setOpacity(0.7);
-      }
-
-      // Hide the closed menu icon behind everything else
-      menuclosedimg.toBack();
-    } else {
-      // If the menu is not visible, bring everything to the back except the closed menu icon
-      basemapimg.toBack();
-      lblareastatus.toBack();
-      widowiconimg.toBack();
-      brothericonimg.toBack();
-      grandsoniconimg.toBack();
-      topofmenubtn.toBack();
-      crimesceneiconimg.toBack();
-
-      // Bring the closed menu icon to the front
-      menuclosedimg.toFront();
-    }
+    // Bring the closed menu icon to the front
+    menuclosedimg.toFront();
   }
 
   /**

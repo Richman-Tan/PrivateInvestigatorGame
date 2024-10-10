@@ -1,9 +1,15 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.util.Random;
+
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
@@ -12,6 +18,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
@@ -22,6 +30,8 @@ public class StartGameController {
   // Static fields
   private static final String door =
       GameStarted.class.getClassLoader().getResource("sounds/doorOpen.mp3").toExternalForm();
+  private static final String backgroundMusic =
+      GameStarted.class.getClassLoader().getResource("sounds/start.mp3").toExternalForm();
 
   static final Image image1 =
       new Image(BackstoryController.class.getResource("/images/initialDoor.jpg").toString());
@@ -46,11 +56,19 @@ public class StartGameController {
   @FXML private AnchorPane rootPane;
   private MediaPlayer mediaPlayer;
   private ImageView imageView;
+  private MediaPlayer backgroundPlayer;
 
   // Constructors
 
   // Instance methods
-  /** Initializes the start view. */
+  /**
+   * Initializes the start after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the start
+   * view is loaded. It sets up the initial state of the start controller by configuring UI
+   * components, binding properties, and initializing any necessary data structures or event
+   * listeners required for the controller's functionality.
+   */
   @FXML
   public void initialize() {
     // Initialize the ImageView with image1 and set it to take up the whole screen
@@ -63,8 +81,27 @@ public class StartGameController {
     // Add the imageView to the rootPane
     rootPane.getChildren().add(imageView);
 
+    // Load and play the background music
+    Media backgroundSound = new Media(backgroundMusic);
+    backgroundPlayer = new MediaPlayer(backgroundSound);
+    backgroundPlayer.setVolume(0.4); // Set volume to 50%
+    BooleanProperty volumeSettingProperty =
+        SharedVolumeControl.getInstance().volumeSettingProperty();
+    backgroundPlayer
+        .volumeProperty()
+        .bind(
+            Bindings.createDoubleBinding(
+                () ->
+                    volumeSettingProperty.get() ? 0.4 : 0.0, // Full volume or mute based on setting
+                volumeSettingProperty));
+    backgroundPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the background music
+    backgroundPlayer.play();
+
     // Set up imageView as a button
     setupImageViewAsButton();
+
+    // Create and animate the snow falling effect
+    createSnowFallingEffect();
   }
 
   /** Sets up the ImageView to act as a button. */
@@ -94,18 +131,79 @@ public class StartGameController {
 
     // Set click action
     imageView.setOnMouseClicked(
-        e -> {
+        (var e) -> {
           try {
-            mediaPlayer.seek(Duration.seconds(1));
+            mediaPlayer.seek(Duration.seconds(1)); // Seek to start of door sound
             if (!SharedVolumeControl.getInstance().getVolumeSetting()) {
               mediaPlayer.setVolume(0);
             }
             mediaPlayer.play();
+            backgroundPlayer.stop(); // Stop background music when door sound plays
             onPlay();
           } catch (IOException | ApiProxyException ex) {
             ex.printStackTrace();
           }
         });
+  }
+
+  /**
+   * Creates an enhanced snow falling effect by generating snowflake nodes and animating them with
+   * various properties such as size, speed, direction, and rotation.
+   */
+  private void createSnowFallingEffect() {
+    Random random = new Random();
+
+    // Create a Timeline for generating snowflakes
+    Timeline snowTimeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.millis(300),
+                event -> {
+                  // Create a snowflake with a random size between 2 and 7
+                  double radius = random.nextDouble() * 5 + 2;
+                  Circle snowflake = new Circle(radius);
+
+                  // Randomly choose a color for the snowflake (white, light blue, or light gray)
+                  snowflake.setFill(
+                      Color.rgb(
+                          255 - random.nextInt(20), // Light variations of white
+                          255 - random.nextInt(20),
+                          255 - random.nextInt(20),
+                          random.nextDouble() * 0.7 + 0.3)); // Opacity between 0.3 and 1.0
+
+                  snowflake.setLayoutX(
+                      random.nextDouble() * rootPane.getWidth()); // Set random x-position
+                  snowflake.setLayoutY(0); // Start at the top of the screen
+
+                  // Animate the snowflake falling down with random speed and slight left/right
+                  // motion
+                  TranslateTransition fallTransition =
+                      new TranslateTransition(
+                          Duration.seconds(5 + random.nextDouble() * 5), snowflake);
+                  fallTransition.setByY(rootPane.getHeight());
+                  fallTransition.setByX(
+                      random.nextDouble() * 40 - 20); // Drift slightly left or right
+
+                  // Rotate the snowflake as it falls
+                  RotateTransition rotateTransition =
+                      new RotateTransition(
+                          Duration.seconds(5 + random.nextDouble() * 5), snowflake);
+                  rotateTransition.setByAngle(360);
+                  rotateTransition.setInterpolator(Interpolator.LINEAR);
+                  rotateTransition.setCycleCount(1);
+
+                  // Combine both transitions
+                  ParallelTransition parallelTransition =
+                      new ParallelTransition(fallTransition, rotateTransition);
+                  parallelTransition.setOnFinished(
+                      e -> rootPane.getChildren().remove(snowflake)); // Remove when done
+
+                  rootPane.getChildren().add(snowflake);
+                  parallelTransition.play();
+                }));
+
+    snowTimeline.setCycleCount(Timeline.INDEFINITE); // Generate snowflakes continuously
+    snowTimeline.play();
   }
 
   /*

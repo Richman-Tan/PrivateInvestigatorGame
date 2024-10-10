@@ -82,7 +82,14 @@ public class RoomController {
   private final SVGPath volumeUp = new SVGPath();
   private final SVGPath volumeOff = new SVGPath();
 
-  /** Initializes the room view. */
+  /**
+   * Initializes the room after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the room
+   * view is loaded. It sets up the initial state of the room controller by configuring UI
+   * components, binding properties, and initializing any necessary data structures or event
+   * listeners required for the controller's functionality.
+   */
   @FXML // This method is called by the FXMLLoader when initialization is complete
   public void initialize() {
 

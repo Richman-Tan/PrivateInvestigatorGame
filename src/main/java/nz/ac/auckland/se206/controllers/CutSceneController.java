@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -49,13 +50,21 @@ public class CutSceneController {
   private SVGPath volumeUpStroke = new SVGPath();
   private SVGPath volumeUp = new SVGPath();
   private SVGPath volumeOff = new SVGPath();
+  private MediaPlayer gaspPlayer;
 
   // Static methods
   // No static methods for now
 
   // Instance methods
 
-  /** Initializes the CutSceneController. */
+  /**
+   * Initializes the Cutscene after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the
+   * cutscnene view is loaded. It sets up the initial state of the cutscene controller by
+   * configuring UI components, binding properties, and initializing any necessary data structures
+   * or event listeners required for the controller's functionality.
+   */
   public void initialize() {
     // Load background video using the correct class reference for resource path
     String videoPath =
@@ -175,6 +184,12 @@ public class CutSceneController {
   private void startTextRevealAnimation() {
     revealLabel.setOpacity(1); // Make the label visible
 
+    // Create a new MediaPlayer instance for the gasp sound
+    Media gaspSound =
+        new Media(getClass().getClassLoader().getResource("sounds/gasp.mp3").toExternalForm());
+    gaspPlayer = new MediaPlayer(gaspSound);
+    gaspPlayer.play(); // Play the gasp sound
+
     Timeline timeline = new Timeline();
     for (int i = 0; i < revealText.length(); i++) {
       final int index = i;
@@ -212,7 +227,7 @@ public class CutSceneController {
     zoomOut.setToY(1.0);
 
     // Pause for 1 second after zooming in
-    PauseTransition pause = new PauseTransition(Duration.seconds(1));
+    PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
 
     // Play zoom in, pause, then zoom out
     zoomIn.setOnFinished(event -> pause.play());

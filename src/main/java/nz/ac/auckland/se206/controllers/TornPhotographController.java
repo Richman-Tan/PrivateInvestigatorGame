@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -51,6 +52,8 @@ public class TornPhotographController {
   @FXML private ImageView backofphotoimg;
 
   @FXML private Label revealLabel; // Label for text reveal
+
+  @FXML private ImageView photoframeimg;
 
   @FXML private ImageView piece1;
   @FXML private ImageView piece2;
@@ -119,11 +122,18 @@ public class TornPhotographController {
   private boolean piece9Correct;
 
   // Threshold to snap pieces into place
-  private final double SNAP_THRESHOLD = 200;
+  private final double snapDistanceThreshold = 180;
 
   private TimerModel countdownTimer;
 
-  /** Initializes the torn photograph view. */
+  /**
+   * Initializes the photograph after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the photo
+   * view is loaded. It sets up the initial state of the photo controller by configuring UI
+   * components, binding properties, and initializing any necessary data structures or event
+   * listeners required for the controller's functionality.
+   */
   @FXML
   public void initialize() {
     // Initialize flags for piece placement
@@ -304,6 +314,7 @@ public class TornPhotographController {
 
     // Load and bind the background image
     createAndBindImageView(backgroundwithgame);
+    createAndBindImageView(photoframeimg);
 
     togglevisabilityofpieces(true);
 
@@ -479,8 +490,8 @@ public class TornPhotographController {
    * @return
    */
   private boolean isCloseToTarget(ImageView piece, double targetX, double targetY) {
-    return Math.abs(piece.getLayoutX() - targetX) < SNAP_THRESHOLD
-        && Math.abs(piece.getLayoutY() - targetY) < SNAP_THRESHOLD;
+    return Math.abs(piece.getLayoutX() - targetX) < snapDistanceThreshold
+        && Math.abs(piece.getLayoutY() - targetY) < snapDistanceThreshold;
   }
 
   /** Method to check if the puzzle is complete. */

@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -52,7 +53,14 @@ public class ClueSafeController {
 
   // Instance methods
 
-  /** Initializes the controller. */
+  /**
+   * Initializes the ClueSafeController after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the
+   * ClueSafe view is loaded. It sets up the initial state of the ClueSafe controller by configuring
+   * UI components, binding properties, and initializing any necessary data structures or event
+   * listeners required for the controller's functionality.
+   */
   @FXML
   private void initialize() {
     // Bind the timerLabel to the countdown timer
