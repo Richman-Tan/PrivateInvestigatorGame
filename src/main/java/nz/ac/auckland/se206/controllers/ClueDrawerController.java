@@ -72,10 +72,11 @@ public class ClueDrawerController {
 
     // Set the style of the timer pane
     timerPane.setStyle(
-        "-fx-background-color: white;"
+        "-fx-background-color:  #c1b8b5;"
             + "-fx-background-radius: 10px;"
             + "-fx-border-radius: 10px;"
-            + "-fx-border-color: black;");
+            + "-fx-border-color:  #3f2218;"
+            + "-fx-border-width: 4px;");
 
     // Set the position of the timer pane
     AnchorPane.setLeftAnchor(timerPane, 10.0);
