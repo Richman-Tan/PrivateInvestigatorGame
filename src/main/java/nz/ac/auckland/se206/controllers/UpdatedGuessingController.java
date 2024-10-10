@@ -219,10 +219,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the hover over the image of the suspect
+   * Method to handle when the hover over the image of the suspect.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void hoverImageGma(MouseEvent event) throws IOException {
@@ -231,10 +231,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the hover over the image of the suspect
+   * Method to handle when the hover over the image of the suspect.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void hoverImageUncle(MouseEvent event) throws IOException {
@@ -243,10 +243,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the hover over the image of the suspect
+   * Method to handle when the hover over the image of the suspect.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void hoverImageSon(MouseEvent event) throws IOException {
@@ -255,10 +255,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the hover over the image of the suspect is off
+   * Method to handle when the hover over the image of the suspect is off.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void offHoverImageSon(MouseEvent event) {
@@ -266,10 +266,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the hover over the image of the suspect is off
+   * Method to handle when the hover over the image of the suspect is off.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void offHoverImageGma(MouseEvent event) {
@@ -277,10 +277,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the hover over the image of the suspect is off
+   * Method to handle when the hover over the image of the suspect is off.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void offHoverImageUncle(MouseEvent event) {
@@ -288,10 +288,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the image of the suspect is clicked
+   * Method to handle when the image of the suspect is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void clickedImageUncle(MouseEvent event) throws IOException {
@@ -305,10 +305,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the image of the suspect is clicked
+   * Method to handle when the image of the suspect is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void clickedImageSon(MouseEvent event) throws IOException {
@@ -322,10 +322,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the image of the suspect is clicked
+   * Method to handle when the image of the suspect is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void clickedImageGma(MouseEvent event) throws IOException {
@@ -408,9 +408,9 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the volume is turned off
+   * Method to handle when the volume is turned off.
    *
-   * @throws IOException if there is an error loading the FXML file
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   protected void turnVolumeOff() throws IOException {
@@ -439,9 +439,9 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to adjust the position of the volume button
+   * Method to adjust the position of the volume button.
    *
-   * @throws IOException if there is an error loading the FXML file
+   * @throws IOException if there is an error loading the FXML file.
    */
   private void checkVolumeIcon() throws IOException {
     if (SharedVolumeControl.getInstance().getVolumeSetting()) {
@@ -452,10 +452,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the confirm explanation button is clicked
+   * Method to handle when the confirm explanation button is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void confirmExplanation(MouseEvent event) throws IOException {
@@ -508,10 +508,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the game over pane is shown
+   * Method to handle when the game over pane is shown.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   @FXML
   private void showGameOver() {
@@ -622,10 +622,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the replay button is clicked
+   * Method to handle when the replay button is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   private void flashLastDot() {
     // Create a new Timeline for flashing the last '.'
@@ -695,10 +695,10 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to handle when the replay button is clicked
+   * Method to handle when the replay button is clicked.
    *
-   * @param event the mouse event
-   * @throws IOException if there is an error loading the FXML file
+   * @param event the mouse event.
+   * @throws IOException if there is an error loading the FXML file.
    */
   private void appendChatMessage(ChatMessage msg) {
     // Clear the text area before showing the new message
@@ -737,11 +737,11 @@ public class UpdatedGuessingController {
   }
 
   /**
-   * Method to run the GPT model
+   * Method to run the GPT model.
    *
-   * @param msg the chat message
-   * @return the chat message
-   * @throws ApiProxyException if there is an error communicating with the API proxy
+   * @param msg the chat message.
+   * @return the chat message.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
    */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
 

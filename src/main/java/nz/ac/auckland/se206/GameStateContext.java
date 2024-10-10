@@ -3,7 +3,6 @@ package nz.ac.auckland.se206;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import nz.ac.auckland.se206.controllers.SharedTimerModel;
 import nz.ac.auckland.se206.controllers.TimerModel;
 import nz.ac.auckland.se206.states.GameOver;
@@ -19,7 +18,16 @@ public class GameStateContext {
 
   private static GameStateContext instance;
 
-  // Static method to get the single instance of GameStateContext
+  /**
+   * Retrieves the singleton instance of the {@code GameStateContext} class.
+   *
+   * <p>This static method provides a global point of access to the single instance of {@code
+   * GameStateContext}. If the instance has not yet been created, it initializes a new instance
+   * before returning it. This ensures that only one instance of the {@code GameStateContext} exists
+   * throughout the application, promoting efficient resource use and consistent state management.
+   *
+   * @return the singleton instance of {@code GameStateContext}.
+   */
   public static GameStateContext getInstance() {
     if (instance == null) {
       instance = new GameStateContext();
@@ -106,9 +114,14 @@ public class GameStateContext {
   }
 
   /**
-   * Gets the isMenuVisible variable.
+   * Retrieves the visibility status of the menu.
    *
-   * @return
+   * <p>This method checks and returns the current state of the {@code isMenuVisible} variable,
+   * which indicates whether the menu is currently visible to the user. This can be useful for
+   * determining how to update the user interface or manage interactions based on the menu's
+   * visibility.
+   *
+   * @return {@code true} if the menu is visible; {@code false} otherwise.
    */
   public boolean isMenuVisible() {
     return isMenuVisible;

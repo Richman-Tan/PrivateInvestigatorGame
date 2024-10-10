@@ -14,7 +14,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.utils.VolumeControlUtil;
 
+/**
+ * Controller class for the ClueSafe view.
+ *
+ * <p>This class is responsible for managing the user interface and interactions within the ClueSafe
+ * view. It handles user input, processes events, and updates the game state based on the user's
+ * actions. The controller is associated with the "cluesafe.fxml" FXML file, which defines the
+ * layout and appearance of the ClueSafe view.
+ */
 public class ClueSafeController {
 
   // Inner classes (none in this case)
@@ -46,6 +55,7 @@ public class ClueSafeController {
 
   // Get timer
   private TimerModel countdownTimer;
+  private VolumeControlUtil volumeControlUtil;
 
   // Constructors
   // (default constructor is implied)
@@ -121,8 +131,8 @@ public class ClueSafeController {
                   + " black;-fx-font-size: 14px; -fx-background-insets: 0; -fx-border-insets:"
                   + " 0; -fx-padding: 5; -fx-border-width: 3; -fx-cursor: default;");
           goBackButton.setOpacity(0.75);
-          //goBackButton.setOpacity(1); // Reset opacity to 1
-          //goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
+          // goBackButton.setOpacity(1); // Reset opacity to 1
+          // goBackButton.setCursor(javafx.scene.Cursor.DEFAULT); // Reset cursor
         });
 
     // Position the button at the bottom-right corner
@@ -144,7 +154,9 @@ public class ClueSafeController {
 
     labelPane.toFront();
     // Add the volume button to the label pane and show it
-    showVolumeButton();
+    volumeControlUtil =
+        new VolumeControlUtil(labelPane); // Initialize the VolumeControlUtil with the timerPane
+    volumeControlUtil.showVolumeButton(); // Show the volume button
   }
 
   /**
@@ -291,123 +303,6 @@ public class ClueSafeController {
     page.toFront();
     if (middleNote && backNote) {
       goBackButton.toFront();
-    }
-  }
-
-  /*
-   * Method to initialise and show the volume button
-   */
-  private void showVolumeButton() {
-    // create new SVGPath for volume button
-    volumeUpStroke.setContent(
-        "M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0"
-            + " 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z");
-    volumeUp.setContent(
-        "M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025"
-            + " 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825"
-            + " 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06");
-    volumeOff.setContent(
-        "M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0"
-            + " 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207"
-            + " 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0"
-            + " 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0"
-            + " 0 1 .708 0");
-
-    // Set the size and position for the SVGPath
-    volumeUp.setScaleY(2.0);
-    volumeUp.setScaleX(2.0);
-    volumeUp.setScaleZ(2.0);
-    volumeUp.setLayoutX(13);
-    volumeUp.setLayoutY(53);
-    volumeUp.setStroke(Color.web("#473931"));
-    volumeUp.setFill(Color.web("#ffffff94"));
-    volumeUp.setStrokeWidth(0.5);
-    volumeUp.setOnMouseClicked(
-        event -> {
-          try {
-            turnVolumeOff();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-    labelPane.getChildren().add(volumeUp);
-
-    // Set the size and position for the SVGPath
-    volumeUpStroke.setScaleY(2.0);
-    volumeUpStroke.setScaleX(2.0);
-    volumeUpStroke.setScaleZ(2.0);
-    volumeUpStroke.setLayoutX(19);
-    volumeUpStroke.setLayoutY(53);
-    volumeUpStroke.setStroke(Color.web("#473931"));
-    volumeUpStroke.setFill(Color.web("#ffffff94"));
-    volumeUpStroke.setStrokeWidth(0.5);
-    volumeUpStroke.setOnMouseClicked(
-        event -> {
-          try {
-            turnVolumeOff();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-    labelPane.getChildren().add(volumeUpStroke);
-
-    // Set the size and position for the SVGPath
-    volumeOff.setScaleY(2.0);
-    volumeOff.setScaleX(2.0);
-    volumeOff.setScaleZ(2.0);
-    volumeOff.setLayoutX(13);
-    volumeOff.setLayoutY(53);
-    volumeOff.setStroke(Color.web("#473931"));
-    volumeOff.setFill(Color.web("#ffffff94"));
-    volumeOff.setStrokeWidth(0.5);
-    volumeOff.setVisible(false);
-    volumeOff.setOnMouseClicked(
-        event -> {
-          try {
-            turnVolumeOn();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-    labelPane.getChildren().add(volumeOff);
-    // Check if the volume icon should be displayed
-    try {
-      checkVolumeIcon();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /*
-   * Method to turn the volume off
-   */
-  @FXML
-  protected void turnVolumeOff() throws IOException {
-    SharedVolumeControl.getInstance().setVolumeSetting(false);
-    volumeOff.setVisible(true);
-    volumeUp.setVisible(false);
-    volumeUpStroke.setVisible(false);
-  }
-
-  /*
-   * Method to turn the volume on
-   */
-  @FXML
-  protected void turnVolumeOn() throws IOException {
-    SharedVolumeControl.getInstance().setVolumeSetting(true);
-    volumeOff.setVisible(false);
-    volumeUp.setVisible(true);
-    volumeUpStroke.setVisible(true);
-  }
-
-  /*
-   * Method to check if the volume icon should be displayed
-   */
-  private void checkVolumeIcon() throws IOException {
-    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
-      turnVolumeOn();
-    } else {
-      turnVolumeOff();
     }
   }
 }

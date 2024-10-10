@@ -30,6 +30,7 @@ import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.states.GameStarted;
+import nz.ac.auckland.se206.utils.VolumeControlUtil;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -72,6 +73,7 @@ public class RoomController {
   private MediaPlayer mediaPlayer;
   private boolean isFirstTimeInit = context.isFirstTimeInit();
   protected TimerModel countdownTimer;
+  private VolumeControlUtil volumeControlUtil;
 
   private final boolean isatleastoncecluefound =
       context.isGardenToolFound() || context.isPhoneFound() || context.isNoteFound();
@@ -148,10 +150,10 @@ public class RoomController {
       clue3.setOpacity(1);
     }
 
-    showVolumeButton();
-    volumeOff.toFront();
-    volumeUp.toFront();
-    volumeUpStroke.toFront();
+    // Add the volume button to the label pane and show it
+    volumeControlUtil =
+        new VolumeControlUtil(timerpane); // Initialize the VolumeControlUtil with the timerPane
+    volumeControlUtil.showVolumeButton(); // Show the volume button
 
     // Load the images
     final Image image1 =
@@ -883,122 +885,6 @@ public class RoomController {
       // Disable the guess button
       guessButton.setOpacity(0.3);
       guessButton.setDisable(true);
-    }
-  }
-
-  /*
-   * Method to initialise and show the volume button
-   */
-  private void showVolumeButton() {
-    // create new SVGPath for volume button
-    volumeUpStroke.setContent(
-        "M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0"
-            + " 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z");
-    volumeUp.setContent(
-        "M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025"
-            + " 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825"
-            + " 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06");
-    volumeOff.setContent(
-        "M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0"
-            + " 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207"
-            + " 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0"
-            + " 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0"
-            + " 0 1 .708 0");
-
-    // Set the size and position for the SVGPath
-    volumeUp.setScaleY(2.0);
-    volumeUp.setScaleX(2.0);
-    volumeUp.setScaleZ(2.0);
-    volumeUp.setLayoutX(23);
-    volumeUp.setLayoutY(63);
-    volumeUp.setStroke(Color.web("#473931"));
-    volumeUp.setFill(Color.web("#ffffff94"));
-    volumeUp.setStrokeWidth(0.5);
-    volumeUp.setOnMouseClicked(
-        event -> {
-          try {
-            turnVolumeOff();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-    rootNode.getChildren().add(volumeUp);
-
-    // Set the size and position for the SVGPath
-    volumeUpStroke.setScaleY(2.0);
-    volumeUpStroke.setScaleX(2.0);
-    volumeUpStroke.setScaleZ(2.0);
-    volumeUpStroke.setLayoutX(29);
-    volumeUpStroke.setLayoutY(63);
-    volumeUpStroke.setStroke(Color.web("#473931"));
-    volumeUpStroke.setFill(Color.web("#ffffff94"));
-    volumeUpStroke.setStrokeWidth(0.5);
-    volumeUpStroke.setOnMouseClicked(
-        event -> {
-          try {
-            turnVolumeOff();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-    rootNode.getChildren().add(volumeUpStroke);
-
-    // Set the size and position for the SVGPath
-    volumeOff.setScaleY(2.0);
-    volumeOff.setScaleX(2.0);
-    volumeOff.setScaleZ(2.0);
-    volumeOff.setLayoutX(23);
-    volumeOff.setLayoutY(63);
-    volumeOff.setStroke(Color.web("#473931"));
-    volumeOff.setFill(Color.web("#ffffff94"));
-    volumeOff.setStrokeWidth(0.5);
-    volumeOff.setVisible(false);
-    volumeOff.setOnMouseClicked(
-        event -> {
-          try {
-            turnVolumeOn();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-    rootNode.getChildren().add(volumeOff);
-    try {
-      checkVolumeIcon();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /*
-   * Method to turn the volume off
-   */
-  @FXML
-  protected void turnVolumeOff() throws IOException {
-    SharedVolumeControl.getInstance().setVolumeSetting(false);
-    volumeOff.setVisible(true);
-    volumeUp.setVisible(false);
-    volumeUpStroke.setVisible(false);
-  }
-
-  /*
-   * Method to turn the volume on
-   */
-  @FXML
-  protected void turnVolumeOn() throws IOException {
-    SharedVolumeControl.getInstance().setVolumeSetting(true);
-    volumeOff.setVisible(false);
-    volumeUp.setVisible(true);
-    volumeUpStroke.setVisible(true);
-  }
-
-  /*
-   * Method to check if the volume should be on or off
-   */
-  private void checkVolumeIcon() throws IOException {
-    if (SharedVolumeControl.getInstance().getVolumeSetting()) {
-      turnVolumeOn();
-    } else {
-      turnVolumeOff();
     }
   }
 }
