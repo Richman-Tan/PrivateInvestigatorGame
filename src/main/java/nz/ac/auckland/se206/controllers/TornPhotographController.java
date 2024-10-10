@@ -21,6 +21,13 @@ import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
+/**
+ * Controller class for the TornPhotograph scene.
+ *
+ * <p>This class is responsible for handling user input and updating the view for the TornPhotograph
+ * scene. It manages the user interface components and responds to user interactions in the
+ * TornPhotograph scene.
+ */
 public class TornPhotographController {
 
   // Static fields
@@ -52,6 +59,8 @@ public class TornPhotographController {
 
   @FXML private Label revealLabel; // Label for text reveal
 
+  @FXML private ImageView photoframeimg;
+
   @FXML private ImageView piece1;
   @FXML private ImageView piece2;
   @FXML private ImageView piece3;
@@ -73,7 +82,8 @@ public class TornPhotographController {
   @FXML private ImageView outlinePiece9;
 
   // Variables for drag offset
-  private double offsetX, offsetY;
+  private double offsetX;
+  private double offsetY;
 
   // Correct positions for each puzzle piece on the board (target coordinates)
   private final double piece1TargetX = 515;
@@ -119,11 +129,18 @@ public class TornPhotographController {
   private boolean piece9Correct;
 
   // Threshold to snap pieces into place
-  private final double SNAP_THRESHOLD = 200;
+  private final double snapDistanceThreshold = 180;
 
   private TimerModel countdownTimer;
 
-  /** Initializes the torn photograph view. */
+  /**
+   * Initializes the photograph after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the FXML file for the photo
+   * view is loaded. It sets up the initial state of the photo controller by configuring UI
+   * components, binding properties, and initializing any necessary data structures or event
+   * listeners required for the controller's functionality.
+   */
   @FXML
   public void initialize() {
     // Initialize flags for piece placement
@@ -272,9 +289,13 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to toggle the visibility of the puzzle pieces.
+   * Toggles the visibility of the puzzle pieces.
    *
-   * @param visible
+   * <p>This method updates the visibility of all puzzle pieces based on the specified boolean
+   * parameter. If the parameter is {@code true}, the pieces will be made visible; if {@code false},
+   * they will be hidden.
+   *
+   * @param visible {@code true} to make the puzzle pieces visible; {@code false} to hide them.
    */
   private void togglevisabilityofpieces(boolean visible) {
     // Set the visibility of the pieces
@@ -291,7 +312,7 @@ public class TornPhotographController {
     piece9.setVisible(visible);
   }
 
-  /** Method to set up the game. */
+  /** Method to set up the game. All of the game. */
   private void setupGame() {
 
     // Set the layout of the pieces
@@ -302,6 +323,7 @@ public class TornPhotographController {
 
     // Load and bind the background image
     createAndBindImageView(backgroundwithgame);
+    createAndBindImageView(photoframeimg);
 
     togglevisabilityofpieces(true);
 
@@ -329,9 +351,15 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to create and bind an ImageView to the pane.
+   * Creates and binds an ImageView to the pane, adjusting its size and position based on specific
+   * conditions.
    *
-   * @param image
+   * <p>This method initializes the provided {@code ImageView} and binds its dimensions to the
+   * pane's size properties. If the specified image is identified as outline piece 7, the method
+   * also modifies the pane's dimensions and adjusts the image's position accordingly to ensure
+   * proper display within the layout.
+   *
+   * @param image the {@code ImageView} to be created and bound to the pane.
    */
   private void createAndBindImageView(ImageView image) {
     // If it's outline piece 7, increase the size of the pane height and move it down
@@ -368,9 +396,14 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to set up drag and drop handlers for the puzzle pieces.
+   * Sets up drag and drop handlers for the specified puzzle piece.
    *
-   * @param piece
+   * <p>This method registers mouse event handlers for the provided {@code ImageView} representing a
+   * puzzle piece. It enables the user to interact with the piece by dragging it across the
+   * interface. The handlers respond to mouse pressed, dragged, and released events, allowing for
+   * smooth dragging functionality.
+   *
+   * @param piece the {@code ImageView} representing the puzzle piece to set up drag and drop for.
    */
   private void setupDragAndDrop(ImageView piece) {
     piece.setOnMousePressed(event -> onPiecePressed(event, piece));
@@ -379,10 +412,15 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to handle the mouse pressed event for the puzzle pieces.
+   * Handles the mouse pressed event for puzzle pieces.
    *
-   * @param event
-   * @param piece
+   * <p>This method is triggered when the mouse is pressed on a puzzle piece. It calculates the
+   * offsets between the current mouse position and the position of the puzzle piece, storing them
+   * in {@code offsetX} and {@code offsetY}. This information is used to allow smooth dragging of
+   * the piece when the mouse is moved.
+   *
+   * @param event the mouse event containing information about the mouse action.
+   * @param piece the {@code ImageView} representing the puzzle piece that is being pressed.
    */
   private void onPiecePressed(MouseEvent event, ImageView piece) {
     offsetX = event.getSceneX() - piece.getLayoutX();
@@ -390,10 +428,14 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to handle the mouse dragged event for the puzzle pieces.
+   * Handles the mouse dragged event for puzzle pieces.
    *
-   * @param event
-   * @param piece
+   * <p>This method updates the position of the specified puzzle piece as the mouse is dragged. It
+   * calculates the new layout coordinates of the piece based on the current mouse position,
+   * adjusting for any predefined offset to ensure smooth dragging.
+   *
+   * @param event the mouse event containing the current mouse coordinates.
+   * @param piece the {@code ImageView} representing the puzzle piece being dragged.
    */
   private void onPieceDragged(MouseEvent event, ImageView piece) {
     piece.setLayoutX(event.getSceneX() - offsetX);
@@ -401,10 +443,15 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to handle the mouse released event for the puzzle pieces.
+   * Handles the mouse released event for puzzle pieces.
    *
-   * @param event
-   * @param piece
+   * <p>This method is triggered when the mouse is released after dragging a puzzle piece. It checks
+   * if the released piece is close enough to its target position, allowing it to snap into place.
+   * If the piece is positioned correctly, its layout coordinates are updated, and its correctness
+   * state is marked as true.
+   *
+   * @param event the mouse event containing information about the mouse action.
+   * @param piece the {@code ImageView} representing the puzzle piece that is being released.
    */
   private void onPieceReleased(MouseEvent event, ImageView piece) {
     // Check if the piece is close enough to its target position to snap into place
@@ -469,16 +516,22 @@ public class TornPhotographController {
   }
 
   /**
-   * Method to check if a puzzle piece is close to its target position.
+   * Checks if a puzzle piece is close to its target position within a specified threshold.
    *
-   * @param piece
-   * @param targetX
-   * @param targetY
-   * @return
+   * <p>This method determines whether the provided {@code ImageView} piece is within a specified
+   * distance from its target position, defined by the coordinates {@code targetX} and {@code
+   * targetY}. It uses the {@code snapDistanceThreshold} to define how close the piece needs to be
+   * to snap into place.
+   *
+   * @param piece the {@code ImageView} representing the puzzle piece to check.
+   * @param targetX the X-coordinate of the target position.
+   * @param targetY the Y-coordinate of the target position.
+   * @return {@code true} if the piece is within the snap distance of the target position; {@code
+   *     false} otherwise.
    */
   private boolean isCloseToTarget(ImageView piece, double targetX, double targetY) {
-    return Math.abs(piece.getLayoutX() - targetX) < SNAP_THRESHOLD
-        && Math.abs(piece.getLayoutY() - targetY) < SNAP_THRESHOLD;
+    return Math.abs(piece.getLayoutX() - targetX) < snapDistanceThreshold
+        && Math.abs(piece.getLayoutY() - targetY) < snapDistanceThreshold;
   }
 
   /** Method to check if the puzzle is complete. */
@@ -826,7 +879,15 @@ public class TornPhotographController {
     return volumeUp;
   }
 
-  /** Method to set the volume up SVGPath. */
+  /**
+   * Sets the SVGPath for the volume up icon.
+   *
+   * <p>This method assigns the provided {@code SVGPath} to the instance variable representing the
+   * volume up icon. This allows for dynamic updates to the visual representation of the volume
+   * control in the user interface.
+   *
+   * @param volumeUp the {@code SVGPath} representing the volume up icon to be set.
+   */
   public void setVolumeUp(SVGPath volumeUp) {
     this.volumeUp = volumeUp;
   }
@@ -836,7 +897,15 @@ public class TornPhotographController {
     return volumeOff;
   }
 
-  /** Method to set the volume off SVGPath. */
+  /**
+   * Sets the SVGPath for the volume off icon.
+   *
+   * <p>This method assigns the provided {@code SVGPath} to the instance variable representing the
+   * volume off icon. This allows for dynamic updates to the visual representation of the volume
+   * control in the user interface.
+   *
+   * @param volumeOff the {@code SVGPath} representing the volume off icon to be set.
+   */
   public void setVolumeOff(SVGPath volumeOff) {
     this.volumeOff = volumeOff;
   }

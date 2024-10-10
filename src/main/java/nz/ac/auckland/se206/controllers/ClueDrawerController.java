@@ -16,6 +16,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import nz.ac.auckland.se206.App;
 
+/**
+ * Controller class for the ClueDrawer scene.
+ *
+ * <p>This class is responsible for handling user input and updating the view for the ClueDrawer
+ * scene. It is used to manage the user interface components and respond to user interactions in the
+ * ClueDrawer scene.
+ */
 public class ClueDrawerController {
 
   @FXML private AnchorPane anchorPane;
@@ -28,7 +35,14 @@ public class ClueDrawerController {
   private double startY;
   private TimerModel countdownTimer;
 
-  /** Initializes the ClueDrawerController. */
+  /**
+   * Initializes the ClueDrawerController after the associated FXML has been loaded.
+   *
+   * <p>This method is automatically invoked by the JavaFX framework when the FXML file is loaded.
+   * It sets up the initial state of the ClueDrawer controller, including configuring UI components,
+   * binding properties, and initializing any necessary data structures or event listeners that are
+   * essential for the controller's functionality.
+   */
   @FXML
   private void initialize() {
     setupTimerPane();
@@ -176,11 +190,15 @@ public class ClueDrawerController {
   }
 
   /**
-   * Creates an image view and binds it to the anchor pane.
+   * Creates an ImageView with the specified image and binds it to the anchor pane.
    *
-   * @param image
-   * @param draggable
-   * @return
+   * <p>This method initializes an ImageView with the provided image, sets its dimensions to match
+   * the anchor pane, and binds its properties accordingly. If specified, the ImageView can also be
+   * made draggable.
+   *
+   * @param image the Image to be displayed in the ImageView.
+   * @param draggable a boolean indicating whether the ImageView should be draggable.
+   * @return the created ImageView instance bound to the anchor pane.
    */
   private ImageView createAndBindImageView(Image image, boolean draggable) {
     // Create an ImageView with the image and bind it to the anchor pane
@@ -204,9 +222,14 @@ public class ClueDrawerController {
   }
 
   /**
-   * Makes an image view draggable.
+   * Makes the specified ImageView draggable within the scene.
    *
-   * @param imageView
+   * <p>This method sets up mouse event handlers for the given {@code ImageView}, allowing the user
+   * to click and drag the image view to move it around the scene. The method captures the initial
+   * position of the mouse when the drag starts and updates the position of the image view based on
+   * the current mouse coordinates while dragging.
+   *
+   * @param imageView the {@code ImageView} to be made draggable.
    */
   private void makeDraggable(ImageView imageView) {
     // Set up the image view to be draggable

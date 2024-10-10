@@ -63,7 +63,14 @@ public abstract class BaseRoomController {
   @FXML private ImageView crimesceneiconimg;
   @FXML private Pane timerpane;
 
-  /** This method initializes the controller */
+  /**
+   * Initializes the controller after the FXML has been loaded.
+   *
+   * <p>This method is automatically called by the JavaFX framework when the associated FXML file is
+   * loaded. It sets up the initial state of the controller, including configuring UI components,
+   * binding properties, and initializing data necessary for the view's functionality. Any event
+   * listeners or default settings can also be set within this method.
+   */
   @FXML
   public void initialize() {
     updateMenuVisibility();
@@ -145,7 +152,12 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the timer reaches 1 minutes left. It starts the flashing animation
+   * Checks if the timer has reached one minute remaining.
+   *
+   * <p>This method is called to monitor the countdown timer's remaining time. When the timer
+   * displays "01:00" (indicating one minute left), it triggers a flashing animation on the
+   * specified timer pane to alert the user. This visual cue is intended to emphasize the urgency as
+   * the time limit approaches.
    */
   private void checkiftimeris4minleft() {
     if (countdownTimer
@@ -245,8 +257,13 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse enters the top of the menu button. It changes the cursor
-   * to
+   * Handles the mouse entered event when the cursor is over the top of the menu button.
+   *
+   * <p>This method changes the cursor to a hand symbol to indicate that the menu button is
+   * interactive. It also updates the status label to prompt the user with a message asking if they
+   * want to close the menu. This provides visual feedback to enhance user experience.
+   *
+   * @param event the mouse event triggered when the cursor enters the top of the menu button.
    */
   @FXML
   protected void onMouseEnteredTopOfMenu(MouseEvent event) {
@@ -256,8 +273,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse exits the top of the menu button. It changes the cursor
-   * back to the default cursor
+   * Handles the mouse exited event when the cursor leaves the top of the menu button.
+   *
+   * <p>This method resets the cursor back to the default cursor, indicating that the menu button is
+   * no longer interactive. It also updates the status label to reflect the current room based on
+   * the controller type. This provides context to the user about their current location within the
+   * application.
+   *
+   * @param event the mouse event triggered when the cursor exits the top of the menu button.
    */
   @FXML
   protected void onMouseExitedTopOfMenu(MouseEvent event) {
@@ -275,8 +298,13 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse clicks on the top of the menu button. It toggles the menu
-   * visibility
+   * Handles the mouse click event on the top of the menu button to toggle its visibility.
+   *
+   * <p>This method is called when the user clicks on the menu button. It invokes the {@code
+   * toggleMenuVisibility} method of the context to switch the menu's visibility state. After
+   * toggling, it updates the menu display to reflect the current visibility status.
+   *
+   * @param event the mouse event triggered by the click on the menu button.
    */
   @FXML
   protected void onToggleMenuOff(MouseEvent event) {
@@ -285,8 +313,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
+   * Handles the mouse entered event when the cursor is over the closed menu icon.
+   *
+   * <p>This method is triggered when the mouse hovers over the closed menu icon. It changes the
+   * cursor to a hand symbol, indicating interactivity, and updates the status label to prompt the
+   * user with a message asking if they want to open the menu. Additionally, the method scales the
+   * closed menu icon slightly larger to create a visual effect that indicates it can be clicked.
+   *
+   * @param event the mouse event triggered when the cursor enters the closed menu icon.
    */
   @FXML
   protected void onMouseEnteredMenuClosed(MouseEvent event) {
@@ -300,8 +334,15 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse exits the closed menu icon. It changes the cursor back to
-   * the default cursor and shrinks the icon
+   * Handles the mouse exited event when the cursor leaves the closed menu icon.
+   *
+   * <p>This method is triggered when the mouse pointer exits the closed menu icon. It resets the
+   * cursor back to the default cursor, indicating that the icon is no longer interactive. The
+   * method also updates the status label to reflect the current room based on the controller type,
+   * providing contextual information to the user. Additionally, it shrinks the icon back to its
+   * original size, giving visual feedback that the icon is no longer hovered over.
+   *
+   * @param event the mouse event triggered when the cursor exits the closed menu icon.
    */
   @FXML
   protected void onMouseExitedMenuClosed(MouseEvent event) {
@@ -322,10 +363,15 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse clicks on the closed menu icon. It toggles the menu
-   * visibility.
+   * Handles the mouse click event on the closed menu icon to toggle its visibility.
    *
-   * @param event the mouse event
+   * <p>This method is called when the user clicks on the closed menu icon. It invokes the {@code
+   * toggleMenuVisibility} method from the context to switch the visibility of the menu. After
+   * toggling, the method updates the display of various UI elements by bringing them to the front
+   * or sending them to the back, ensuring that the user interface reflects the current state
+   * appropriately. The opacity of the icons is also adjusted based on the controller context.
+   *
+   * @param event the mouse event triggered by the click on the closed menu icon.
    */
   @FXML
   protected void onToggleMenu(MouseEvent event) {
@@ -365,8 +411,15 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse enters an icon. It changes the opacity of the icon and
-   * sets the status label
+   * Handles the mouse entered event when the cursor hovers over an icon.
+   *
+   * <p>This method is triggered when the mouse pointer enters an icon. It changes the opacity of
+   * the icon to 0.7 to provide visual feedback indicating that the icon is interactive.
+   * Additionally, it updates the status label based on the specific icon being hovered over,
+   * prompting the user with the appropriate action related to that icon (e.g., visiting a specific
+   * character).
+   *
+   * @param event the mouse event triggered when the cursor enters the icon.
    */
   @FXML
   protected void onMouseEnteredIcon(MouseEvent event) {
@@ -383,8 +436,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse exits an icon. It restores the opacity of the icon and
-   * sets the status label
+   * Handles the mouse exited event when the cursor leaves an icon.
+   *
+   * <p>This method is triggered when the mouse pointer exits an icon. It restores the opacity of
+   * the icon back to 1.0, indicating that it is no longer interactive. Additionally, the method
+   * updates the status label to reflect the current room based on the controller type, providing
+   * contextual information to the user about their location within the application.
+   *
+   * @param event the mouse event triggered when the cursor exits the icon.
    */
   @FXML
   protected void onMouseExitedIcon(MouseEvent event) {
@@ -400,11 +459,23 @@ public abstract class BaseRoomController {
     }
   }
 
-  /** This method is called when an icon is clicked. It navigates to the corresponding room */
+  /**
+   * Handles the mouse click event on an icon.
+   *
+   * <p>This method is called when the user clicks on an icon. It retrieves the {@code ImageView}
+   * that was clicked and prints its ID to the console for debugging purposes. Based on the ID of
+   * the clicked icon, it navigates to the corresponding room associated with that icon. If the
+   * clicked icon is not recognized, an error message is printed to the console.
+   *
+   * @param event the mouse event triggered by clicking the icon.
+   */
   @FXML
   protected void onIconClicked(MouseEvent event) {
+    // Get the icon that was clicked
     ImageView icon = (ImageView) event.getSource();
     System.out.println("Clicked on: " + icon.getId()); // Replace with desired action
+
+    // Navigate to the corresponding room based on the icon clicked
     switch (icon.getId()) {
       case "widowiconimg" -> {
         try {
@@ -433,7 +504,19 @@ public abstract class BaseRoomController {
     }
   }
 
-  /** This method initializes the GPT model and loads the initial prompt */
+  /**
+   * Initializes the GPT model and loads the initial prompt.
+   *
+   * <p>This method sets up a new task to initialize the GPT model in a separate thread, allowing
+   * the application to remain responsive during the initialization process. It handles the loading
+   * of the initial prompt necessary for the model's operation. Any exceptions that occur during the
+   * initialization process, such as {@code IOException} or {@code URISyntaxException}, are thrown
+   * to be handled by the calling code.
+   *
+   * @throws IOException if there is an error during input or output operations while initializing
+   *     the model.
+   * @throws URISyntaxException if the URI for the prompt file is not valid.
+   */
   protected void initializeGptModel() {
     // Create a new task to initialize the GPT model
     Task<Void> task =
@@ -461,10 +544,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method sets up the GPT request
+   * Sets up the GPT request with the specified parameters.
    *
-   * @throws IOException
-   * @throws ApiProxyException
+   * <p>This method initializes the chat completion request by reading the API configuration and
+   * setting the required parameters for the GPT request, such as the number of responses,
+   * temperature, top-p value, and maximum tokens.
+   *
+   * @throws IOException if there is an error reading the API configuration file.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
    */
   protected void setupGptRequest() throws IOException, ApiProxyException {
     // Set up the GPT request
@@ -478,7 +565,15 @@ public abstract class BaseRoomController {
             .setMaxTokens(100);
   }
 
-  /** This method binds the timer to the label */
+  /**
+   * Binds the countdown timer to the label for display.
+   *
+   * <p>This method retrieves the countdown timer instance from the shared timer model and binds its
+   * time string property to the {@code lbltimer} label, ensuring that the label updates
+   * automatically as the timer changes. Additionally, it attaches a listener to the timer's time
+   * string property to perform actions when the timer's value changes, specifically checking if
+   * there are four minutes left.
+   */
   protected void bindTimerToLabel() {
     countdownTimer = SharedTimerModel.getInstance().getTimer();
     System.out.println(
@@ -499,35 +594,63 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method loads the initial prompt for the GPT model
+   * Retrieves the initial prompt for the GPT model.
    *
-   * @param resourcePath the path to the resource file containing the initial prompt
-   * @throws URISyntaxException
-   * @throws IOException
-   * @throws ApiProxyException
+   * <p>This method is responsible for loading the initial prompt that the GPT model will use for
+   * generating responses. The implementation of this method will define how and where the prompt is
+   * retrieved from. It returns the prompt as a {@code String}. This method is abstract, requiring
+   * subclasses to provide a specific implementation.
+   *
+   * @return the initial prompt as a {@code String} to be used by the GPT model.
+   * @throws URISyntaxException if the resource path for the prompt is invalid.
+   * @throws IOException if there is an error during input or output operations while retrieving the
+   *     prompt.
+   * @throws ApiProxyException if there is an error communicating with the API proxy to fetch the
+   *     prompt.
    */
   protected abstract String getInitialPrompt();
 
   /**
-   * This method loads the initial prompt for the GPT model
+   * Loads the initial prompt for the GPT model from a specified resource file.
    *
-   * @param resourcePath the path to the resource file containing the initial prompt
-   * @throws URISyntaxException
-   * @throws IOException
-   * @throws ApiProxyException
+   * <p>This abstract method is intended to be implemented by subclasses to define how the initial
+   * prompt is loaded into the GPT model. It takes the path to the resource file containing the
+   * prompt as an input. The implementation must handle the loading of the prompt while managing
+   * potential errors that may arise during the process.
+   *
+   * @param resourcePath the path to the resource file containing the initial prompt. This path
+   *     should be accessible and valid to ensure successful loading.
+   * @throws URISyntaxException if the provided resource path cannot be converted into a URI.
+   * @throws IOException if there is an error reading from the resource file.
+   * @throws ApiProxyException if there is an error communicating with the API proxy or if the
+   *     loaded prompt parameters are invalid.
    */
   protected abstract void loadGptPrompt(String resourcePath)
       throws URISyntaxException, IOException, ApiProxyException;
 
-  /** This method sets the user chat box prompt */
+  /**
+   * Sets the prompt text for the user chat box.
+   *
+   * <p>This method updates the prompt displayed in the user chat box to provide guidance or
+   * instructions to the user. The update is performed on the JavaFX Application Thread using {@code
+   * Platform.runLater}, ensuring that UI changes are made safely and without threading issues.
+   *
+   * @param text the text to be set as the prompt for the user chat box. This should provide clear
+   *     guidance to the user about what to enter.
+   */
   protected void setUserChatBoxPrompt(String text) {
     Platform.runLater(() -> userChatBox.setPromptText(text));
   }
 
   /**
-   * This method appends a chat message to the suspect chat box
+   * Handles the mouse event to transition to the room scene.
    *
-   * @param msg the chat message to append
+   * <p>This method is triggered when a mouse event occurs. It changes the current scene to the
+   * "room" view, allowing the user to interact with the room interface. The method uses the App
+   * class to set the root of the application to the specified scene.
+   *
+   * @param event the mouse event that triggered the scene change.
+   * @throws IOException if there is an error loading the FXML file for the room scene.
    */
   @FXML
   protected void onRoom(MouseEvent event) throws IOException {
@@ -535,9 +658,17 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method appends a chat message to the suspect chat box
+   * Handles the action of sending a chat message when the send event occurs.
    *
-   * @param msg the chat message to append
+   * <p>This method is triggered by a mouse event (e.g., a button click) to send the current chat
+   * message. It calls the {@code handleSendMessage} method to process the sending of the message to
+   * the GPT model. Any exceptions that occur during the sending process will be propagated to the
+   * caller.
+   *
+   * @param event the mouse event that triggered the send action.
+   * @throws ApiProxyException if there is an error communicating with the API proxy or if the
+   *     request parameters are invalid.
+   * @throws IOException if there is an error during input or output operations.
    */
   @FXML
   protected void onSend(MouseEvent event) throws ApiProxyException, IOException {
@@ -545,8 +676,16 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
+   * Handles the action event when the send button is clicked.
+   *
+   * <p>This method is called when the user clicks the send button. It invokes the {@code
+   * handleSendMessage} method to process the user's message and send it to the appropriate
+   * recipient. This allows for the interaction with the chat system, facilitating communication
+   * within the application.
+   *
+   * @param event the action event triggered by clicking the send button.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
+   * @throws IOException if there is an error during input or output operations.
    */
   @FXML
   protected void onSend(ActionEvent event) throws ApiProxyException, IOException {
@@ -590,10 +729,17 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method handles the sending of a message to the GPT model
+   * Handles the process of sending a message to the GPT model.
    *
-   * @throws ApiProxyException
-   * @throws IOException
+   * <p>This method orchestrates the actions required to send a message to the GPT model, including
+   * executing the message sending logic, recording the visit for tracking purposes, and updating
+   * the state of the guess button based on the current context. It ensures that the necessary
+   * procedures are followed for effective communication with the model.
+   *
+   * @throws ApiProxyException if there is an error communicating with the API proxy or if the
+   *     request parameters are invalid.
+   * @throws IOException if there is an error during input or output operations, such as reading
+   *     from or writing to a file.
    */
   protected void handleSendMessage() throws ApiProxyException, IOException {
     sendMessageCode();
@@ -602,10 +748,16 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method sends a message to the GPT model
+   * Sends a message to the GPT model for processing.
    *
-   * @throws ApiProxyException
-   * @throws IOException
+   * <p>This method retrieves the message from the user chat box, ensuring that empty messages are
+   * not sent. If the message is valid, it clears the user input, creates a {@code ChatMessage}
+   * instance with the user's message, and initiates a task to send the message to the GPT model.
+   * The task is executed in a new thread to prevent blocking the UI.
+   *
+   * @throws ApiProxyException if there is an error communicating with the API proxy or if the
+   *     request parameters are invalid.
+   * @throws IOException if there is an error during input or output operations.
    */
   protected void sendMessageCode() throws ApiProxyException, IOException {
     // Get the message from the user chat box
@@ -628,10 +780,15 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method creates a new task to run the GPT model
+   * Creates a new task to run the GPT model with the specified chat message.
    *
-   * @param msg
-   * @return
+   * <p>This method initializes a new {@code Task<Void>} that encapsulates the operation of running
+   * the GPT model. It accepts a {@code ChatMessage} as input, which is used to interact with the
+   * model. The task executes in the background and updates the user chat box prompt upon
+   * completion. This allows for non-blocking interaction within the application.
+   *
+   * @param msg the {@code ChatMessage} containing the user's query to be sent to the GPT model.
+   * @return a {@code Task<Void>} that can be executed to run the GPT model asynchronously.
    */
   protected Task<Void> createGptTask(ChatMessage msg) {
     // Create a new task to run the GPT model
@@ -650,7 +807,13 @@ public abstract class BaseRoomController {
     };
   }
 
-  /** This method clears the user input */
+  /**
+   * Clears the user input fields in the chat interface.
+   *
+   * <p>This method removes any text from the user chat box and the suspect chat box, resetting them
+   * to their initial state. Additionally, it sets the prompt text of the user chat box to indicate
+   * that the system is waiting for a response.
+   */
   protected void clearUserInput() {
     userChatBox.clear();
     suspectChatBox.clear();
@@ -658,11 +821,19 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method runs the GPT model
+   * Runs the GPT model with the provided chat message.
    *
-   * @param msg
-   * @return
-   * @throws ApiProxyException
+   * <p>This method takes a {@code ChatMessage} as input, sends it to the GPT model, and retrieves
+   * the model's response. It manages the message flow by appending the user's message and the
+   * model's response to the chat. If an error occurs during the communication with the API, an
+   * error message is appended to the chat box to inform the user. The method also enables and
+   * disables the send button to prevent multiple submissions while the request is processed.
+   *
+   * @param msg the {@code ChatMessage} containing the user's message to be sent to the GPT model.
+   * @return the {@code ChatMessage} response from the GPT model, or {@code null} if an error
+   *     occurs.
+   * @throws ApiProxyException if there is an error communicating with the API proxy during the
+   *     request.
    */
   protected ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
     chatCompletionRequest.addMessage(msg);
@@ -728,10 +899,17 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method sets the background image to be responsive
+   * Sets the background image to be responsive within the specified pane.
    *
-   * @param imageView
-   * @param pane
+   * <p>This method binds the width and height properties of the given {@code ImageView} to the
+   * width and height of the specified {@code AnchorPane}. This ensures that the background image
+   * scales dynamically as the size of the pane changes, maintaining its aspect ratio and fit within
+   * the pane's dimensions.
+   *
+   * @param imageView the {@code ImageView} containing the background image that needs to be made
+   *     responsive.
+   * @param pane the {@code AnchorPane} in which the background image will be displayed
+   *     responsively.
    */
   protected void setResponsiveBackground(ImageView imageView, AnchorPane pane) {
     // Set the background image to be responsive
@@ -741,45 +919,17 @@ public abstract class BaseRoomController {
 
   /** This method updates the visibility of the menu */
   protected void updateMenuVisibility() {
-    boolean isMenuVisible = context.isMenuVisible();
+    // If the menu is not visible, bring everything to the back except the closed menu icon
+    basemapimg.toBack();
+    lblareastatus.toBack();
+    widowiconimg.toBack();
+    brothericonimg.toBack();
+    grandsoniconimg.toBack();
+    topofmenubtn.toBack();
+    crimesceneiconimg.toBack();
 
-    if (isMenuVisible) {
-      // Set z-order for visible menu
-      basemapimg.toFront();
-      lblareastatus.toFront();
-      widowiconimg.toFront();
-      brothericonimg.toFront();
-      grandsoniconimg.toFront();
-      topofmenubtn.toFront();
-      crimesceneiconimg.toFront();
-
-      // Check which controller it is in a set each icon to have a slightly lower opacity depending
-      // on which controller
-
-      System.out.println(this.getClass().getName());
-      if (this instanceof Suspect1RoomController) {
-        widowiconimg.setOpacity(0.7);
-      } else if (this instanceof Suspect2RoomController) {
-        brothericonimg.setOpacity(0.7);
-      } else if (this instanceof Suspect3RoomController) {
-        grandsoniconimg.setOpacity(0.7);
-      }
-
-      // Hide the closed menu icon behind everything else
-      menuclosedimg.toBack();
-    } else {
-      // If the menu is not visible, bring everything to the back except the closed menu icon
-      basemapimg.toBack();
-      lblareastatus.toBack();
-      widowiconimg.toBack();
-      brothericonimg.toBack();
-      grandsoniconimg.toBack();
-      topofmenubtn.toBack();
-      crimesceneiconimg.toBack();
-
-      // Bring the closed menu icon to the front
-      menuclosedimg.toFront();
-    }
+    // Bring the closed menu icon to the front
+    menuclosedimg.toFront();
   }
 
   /**
@@ -794,8 +944,14 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
+   * Handles the key press event for the application.
+   *
+   * <p>This method is triggered when a key is pressed while the application has focus. If the Enter
+   * key is pressed, it invokes the {@code handleSendMessage} method to process and send the user's
+   * message. Any exceptions that occur during this process are caught and printed to the console
+   * for debugging purposes.
+   *
+   * @param event the key event triggered by pressing a key on the keyboard.
    */
   @FXML
   protected void onKeyPressed(KeyEvent event) {
@@ -809,19 +965,32 @@ public abstract class BaseRoomController {
   }
 
   /**
-   * This method loads a template from a file
+   * Loads a template from a specified file.
    *
-   * @param filePath the path to the file containing the template
-   * @return the template as a string
-   * @throws IOException
+   * <p>This method reads the contents of a file located at the given URI and returns it as a {@code
+   * String}. The file is expected to contain a template that can be used in the application. If the
+   * file cannot be accessed or read, an {@code IOException} will be thrown.
+   *
+   * @param filePath the URI of the file containing the template to be loaded.
+   * @return the contents of the template file as a {@code String}.
+   * @throws IOException if there is an error during reading from the file.
    */
   protected String loadTemplate(URI filePath) throws IOException {
     return new String(Files.readAllBytes(Paths.get(filePath)));
   }
 
   /**
-   * This method is called when the mouse enters the closed menu icon. It changes the cursor to a
-   * hand and expands the icon
+   * Handles the action event when the Enter key is pressed.
+   *
+   * <p>This method is called when the user presses the Enter key. It invokes the {@code
+   * handleSendMessage} method to process and send the user's message. This allows for seamless
+   * interaction with the chat system, enabling users to submit their queries without needing to
+   * click a send button.
+   *
+   * @param event the action event triggered by pressing the Enter key.
+   * @throws IOException if there is an error during input or output operations while sending the
+   *     message.
+   * @throws ApiProxyException if there is an error communicating with the API proxy.
    */
   @FXML
   protected void onEnterKey(ActionEvent event) throws IOException, ApiProxyException {
