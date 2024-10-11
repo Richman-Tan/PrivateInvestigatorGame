@@ -87,7 +87,7 @@ public class TimerModel {
                       PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
                       try {
-                        App.setRoot("guessingScene");
+                        App.setRoot("timesupCutscene");
                       } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -96,7 +96,7 @@ public class TimerModel {
                           event -> {
                             // Reset and start the timer after the delay
                             countdownTimer = SharedTimerModel.getInstance().getTimer();
-                            countdownTimer.reset(61);
+                            countdownTimer.reset(64);
                             countdownTimer.start();
                           });
 

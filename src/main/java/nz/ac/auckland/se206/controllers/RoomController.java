@@ -813,7 +813,7 @@ public class RoomController {
    */
   @FXML
   private void onGuessClick(ActionEvent event) throws IOException {
-    GameStateContext.getInstance().setGuessPressed(true); // Mark as found in the context
+    context.setGuessPressed(true);
     App.setRoot("guessingScene");
     context.onGuessClick();
   }
