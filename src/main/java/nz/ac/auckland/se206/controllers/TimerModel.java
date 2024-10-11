@@ -44,8 +44,7 @@ public class TimerModel {
 
   // Constructors
   public TimerModel(int initialTimeInSeconds) {
-    // this.timeInSeconds = initialTimeInSeconds;
-    this.timeInSeconds = 30;
+    this.timeInSeconds = initialTimeInSeconds;
     this.timeString = new SimpleStringProperty(formatTime(initialTimeInSeconds));
   }
 
@@ -97,7 +96,7 @@ public class TimerModel {
                           event -> {
                             // Reset and start the timer after the delay
                             countdownTimer = SharedTimerModel.getInstance().getTimer();
-                            countdownTimer.reset(61);
+                            countdownTimer.reset(64);
                             countdownTimer.start();
                           });
 
