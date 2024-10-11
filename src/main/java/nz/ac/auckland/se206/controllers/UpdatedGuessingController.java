@@ -490,20 +490,6 @@ public class UpdatedGuessingController {
             // stop the timer
             countdownTimer.stop();
           });
-      // } else {
-      //   // open new pane to confirm explanation
-      //   verifyCulpritPane.setVisible(false);
-      //   staticimg1.setVisible(false);
-      //   gameOverRectangle.setVisible(true);
-      //   gameOverPane.setVisible(true);
-      //   showGameOver();
-      //   // remove the timer from the screen if user has been moved to game over state
-      //   labelPane.setVisible(false);
-      //   adjustVolumeButtonPosition();
-
-      //   // stop the timer
-      //   countdownTimer.stop();
-      // }
     }
   }
 
