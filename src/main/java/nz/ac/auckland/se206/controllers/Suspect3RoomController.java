@@ -8,9 +8,12 @@ import javafx.fxml.FXML;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameStateContext;
 
 /** Controller for the room of Suspect 2 (the grandma). */
 public class Suspect3RoomController extends BaseRoomController {
+
+  private GameStateContext context = GameStateContext.getInstance();
 
   @Override
   protected String getInitialPrompt() {
@@ -53,6 +56,7 @@ public class Suspect3RoomController extends BaseRoomController {
   @FXML
   private void onGuessClick(ActionEvent event) throws IOException {
     // Implement the logic for what should happen when the "Guess" button is clicked.
+    context.setGuessPressed(true);
     App.setRoot("guessingScene"); // Navigates to the guessing scene, for example
   }
 
