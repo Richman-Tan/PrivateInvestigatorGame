@@ -44,7 +44,8 @@ public class TimerModel {
 
   // Constructors
   public TimerModel(int initialTimeInSeconds) {
-    this.timeInSeconds = initialTimeInSeconds;
+    // this.timeInSeconds = initialTimeInSeconds;
+    this.timeInSeconds = 30;
     this.timeString = new SimpleStringProperty(formatTime(initialTimeInSeconds));
   }
 
@@ -87,7 +88,7 @@ public class TimerModel {
                       PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
                       try {
-                        App.setRoot("guessingScene");
+                        App.setRoot("timesupCutscene");
                       } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
